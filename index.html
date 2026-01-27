@@ -56,22 +56,37 @@
   <!-- Logout Button -->
   <button class="logout-btn">Logout</button>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
-
-  <!-- Layout & Auth Module -->
+  <!-- Firebase & Layout -->
   <script type="module">
-    import { injectLayout } from './src/scripts/layout.js';
-    import { logout } from './src/scripts/auth.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { injectLayout } from "./src/scripts/layout.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "DEIN_API_KEY",
+      authDomain: "DEIN_AUTH_DOMAIN",
+      projectId: "DEIN_PROJECT_ID",
+      storageBucket: "DEIN_STORAGE_BUCKET",
+      messagingSenderId: "DEIN_SENDER_ID",
+      appId: "DEINE_APP_ID"
+    };
+
+    // Init Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
     // Branding & Navigation einfügen
     injectLayout("Home");
 
     // Logout verbinden
-    document.querySelector(".logout-btn").addEventListener("click", () => {
-      logout();
+    document.querySelector(".logout-btn").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        window.location.href = "index.html"; // zurück zur Login-Seite
+      } catch (err) {
+        console.error("Logout fehlgeschlagen:", err);
+      }
     });
   </script>
 

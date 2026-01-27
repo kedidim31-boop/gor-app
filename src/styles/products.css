@@ -71,22 +71,23 @@
 }
 
 /* Standardfarbe für technische Felder */
-#productTable th:nth-child(1),  /* Name */
-#productTable th:nth-child(2),  /* SKU */
-#productTable th:nth-child(3),  /* EAN */
-#productTable th:nth-child(4),  /* Preis */
-#productTable th:nth-child(10), /* Bilder */
-#productTable th:nth-child(11)  /* Aktionen */ {
+#productTable th:nth-child(5),  /* SKU */
+#productTable th:nth-child(6),  /* EAN */
+#productTable th:nth-child(9),  /* Anbieter */
+#productTable th:nth-child(10), /* Preis */
+#productTable th:nth-child(11), /* Bilder */
+#productTable th:nth-child(12)  /* Aktionen */ {
   color: #FFD300;
   text-shadow: 0 0 6px #FFD300;
 }
 
 /* Neon-Türkis für inhaltliche Felder */
-#productTable th:nth-child(5),  /* Kategorie */
-#productTable th:nth-child(6),  /* Kollektion */
-#productTable th:nth-child(7),  /* Typ */
-#productTable th:nth-child(8),  /* Bestand */
-#productTable th:nth-child(9)   /* Beschreibung */ {
+#productTable th:nth-child(1),  /* Produktname */
+#productTable th:nth-child(2),  /* Beschreibung */
+#productTable th:nth-child(3),  /* Kollektion */
+#productTable th:nth-child(4),  /* Typ */
+#productTable th:nth-child(7),  /* Bestand */
+#productTable th:nth-child(8)   /* Produktgewicht */ {
   color: #70ffea;
   text-shadow: 0 0 6px #70ffea;
 }

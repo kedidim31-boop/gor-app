@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming of Republic – Übersicht</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Global Neon Theme -->
+  <link rel="stylesheet" href="src/styles/neon-theme.css">
+</head>
+<body>
+
+  <!-- Branding Header -->
+  <div class="branding-header">
+    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <div class="divider"></div>
+    <div class="branding-text">
+      <div class="subtitle">Gesamtübersicht<br>Systemstatus</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="products.html">Produkte</a>
+    <a href="tasks.html">Aufgaben</a>
+    <a href="time.html">Zeiterfassung</a>
+    <a href="employees.html">Mitarbeiter</a>
+    <a href="overview.html" class="active">Übersicht</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="adminPanel.html">Admin Panel</a>
+  </div>
+
+  <!-- Übersichtskarten -->
+  <div class="dashboard">
+    <div class="card">
+      <h2>Produkte</h2>
+      <div class="stat" id="productCount">0</div>
+      <p>Gesamtzahl der Produkte</p>
+    </div>
+
+    <div class="card">
+      <h2>Aufgaben</h2>
+      <div class="stat" id="taskCount">0</div>
+      <p>Gesamtzahl der Aufgaben</p>
+    </div>
+
+    <div class="card">
+      <h2>Zeiterfassungen</h2>
+      <div class="stat" id="timeCount">0</div>
+      <p>Gesamtzahl der Einträge</p>
+    </div>
+
+    <div class="card">
+      <h2>Mitarbeiter</h2>
+      <div class="stat" id="employeeCount">0</div>
+      <p>Gesamtzahl der Mitarbeiter</p>
+    </div>
+  </div>
+
+  <!-- Logout Button -->
+  <button class="logout-btn">Logout</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+  <!-- Übersicht Logik -->
+  <script type="module">
+    import { enforceRole } from './src/scripts/roleGuard.js';
+    import { logout } from './src/scripts/auth.js';
+
+    // Firebase Init
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
+      authDomain: "gaming-of-republic.firebaseapp.com",
+      projectId: "gaming-of-republic",
+      storageBucket: "gaming-of-republic.appspot.com",
+      messagingSenderId: "610190951435",
+      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    // Zugriff: Mitarbeiter & Admins
+    enforceRole("mitarbeiter", "index.html");
+
+    // Übersicht laden
+    async function loadOverview() {
+      const productSnapshot = await db.collection("products").get();
+      document.getElementById("productCount").innerText = productSnapshot.size;
+
+      const taskSnapshot = await db.collection("tasks").get();
+      document.getElementById("taskCount").innerText = taskSnapshot.size;
+
+      const timeSnapshot = await db.collection("timeEntries").get();
+      document.getElementById("timeCount").innerText = timeSnapshot.size;
+
+      const employeeSnapshot = await db.collection("employees").get();
+      document.getElementById("employeeCount").innerText = employeeSnapshot.size;
+    }
+
+    // Initial laden
+    loadOverview();
+
+    // Logout
+    document.querySelector(".logout-btn").addEventListener("click", () => {
+      logout();
+    });
+  </script>
+
+</body>
+</html>

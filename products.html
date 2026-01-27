@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming of Republic – Produkte</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Global Neon Theme -->
+  <link rel="stylesheet" href="src/styles/neon-theme.css">
+</head>
+<body>
+
+  <!-- Branding Header -->
+  <div class="branding-header">
+    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <div class="divider"></div>
+    <div class="branding-text">
+      <div class="subtitle">Produkte<br>Verwaltung</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="products.html" class="active">Produkte</a>
+    <a href="tasks.html">Aufgaben</a>
+    <a href="time.html">Zeiterfassung</a>
+    <a href="employees.html">Mitarbeiter</a>
+    <a href="overview.html">Übersicht</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="adminPanel.html">Admin Panel</a>
+  </div>
+
+  <!-- Produktverwaltung -->
+  <div class="card">
+    <h2>Neues Produkt hinzufügen</h2>
+    <form id="productForm">
+      <input type="text" id="productName" placeholder="Produktname" required>
+      <input type="text" id="productSKU" placeholder="SKU" required>
+      <input type="number" id="productPrice" placeholder="Preis (CHF)" required>
+      <textarea id="productDescription" placeholder="Beschreibung"></textarea>
+      <button type="submit">Produkt speichern</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Produktübersicht</h2>
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>SKU</th>
+          <th>Preis (CHF)</th>
+          <th>Beschreibung</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Produkte werden hier dynamisch geladen -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Logout Button -->
+  <button class="logout-btn">Logout</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+  <!-- Produkt Logik -->
+  <script type="module">
+    import { enforceRole } from './src/scripts/roleGuard.js';
+    import { logout } from './src/scripts/auth.js';
+
+    // Firebase Init
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
+      authDomain: "gaming-of-republic.firebaseapp.com",
+      projectId: "gaming-of-republic",
+      storageBucket: "gaming-of-republic.appspot.com",
+      messagingSenderId: "610190951435",
+      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    // Zugriff: nur Admins & Mitarbeiter
+    enforceRole("mitarbeiter", "index.html");
+
+    // Produkt hinzufügen
+    document.getElementById("productForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const name = document.getElementById("productName").value;
+      const sku = document.getElementById("productSKU").value;
+      const price = parseFloat(document.getElementById("productPrice").value);
+      const description = document.getElementById("productDescription").value;
+
+      await db.collection("products").add({
+        name,
+        sku,
+        price,
+        description,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      alert("Produkt gespeichert!");
+      loadProducts();
+      e.target.reset();
+    });
+
+    // Produkte laden
+    async function loadProducts() {
+      const tableBody = document.querySelector("#productTable tbody");
+      tableBody.innerHTML = "";
+
+      const snapshot = await db.collection("products").get();
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${data.name}</td>
+          <td>${data.sku}</td>
+          <td>${data.price.toFixed(2)}</td>
+          <td>${data.description || "-"}</td>
+          <td>
+            <button class="deleteBtn" data-id="${doc.id}">Löschen</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      // Löschen
+      document.querySelectorAll(".deleteBtn").forEach(btn => {
+        btn.addEventListener("click", async e => {
+          const id = e.target.dataset.id;
+          await db.collection("products").doc(id).delete();
+          alert("Produkt gelöscht");
+          loadProducts();
+        });
+      });
+    }
+
+    // Initial laden
+    loadProducts();
+
+    // Logout
+    document.querySelector(".logout-btn").addEventListener("click", () => {
+      logout();
+    });
+  </script>
+
+</body>
+</html>

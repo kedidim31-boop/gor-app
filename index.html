@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming of Republic – Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Global Neon Theme -->
+  <link rel="stylesheet" href="src/styles/neon-theme.css">
+</head>
+<body>
+
+  <!-- Branding Header -->
+  <div class="branding-header">
+    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <div class="divider"></div>
+    <div class="branding-text">
+      <div class="subtitle">Gaming of Republic<br>Admin System</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="top-nav">
+    <a href="index.html" class="active">Home</a>
+    <a href="products.html">Produkte</a>
+    <a href="tasks.html">Aufgaben</a>
+    <a href="time.html">Zeiterfassung</a>
+    <a href="employees.html">Mitarbeiter</a>
+    <a href="overview.html">Übersicht</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="adminPanel.html">Admin Panel</a>
+  </div>
+
+  <!-- Hauptinhalt -->
+  <div class="card">
+    <h2>Willkommen im Gaming of Republic Admin System</h2>
+    <p>
+      Dieses System bietet dir eine zentrale Oberfläche für Produktmanagement, Aufgabenverwaltung,
+      Zeiterfassung, Mitarbeiterübersicht und Admin‑Funktionen.  
+      Alles im Cyberpunk‑Neon‑Look und mit sicherer Firebase‑Integration.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Schnellzugriff</h2>
+    <ul>
+      <li><a href="products.html">Produkte verwalten</a></li>
+      <li><a href="tasks.html">Aufgaben bearbeiten</a></li>
+      <li><a href="time.html">Zeiterfassung</a></li>
+      <li><a href="employees.html">Mitarbeiterübersicht</a></li>
+      <li><a href="overview.html">Gesamtübersicht</a></li>
+      <li><a href="dashboard.html">Dashboard mit Statistiken</a></li>
+      <li><a href="adminPanel.html">Admin Panel</a></li>
+    </ul>
+  </div>
+
+  <!-- Logout Button -->
+  <button class="logout-btn">Logout</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+  <!-- Layout & Auth Module -->
+  <script type="module">
+    import { injectLayout } from './src/scripts/layout.js';
+    import { logout } from './src/scripts/auth.js';
+
+    // Branding & Navigation einfügen
+    injectLayout("Home");
+
+    // Logout verbinden
+    document.querySelector(".logout-btn").addEventListener("click", () => {
+      logout();
+    });
+  </script>
+
+</body>
+</html>

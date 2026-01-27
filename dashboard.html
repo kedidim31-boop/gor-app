@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming of Republic – Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Global Neon Theme -->
+  <link rel="stylesheet" href="src/styles/neon-theme.css">
+  <link rel="stylesheet" href="src/styles/dashboard.css">
+</head>
+<body>
+
+  <!-- Branding Header -->
+  <div class="branding-header">
+    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <div class="divider"></div>
+    <div class="branding-text">
+      <div class="subtitle">Dashboard<br>Statistiken & Diagramme</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="products.html">Produkte</a>
+    <a href="tasks.html">Aufgaben</a>
+    <a href="time.html">Zeiterfassung</a>
+    <a href="employees.html">Mitarbeiter</a>
+    <a href="overview.html">Übersicht</a>
+    <a href="dashboard.html" class="active">Dashboard</a>
+    <a href="adminPanel.html">Admin Panel</a>
+  </div>
+
+  <!-- Dashboard Karten -->
+  <div class="dashboard">
+    <div class="card">
+      <h2>Produkte</h2>
+      <div class="stat" id="productCount">0</div>
+      <canvas id="productChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Aufgaben</h2>
+      <div class="stat" id="taskCount">0</div>
+      <canvas id="taskChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Zeiterfassungen</h2>
+      <div class="stat" id="timeCount">0</div>
+      <canvas id="timeChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Mitarbeiter</h2>
+      <div class="stat" id="employeeCount">0</div>
+      <canvas id="employeeChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Logout Button -->
+  <button class="logout-btn">Logout</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+  <!-- Chart.js für Diagramme -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Dashboard Logik -->
+  <script type="module">
+    import { enforceRole } from './src/scripts/roleGuard.js';
+    import { logout } from './src/scripts/auth.js';
+
+    // Firebase Init
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
+      authDomain: "gaming-of-republic.firebaseapp.com",
+      projectId: "gaming-of-republic",
+      storageBucket: "gaming-of-republic.appspot.com",
+      messagingSenderId: "610190951435",
+      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    // Zugriff: Mitarbeiter & Admins
+    enforceRole("mitarbeiter", "index.html");
+
+    // Übersicht laden & Diagramme erstellen
+    async function loadDashboard() {
+      const productSnapshot = await db.collection("products").get();
+      document.getElementById("productCount").innerText = productSnapshot.size;
+
+      const taskSnapshot = await db.collection("tasks").get();
+      document.getElementById("taskCount").innerText = taskSnapshot.size;
+
+      const timeSnapshot = await db.collection("timeEntries").get();
+      document.getElementById("timeCount").innerText = timeSnapshot.size;
+
+      const employeeSnapshot = await db.collection("employees").get();
+      document.getElementById("employeeCount").innerText = employeeSnapshot.size;
+
+      // Diagramme
+      createChart("productChart", "Produkte", productSnapshot.size, "#FFD300");
+      createChart("taskChart", "Aufgaben", taskSnapshot.size, "#00ffff");
+      createChart("timeChart", "Zeiterfassungen", timeSnapshot.size, "#FF69B4");
+      createChart("employeeChart", "Mitarbeiter", employeeSnapshot.size, "#00ff00");
+    }
+
+    function createChart(canvasId, label, value, color) {
+      const ctx = document.getElementById(canvasId).getContext("2d");
+      new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: [label],
+          datasets: [{
+            label: label,
+            data: [value],
+            backgroundColor: [color],
+            borderColor: "#0d0d1a",
+            borderWidth: 2
+          }]
+        },
+        options: {
+          plugins: {
+            legend: {
+              labels: {
+                color: "#FFD300"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Initial laden
+    loadDashboard();
+
+    // Logout
+    document.querySelector(".logout-btn").addEventListener("click", () => {
+      logout();
+    });
+  </script>
+
+</body>
+</html>

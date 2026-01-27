@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming of Republic – Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Global Neon Theme -->
+  <link rel="stylesheet" href="src/styles/neon-theme.css">
+  <link rel="stylesheet" href="src/styles/adminPanel.css">
+</head>
+<body>
+
+  <!-- Branding Header -->
+  <div class="branding-header">
+    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <div class="divider"></div>
+    <div class="branding-text">
+      <div class="subtitle">Admin Panel<br>Benutzerverwaltung</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="products.html">Produkte</a>
+    <a href="tasks.html">Aufgaben</a>
+    <a href="time.html">Zeiterfassung</a>
+    <a href="employees.html">Mitarbeiter</a>
+    <a href="overview.html">Übersicht</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="adminPanel.html" class="active">Admin Panel</a>
+  </div>
+
+  <!-- Admin Panel Inhalt -->
+  <div class="card">
+    <h2>Neuen Benutzer anlegen</h2>
+    <form id="createUserForm">
+      <input type="email" id="newEmail" placeholder="E-Mail" required>
+      <input type="password" id="newPassword" placeholder="Passwort" required>
+      <select id="newRole" required>
+        <option value="mitarbeiter">Mitarbeiter</option>
+        <option value="admin">Admin</option>
+      </select>
+      <button type="submit">Benutzer erstellen</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Mitarbeiterverwaltung</h2>
+    <table id="adminEmployeeTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>E-Mail</th>
+          <th>Rolle</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Mitarbeiter werden hier dynamisch geladen -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Logout Button -->
+  <button class="logout-btn">Logout</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+  <!-- Admin Panel Logik -->
+  <script type="module">
+    import { initAdminPanel } from './src/scripts/adminPanel.js';
+
+    // Firebase Init
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
+      authDomain: "gaming-of-republic.firebaseapp.com",
+      projectId: "gaming-of-republic",
+      storageBucket: "gaming-of-republic.appspot.com",
+      messagingSenderId: "610190951435",
+      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    // Initialisierung des Admin Panels
+    initAdminPanel();
+  </script>
+
+</body>
+</html>

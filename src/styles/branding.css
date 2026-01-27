@@ -1,0 +1,68 @@
+/* Branding für Gaming of Republic */
+body {
+  background-color: #191833; /* Hintergrund */
+  color: #FFFFFF;            /* Standardtext */
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Buttons */
+button {
+  background-color: #FFD300; /* Gelb */
+  color: #000000;            /* Schwarzer Text */
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+/* Navigation oben */
+.navbar {
+  background-color: #191833;
+  color: #FFFFFF;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Bottom Navigation für Mobile */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #191833;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #333;
+}
+
+.bottom-nav a {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+}
+
+.bottom-nav a.active {
+  color: #FFD300;
+  font-weight: bold;
+}
+
+/* Karten-Layout für Inhalte */
+.card {
+  background-color: #222244;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 12px;
+  color: #FFFFFF;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}

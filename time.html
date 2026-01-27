@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming of Republic – Zeiterfassung</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Global Neon Theme -->
+  <link rel="stylesheet" href="src/styles/neon-theme.css">
+</head>
+<body>
+
+  <!-- Branding Header -->
+  <div class="branding-header">
+    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <div class="divider"></div>
+    <div class="branding-text">
+      <div class="subtitle">Zeiterfassung<br>Arbeitsstunden</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="products.html">Produkte</a>
+    <a href="tasks.html">Aufgaben</a>
+    <a href="time.html" class="active">Zeiterfassung</a>
+    <a href="employees.html">Mitarbeiter</a>
+    <a href="overview.html">Übersicht</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="adminPanel.html">Admin Panel</a>
+  </div>
+
+  <!-- Zeiterfassung -->
+  <div class="card">
+    <h2>Neue Zeiterfassung hinzufügen</h2>
+    <form id="timeForm">
+      <input type="text" id="employeeName" placeholder="Mitarbeitername" required>
+      <input type="date" id="workDate" required>
+      <input type="number" id="hoursWorked" placeholder="Stunden" required>
+      <textarea id="workDescription" placeholder="Beschreibung der Tätigkeit"></textarea>
+      <button type="submit">Zeiterfassung speichern</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Zeiterfassungsübersicht</h2>
+    <table id="timeTable">
+      <thead>
+        <tr>
+          <th>Mitarbeiter</th>
+          <th>Datum</th>
+          <th>Stunden</th>
+          <th>Beschreibung</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Einträge werden hier dynamisch geladen -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Logout Button -->
+  <button class="logout-btn">Logout</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+  <!-- Zeiterfassungs Logik -->
+  <script type="module">
+    import { enforceRole } from './src/scripts/roleGuard.js';
+    import { logout } from './src/scripts/auth.js';
+
+    // Firebase Init
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
+      authDomain: "gaming-of-republic.firebaseapp.com",
+      projectId: "gaming-of-republic",
+      storageBucket: "gaming-of-republic.appspot.com",
+      messagingSenderId: "610190951435",
+      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    // Zugriff: Mitarbeiter & Admins
+    enforceRole("mitarbeiter", "index.html");
+
+    // Zeiterfassung hinzufügen
+    document.getElementById("timeForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const employee = document.getElementById("employeeName").value;
+      const date = document.getElementById("workDate").value;
+      const hours = parseFloat(document.getElementById("hoursWorked").value);
+      const description = document.getElementById("workDescription").value;
+
+      await db.collection("timeEntries").add({
+        employee,
+        date,
+        hours,
+        description,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      alert("Zeiterfassung gespeichert!");
+      loadTimeEntries();
+      e.target.reset();
+    });
+
+    // Zeiterfassungen laden
+    async function loadTimeEntries() {
+      const tableBody = document.querySelector("#timeTable tbody");
+      tableBody.innerHTML = "";
+
+      const snapshot = await db.collection("timeEntries").get();
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${data.employee}</td>
+          <td>${data.date}</td>
+          <td>${data.hours}</td>
+          <td>${data.description || "-"}</td>
+          <td>
+            <button class="deleteBtn" data-id="${doc.id}">Löschen</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      // Löschen
+      document.querySelectorAll(".deleteBtn").forEach(btn => {
+        btn.addEventListener("click", async e => {
+          const id = e.target.dataset.id;
+          await db.collection("timeEntries").doc(id).delete();
+          alert("Eintrag gelöscht");
+          loadTimeEntries();
+        });
+      });
+    }
+
+    // Initial laden
+    loadTimeEntries();
+
+    // Logout
+    document.querySelector(".logout-btn").addEventListener("click", () => {
+      logout();
+    });
+  </script>
+
+</body>
+</html>

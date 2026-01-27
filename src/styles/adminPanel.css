@@ -1,0 +1,135 @@
+/* Admin Panel – Cyberpunk Neon Theme */
+
+body {
+  margin: 0;
+  background-color: #0d0d1a; /* dunkler Hintergrund */
+  font-family: "Segoe UI", sans-serif;
+  color: #e0e0e0;
+}
+
+/* Panel Cards */
+.card {
+  background: linear-gradient(145deg, #141432, #0d0d1a);
+  border: 2px solid #FFD300;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
+}
+
+.card h2 {
+  color: #FFD300;
+  text-shadow: 0 0 6px #FFD300;
+  margin-bottom: 15px;
+}
+
+/* Formular */
+form input, form select {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #FFD300;
+  background-color: #0d0d1a;
+  color: #FFFFFF;
+  box-shadow: inset 0 0 8px rgba(255, 211, 0, 0.4);
+}
+
+form button {
+  background-color: #FFD300;
+  color: #000000;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #FFD300, 0 0 20px rgba(255, 211, 0, 0.6);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form button:hover {
+  background-color: #ffea70;
+  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
+}
+
+/* Tabelle */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border: 2px solid #FFD300;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  color: #FFFFFF;
+  border: 1px solid #FFD300;
+}
+
+th {
+  background-color: #222244;
+  text-shadow: 0 0 6px #FFD300;
+}
+
+td {
+  background-color: #141432;
+}
+
+/* Rollen-Dropdown */
+.roleSelect {
+  background-color: #0d0d1a;
+  color: #FFD300;
+  border: 1px solid #FFD300;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(255, 211, 0, 0.6);
+}
+
+.roleSelect:hover {
+  box-shadow: 0 0 12px #FFD300;
+}
+
+/* Delete Button */
+.deleteBtn {
+  background-color: #FF69B4;
+  color: #000000;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #FF69B4, 0 0 20px rgba(255, 105, 180, 0.6);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.deleteBtn:hover {
+  background-color: #ff8ccf;
+  box-shadow: 0 0 20px #FF69B4, 0 0 40px rgba(255, 105, 180, 0.8);
+}
+
+/* Logout Button */
+.logout-btn {
+  margin: 20px;
+  background-color: #FFD300;
+  color: #000000;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #FFD300, 0 0 20px rgba(255, 211, 0, 0.6);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #ffea70;
+  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
+}

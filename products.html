@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Global Neon Theme -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
+  <link rel="stylesheet" href="src/styles/products.css">
 </head>
 <body>
 
@@ -36,8 +37,15 @@
     <form id="productForm">
       <input type="text" id="productName" placeholder="Produktname" required>
       <input type="text" id="productSKU" placeholder="SKU" required>
-      <input type="number" id="productPrice" placeholder="Preis (CHF)" required>
+      <input type="text" id="productEAN" placeholder="EAN">
+      <input type="number" id="productPrice" placeholder="Preis (CHF)" step="0.01" required>
+      <select id="productCategory">
+        <option value="drinks">Energy Drinks</option>
+        <option value="merch">Merchandise</option>
+        <option value="gaming">Gaming Zubehör</option>
+      </select>
       <textarea id="productDescription" placeholder="Beschreibung"></textarea>
+      <input type="file" id="productImages" multiple accept="image/*">
       <button type="submit">Produkt speichern</button>
     </form>
   </div>
@@ -49,8 +57,11 @@
         <tr>
           <th>Name</th>
           <th>SKU</th>
+          <th>EAN</th>
           <th>Preis (CHF)</th>
+          <th>Kategorie</th>
           <th>Beschreibung</th>
+          <th>Bilder</th>
           <th>Aktionen</th>
         </tr>
       </thead>
@@ -63,13 +74,12 @@
   <!-- Logout Button -->
   <button class="logout-btn">Logout</button>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
-
   <!-- Produkt Logik -->
   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
     import { enforceRole } from './src/scripts/roleGuard.js';
     import { logout } from './src/scripts/auth.js';
 
@@ -82,10 +92,10 @@
       messagingSenderId: "610190951435",
       appId: "1:610190951435:web:bbf184d09a894fc307f30e"
     };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+    const auth = getAuth(app);
 
     // Zugriff: nur Admins & Mitarbeiter
     enforceRole("mitarbeiter", "index.html");
@@ -93,17 +103,34 @@
     // Produkt hinzufügen
     document.getElementById("productForm").addEventListener("submit", async e => {
       e.preventDefault();
+
       const name = document.getElementById("productName").value;
       const sku = document.getElementById("productSKU").value;
+      const ean = document.getElementById("productEAN").value;
       const price = parseFloat(document.getElementById("productPrice").value);
+      const category = document.getElementById("productCategory").value;
       const description = document.getElementById("productDescription").value;
+      const files = document.getElementById("productImages").files;
 
-      await db.collection("products").add({
+      // Bilder hochladen
+      const imageUrls = [];
+      for (const file of files) {
+        const storageRef = ref(storage, `products/${sku}/${file.name}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        imageUrls.push(url);
+      }
+
+      // Produkt speichern
+      await addDoc(collection(db, "products"), {
         name,
         sku,
+        ean,
         price,
+        category,
         description,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        images: imageUrls,
+        createdAt: serverTimestamp()
       });
 
       alert("Produkt gespeichert!");
@@ -116,18 +143,25 @@
       const tableBody = document.querySelector("#productTable tbody");
       tableBody.innerHTML = "";
 
-      const snapshot = await db.collection("products").get();
-      snapshot.forEach(doc => {
-        const data = doc.data();
+      const snapshot = await getDocs(collection(db, "products"));
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
         const row = document.createElement("tr");
+
+        const imageCells = data.images && data.images.length > 0
+          ? data.images.map(url => `<img src="${url}" alt="Produktbild" style="width:50px;height:50px;">`).join(" ")
+          : "-";
 
         row.innerHTML = `
           <td>${data.name}</td>
           <td>${data.sku}</td>
-          <td>${data.price.toFixed(2)}</td>
+          <td>${data.ean || "-"}</td>
+          <td>${data.price ? data.price.toFixed(2) : "-"}</td>
+          <td>${data.category || "-"}</td>
           <td>${data.description || "-"}</td>
+          <td>${imageCells}</td>
           <td>
-            <button class="deleteBtn" data-id="${doc.id}">Löschen</button>
+            <button class="deleteBtn" data-id="${docSnap.id}">Löschen</button>
           </td>
         `;
         tableBody.appendChild(row);
@@ -137,7 +171,7 @@
       document.querySelectorAll(".deleteBtn").forEach(btn => {
         btn.addEventListener("click", async e => {
           const id = e.target.dataset.id;
-          await db.collection("products").doc(id).delete();
+          await deleteDoc(doc(db, "products", id));
           alert("Produkt gelöscht");
           loadProducts();
         });

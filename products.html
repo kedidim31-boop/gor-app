@@ -39,11 +39,10 @@
       <input type="text" id="productSKU" placeholder="SKU" required>
       <input type="text" id="productEAN" placeholder="EAN">
       <input type="number" id="productPrice" placeholder="Preis (CHF)" step="0.01" required>
-      <select id="productCategory">
-        <option value="drinks">Energy Drinks</option>
-        <option value="merch">Merchandise</option>
-        <option value="gaming">Gaming Zubehör</option>
-      </select>
+      <input type="text" id="productCategory" placeholder="Kategorie">
+      <input type="text" id="productCollection" placeholder="Kollektion">
+      <input type="text" id="productType" placeholder="Typ">
+      <input type="number" id="productStock" placeholder="Bestand" min="0">
       <textarea id="productDescription" placeholder="Beschreibung"></textarea>
       <input type="file" id="productImages" multiple accept="image/*">
       <button type="submit">Produkt speichern</button>
@@ -60,6 +59,9 @@
           <th>EAN</th>
           <th>Preis (CHF)</th>
           <th>Kategorie</th>
+          <th>Kollektion</th>
+          <th>Typ</th>
+          <th>Bestand</th>
           <th>Beschreibung</th>
           <th>Bilder</th>
           <th>Aktionen</th>
@@ -73,11 +75,10 @@
 
   <!-- Logout Button -->
   <button class="logout-btn">Logout</button>
-
   <!-- Produkt Logik -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
     import { enforceRole } from './src/scripts/roleGuard.js';
@@ -104,35 +105,31 @@
     document.getElementById("productForm").addEventListener("submit", async e => {
       e.preventDefault();
 
-      const name = document.getElementById("productName").value;
-      const sku = document.getElementById("productSKU").value;
-      const ean = document.getElementById("productEAN").value;
-      const price = parseFloat(document.getElementById("productPrice").value);
-      const category = document.getElementById("productCategory").value;
-      const description = document.getElementById("productDescription").value;
-      const files = document.getElementById("productImages").files;
+      const product = {
+        name: document.getElementById("productName").value,
+        sku: document.getElementById("productSKU").value,
+        ean: document.getElementById("productEAN").value,
+        price: parseFloat(document.getElementById("productPrice").value),
+        category: document.getElementById("productCategory").value,
+        collection: document.getElementById("productCollection").value,
+        type: document.getElementById("productType").value,
+        stock: parseInt(document.getElementById("productStock").value) || 0,
+        description: document.getElementById("productDescription").value,
+        createdAt: serverTimestamp()
+      };
 
       // Bilder hochladen
+      const files = document.getElementById("productImages").files;
       const imageUrls = [];
       for (const file of files) {
-        const storageRef = ref(storage, `products/${sku}/${file.name}`);
+        const storageRef = ref(storage, `products/${product.sku}/${file.name}`);
         await uploadBytes(storageRef, file);
         const url = await getDownloadURL(storageRef);
         imageUrls.push(url);
       }
+      product.images = imageUrls;
 
-      // Produkt speichern
-      await addDoc(collection(db, "products"), {
-        name,
-        sku,
-        ean,
-        price,
-        category,
-        description,
-        images: imageUrls,
-        createdAt: serverTimestamp()
-      });
-
+      await addDoc(collection(db, "products"), product);
       alert("Produkt gespeichert!");
       loadProducts();
       e.target.reset();
@@ -158,11 +155,12 @@
           <td>${data.ean || "-"}</td>
           <td>${data.price ? data.price.toFixed(2) : "-"}</td>
           <td>${data.category || "-"}</td>
+          <td>${data.collection || "-"}</td>
+          <td>${data.type || "-"}</td>
+          <td>${data.stock ?? "-"}</td>
           <td>${data.description || "-"}</td>
           <td>${imageCells}</td>
-          <td>
-            <button class="deleteBtn" data-id="${docSnap.id}">Löschen</button>
-          </td>
+          <td><button class="deleteBtn" data-id="${docSnap.id}">Löschen</button></td>
         `;
         tableBody.appendChild(row);
       });

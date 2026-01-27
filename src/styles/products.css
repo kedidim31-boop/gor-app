@@ -59,21 +59,29 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 12px;
+  gap: 18px;
   background-color: #141432;
-  padding: 10px 20px;
+  padding: 12px 24px;
+  border-bottom: 2px solid #FFD300;
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.5);
 }
 
 .top-nav a {
   color: #FFD300;
   text-decoration: none;
   font-weight: bold;
+  font-size: 15px;
   transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 .top-nav a:hover {
   color: #70ffea;
-  text-shadow: 0 0 6px #70ffea;
+  text-shadow: 0 0 8px #70ffea, 0 0 16px rgba(112, 255, 234, 0.7);
+}
+
+.top-nav a.active {
+  color: #ffea70;
+  text-shadow: 0 0 10px #FFD300, 0 0 20px rgba(255, 211, 0, 0.8);
 }
 
 /* Logout Button oben rechts */
@@ -83,15 +91,16 @@
   color: #000;
   border: none;
   border-radius: 8px;
-  padding: 8px 16px;
+  padding: 8px 18px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 0 10px #FFD300, 0 0 20px rgba(255, 211, 0, 0.6);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .logout-btn:hover {
   background-color: #ffea70;
+  transform: scale(1.05);
   box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
 }
 

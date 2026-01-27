@@ -1,0 +1,113 @@
+/* Produkte Seite – Cyberpunk Neon Look */
+
+/* Karten */
+.card {
+  background: linear-gradient(145deg, #141432, #0d0d1a);
+  border: 2px solid #FFD300;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1000px;
+  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.6);
+  color: #e0e0e0;
+}
+
+/* Formular */
+#productForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#productForm input,
+#productForm select,
+#productForm textarea {
+  background-color: #0d0d1a;
+  border: 1px solid #FFD300;
+  border-radius: 6px;
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
+}
+
+#productForm button {
+  background-color: #FFD300;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#productForm button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
+}
+
+/* Tabelle */
+#productTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#productTable th,
+#productTable td {
+  border: 1px solid #FFD300;
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+}
+
+#productTable th {
+  background-color: #141432;
+  color: #FFD300;
+  text-shadow: 0 0 6px #FFD300;
+}
+
+#productTable tr:nth-child(even) {
+  background-color: #1a1a2e;
+}
+
+#productTable tr:hover {
+  background-color: #222244;
+  box-shadow: inset 0 0 10px rgba(255, 211, 0, 0.4);
+}
+
+/* Bild-Thumbnails */
+#productTable img {
+  border: 1px solid #FFD300;
+  border-radius: 6px;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  box-shadow: 0 0 8px #FFD300;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#productTable img:hover {
+  transform: scale(1.3);
+  box-shadow: 0 0 16px #FFD300, 0 0 32px rgba(255, 211, 0, 0.8);
+}
+
+/* Buttons in Tabelle */
+.deleteBtn {
+  background-color: transparent;
+  border: 1px solid #ff4d4d;
+  color: #ff4d4d;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deleteBtn:hover {
+  background-color: #ff4d4d;
+  color: #000;
+  box-shadow: 0 0 12px #ff4d4d, 0 0 24px rgba(255, 77, 77, 0.6);
+}

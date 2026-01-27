@@ -15,13 +15,12 @@
 
 /* Formular */
 #productForm {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
 }
 
 #productForm input,
-#productForm select,
 #productForm textarea {
   background-color: #0d0d1a;
   border: 1px solid #FFD300;
@@ -32,7 +31,13 @@
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
 }
 
+#productForm textarea {
+  grid-column: 1 / -1; /* Beschreibung über volle Breite */
+  min-height: 80px;
+}
+
 #productForm button {
+  grid-column: 1 / -1;
   background-color: #FFD300;
   color: #000;
   border: none;
@@ -77,6 +82,19 @@
 #productTable tr:hover {
   background-color: #222244;
   box-shadow: inset 0 0 10px rgba(255, 211, 0, 0.4);
+}
+
+/* Spalten für neue Felder */
+#productTable th:nth-child(5),
+#productTable td:nth-child(5),
+#productTable th:nth-child(6),
+#productTable td:nth-child(6),
+#productTable th:nth-child(7),
+#productTable td:nth-child(7),
+#productTable th:nth-child(8),
+#productTable td:nth-child(8) {
+  font-style: italic;
+  color: #70ffea; /* Neon-Türkis für Kategorie/Kollektion/Typ/Bestand */
 }
 
 /* Bild-Thumbnails */

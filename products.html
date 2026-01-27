@@ -36,14 +36,14 @@
     <h2>Neues Produkt hinzufügen</h2>
     <form id="productForm">
       <input type="text" id="productName" placeholder="Produktname" required>
-      <input type="text" id="productSKU" placeholder="SKU" required>
-      <input type="text" id="productEAN" placeholder="EAN">
-      <input type="number" id="productPrice" placeholder="Preis (CHF)" step="0.01" required>
+      <textarea id="productDescription" placeholder="Beschreibung"></textarea>      
       <input type="text" id="productCategory" placeholder="Kategorie">
       <input type="text" id="productCollection" placeholder="Kollektion">
       <input type="text" id="productType" placeholder="Typ">
+      <input type="text" id="productEAN" placeholder="EAN">
+      <input type="text" id="productSKU" placeholder="SKU" required>
       <input type="number" id="productStock" placeholder="Bestand" min="0">
-      <textarea id="productDescription" placeholder="Beschreibung"></textarea>
+      <input type="number" id="productPrice" placeholder="Preis (CHF)" step="0.01" required>
       <input type="file" id="productImages" multiple accept="image/*">
       <button type="submit">Produkt speichern</button>
     </form>
@@ -187,3 +187,4 @@
 
 </body>
 </html>
+

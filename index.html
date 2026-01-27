@@ -9,27 +9,6 @@
 </head>
 <body>
 
-  <!-- Branding Header -->
-  <div class="branding-header">
-    <img src="public/logo.png" alt="Gaming of Republic Logo">
-    <div class="divider"></div>
-    <div class="branding-text">
-      <div class="subtitle">Gaming of Republic<br>Admin System</div>
-    </div>
-  </div>
-
-  <!-- Navigation -->
-  <div class="top-nav">
-    <a href="index.html" class="active">Home</a>
-    <a href="products.html">Produkte</a>
-    <a href="tasks.html">Aufgaben</a>
-    <a href="time.html">Zeiterfassung</a>
-    <a href="employees.html">Mitarbeiter</a>
-    <a href="overview.html">Übersicht</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="adminPanel.html">Admin Panel</a>
-  </div>
-
   <!-- Hauptinhalt -->
   <div class="card">
     <h2>Willkommen im Gaming of Republic Admin System</h2>
@@ -53,9 +32,6 @@
     </ul>
   </div>
 
-  <!-- Logout Button -->
-  <button class="logout-btn">Logout</button>
-
   <!-- Firebase & Layout -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -76,20 +52,21 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Branding & Navigation einfügen
+    // Branding, Navigation & Logout automatisch einfügen
     injectLayout("Home");
 
-    // Logout verbinden
-    document.querySelector(".logout-btn").addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        window.location.href = "index.html"; // zurück zur Login-Seite
-      } catch (err) {
-        console.error("Logout fehlgeschlagen:", err);
+    // Logout verbinden (Button kommt aus injectLayout)
+    document.addEventListener("click", async (e) => {
+      if (e.target.classList.contains("logout-btn")) {
+        try {
+          await signOut(auth);
+          window.location.href = "login.html"; // zurück zur Login-Seite
+        } catch (err) {
+          console.error("Logout fehlgeschlagen:", err);
+        }
       }
     });
   </script>
 
 </body>
 </html>
-

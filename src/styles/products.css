@@ -32,7 +32,7 @@
 }
 
 #productForm textarea {
-  grid-column: 1 / -1; /* Beschreibung über volle Breite */
+  grid-column: 1 / -1;
   min-height: 80px;
 }
 
@@ -59,6 +59,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
+  overflow-x: auto;
 }
 
 #productTable th,
@@ -69,10 +70,30 @@
   color: #fff;
 }
 
-#productTable th {
-  background-color: #141432;
+/* Standardfarbe für technische Felder */
+#productTable th:nth-child(1),  /* Name */
+#productTable th:nth-child(2),  /* SKU */
+#productTable th:nth-child(3),  /* EAN */
+#productTable th:nth-child(4),  /* Preis */
+#productTable th:nth-child(10), /* Bilder */
+#productTable th:nth-child(11)  /* Aktionen */ {
   color: #FFD300;
   text-shadow: 0 0 6px #FFD300;
+}
+
+/* Neon-Türkis für inhaltliche Felder */
+#productTable th:nth-child(5),  /* Kategorie */
+#productTable th:nth-child(6),  /* Kollektion */
+#productTable th:nth-child(7),  /* Typ */
+#productTable th:nth-child(8),  /* Bestand */
+#productTable th:nth-child(9)   /* Beschreibung */ {
+  color: #70ffea;
+  text-shadow: 0 0 6px #70ffea;
+}
+
+/* Tabellenzeilen */
+#productTable th {
+  background-color: #141432;
 }
 
 #productTable tr:nth-child(even) {
@@ -82,19 +103,6 @@
 #productTable tr:hover {
   background-color: #222244;
   box-shadow: inset 0 0 10px rgba(255, 211, 0, 0.4);
-}
-
-/* Spalten für neue Felder */
-#productTable th:nth-child(5),
-#productTable td:nth-child(5),
-#productTable th:nth-child(6),
-#productTable td:nth-child(6),
-#productTable th:nth-child(7),
-#productTable td:nth-child(7),
-#productTable th:nth-child(8),
-#productTable td:nth-child(8) {
-  font-style: italic;
-  color: #70ffea; /* Neon-Türkis für Kategorie/Kollektion/Typ/Bestand */
 }
 
 /* Bild-Thumbnails */
@@ -128,4 +136,13 @@
   background-color: #ff4d4d;
   color: #000;
   box-shadow: 0 0 12px #ff4d4d, 0 0 24px rgba(255, 77, 77, 0.6);
+}
+
+/* Responsive Scroll für kleine Bildschirme */
+@media (max-width: 768px) {
+  #productTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }

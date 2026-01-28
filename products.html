@@ -79,24 +79,17 @@
 
   <!-- Firebase Logik -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
-    import { enforceRole } from './src/scripts/roleGuard.js';
+    import { initFirebase } from "./scripts/firebaseSetup.js";
+    import { enforceRole } from "./scripts/roleGuard.js";
+    import { logout } from "./scripts/auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
-      authDomain: "gaming-of-republic.firebaseapp.com",
-      projectId: "gaming-of-republic",
-      storageBucket: "gaming-of-republic.firebasestorage.app",
-      messagingSenderId: "610190951435",
-      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-    const auth = getAuth(app);
+    import { collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } 
+      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { ref, uploadBytes, getDownloadURL } 
+      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
+
+    // Zentrale Firebase-Instanz
+    const { db, storage } = initFirebase();
 
     // Zugriff: nur Admins & Mitarbeiter
     enforceRole("mitarbeiter", "index.html");
@@ -172,14 +165,7 @@
     loadProducts();
 
     // Logout
-    document.querySelector(".logout-btn").addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        window.location.href = "login.html";
-      } catch (err) {
-        console.error("Logout fehlgeschlagen:", err);
-      }
-    });
+    document.querySelector(".logout-btn").addEventListener("click", logout);
   </script>
 
 </body>

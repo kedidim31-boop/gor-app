@@ -1,4 +1,5 @@
 // layout.js – sorgt für Branding, Navigation und Logout-Button im Gaming of Republic Admin System
+// Ergänzt mit konsistentem Neon-Theme, aktiver Seitenmarkierung und Logout-Handling
 
 export function injectLayout(activePage) {
   // Branding Header
@@ -12,7 +13,7 @@ export function injectLayout(activePage) {
     </div>
   `;
 
-  // Navigation
+  // Navigation Items
   const navItems = [
     { href: "index.html", label: "Home" },
     { href: "products.html", label: "Produkte" },
@@ -24,6 +25,7 @@ export function injectLayout(activePage) {
     { href: "adminPanel.html", label: "Admin Panel" }
   ];
 
+  // Navigation Links mit aktiver Seite
   const navLinks = navItems.map(item => {
     const isActive = item.label === activePage ? "active" : "";
     return `<a href="${item.href}" class="${isActive}">${item.label}</a>`;
@@ -32,15 +34,26 @@ export function injectLayout(activePage) {
   const navigation = `
     <div class="top-nav">
       ${navLinks}
+      <button class="logout-btn" id="logoutBtn">Logout</button>
     </div>
   `;
 
-  // Logout Button
-  const logoutButton = `<button class="logout-btn">Logout</button>`;
-
   // Layout einfügen
-  const layoutHTML = brandingHeader + navigation + logoutButton;
-
-  // Ganz oben im Body einfügen
+  const layoutHTML = brandingHeader + navigation;
   document.body.insertAdjacentHTML("afterbegin", layoutHTML);
+
+  // Logout-Handling
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await firebase.auth().signOut();
+        console.log("✅ Erfolgreich ausgeloggt");
+        window.location.href = "login.html";
+      } catch (err) {
+        console.error("❌ Fehler beim Logout:", err);
+        alert("Fehler beim Logout – bitte erneut versuchen.");
+      }
+    });
+  }
 }

@@ -1,5 +1,6 @@
 /* Global Neon Theme Styles */
 
+/* Body */
 body {
   margin: 0;
   background-color: #0d0d1a; /* tiefes Dunkelblau/Schwarz */
@@ -14,6 +15,8 @@ body {
   background-color: #0d0d1a;
   padding: 12px 20px;
   gap: 12px;
+  border-bottom: 2px solid #FFD300;
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.5);
 }
 
 .branding-header img {
@@ -39,26 +42,50 @@ body {
 .top-nav {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
   background-color: #141432;
   padding: 10px 20px;
-  gap: 20px;
+  border-bottom: 2px solid #FFD300;
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.5);
 }
 
 .top-nav a {
   color: #FFFFFF;
   text-decoration: none;
   font-weight: bold;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 .top-nav a:hover {
-  color: #FFD300;
-  text-shadow: 0 0 6px #FFD300;
+  color: #70ffea;
+  text-shadow: 0 0 8px #70ffea, 0 0 16px rgba(112, 255, 234, 0.7);
 }
 
 .top-nav a.active {
   color: #FFD300;
   border-bottom: 2px solid #FFD300;
+  text-shadow: 0 0 10px #FFD300, 0 0 20px rgba(255, 211, 0, 0.8);
+}
+
+/* Logout Button */
+.logout-btn {
+  margin-left: auto;
+  background-color: #FFD300;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #ffea70;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
 }
 
 /* Cards */
@@ -74,7 +101,7 @@ body {
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
+  box-shadow: 0 0 25px #70ffea, 0 0 50px rgba(112, 255, 234, 0.7);
 }
 
 .card h2, .card h3 {
@@ -92,18 +119,24 @@ table {
 
 th, td {
   padding: 10px;
-  text-align: left;
+  text-align: center;
   color: #FFFFFF;
   border: 1px solid #FFD300;
 }
 
 th {
-  background-color: #222244;
+  background-color: #141432;
+  color: #FFD300;
   text-shadow: 0 0 6px #FFD300;
 }
 
 td {
-  background-color: #141432;
+  background-color: #1a1a2e;
+}
+
+tr:hover td {
+  background-color: #222244;
+  box-shadow: inset 0 0 10px rgba(255, 211, 0, 0.4);
 }
 
 /* Formulare */
@@ -115,8 +148,15 @@ input, textarea, select {
   border: 1px solid #FFD300;
   background-color: #0d0d1a;
   color: #FFFFFF;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+input:focus, textarea:focus, select:focus {
+  border-color: #70ffea;
+  box-shadow: 0 0 10px #70ffea, 0 0 20px rgba(112, 255, 234, 0.6);
+}
+
+/* Buttons */
 button {
   background-color: #FFD300;
   color: #000000;
@@ -126,11 +166,12 @@ button {
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 0 10px #FFD300, 0 0 20px rgba(255, 211, 0, 0.6);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 button:hover {
   background-color: #ffea70;
+  transform: scale(1.05);
   box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
 }
 
@@ -143,6 +184,7 @@ button:hover {
   margin-bottom: 12px;
 }
 
+/* Diagramme */
 canvas {
   margin-top: 15px;
   background-color: #141432;

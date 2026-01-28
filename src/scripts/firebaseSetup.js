@@ -16,9 +16,10 @@ export function initFirebase() {
       apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
       authDomain: "gaming-of-republic.firebaseapp.com",
       projectId: "gaming-of-republic",
-      storageBucket: "gaming-of-republic.firebasestorage.app",
+      storageBucket: "gaming-of-republic.appspot.com", // ✅ korrigiert
       messagingSenderId: "610190951435",
-      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
+      appId: "1:610190951435:web:bbf184d09a894fc307f30e",
+      measurementId: "G-G26D7XBZG8" // optional, nur wenn Analytics genutzt wird
     };
 
     firebaseApp = initializeApp(firebaseConfig);
@@ -26,7 +27,7 @@ export function initFirebase() {
     firebaseDB = getFirestore(firebaseApp);
     firebaseStorage = getStorage(firebaseApp);
 
-    console.log("✅ Firebase vollständig initialisiert (modular SDK)");
+    console.log("✅ Firebase vollständig initialisiert (modulare SDK)");
   }
 
   return {

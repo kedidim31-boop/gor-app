@@ -7,6 +7,7 @@
   <!-- Neon Theme -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
   <link rel="stylesheet" href="src/styles/login.css">
+  <!-- Icon Library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -16,19 +17,19 @@
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle">Gaming of Republic<br>Login</div>
+      <div class="subtitle"><i class="fa-solid fa-right-to-bracket"></i> Gaming of Republic<br>Login</div>
     </div>
   </div>
 
   <!-- Splash Screen -->
   <div id="splash" class="splash-screen">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="splash-logo">
-    <button id="skipBtn" class="skip-btn">Skip</button>
+    <button id="skipBtn" class="skip-btn"><i class="fa-solid fa-forward"></i> Skip</button>
   </div>
 
   <!-- Login Card -->
   <div class="login-card hidden">
-    <h2>Login</h2>
+    <h2><i class="fa-solid fa-user-lock"></i> Login</h2>
     <form id="loginForm">
       <div class="input-group">
         <i class="fa-solid fa-envelope"></i>
@@ -43,10 +44,12 @@
         <span class="toggle-password"><i class="fa-solid fa-eye"></i></span>
       </div>
 
-      <button type="submit">Login</button>
-      <p id="errorMessage" class="error-message hidden">Login fehlgeschlagen – bitte überprüfe deine Angaben!</p>
+      <button type="submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+      <p id="errorMessage" class="error-message hidden">
+        <i class="fa-solid fa-triangle-exclamation"></i> Login fehlgeschlagen – bitte überprüfe deine Angaben!
+      </p>
     </form>
-    <p class="hint">Nur Admins können neue Benutzer im Admin Panel erstellen</p>
+    <p class="hint"><i class="fa-solid fa-user-shield"></i> Nur Admins können neue Benutzer im Admin Panel erstellen</p>
   </div>
 
   <!-- Firebase Login -->

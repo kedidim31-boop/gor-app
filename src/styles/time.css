@@ -11,6 +11,12 @@
   max-width: 1000px;
   box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.6);
   color: #e0e0e0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px #70ffea, 0 0 50px rgba(112, 255, 234, 0.7);
 }
 
 /* Formular */
@@ -93,7 +99,7 @@ table tr:hover {
 .stat {
   font-size: 2rem;
   font-weight: bold;
-  color: #FFD300;
-  text-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.7);
+  color: #00ffff; /* Neon-Cyan für Abwechslung */
+  text-shadow: 0 0 12px #00ffff, 0 0 24px rgba(0, 255, 255, 0.7);
   margin: 10px 0;
 }

@@ -14,7 +14,7 @@ export function toggleLoader(show = true) {
 }
 
 // Erfolgsmeldung anzeigen
-export function showSuccess(message) {
+export function notifySuccess(message) {
   console.log("✅ " + message);
   const box = createMessageBox(message, "success");
   document.body.appendChild(box);
@@ -22,7 +22,7 @@ export function showSuccess(message) {
 }
 
 // Fehlermeldung anzeigen
-export function showError(message) {
+export function notifyError(message) {
   console.error("❌ " + message);
   const box = createMessageBox(message, "error");
   document.body.appendChild(box);
@@ -37,7 +37,7 @@ export function showError(message) {
 }
 
 // Warnung anzeigen
-export function showWarning(message) {
+export function notifyWarning(message) {
   console.warn("⚠️ " + message);
   const box = createMessageBox(message, "warning");
   document.body.appendChild(box);

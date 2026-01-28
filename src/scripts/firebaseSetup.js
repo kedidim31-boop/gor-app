@@ -1,4 +1,9 @@
-// firebaseSetup.js – zentrale Initialisierung für Firebase Dienste
+// firebaseSetup.js – zentrale Initialisierung für Firebase Dienste (modulare SDK)
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
 let firebaseApp = null;
 let firebaseAuth = null;
@@ -17,12 +22,12 @@ export function initFirebase() {
     };
 
     // Initialisierung nur einmal
-    firebaseApp = firebase.initializeApp(firebaseConfig);
-    firebaseAuth = firebase.auth();
-    firebaseDB = firebase.firestore();
-    firebaseStorage = firebase.storage();
+    firebaseApp = initializeApp(firebaseConfig);
+    firebaseAuth = getAuth(firebaseApp);
+    firebaseDB = getFirestore(firebaseApp);
+    firebaseStorage = getStorage(firebaseApp);
 
-    console.log("✅ Firebase vollständig initialisiert");
+    console.log("✅ Firebase vollständig initialisiert (modular SDK)");
   }
 
   // Rückgabe aller Dienste

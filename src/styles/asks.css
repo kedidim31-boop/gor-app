@@ -1,0 +1,129 @@
+/* Aufgaben Seite – Cyberpunk Neon Look */
+
+/* Karten */
+.card {
+  background: linear-gradient(145deg, #141432, #0d0d1a);
+  border: 2px solid #FFD300;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1000px;
+  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.6);
+  color: #e0e0e0;
+}
+
+/* Formular */
+#taskForm {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+#taskForm input,
+#taskForm textarea,
+#taskForm select {
+  background-color: #0d0d1a;
+  border: 1px solid #FFD300;
+  border-radius: 6px;
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#taskForm input:focus,
+#taskForm textarea:focus,
+#taskForm select:focus {
+  border-color: #70ffea;
+  box-shadow: 0 0 10px #70ffea, 0 0 20px rgba(112, 255, 234, 0.6);
+}
+
+#taskForm textarea {
+  grid-column: 1 / -1;
+  min-height: 80px;
+}
+
+#taskForm button {
+  grid-column: 1 / -1;
+  background-color: #FFD300;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#taskForm button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
+}
+
+/* Tabelle */
+#taskTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#taskTable th,
+#taskTable td {
+  border: 1px solid #FFD300;
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+}
+
+#taskTable th {
+  background-color: #141432;
+  color: #FFD300;
+  text-shadow: 0 0 6px #FFD300;
+}
+
+#taskTable tr:nth-child(even) {
+  background-color: #1a1a2e;
+}
+
+#taskTable tr:hover {
+  background-color: #222244;
+  box-shadow: inset 0 0 10px rgba(255, 211, 0, 0.4);
+}
+
+/* Dropdown für Status */
+.statusSelect {
+  background-color: #0d0d1a;
+  border: 1px solid #FFD300;
+  border-radius: 6px;
+  padding: 6px;
+  color: #FFD300;
+  font-weight: bold;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.statusSelect:hover,
+.statusSelect:focus {
+  border-color: #70ffea;
+  box-shadow: 0 0 10px #70ffea, 0 0 20px rgba(112, 255, 234, 0.7);
+}
+
+/* Buttons in Tabelle */
+.deleteBtn {
+  background-color: transparent;
+  border: 1px solid #ff4d4d;
+  color: #ff4d4d;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deleteBtn:hover {
+  background-color: #ff4d4d;
+  color: #000;
+  box-shadow: 0 0 12px #ff4d4d, 0 0 24px rgba(255, 77, 77, 0.6);
+}

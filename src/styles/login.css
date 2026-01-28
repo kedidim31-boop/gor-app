@@ -1,18 +1,5 @@
 /* Login Seite – Cyberpunk Neon mit Splash-Intro, Skip-Button (⚡ Glow + Pulse), Floating Labels, Icons, Fehlerfeedback */
-
-/* Grundlayout */
-body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background-color: #0d0d1a;
-  color: #e0e0e0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  overflow: hidden;
-}
+/* Ergänzt globale neon-theme.css mit spezifischen Features */
 
 /* Animierter Hintergrund */
 .neon-bg {
@@ -178,26 +165,6 @@ body {
   transform: translateY(-50%);
   cursor: pointer;
   color: #FFD300;
-}
-
-/* Button */
-.login-card button {
-  width: 100%;
-  background-color: #FFD300;
-  color: #000000;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.login-card button:hover {
-  background-color: #ffea70;
-  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
-  transform: scale(1.05);
 }
 
 /* Hinweis */

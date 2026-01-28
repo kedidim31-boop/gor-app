@@ -6,15 +6,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Global Neon Theme -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
+  <link rel="stylesheet" href="src/styles/index.css">
 </head>
 <body>
+
+  <!-- Branding Header -->
+  <div class="branding-header">
+    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <div class="divider"></div>
+    <div class="branding-text">
+      <div class="subtitle">Gaming of Republic<br>Startseite</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="top-nav">
+    <a href="index.html" class="active">Home</a>
+    <a href="products.html">Produkte</a>
+    <a href="tasks.html">Aufgaben</a>
+    <a href="time.html">Zeiterfassung</a>
+    <a href="employees.html">Mitarbeiter</a>
+    <a href="overview.html">Übersicht</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="adminPanel.html">Admin Panel</a>
+    <button class="logout-btn">Logout</button>
+  </div>
 
   <!-- Hauptinhalt -->
   <div class="card">
     <h2>Willkommen im Gaming of Republic Admin System</h2>
     <p>
       Dieses System bietet dir eine zentrale Oberfläche für Produktmanagement, Aufgabenverwaltung,
-      Zeiterfassung, Mitarbeiterübersicht und Admin‑Funktionen.  
+      Zeiterfassung, Mitarbeiterübersicht und Admin‑Funktionen.<br>
       Alles im Cyberpunk‑Neon‑Look und mit sicherer Firebase‑Integration.
     </p>
   </div>
@@ -32,18 +55,17 @@
     </ul>
   </div>
 
-  <!-- Firebase & Layout -->
+  <!-- Firebase & Logout -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { injectLayout } from "./src/scripts/layout.js";
 
     // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
       authDomain: "gaming-of-republic.firebaseapp.com",
       projectId: "gaming-of-republic",
-      storageBucket: "gaming-of-republic.firebasestorage.app",
+      storageBucket: "gaming-of-republic.appspot.com",
       messagingSenderId: "610190951435",
       appId: "1:610190951435:web:bbf184d09a894fc307f30e"
     };
@@ -52,18 +74,13 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Branding, Navigation & Logout automatisch einfügen
-    injectLayout("Home");
-
-    // Logout verbinden (Button kommt aus injectLayout)
-    document.addEventListener("click", async (e) => {
-      if (e.target.classList.contains("logout-btn")) {
-        try {
-          await signOut(auth);
-          window.location.href = "login.html"; // zurück zur Login-Seite
-        } catch (err) {
-          console.error("Logout fehlgeschlagen:", err);
-        }
+    // Logout verbinden
+    document.querySelector(".logout-btn").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        window.location.href = "login.html"; // zurück zur Login-Seite
+      } catch (err) {
+        console.error("Logout fehlgeschlagen:", err);
       }
     });
   </script>

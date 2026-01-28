@@ -74,37 +74,17 @@
     </table>
   </div>
 
-  <!-- Firebase Logik -->
+  <!-- Modularer Firebase-Start -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
     import { initAdminPanel } from './src/scripts/adminPanel.js';
+    import { logout } from './src/scripts/auth.js';
 
-    // Firebase Init
-    const firebaseConfig = {
-      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
-      authDomain: "gaming-of-republic.firebaseapp.com",
-      projectId: "gaming-of-republic",
-      storageBucket: "gaming-of-republic.firebasestorage.app",
-      messagingSenderId: "610190951435",
-      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // Initialisierung des Admin Panels
+    // Starte Admin Panel
     initAdminPanel();
 
     // Logout
-    document.querySelector(".logout-btn").addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        window.location.href = "login.html";
-      } catch (err) {
-        console.error("Logout fehlgeschlagen:", err);
-      }
+    document.querySelector(".logout-btn").addEventListener("click", () => {
+      logout();
     });
   </script>
 

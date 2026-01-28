@@ -1,11 +1,19 @@
-// adminPanel.js – zentrale Logik für Admin Panel
+// adminPanel.js – zentrale Logik für Admin Panel (modulare Firebase SDK)
 
 import { enforceRole } from './roleGuard.js';
 import { createUser } from './adminUser.js';
 import { logout } from './auth.js';
+import { initFirebase } from './firebaseSetup.js';
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 export function initAdminPanel() {
-  const db = firebase.firestore();
+  const { db } = initFirebase();
 
   // Zugriff nur für Admins
   enforceRole("admin", "index.html");
@@ -19,31 +27,31 @@ export function initAdminPanel() {
     const role = document.getElementById("newRole").value;
 
     await createUser(email, password, role);
-    loadEmployees(db);
+    await loadEmployees();
     form.reset();
   });
 
   // Mitarbeiter laden
-  async function loadEmployees(db) {
+  async function loadEmployees() {
     const tableBody = document.querySelector("#adminEmployeeTable tbody");
     tableBody.innerHTML = "";
 
-    const snapshot = await db.collection("employees").get();
-    snapshot.forEach(doc => {
-      const data = doc.data();
+    const snapshot = await getDocs(collection(db, "employees"));
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
       const row = document.createElement("tr");
 
       row.innerHTML = `
         <td>${data.name || "-"}</td>
         <td>${data.email}</td>
         <td>
-          <select data-id="${doc.id}" class="roleSelect">
+          <select data-id="${docSnap.id}" class="roleSelect">
             <option value="mitarbeiter" ${data.role === "mitarbeiter" ? "selected" : ""}>Mitarbeiter</option>
             <option value="admin" ${data.role === "admin" ? "selected" : ""}>Admin</option>
           </select>
         </td>
         <td>
-          <button class="deleteBtn" data-id="${doc.id}">Löschen</button>
+          <button class="deleteBtn" data-id="${docSnap.id}">Löschen</button>
         </td>
       `;
       tableBody.appendChild(row);
@@ -54,7 +62,7 @@ export function initAdminPanel() {
       select.addEventListener("change", async e => {
         const id = e.target.dataset.id;
         const newRole = e.target.value;
-        await db.collection("employees").doc(id).update({ role: newRole });
+        await updateDoc(doc(db, "employees", id), { role: newRole });
         alert("Rolle geändert zu: " + newRole);
       });
     });
@@ -63,15 +71,15 @@ export function initAdminPanel() {
     document.querySelectorAll(".deleteBtn").forEach(btn => {
       btn.addEventListener("click", async e => {
         const id = e.target.dataset.id;
-        await db.collection("employees").doc(id).delete();
+        await deleteDoc(doc(db, "employees", id));
         alert("Mitarbeiter gelöscht");
-        loadEmployees(db);
+        await loadEmployees();
       });
     });
   }
 
   // Initial laden
-  loadEmployees(db);
+  loadEmployees();
 
   // Logout Button
   document.querySelector(".logout-btn").addEventListener("click", () => {

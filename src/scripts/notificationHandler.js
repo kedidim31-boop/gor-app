@@ -3,7 +3,14 @@
 
 // Globale Benachrichtigung anzeigen
 export function showNotification(message, type = "info") {
-  const icon = type === "success" ? "✅" : type === "error" ? "❌" : type === "warning" ? "⚠️" : "ℹ️";
+  const icons = {
+    success: "✅",
+    error: "❌",
+    warning: "⚠️",
+    info: "ℹ️"
+  };
+  const icon = icons[type] || icons.info;
+
   console.log(`${icon} ${message}`);
 
   const notification = document.createElement("div");
@@ -12,7 +19,7 @@ export function showNotification(message, type = "info") {
 
   document.body.appendChild(notification);
 
-  // Automatisches Entfernen nach 4 Sekunden
+  // Automatisches Entfernen nach 4 Sekunden mit Fade-Out
   setTimeout(() => {
     notification.classList.add("fade-out");
     setTimeout(() => notification.remove(), 600);
@@ -46,9 +53,12 @@ export function notifyInfo(message) {
   showNotification(message, "info");
 }
 
-// Initialisiert Notification-System (z. B. CSS-Klassen hinzufügen)
+// Initialisiert Notification-System (CSS-Klassen hinzufügen)
 export function initNotifications() {
+  if (document.getElementById("notificationStyles")) return; // Verhindert doppeltes Einfügen
+
   const style = document.createElement("style");
+  style.id = "notificationStyles";
   style.innerHTML = `
     .notification {
       position: fixed;

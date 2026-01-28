@@ -7,6 +7,8 @@
   <!-- Global Neon Theme -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
   <link rel="stylesheet" href="src/styles/time.css">
+  <!-- Icon Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -15,45 +17,45 @@
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle">Zeiterfassung<br>Arbeitsstunden</div>
+      <div class="subtitle"><i class="fa-solid fa-clock"></i> Zeiterfassung<br>Arbeitsstunden</div>
     </div>
   </div>
 
   <!-- Navigation -->
   <div class="top-nav">
-    <a href="index.html">Home</a>
-    <a href="products.html">Produkte</a>
-    <a href="tasks.html">Aufgaben</a>
-    <a href="time.html" class="active">Zeiterfassung</a>
-    <a href="employees.html">Mitarbeiter</a>
-    <a href="overview.html">Übersicht</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="adminPanel.html">Admin Panel</a>
-    <button class="logout-btn">Logout</button>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
+    <a href="time.html" class="active"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
+    <a href="overview.html"><i class="fa-solid fa-chart-pie"></i> Übersicht</a>
+    <a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
   <!-- Zeiterfassung -->
   <div class="card">
-    <h2>Neue Zeiterfassung hinzufügen</h2>
+    <h2><i class="fa-solid fa-plus-circle"></i> Neue Zeiterfassung hinzufügen</h2>
     <form id="timeForm">
       <input type="text" id="employeeName" placeholder="Mitarbeitername" required>
       <input type="date" id="workDate" required>
       <input type="number" id="hoursWorked" placeholder="Stunden" required>
       <textarea id="workDescription" placeholder="Beschreibung der Tätigkeit"></textarea>
-      <button type="submit">Zeiterfassung speichern</button>
+      <button type="submit"><i class="fa-solid fa-save"></i> Zeiterfassung speichern</button>
     </form>
   </div>
 
   <div class="card">
-    <h2>Zeiterfassungsübersicht</h2>
+    <h2><i class="fa-solid fa-table"></i> Zeiterfassungsübersicht</h2>
     <table id="timeTable">
       <thead>
         <tr>
-          <th>Mitarbeiter</th>
-          <th>Datum</th>
-          <th>Stunden</th>
-          <th>Beschreibung</th>
-          <th>Aktionen</th>
+          <th><i class="fa-solid fa-user"></i> Mitarbeiter</th>
+          <th><i class="fa-solid fa-calendar-day"></i> Datum</th>
+          <th><i class="fa-solid fa-hourglass-half"></i> Stunden</th>
+          <th><i class="fa-solid fa-align-left"></i> Beschreibung</th>
+          <th><i class="fa-solid fa-gear"></i> Aktionen</th>
         </tr>
       </thead>
       <tbody>
@@ -122,7 +124,9 @@
           <td>${data.hours}</td>
           <td>${data.description || "-"}</td>
           <td>
-            <button class="deleteBtn" data-id="${docSnap.id}">Löschen</button>
+            <button class="deleteBtn" data-id="${docSnap.id}">
+              <i class="fa-solid fa-trash"></i> Löschen
+            </button>
           </td>
         `;
         tableBody.appendChild(row);

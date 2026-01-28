@@ -21,7 +21,6 @@ export function initFirebase() {
       appId: "1:610190951435:web:bbf184d09a894fc307f30e"
     };
 
-    // Initialisierung nur einmal
     firebaseApp = initializeApp(firebaseConfig);
     firebaseAuth = getAuth(firebaseApp);
     firebaseDB = getFirestore(firebaseApp);
@@ -30,7 +29,6 @@ export function initFirebase() {
     console.log("✅ Firebase vollständig initialisiert (modular SDK)");
   }
 
-  // Rückgabe aller Dienste
   return {
     app: firebaseApp,
     auth: firebaseAuth,

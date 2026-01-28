@@ -1,0 +1,49 @@
+/* Index Seite – Cyberpunk Neon Look */
+
+/* Karten */
+.card {
+  background: linear-gradient(145deg, #141432, #0d0d1a);
+  border: 2px solid #FFD300;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1000px;
+  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.6);
+  color: #e0e0e0;
+}
+
+/* Schnellzugriff Liste */
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.card ul li {
+  display: flex;
+}
+
+.card ul li a {
+  flex: 1;
+  text-align: center;
+  background-color: #141432;
+  border: 2px solid #FFD300;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: bold;
+  color: #FFD300;
+  text-decoration: none;
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.5);
+  transition: all 0.2s ease;
+}
+
+.card ul li a:hover {
+  color: #70ffea;
+  border-color: #70ffea;
+  box-shadow: 0 0 16px #70ffea, 0 0 32px rgba(112, 255, 234, 0.7);
+  transform: scale(1.05);
+}

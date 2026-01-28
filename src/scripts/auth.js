@@ -1,13 +1,17 @@
-// auth.js – globales Modul für Login & Logout
+// auth.js – Modul für Login & Logout (modulare Firebase SDK)
 // Registrierung wird NICHT angeboten, nur Admins können neue Benutzer anlegen.
 
 import { initFirebase } from "./firebaseSetup.js";
+import {
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 // Login
 export async function login(email, password) {
   const { auth } = initFirebase();
   try {
-    await auth.signInWithEmailAndPassword(email, password);
+    await signInWithEmailAndPassword(auth, email, password);
     console.log("✅ Login erfolgreich");
     alert("Login erfolgreich – Willkommen im Admin System!");
     window.location.href = "overview.html"; // oder Dashboard
@@ -28,7 +32,7 @@ export async function login(email, password) {
 export async function logout() {
   const { auth } = initFirebase();
   try {
-    await auth.signOut();
+    await signOut(auth);
     console.log("✅ Logout erfolgreich");
     alert("Logout erfolgreich – bis bald!");
     window.location.href = "login.html";

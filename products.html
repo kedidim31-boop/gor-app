@@ -7,6 +7,8 @@
   <!-- Global Neon Theme -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
   <link rel="stylesheet" href="src/styles/products.css">
+  <!-- Icon Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -15,26 +17,26 @@
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle">Produkte<br>Verwaltung</div>
+      <div class="subtitle"><i class="fa-solid fa-box"></i> Produkte<br>Verwaltung</div>
     </div>
   </div>
 
   <!-- Navigation -->
   <div class="top-nav">
-    <a href="index.html">Home</a>
-    <a href="products.html" class="active">Produkte</a>
-    <a href="tasks.html">Aufgaben</a>
-    <a href="time.html">Zeiterfassung</a>
-    <a href="employees.html">Mitarbeiter</a>
-    <a href="overview.html">Übersicht</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="adminPanel.html">Admin Panel</a>
-    <button class="logout-btn">Logout</button>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="products.html" class="active"><i class="fa-solid fa-box"></i> Produkte</a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
+    <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
+    <a href="overview.html"><i class="fa-solid fa-chart-pie"></i> Übersicht</a>
+    <a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
   <!-- Produktverwaltung -->
   <div class="card">
-    <h2>Neues Produkt hinzufügen</h2>
+    <h2><i class="fa-solid fa-plus-circle"></i> Neues Produkt hinzufügen</h2>
     <form id="productForm">
       <input type="text" id="productName" placeholder="Produktname" required>
       <textarea id="productDescription" placeholder="Beschreibung"></textarea>
@@ -47,27 +49,26 @@
       <input type="text" id="productSupplier" placeholder="Anbieter">
       <input type="number" id="productPrice" placeholder="Preis (CHF)" step="0.01" required>
       <input type="file" id="productImages" multiple accept="image/*">
-      <button type="submit">Produkt speichern</button>
+      <button type="submit"><i class="fa-solid fa-save"></i> Produkt speichern</button>
     </form>
   </div>
-
   <div class="card">
-    <h2>Produktübersicht</h2>
+    <h2><i class="fa-solid fa-table"></i> Produktübersicht</h2>
     <table id="productTable">
       <thead>
         <tr>
-          <th>Produktname</th>
-          <th>Beschreibung</th>
-          <th>Kollektion</th>
-          <th>Typ</th>
-          <th>SKU</th>
-          <th>EAN</th>
-          <th>Bestand</th>
-          <th>Produktgewicht</th>
-          <th>Anbieter</th>
-          <th>Preis (CHF)</th>
-          <th>Bilder</th>
-          <th>Aktionen</th>
+          <th><i class="fa-solid fa-box"></i> Produktname</th>
+          <th><i class="fa-solid fa-align-left"></i> Beschreibung</th>
+          <th><i class="fa-solid fa-layer-group"></i> Kollektion</th>
+          <th><i class="fa-solid fa-tags"></i> Typ</th>
+          <th><i class="fa-solid fa-barcode"></i> SKU</th>
+          <th><i class="fa-solid fa-barcode"></i> EAN</th>
+          <th><i class="fa-solid fa-cubes"></i> Bestand</th>
+          <th><i class="fa-solid fa-weight-hanging"></i> Produktgewicht</th>
+          <th><i class="fa-solid fa-truck"></i> Anbieter</th>
+          <th><i class="fa-solid fa-franc-sign"></i> Preis (CHF)</th>
+          <th><i class="fa-solid fa-image"></i> Bilder</th>
+          <th><i class="fa-solid fa-gear"></i> Aktionen</th>
         </tr>
       </thead>
       <tbody>
@@ -85,26 +86,17 @@
     import { enforceRole } from './src/scripts/roleGuard.js';
 
     // Firebase Init
-    const firebaseConfig = {
-      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
-      authDomain: "gaming-of-republic.firebaseapp.com",
-      projectId: "gaming-of-republic",
-      storageBucket: "gaming-of-republic.appspot.com",
-      messagingSenderId: "610190951435",
-      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
-    };
+    const firebaseConfig = { /* deine Config */ };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
     const auth = getAuth(app);
 
-    // Zugriff: nur Admins & Mitarbeiter
     enforceRole("mitarbeiter", "index.html");
 
     // Produkt hinzufügen
     document.getElementById("productForm").addEventListener("submit", async e => {
       e.preventDefault();
-
       const product = {
         name: productName.value,
         description: productDescription.value,
@@ -119,7 +111,6 @@
         createdAt: serverTimestamp()
       };
 
-      // Bilder hochladen
       const files = productImages.files;
       const imageUrls = [];
       for (const file of files) {
@@ -140,16 +131,13 @@
     async function loadProducts() {
       const tableBody = document.querySelector("#productTable tbody");
       tableBody.innerHTML = "";
-
       const snapshot = await getDocs(collection(db, "products"));
       snapshot.forEach(docSnap => {
         const data = docSnap.data();
         const row = document.createElement("tr");
-
         const imageCells = data.images?.length
           ? data.images.map(url => `<img src="${url}" alt="Produktbild" style="width:50px;height:50px;">`).join(" ")
           : "-";
-
         row.innerHTML = `
           <td>${data.name}</td>
           <td>${data.description || "-"}</td>
@@ -162,12 +150,11 @@
           <td>${data.supplier || "-"}</td>
           <td>${data.price ? data.price.toFixed(2) : "-"}</td>
           <td>${imageCells}</td>
-          <td><button class="deleteBtn" data-id="${docSnap.id}">Löschen</button></td>
+          <td><button class="deleteBtn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i> Löschen</button></td>
         `;
         tableBody.appendChild(row);
       });
 
-      // Löschen
       document.querySelectorAll(".deleteBtn").forEach(btn => {
         btn.addEventListener("click", async e => {
           await deleteDoc(doc(db, "products", e.target.dataset.id));
@@ -177,10 +164,8 @@
       });
     }
 
-    // Initial laden
     loadProducts();
 
-    // Logout
     document.querySelector(".logout-btn").addEventListener("click", async () => {
       try {
         await signOut(auth);

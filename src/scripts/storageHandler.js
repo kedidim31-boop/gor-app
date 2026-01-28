@@ -1,18 +1,11 @@
 // storageHandler.js – globales Modul für Datei- und Bildspeicherung im Gaming of Republic Admin System
 // Ergänzt mit konsistentem Neon-Theme, Logging und Error-Handling
 
-// Firebase Storage Referenz
-function getStorage() {
-  if (!firebase.apps.length) {
-    console.error("❌ Firebase nicht initialisiert – bitte initFirebase() aufrufen");
-    return null;
-  }
-  return firebase.storage();
-}
+import { initFirebase } from "./firebaseSetup.js";
 
 // Datei hochladen
 export async function uploadFile(file, path = "uploads/") {
-  const storage = getStorage();
+  const { storage } = initFirebase();
   if (!storage) return null;
 
   try {
@@ -32,7 +25,7 @@ export async function uploadFile(file, path = "uploads/") {
 
 // Bild hochladen (mit optionaler Komprimierung)
 export async function uploadImage(file, path = "images/") {
-  const storage = getStorage();
+  const { storage } = initFirebase();
   if (!storage) return null;
 
   try {
@@ -52,7 +45,7 @@ export async function uploadImage(file, path = "images/") {
 
 // Datei löschen
 export async function deleteFile(path) {
-  const storage = getStorage();
+  const { storage } = initFirebase();
   if (!storage) return;
 
   try {
@@ -69,7 +62,7 @@ export async function deleteFile(path) {
 
 // Datei-URL abrufen
 export async function getFileURL(path) {
-  const storage = getStorage();
+  const { storage } = initFirebase();
   if (!storage) return null;
 
   try {

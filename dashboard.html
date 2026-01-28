@@ -29,6 +29,7 @@
     <a href="overview.html">Übersicht</a>
     <a href="dashboard.html" class="active">Dashboard</a>
     <a href="adminPanel.html">Admin Panel</a>
+    <button class="logout-btn">Logout</button>
   </div>
 
   <!-- Dashboard Karten -->
@@ -58,19 +59,15 @@
     </div>
   </div>
 
-  <!-- Logout Button -->
-  <button class="logout-btn">Logout</button>
-
   <!-- Chart.js für Diagramme -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Dashboard Logik -->
+  <!-- Firebase Logik -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
     import { enforceRole } from './src/scripts/roleGuard.js';
-    import { logout } from './src/scripts/auth.js';
 
     // Firebase Init
     const firebaseConfig = {
@@ -104,7 +101,7 @@
 
       // Diagramme
       createChart("productChart", "Produkte", productSnapshot.size, "#FFD300");
-      createChart("taskChart", "Aufgaben", taskSnapshot.size, "#00ffff");
+      createChart("taskChart", "Aufgaben", taskSnapshot.size, "#70ffea");
       createChart("timeChart", "Zeiterfassungen", timeSnapshot.size, "#FF69B4");
       createChart("employeeChart", "Mitarbeiter", employeeSnapshot.size, "#00ff00");
     }
@@ -139,8 +136,13 @@
     loadDashboard();
 
     // Logout
-    document.querySelector(".logout-btn").addEventListener("click", () => {
-      logout();
+    document.querySelector(".logout-btn").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        window.location.href = "login.html";
+      } catch (err) {
+        console.error("Logout fehlgeschlagen:", err);
+      }
     });
   </script>
 

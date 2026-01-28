@@ -85,13 +85,20 @@
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
     import { enforceRole } from './src/scripts/roleGuard.js';
 
-    // Firebase Init
-    const firebaseConfig = { /* deine Config */ };
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
+      authDomain: "gaming-of-republic.firebaseapp.com",
+      projectId: "gaming-of-republic",
+      storageBucket: "gaming-of-republic.firebasestorage.app",
+      messagingSenderId: "610190951435",
+      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
+    };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
     const auth = getAuth(app);
 
+    // Zugriff: nur Admins & Mitarbeiter
     enforceRole("mitarbeiter", "index.html");
 
     // Produkt hinzufügen
@@ -110,7 +117,6 @@
         price: parseFloat(productPrice.value),
         createdAt: serverTimestamp()
       };
-
       const files = productImages.files;
       const imageUrls = [];
       for (const file of files) {
@@ -120,7 +126,6 @@
         imageUrls.push(url);
       }
       product.images = imageUrls;
-
       await addDoc(collection(db, "products"), product);
       alert("Produkt gespeichert!");
       loadProducts();
@@ -154,7 +159,6 @@
         `;
         tableBody.appendChild(row);
       });
-
       document.querySelectorAll(".deleteBtn").forEach(btn => {
         btn.addEventListener("click", async e => {
           await deleteDoc(doc(db, "products", e.target.dataset.id));
@@ -164,8 +168,10 @@
       });
     }
 
+    // Initial laden
     loadProducts();
 
+    // Logout
     document.querySelector(".logout-btn").addEventListener("click", async () => {
       try {
         await signOut(auth);

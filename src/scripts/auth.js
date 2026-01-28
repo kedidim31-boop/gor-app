@@ -41,3 +41,13 @@ export async function logout() {
     alert("Fehler beim Logout – bitte erneut versuchen.");
   }
 }
+
+// 🔧 Globaler Logout-Button für jede Seite
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutButton = document.querySelector(".logout-btn");
+  if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+      logout();
+    });
+  }
+});

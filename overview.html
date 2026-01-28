@@ -7,6 +7,8 @@
   <!-- Global Neon Theme -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
   <link rel="stylesheet" href="src/styles/overview.css">
+  <!-- Icon Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -15,45 +17,45 @@
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle">Gesamtübersicht<br>Systemstatus</div>
+      <div class="subtitle"><i class="fa-solid fa-chart-pie"></i> Gesamtübersicht<br>Systemstatus</div>
     </div>
   </div>
 
   <!-- Navigation -->
   <div class="top-nav">
-    <a href="index.html">Home</a>
-    <a href="products.html">Produkte</a>
-    <a href="tasks.html">Aufgaben</a>
-    <a href="time.html">Zeiterfassung</a>
-    <a href="employees.html">Mitarbeiter</a>
-    <a href="overview.html" class="active">Übersicht</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="adminPanel.html">Admin Panel</a>
-    <button class="logout-btn">Logout</button>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
+    <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
+    <a href="overview.html" class="active"><i class="fa-solid fa-chart-pie"></i> Übersicht</a>
+    <a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
   <!-- Übersichtskarten -->
   <div class="dashboard">
     <div class="card">
-      <h2>Produkte</h2>
+      <h2><i class="fa-solid fa-box"></i> Produkte</h2>
       <div class="stat" id="productCount">0</div>
       <p>Gesamtzahl der Produkte</p>
     </div>
 
     <div class="card">
-      <h2>Aufgaben</h2>
+      <h2><i class="fa-solid fa-list-check"></i> Aufgaben</h2>
       <div class="stat" id="taskCount">0</div>
       <p>Gesamtzahl der Aufgaben</p>
     </div>
 
     <div class="card">
-      <h2>Zeiterfassungen</h2>
+      <h2><i class="fa-solid fa-clock"></i> Zeiterfassungen</h2>
       <div class="stat" id="timeCount">0</div>
       <p>Gesamtzahl der Einträge</p>
     </div>
 
     <div class="card">
-      <h2>Mitarbeiter</h2>
+      <h2><i class="fa-solid fa-users"></i> Mitarbeiter</h2>
       <div class="stat" id="employeeCount">0</div>
       <p>Gesamtzahl der Mitarbeiter</p>
     </div>

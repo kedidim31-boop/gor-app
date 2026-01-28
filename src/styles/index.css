@@ -1,16 +1,8 @@
 /* Index Seite – Cyberpunk Neon Look */
+/* Ergänzt globale neon-theme.css mit spezifischen Features */
 
-/* Karten */
+/* Karten für Startseite */
 .card {
-  background: linear-gradient(145deg, #141432, #0d0d1a);
-  border: 2px solid #FFD300;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 1000px;
-  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.6);
-  color: #e0e0e0;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 

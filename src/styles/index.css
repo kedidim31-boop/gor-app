@@ -11,6 +11,12 @@
   max-width: 1000px;
   box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.6);
   color: #e0e0e0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px #70ffea, 0 0 50px rgba(112, 255, 234, 0.7);
 }
 
 /* Schnellzugriff Liste */

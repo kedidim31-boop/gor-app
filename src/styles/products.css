@@ -1,19 +1,7 @@
 /* Produkte Seite – Cyberpunk Neon Look */
+/* Ergänzt globale neon-theme.css mit spezifischen Features */
 
-/* Karten */
-.card {
-  background: linear-gradient(145deg, #141432, #0d0d1a);
-  border: 2px solid #FFD300;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 1000px;
-  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.6);
-  color: #e0e0e0;
-}
-
-/* Formular */
+/* Formular für Produkte */
 #productForm {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -45,73 +33,14 @@
 
 #productForm button {
   grid-column: 1 / -1;
-  background-color: #FFD300;
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 #productForm button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
 }
 
-/* Navigation */
-.top-nav {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 18px;
-  background-color: #141432;
-  padding: 12px 24px;
-  border-bottom: 2px solid #FFD300;
-  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.5);
-}
-
-.top-nav a {
-  color: #FFD300;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  transition: color 0.2s ease, text-shadow 0.2s ease;
-}
-
-.top-nav a:hover {
-  color: #70ffea;
-  text-shadow: 0 0 8px #70ffea, 0 0 16px rgba(112, 255, 234, 0.7);
-}
-
-.top-nav a.active {
-  color: #ffea70;
-  text-shadow: 0 0 10px #FFD300, 0 0 20px rgba(255, 211, 0, 0.8);
-}
-
-/* Logout Button oben rechts */
-.logout-btn {
-  margin-left: auto;
-  background-color: #FFD300;
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 18px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.logout-btn:hover {
-  background-color: #ffea70;
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
-}
-
-/* Tabelle */
+/* Tabelle für Produkte */
 #productTable {
   width: 100%;
   border-collapse: collapse;
@@ -121,8 +50,6 @@
 
 #productTable th,
 #productTable td {
-  border: 1px solid #FFD300;
-  padding: 10px;
   text-align: center;
   color: #fff;
 }
@@ -147,20 +74,6 @@
 #productTable th:nth-child(8)   /* Produktgewicht */ {
   color: #70ffea;
   text-shadow: 0 0 6px #70ffea;
-}
-
-/* Tabellenzeilen */
-#productTable th {
-  background-color: #141432;
-}
-
-#productTable tr:nth-child(even) {
-  background-color: #1a1a2e;
-}
-
-#productTable tr:hover {
-  background-color: #222244;
-  box-shadow: inset 0 0 10px rgba(255, 211, 0, 0.4);
 }
 
 /* Bild-Thumbnails */

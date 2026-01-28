@@ -1,19 +1,58 @@
-// uiHandler.js – globales Modul für UI-Interaktionen im Gaming of Republic Admin System
+// layout.js – globales Modul für Layout- und Navigationslogik im Gaming of Republic Admin System
 // Ergänzt mit konsistentem Neon-Theme, Feedback-Effekten und Error-Handling
 
-// Loader anzeigen/verbergen
-export function toggleLoader(show = true) {
-  let loader = document.getElementById("globalLoader");
+// Sidebar Navigation initialisieren
+export function initSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  if (!sidebar) {
+    console.warn("⚠️ Sidebar nicht gefunden – Layout kann nicht initialisiert werden");
+    return;
+  }
+
+  document.querySelectorAll(".sidebar a").forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      setActiveLink(link);
+      loadPage(link.getAttribute("href"));
+    });
+  });
+
+  console.log("✅ Sidebar Navigation initialisiert");
+}
+
+// Aktiven Link hervorheben
+function setActiveLink(link) {
+  document.querySelectorAll(".sidebar a").forEach(l => l.classList.remove("active"));
+  link.classList.add("active");
+}
+
+// Seite laden (per Fetch)
+async function loadPage(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const html = await response.text();
+    document.querySelector(".main-content").innerHTML = html;
+    notifySuccess(`Seite '${url}' erfolgreich geladen`);
+  } catch (error) {
+    console.error("❌ Fehler beim Laden der Seite:", error);
+    notifyError("Fehler beim Laden der Seite – bitte erneut versuchen.");
+  }
+}
+
+// Layout Loader anzeigen/verbergen
+export function toggleLayoutLoader(show = true) {
+  let loader = document.getElementById("layoutLoader");
   if (!loader) {
     loader = document.createElement("div");
-    loader.id = "globalLoader";
-    loader.innerHTML = `<div class="loader neon-glow">⚡ Loading...</div>`;
+    loader.id = "layoutLoader";
+    loader.innerHTML = `<div class="loader neon-glow">⚡ Layout wird geladen...</div>`;
     document.body.appendChild(loader);
   }
   loader.style.display = show ? "flex" : "none";
 }
 
-// Erfolgsmeldung anzeigen
+// Erfolgsmeldung
 export function notifySuccess(message) {
   console.log("✅ " + message);
   const box = createMessageBox(message, "success");
@@ -21,14 +60,13 @@ export function notifySuccess(message) {
   setTimeout(() => box.remove(), 3000);
 }
 
-// Fehlermeldung anzeigen
+// Fehlermeldung
 export function notifyError(message) {
   console.error("❌ " + message);
   const box = createMessageBox(message, "error");
   document.body.appendChild(box);
   setTimeout(() => box.remove(), 4000);
 
-  // Shake-Effekt für Cards
   const card = document.querySelector(".card");
   if (card) {
     card.classList.add("shake");
@@ -36,7 +74,7 @@ export function notifyError(message) {
   }
 }
 
-// Warnung anzeigen
+// Warnung
 export function notifyWarning(message) {
   console.warn("⚠️ " + message);
   const box = createMessageBox(message, "warning");
@@ -50,26 +88,4 @@ function createMessageBox(message, type) {
   box.className = `message-box ${type}`;
   box.innerText = message;
   return box;
-}
-
-// Neon-Glow für Buttons beim Klick
-export function addButtonEffects() {
-  document.querySelectorAll("button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      btn.classList.add("active-glow");
-      setTimeout(() => btn.classList.remove("active-glow"), 500);
-    });
-  });
-}
-
-// Tabellenzeilen Hover-Effekt verstärken
-export function enhanceTableHover() {
-  document.querySelectorAll("table tr").forEach(row => {
-    row.addEventListener("mouseenter", () => {
-      row.style.boxShadow = "inset 0 0 20px rgba(112, 255, 234, 0.6)";
-    });
-    row.addEventListener("mouseleave", () => {
-      row.style.boxShadow = "";
-    });
-  });
 }

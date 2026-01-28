@@ -3,7 +3,8 @@
 
 // Globale Benachrichtigung anzeigen
 export function showNotification(message, type = "info") {
-  console.log(`${type === "success" ? "✅" : type === "error" ? "❌" : "⚠️"} ${message}`);
+  const icon = type === "success" ? "✅" : type === "error" ? "❌" : type === "warning" ? "⚠️" : "ℹ️";
+  console.log(`${icon} ${message}`);
 
   const notification = document.createElement("div");
   notification.className = `notification ${type}`;

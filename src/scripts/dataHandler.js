@@ -1,18 +1,11 @@
 // dataHandler.js – globales Modul für Datenverwaltung im Gaming of Republic Admin System
 // Ergänzt mit konsistentem Neon-Theme, Logging und Error-Handling
 
-// Firebase Firestore Referenz
-function getDB() {
-  if (!firebase.apps.length) {
-    console.error("❌ Firebase nicht initialisiert – bitte initFirebase() aufrufen");
-    return null;
-  }
-  return firebase.firestore();
-}
+import { initFirebase } from "./firebaseSetup.js";
 
 // Daten hinzufügen
 export async function addData(collection, data) {
-  const db = getDB();
+  const { db } = initFirebase();
   if (!db) return;
 
   try {
@@ -27,7 +20,7 @@ export async function addData(collection, data) {
 
 // Daten abrufen (alle Dokumente)
 export async function getData(collection) {
-  const db = getDB();
+  const { db } = initFirebase();
   if (!db) return [];
 
   try {
@@ -44,7 +37,7 @@ export async function getData(collection) {
 
 // Einzelnes Dokument abrufen
 export async function getDataById(collection, id) {
-  const db = getDB();
+  const { db } = initFirebase();
   if (!db) return null;
 
   try {
@@ -65,7 +58,7 @@ export async function getDataById(collection, id) {
 
 // Daten aktualisieren
 export async function updateData(collection, id, newData) {
-  const db = getDB();
+  const { db } = initFirebase();
   if (!db) return;
 
   try {
@@ -79,7 +72,7 @@ export async function updateData(collection, id, newData) {
 
 // Daten löschen
 export async function deleteData(collection, id) {
-  const db = getDB();
+  const { db } = initFirebase();
   if (!db) return;
 
   try {

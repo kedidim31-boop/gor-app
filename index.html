@@ -57,36 +57,8 @@
     </ul>
   </div>
 
-  <!-- Firebase & Logout -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-
-    // Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
-      authDomain: "gaming-of-republic.firebaseapp.com",
-      projectId: "gaming-of-republic",
-      storageBucket: gaming-of-republic.firebasestorage.app",
-      messagingSenderId: "610190951435",
-      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
-    };
-
-    // Init Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // Logout verbinden
-    document.querySelector(".logout-btn").addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        window.location.href = "login.html"; // zurück zur Login-Seite
-      } catch (err) {
-        console.error("Logout fehlgeschlagen:", err);
-      }
-    });
-  </script>
+  <!-- Nur noch dein Auth-Modul laden -->
+  <script type="module" src="auth.js"></script>
 
 </body>
 </html>
-

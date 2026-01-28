@@ -24,10 +24,10 @@ export function exportToCSV(filename, rows) {
     link.click();
 
     console.log(`✅ CSV erfolgreich exportiert: ${filename}`);
-    showSuccess(`CSV erfolgreich exportiert: ${filename}`);
+    notifySuccess(`CSV erfolgreich exportiert: ${filename}`);
   } catch (error) {
     console.error("❌ Fehler beim CSV-Export:", error);
-    showError("Fehler beim CSV-Export – bitte erneut versuchen.");
+    notifyError("Fehler beim CSV-Export – bitte erneut versuchen.");
   }
 }
 
@@ -52,25 +52,25 @@ export async function exportToPDF(filename, elementId) {
     await html2pdf().set(opt).from(element).save();
 
     console.log(`✅ PDF erfolgreich exportiert: ${filename}`);
-    showSuccess(`PDF erfolgreich exportiert: ${filename}`);
+    notifySuccess(`PDF erfolgreich exportiert: ${filename}`);
   } catch (error) {
     console.error("❌ Fehler beim PDF-Export:", error);
-    showError("Fehler beim PDF-Export – bitte erneut versuchen.");
+    notifyError("Fehler beim PDF-Export – bitte erneut versuchen.");
   }
 }
 
-// Hilfsfunktionen für UI-Feedback (aus uiHandler.js)
-function showSuccess(message) {
+// Hilfsfunktionen für UI-Feedback (aus notificationHandler.js)
+function notifySuccess(message) {
   const box = document.createElement("div");
-  box.className = "message-box success";
+  box.className = "notification success";
   box.innerText = message;
   document.body.appendChild(box);
   setTimeout(() => box.remove(), 3000);
 }
 
-function showError(message) {
+function notifyError(message) {
   const box = document.createElement("div");
-  box.className = "message-box error";
+  box.className = "notification error";
   box.innerText = message;
   document.body.appendChild(box);
   setTimeout(() => box.remove(), 4000);

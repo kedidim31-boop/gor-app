@@ -1,20 +1,8 @@
 /* Cyberpunk Overview Styles */
+/* Ergänzt globale neon-theme.css mit spezifischen Features */
 
-body {
-  margin: 0;
-  background-color: #0d0d1a; /* tiefes Dunkelblau/Schwarz */
-  font-family: "Segoe UI", sans-serif;
-  color: #e0e0e0;
-}
-
-/* Karten */
+/* Karten für Übersicht */
 .card {
-  background: linear-gradient(145deg, #141432, #0d0d1a);
-  border: 2px solid #FFD300;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 20px;
-  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -30,25 +18,13 @@ body {
   text-shadow: 0 0 6px #FFD300, 0 0 12px rgba(255, 211, 0, 0.7);
 }
 
-/* Tabellen */
+/* Tabellen für Übersicht */
 table {
-  width: 100%;
-  border-collapse: collapse;
   margin-top: 10px;
-  border: 2px solid #FFD300;
 }
 
 th, td {
-  padding: 10px;
   text-align: center;
-  color: #FFFFFF;
-  border: 1px solid #FFD300;
-}
-
-th {
-  background-color: #141432;
-  color: #FFD300;
-  text-shadow: 0 0 6px #FFD300;
 }
 
 td {
@@ -58,24 +34,4 @@ td {
 tr:hover td {
   background-color: #222244;
   box-shadow: inset 0 0 10px rgba(255, 211, 0, 0.4);
-}
-
-/* Logout Button */
-.logout-btn {
-  margin: 20px;
-  background-color: #FFD300;
-  color: #000000;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 20px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 10px #FFD300, 0 0 20px rgba(255, 211, 0, 0.6);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.logout-btn:hover {
-  background-color: #ffea70;
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
 }

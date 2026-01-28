@@ -29,6 +29,7 @@
     <a href="overview.html">Übersicht</a>
     <a href="dashboard.html">Dashboard</a>
     <a href="adminPanel.html" class="active">Admin Panel</a>
+    <button class="logout-btn">Logout</button>
   </div>
 
   <!-- Admin Panel Inhalt -->
@@ -62,16 +63,11 @@
     </table>
   </div>
 
-  <!-- Logout Button -->
-  <button class="logout-btn">Logout</button>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
-
-  <!-- Admin Panel Logik -->
+  <!-- Firebase Logik -->
   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
     import { initAdminPanel } from './src/scripts/adminPanel.js';
 
     // Firebase Init
@@ -83,12 +79,22 @@
       messagingSenderId: "610190951435",
       appId: "1:610190951435:web:bbf184d09a894fc307f30e"
     };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     // Initialisierung des Admin Panels
     initAdminPanel();
+
+    // Logout
+    document.querySelector(".logout-btn").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        window.location.href = "login.html";
+      } catch (err) {
+        console.error("Logout fehlgeschlagen:", err);
+      }
+    });
   </script>
 
 </body>

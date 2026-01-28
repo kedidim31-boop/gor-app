@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <!-- Navigation mit Logout oben rechts -->
+  <!-- Navigation -->
   <div class="top-nav">
     <a href="index.html">Home</a>
     <a href="products.html" class="active">Produkte</a>
@@ -29,8 +29,6 @@
     <a href="overview.html">Übersicht</a>
     <a href="dashboard.html">Dashboard</a>
     <a href="adminPanel.html">Admin Panel</a>
-
-    <!-- Logout Button oben rechts -->
     <button class="logout-btn">Logout</button>
   </div>
 
@@ -78,14 +76,13 @@
     </table>
   </div>
 
-  <!-- Produkt Logik -->
+  <!-- Firebase Logik -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
     import { enforceRole } from './src/scripts/roleGuard.js';
-    import { logout } from './src/scripts/auth.js';
 
     // Firebase Init
     const firebaseConfig = {
@@ -109,21 +106,21 @@
       e.preventDefault();
 
       const product = {
-        name: document.getElementById("productName").value,
-        description: document.getElementById("productDescription").value,
-        collection: document.getElementById("productCollection").value,
-        type: document.getElementById("productType").value,
-        sku: document.getElementById("productSKU").value,
-        ean: document.getElementById("productEAN").value,
-        stock: parseInt(document.getElementById("productStock").value) || 0,
-        weight: parseFloat(document.getElementById("productWeight").value) || 0,
-        supplier: document.getElementById("productSupplier").value,
-        price: parseFloat(document.getElementById("productPrice").value),
+        name: productName.value,
+        description: productDescription.value,
+        collection: productCollection.value,
+        type: productType.value,
+        sku: productSKU.value,
+        ean: productEAN.value,
+        stock: parseInt(productStock.value) || 0,
+        weight: parseFloat(productWeight.value) || 0,
+        supplier: productSupplier.value,
+        price: parseFloat(productPrice.value),
         createdAt: serverTimestamp()
       };
 
       // Bilder hochladen
-      const files = document.getElementById("productImages").files;
+      const files = productImages.files;
       const imageUrls = [];
       for (const file of files) {
         const storageRef = ref(storage, `products/${product.sku}/${file.name}`);
@@ -149,7 +146,7 @@
         const data = docSnap.data();
         const row = document.createElement("tr");
 
-        const imageCells = data.images && data.images.length > 0
+        const imageCells = data.images?.length
           ? data.images.map(url => `<img src="${url}" alt="Produktbild" style="width:50px;height:50px;">`).join(" ")
           : "-";
 
@@ -173,8 +170,7 @@
       // Löschen
       document.querySelectorAll(".deleteBtn").forEach(btn => {
         btn.addEventListener("click", async e => {
-          const id = e.target.dataset.id;
-          await deleteDoc(doc(db, "products", id));
+          await deleteDoc(doc(db, "products", e.target.dataset.id));
           alert("Produkt gelöscht");
           loadProducts();
         });
@@ -185,8 +181,13 @@
     loadProducts();
 
     // Logout
-    document.querySelector(".logout-btn").addEventListener("click", () => {
-      logout();
+    document.querySelector(".logout-btn").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        window.location.href = "login.html";
+      } catch (err) {
+        console.error("Logout fehlgeschlagen:", err);
+      }
     });
   </script>
 

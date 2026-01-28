@@ -1,7 +1,7 @@
 // roleGuard.js – globales Modul für Rollen-basierten Zugriff
 // Ergänzt mit konsistentem Feedback, Logging und Redirect-Handling
 
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 import { initFirebase } from "./firebaseSetup.js";
 
 export function enforceRole(requiredRole, redirectPage = "index.html") {

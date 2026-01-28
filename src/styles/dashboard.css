@@ -1,11 +1,5 @@
 /* Cyberpunk Dashboard Styles */
-
-body {
-  margin: 0;
-  background-color: #0d0d1a; /* tiefes Dunkelblau/Schwarz */
-  font-family: "Segoe UI", sans-serif;
-  color: #e0e0e0;
-}
+/* Ergänzt globale neon-theme.css mit spezifischen Features */
 
 /* Dashboard Layout */
 .dashboard {
@@ -15,14 +9,9 @@ body {
   margin: 30px;
 }
 
-/* Karten */
+/* Karten für Dashboard */
 .card {
-  background: linear-gradient(145deg, #141432, #0d0d1a);
-  border: 2px solid #FFD300;
-  border-radius: 12px;
-  padding: 20px;
   text-align: center;
-  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -55,24 +44,4 @@ canvas {
   border-radius: 8px;
   padding: 10px;
   box-shadow: inset 0 0 12px rgba(255, 211, 0, 0.4);
-}
-
-/* Logout Button */
-.logout-btn {
-  margin: 20px;
-  background-color: #FFD300;
-  color: #000000;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 20px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 0 10px #FFD300, 0 0 20px rgba(255, 211, 0, 0.6);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.logout-btn:hover {
-  background-color: #ffea70;
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #FFD300, 0 0 40px rgba(255, 211, 0, 0.8);
 }

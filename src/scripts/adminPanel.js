@@ -1,7 +1,7 @@
 // adminPanel.js – zentrale Logik für Admin Panel (modulare Firebase SDK)
 
 import { enforceRole } from './roleGuard.js';
-import { createUser } from './adminUser.js';
+import { createUser } from './adminUser.js'; // nutzt Firebase Auth + Firestore
 import { logout } from './auth.js';
 import { initFirebase } from './firebaseSetup.js';
 import {
@@ -16,7 +16,7 @@ export function initAdminPanel() {
   const { db } = initFirebase();
 
   // Zugriff nur für Admins
-  enforceRole("admin", "index.html");
+  enforceRole(["admin"], "index.html");
 
   // Benutzer anlegen
   const form = document.getElementById("createUserForm");
@@ -26,9 +26,15 @@ export function initAdminPanel() {
     const password = document.getElementById("newPassword").value;
     const role = document.getElementById("newRole").value;
 
-    await createUser(email, password, role);
-    await loadEmployees();
-    form.reset();
+    try {
+      await createUser(email, password, role); // legt User in Auth + Firestore an
+      await loadEmployees();
+      form.reset();
+      alert("✅ Benutzer erfolgreich erstellt!");
+    } catch (err) {
+      console.error("❌ Fehler beim Erstellen:", err);
+      alert("Fehler beim Erstellen des Benutzers.");
+    }
   });
 
   // Mitarbeiter laden
@@ -51,7 +57,9 @@ export function initAdminPanel() {
           </select>
         </td>
         <td>
-          <button class="deleteBtn" data-id="${docSnap.id}">Löschen</button>
+          <button class="deleteBtn neon-btn" data-id="${docSnap.id}">
+            <i class="fa-solid fa-trash"></i> Löschen
+          </button>
         </td>
       `;
       tableBody.appendChild(row);
@@ -71,9 +79,11 @@ export function initAdminPanel() {
     document.querySelectorAll(".deleteBtn").forEach(btn => {
       btn.addEventListener("click", async e => {
         const id = e.target.dataset.id;
-        await deleteDoc(doc(db, "employees", id));
-        alert("Mitarbeiter gelöscht");
-        await loadEmployees();
+        if (confirm("Soll dieser Mitarbeiter wirklich gelöscht werden?")) {
+          await deleteDoc(doc(db, "employees", id));
+          alert("✅ Mitarbeiter gelöscht");
+          await loadEmployees();
+        }
       });
     });
   }

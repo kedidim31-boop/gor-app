@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Neon Theme -->
-  <link rel="stylesheet" href="src/styles/neon-theme.css">
+  <!-- Globale Neon Theme -->
+  <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/adminPanel.css">
-  <!-- Icon Library -->
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -17,11 +17,11 @@
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-user-shield"></i> Gaming of Republic<br>Admin Panel</div>
+      <div class="subtitle"><i class="fa-solid fa-user-shield"></i> Admin Panel</div>
     </div>
   </div>
 
-  <!-- Navigation (identisch zu index.html) -->
+  <!-- Navigation -->
   <div class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
@@ -29,32 +29,33 @@
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="adminPanel.html" class="active"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
-  <!-- Admin Panel Inhalt -->
+  <!-- Benutzer anlegen -->
   <div class="card">
     <h2><i class="fa-solid fa-user-plus"></i> Neuen Benutzer anlegen</h2>
     <form id="createUserForm">
-      <div class="input-group">
-        <i class="fa-solid fa-envelope"></i>
-        <input type="email" id="newEmail" placeholder="E-Mail" required>
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" id="newPassword" placeholder="Passwort" required>
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-user-tag"></i>
+      <label>
+        <i class="fa-solid fa-envelope"></i> E-Mail
+        <input type="email" id="newEmail" required>
+      </label>
+      <label>
+        <i class="fa-solid fa-lock"></i> Passwort
+        <input type="password" id="newPassword" required>
+      </label>
+      <label>
+        <i class="fa-solid fa-user-tag"></i> Rolle
         <select id="newRole" required>
           <option value="mitarbeiter">Mitarbeiter</option>
           <option value="admin">Admin</option>
         </select>
-      </div>
-      <button type="submit" class="neon-btn"><i class="fa-solid fa-save"></i> Benutzer erstellen</button>
+      </label>
+      <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-save"></i> Benutzer erstellen</button>
     </form>
   </div>
 
+  <!-- Mitarbeiterverwaltung -->
   <div class="card">
     <h2><i class="fa-solid fa-users-gear"></i> Mitarbeiterverwaltung</h2>
     <table id="adminEmployeeTable">
@@ -72,7 +73,7 @@
     </table>
   </div>
 
-  <!-- Firebase & Admin Panel Logik -->
+  <!-- Firebase Logik -->
   <script type="module">
     import { initAdminPanel } from "./src/scripts/adminPanel.js";
     initAdminPanel();

@@ -54,7 +54,9 @@
             <option value="admin">Admin</option>
           </select>
         </label>
-        <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-save"></i> Mitarbeiter speichern</button>
+        <button type="submit" class="btn btn-yellow">
+          <i class="fa-solid fa-save"></i> Mitarbeiter speichern
+        </button>
       </form>
     </div>
 
@@ -124,7 +126,8 @@
             </select>
           </td>
           <td>
-            <button class="btn btn-red deleteBtn" data-id="${docSnap.id}">
+            <button class="actionBtn"><i class="fa-solid fa-pen"></i> Bearbeiten</button>
+            <button class="deleteBtn" data-id="${docSnap.id}">
               <i class="fa-solid fa-trash"></i> Löschen
             </button>
           </td>

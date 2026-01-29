@@ -2,14 +2,15 @@
 /* Ergänzt globale neon-theme.css mit spezifischen Features */
 
 /* Formular für Produkte */
-#productForm {
+#createProductForm {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
 }
 
-#productForm input,
-#productForm textarea {
+#createProductForm input,
+#createProductForm textarea,
+#createProductForm select {
   background-color: #0d0d1a;
   border: 1px solid #FFD300;
   border-radius: 6px;
@@ -20,24 +21,26 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-#productForm input:focus,
-#productForm textarea:focus {
+#createProductForm input:focus,
+#createProductForm textarea:focus,
+#createProductForm select:focus {
   border-color: #70ffea;
   box-shadow: 0 0 10px #70ffea, 0 0 20px rgba(112, 255, 234, 0.6);
 }
 
-#productForm textarea {
+#createProductForm textarea {
   grid-column: 1 / -1;
   min-height: 80px;
 }
 
-#productForm button {
+#createProductForm button {
   grid-column: 1 / -1;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#productForm button:hover {
+#createProductForm button:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
 }
 
 /* Tabelle für Produkte */
@@ -52,15 +55,15 @@
 #productTable td {
   text-align: center;
   color: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #333;
 }
 
-/* Standardfarbe für technische Felder */
-#productTable th:nth-child(5),  /* SKU */
-#productTable th:nth-child(6),  /* EAN */
-#productTable th:nth-child(9),  /* Anbieter */
-#productTable th:nth-child(10), /* Preis */
-#productTable th:nth-child(11), /* Bilder */
-#productTable th:nth-child(12)  /* Aktionen */ {
+/* Farbcode für technische Felder */
+#productTable th:nth-child(6),  /* SKU */
+#productTable th:nth-child(7),  /* EAN */
+#productTable th:nth-child(8),  /* Preis */
+#productTable th:nth-child(9)   /* Aktionen */ {
   color: #FFD300;
   text-shadow: 0 0 6px #FFD300;
 }
@@ -68,28 +71,17 @@
 /* Neon-Türkis für inhaltliche Felder */
 #productTable th:nth-child(1),  /* Produktname */
 #productTable th:nth-child(2),  /* Beschreibung */
-#productTable th:nth-child(3),  /* Kollektion */
-#productTable th:nth-child(4),  /* Typ */
-#productTable th:nth-child(7),  /* Bestand */
-#productTable th:nth-child(8)   /* Produktgewicht */ {
+#productTable th:nth-child(3),  /* Typ */
+#productTable th:nth-child(4),  /* Anbieter */
+#productTable th:nth-child(5)   /* Kollektionen */ {
   color: #70ffea;
   text-shadow: 0 0 6px #70ffea;
 }
 
-/* Bild-Thumbnails */
-#productTable img {
-  border: 1px solid #FFD300;
-  border-radius: 6px;
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  box-shadow: 0 0 8px #FFD300;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#productTable img:hover {
-  transform: scale(1.3);
-  box-shadow: 0 0 16px #FFD300, 0 0 32px rgba(255, 211, 0, 0.8);
+/* Preis mit Bargeld-Icon */
+#productTable td:nth-child(8) i {
+  color: #00ff88;
+  margin-right: 6px;
 }
 
 /* Buttons in Tabelle */

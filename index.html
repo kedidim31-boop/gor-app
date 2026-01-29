@@ -30,6 +30,7 @@
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+    <!-- Logout Button -->
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </nav>
 
@@ -81,19 +82,7 @@
     </div>
   </main>
 
-  <!-- Firebase Logik -->
-  <script type="module">
-    import { initFirebase } from "./src/scripts/firebaseSetup.js";
-    import { enforceRole } from "./src/scripts/roleGuard.js";
-    import { logout } from "./src/scripts/auth.js";
-
-    const { db } = initFirebase();
-    enforceRole(["admin", "mitarbeiter"], "login.html");
-
-    // Logout
-    document.querySelector(".logout-btn").addEventListener("click", logout);
-  </script>
-
+  <!-- Firebase Logik ausgelagert -->
+  <script type="module" src="src/scripts/index.js"></script>
 </body>
 </html>
-

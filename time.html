@@ -66,26 +66,17 @@
 
   <!-- Firebase Logik -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-    import { enforceRole } from './src/scripts/roleGuard.js';
+    import { initFirebase } from "./src/scripts/firebaseSetup.js";
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    import { logout } from "./src/scripts/auth.js";
 
-    // Firebase Init
-    const firebaseConfig = {
-      apiKey: "AIzaSyC5PqdD4o5hMXKh4_y3bCLHlXwWgILxsM4",
-      authDomain: "gaming-of-republic.firebaseapp.com",
-      projectId: "gaming-of-republic",
-      storageBucket: "gaming-of-republic.firebasestorage.app",
-      messagingSenderId: "610190951435",
-      appId: "1:610190951435:web:bbf184d09a894fc307f30e"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+    import { collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } 
+      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-    // Zugriff: Mitarbeiter & Admins
-    enforceRole("mitarbeiter", "index.html");
+    const { db } = initFirebase();
+
+    // Zugriff: Admins & Mitarbeiter
+    enforceRole(["admin", "mitarbeiter"], "index.html");
 
     // Zeiterfassung hinzufügen
     document.getElementById("timeForm").addEventListener("submit", async e => {
@@ -103,7 +94,7 @@
         createdAt: serverTimestamp()
       });
 
-      alert("Zeiterfassung gespeichert!");
+      alert("✅ Zeiterfassung gespeichert!");
       loadTimeEntries();
       e.target.reset();
     });
@@ -137,7 +128,7 @@
         btn.addEventListener("click", async e => {
           const id = e.target.dataset.id;
           await deleteDoc(doc(db, "timeEntries", id));
-          alert("Eintrag gelöscht");
+          alert("🗑️ Eintrag gelöscht");
           loadTimeEntries();
         });
       });
@@ -147,16 +138,8 @@
     loadTimeEntries();
 
     // Logout
-    document.querySelector(".logout-btn").addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        window.location.href = "login.html";
-      } catch (err) {
-        console.error("Logout fehlgeschlagen:", err);
-      }
-    });
+    document.querySelector(".logout-btn").addEventListener("click", logout);
   </script>
 
 </body>
 </html>
-

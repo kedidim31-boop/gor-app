@@ -22,6 +22,87 @@ body {
   padding: 0;
 }
 
+/* Branding Header */
+.branding-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(90deg, #111, #222);
+  border-bottom: 2px solid var(--color-neon-yellow);
+}
+
+.branding-header img {
+  height: 50px;
+  margin-right: 1rem;
+}
+
+.branding-text .subtitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-neon-yellow);
+}
+
+/* Navigation oben */
+.top-nav {
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-panel);
+  padding: 0.5rem 1rem;
+}
+
+.top-nav a,
+.top-nav button {
+  color: var(--color-text-light);
+  text-decoration: none;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.top-nav a.active {
+  background: var(--color-neon-yellow);
+  color: var(--color-bg-dark);
+  font-weight: bold;
+}
+
+.top-nav a:hover,
+.top-nav button:hover {
+  background: #333;
+  cursor: pointer;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-light);
+  font-size: 1rem;
+}
+
+/* Bottom Navigation für Mobile */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--color-bg-panel);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #333;
+}
+
+.bottom-nav a {
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+}
+
+.bottom-nav a.active {
+  color: var(--color-neon-yellow);
+  font-weight: bold;
+}
+
 /* Karten */
 .card {
   background: var(--color-bg-panel);
@@ -29,6 +110,7 @@ body {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
+  color: var(--color-text-light);
 }
 
 .card h2 {

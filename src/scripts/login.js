@@ -1,12 +1,22 @@
-<script>
+// src/scripts/login.js
+import { initFirebase } from "./firebaseSetup.js";
+import { getAuth, signInWithEmailAndPassword } 
+  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const splash = document.querySelector(".splash-screen");
   const loginCard = document.querySelector(".login-card");
   const skipBtn = document.querySelector(".skip-btn");
-  const form = document.getElementById("loginForm");
+  const loginBtn = document.getElementById("loginBtn");
   const errorMessage = document.querySelector(".error-message");
-  const passwordInput = document.getElementById("loginPassword");
-  const togglePassword = document.querySelector(".toggle-password");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const togglePassword = document.getElementById("togglePassword");
+  const spinner = document.getElementById("spinner");
+
+  // Firebase Setup
+  const { app } = initFirebase();
+  const auth = getAuth(app);
 
   // Splash automatisch ausblenden nach 3 Sekunden
   setTimeout(() => {
@@ -35,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
     togglePassword.classList.toggle("fa-eye-slash");
   });
 
-  // Login Formular
-  form?.addEventListener("submit", async e => {
+  // Login Button
+  loginBtn?.addEventListener("click", async e => {
     e.preventDefault();
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
     if (!email || !password) {
       errorMessage.textContent = "Bitte fülle alle Felder aus.";
@@ -49,17 +59,20 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    try {
-      // Firebase Login
-      const { initFirebase } = await import("./src/scripts/firebaseSetup.js");
-      const { getAuth, signInWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js");
-      const { app } = initFirebase();
-      const auth = getAuth(app);
+    // Spinner anzeigen
+    spinner.style.display = "block";
+    errorMessage.classList.add("hidden");
 
+    try {
       await signInWithEmailAndPassword(auth, email, password);
-      window.location.href = "index.html";
+      // Erfolg: Success-Feedback
+      loginCard.classList.add("success");
+      setTimeout(() => {
+        loginCard.classList.add("fade-out-success");
+        window.location.href = "index.html";
+      }, 1200);
     } catch (error) {
-      // Fehlerfeedback mit Shake + Glow
+      spinner.style.display = "none";
       errorMessage.textContent = "Login fehlgeschlagen: " + error.message;
       errorMessage.classList.remove("hidden");
       loginCard.classList.add("shake");
@@ -69,4 +82,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-</script>

@@ -57,8 +57,10 @@
     import { initFirebase } from "./src/scripts/firebaseSetup.js";
     import { getAuth, signInWithEmailAndPassword } 
       from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } 
+      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-    const { app } = initFirebase();
+    const { app, db } = initFirebase();
     const auth = getAuth(app);
 
     const splash = document.getElementById("splash");
@@ -101,8 +103,24 @@
       const password = document.getElementById("password").value;
 
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "index.html"; // Weiterleitung zur Home-Seite
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Rolle aus Firestore abfragen
+        const userDoc = await getDoc(doc(db, "employees", user.uid));
+        if (userDoc.exists()) {
+          const role = userDoc.data().role;
+
+          if (role === "admin") {
+            window.location.href = "index.html"; // Admin darf alles
+          } else if (role === "mitarbeiter") {
+            window.location.href = "index.html"; // Mitarbeiter auch Zugriff
+          } else {
+            alert("❌ Keine gültige Rolle gefunden!");
+          }
+        } else {
+          alert("❌ Benutzer hat keinen Eintrag in 'employees'");
+        }
       } catch (err) {
         const card = document.querySelector(".login-card");
         const errorMsg = document.getElementById("errorMessage");

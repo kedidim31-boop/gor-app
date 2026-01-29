@@ -114,6 +114,12 @@ body {
   margin: 0.5rem 0;
 }
 
+/* Spezielle Farbe für Bestand */
+#stockTotal {
+  color: var(--color-neon-purple, #d28cff);
+  text-shadow: 0 0 8px var(--color-neon-purple, #d28cff);
+}
+
 /* Charts */
 canvas {
   max-width: 100%;

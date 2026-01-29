@@ -4,6 +4,9 @@
 /* Karten für Zeiterfassung */
 .card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 24px;
+  border-radius: 12px;
+  background-color: var(--color-bg-panel);
 }
 
 .card:hover {
@@ -16,7 +19,8 @@
 #timeForm {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
+  gap: 20px;
+  margin-top: 10px;
 }
 
 #timeForm label {
@@ -43,12 +47,12 @@
 }
 
 .icon-input input {
-  padding-left: 36px;
+  padding-left: 40px;
 }
 
 /* Standard-Icons im Formular */
 #timeForm i {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   color: #ffffff;
 }
 
@@ -58,11 +62,12 @@
 #timeForm select {
   background-color: var(--color-bg-panel);
   border: 2px solid var(--color-neon-yellow);
-  border-radius: 8px;
-  padding: 10px;
+  border-radius: 10px;
+  padding: 12px 14px;
   color: var(--color-text-light);
   font-weight: bold;
   outline: none;
+  font-size: 0.95rem;
   transition: all 0.2s ease;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
 }
@@ -100,9 +105,10 @@
 #timeTable th,
 #timeTable td {
   text-align: center;
-  padding: 10px;
+  padding: 12px;
   border-bottom: 1px solid #333;
   color: var(--color-text-light);
+  font-size: 0.95rem;
 }
 
 #timeTable th {
@@ -131,6 +137,11 @@
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-red),
               0 0 24px rgba(255, 77, 77, 0.6);
+}
+
+/* Navigation Icon neben Zeiterfassung bleibt schwarz */
+.top-nav a.active i.fa-clock {
+  color: #000000 !important;
 }
 
 /* Responsive Anpassung */

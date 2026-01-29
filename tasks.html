@@ -44,16 +44,16 @@
           <input type="text" id="taskTitle" placeholder="Titel" required>
         </label>
         <label class="form-field icon-input">
+          <i class="fa-solid fa-align-left"></i>
+          <textarea id="taskDescription" placeholder="Beschreibung"></textarea>
+        </label>
+        <label class="form-field icon-input">
           <i class="fa-solid fa-bars-progress"></i>
           <select id="taskStatus" required>
             <option value="offen">Offen</option>
             <option value="inBearbeitung">In Bearbeitung</option>
             <option value="abgeschlossen">Abgeschlossen</option>
           </select>
-        </label>
-        <label class="form-field full-width">
-          <i class="fa-solid fa-align-left"></i> Beschreibung
-          <textarea id="taskDescription" placeholder="Beschreibung"></textarea>
         </label>
         <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Aufgabe speichern
@@ -124,11 +124,17 @@
         // Status-Klasse für ganze Zeile setzen
         row.classList.add(`status-${data.status}`);
 
+        // Badge mit Icon je nach Status
+        let badgeIcon = "";
+        if (data.status === "offen") badgeIcon = "<i class='fa-solid fa-clock'></i>";
+        if (data.status === "inBearbeitung") badgeIcon = "<i class='fa-solid fa-screwdriver-wrench'></i>";
+        if (data.status === "abgeschlossen") badgeIcon = "<i class='fa-solid fa-check'></i>";
+
         row.innerHTML = `
           <td>${data.title}</td>
           <td>${data.description || "-"}</td>
           <td>
-            <span class="status-badge status-${data.status}">${data.status}</span><br>
+            <span class="status-badge status-${data.status}">${badgeIcon} ${data.status}</span><br>
             <select data-id="${docSnap.id}" class="statusSelect">
               <option value="offen" ${data.status === "offen" ? "selected" : ""}>Offen</option>
               <option value="inBearbeitung" ${data.status === "inBearbeitung" ? "selected" : ""}>In Bearbeitung</option>
@@ -156,7 +162,11 @@
           row.classList.add(`status-${newStatus}`);
           // Badge aktualisieren
           const badge = row.querySelector(".status-badge");
-          badge.textContent = newStatus;
+          let badgeIcon = "";
+          if (newStatus === "offen") badgeIcon = "<i class='fa-solid fa-clock'></i>";
+          if (newStatus === "inBearbeitung") badgeIcon = "<i class='fa-solid fa-screwdriver-wrench'></i>";
+          if (newStatus === "abgeschlossen") badgeIcon = "<i class='fa-solid fa-check'></i>";
+          badge.innerHTML = `${badgeIcon} ${newStatus}`;
           badge.className = `status-badge status-${newStatus}`;
         });
       });

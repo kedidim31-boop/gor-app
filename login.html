@@ -16,18 +16,18 @@
   <div class="neon-bg"></div>
 
   <!-- Splash Screen -->
-  <div class="splash-screen">
+  <section class="splash-screen">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="splash-logo">
     <button class="skip-btn">Skip Intro</button>
-  </div>
+  </section>
 
   <!-- Login Container -->
-  <div class="login-container">
+  <main class="login-container">
     <div class="card login-card">
       <h2><i class="fa-solid fa-user-shield"></i> Willkommen zurück</h2>
       <p class="login-subtitle">Bitte melde dich mit deinem Konto an</p>
 
-      <form id="loginForm">
+      <form id="loginForm" novalidate>
         <!-- E-Mail -->
         <div class="input-group">
           <i class="fa-solid fa-envelope"></i>
@@ -43,7 +43,9 @@
           <i class="fa-solid fa-eye toggle-password"></i>
         </div>
 
-        <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+        <button type="submit" class="btn btn-yellow">
+          <i class="fa-solid fa-right-to-bracket"></i> Login
+        </button>
       </form>
 
       <!-- Fehlerfeedback -->
@@ -54,10 +56,10 @@
         <a href="#" class="forgot-link"><i class="fa-solid fa-key"></i> Passwort vergessen?</a>
       </div>
     </div>
-  </div>
+  </main>
 
   <!-- Splash & Login Logik -->
-  <script src="src/scripts/login.js"></script>
+  <script type="module" src="src/scripts/login.js"></script>
 
 </body>
 </html>

@@ -17,11 +17,11 @@
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-box"></i> Gaming of Republic<br>Produkte</div>
+      <div class="subtitle"><i class="fa-solid fa-box"></i> Produktverwaltung</div>
     </div>
   </div>
 
-  <!-- Navigation (wie index.html) -->
+  <!-- Navigation -->
   <div class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
@@ -32,46 +32,47 @@
     <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
-  <!-- Produktverwaltung -->
+  <!-- Produktformular -->
   <div class="card">
-    <h2><i class="fa-solid fa-plus"></i> Neues Produkt anlegen</h2>
-    <form id="createProductForm">
-      <div class="input-group">
-        <i class="fa-solid fa-tag"></i>
-        <input type="text" id="productName" placeholder="Produktname" required>
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-align-left"></i>
-        <textarea id="productDescription" placeholder="Beschreibung" required></textarea>
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-layer-group"></i>
-        <input type="text" id="productType" placeholder="Typ" required>
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-industry"></i>
-        <input type="text" id="productVendor" placeholder="Anbieter" required>
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-folder"></i>
-        <input type="text" id="productCollections" placeholder="Kollektionen">
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-barcode"></i>
-        <input type="text" id="productSKU" placeholder="SKU" required>
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-barcode"></i>
-        <input type="text" id="productEAN" placeholder="EAN">
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-euro-sign"></i>
-        <input type="number" id="productPrice" placeholder="Preis" step="0.01" required>
-      </div>
-      <button type="submit" class="neon-btn"><i class="fa-solid fa-save"></i> Produkt speichern</button>
+    <h2><i class="fa-solid fa-plus"></i> Neues Produkt hinzufügen</h2>
+    <form id="createProductForm" class="form-grid">
+      <label>
+        <i class="fa-solid fa-tag"></i> Produktname
+        <input type="text" id="productName" required>
+      </label>
+      <label>
+        <i class="fa-solid fa-align-left"></i> Beschreibung
+        <textarea id="productDescription" required></textarea>
+      </label>
+      <label>
+        <i class="fa-solid fa-layer-group"></i> Typ
+        <input type="text" id="productType" required>
+      </label>
+      <label>
+        <i class="fa-solid fa-industry"></i> Anbieter
+        <input type="text" id="productVendor" required>
+      </label>
+      <label>
+        <i class="fa-solid fa-folder"></i> Kollektionen
+        <input type="text" id="productCollections">
+      </label>
+      <label>
+        <i class="fa-solid fa-barcode"></i> SKU
+        <input type="text" id="productSKU" required>
+      </label>
+      <label>
+        <i class="fa-solid fa-barcode"></i> EAN
+        <input type="text" id="productEAN">
+      </label>
+      <label>
+        <i class="fa-solid fa-money-bill-wave"></i> Preis (€)
+        <input type="number" id="productPrice" step="0.01" required>
+      </label>
+      <button type="submit" class="neon-btn"><i class="fa-solid fa-save"></i> Speichern</button>
     </form>
   </div>
 
+  <!-- Produktübersicht -->
   <div class="card">
     <h2><i class="fa-solid fa-boxes-stacked"></i> Produktübersicht</h2>
     <table id="productTable">
@@ -84,7 +85,7 @@
           <th>Kollektionen</th>
           <th>SKU</th>
           <th>EAN</th>
-          <th>Preis</th>
+          <th><i class="fa-solid fa-money-bill-wave"></i> Preis (€)</th>
           <th>Aktionen</th>
         </tr>
       </thead>
@@ -138,7 +139,7 @@
           <td>${data.collections || "-"}</td>
           <td>${data.sku}</td>
           <td>${data.ean || "-"}</td>
-          <td>${data.price} €</td>
+          <td><i class="fa-solid fa-money-bill-wave"></i> ${data.price.toFixed(2)} €</td>
           <td><button class="deleteBtn neon-btn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i> Löschen</button></td>
         `;
         tableBody.appendChild(row);

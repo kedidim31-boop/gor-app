@@ -1,4 +1,4 @@
-// auth.js – Modul für Login & Logout (modulare Firebase SDK)
+// src/scripts/auth.js – Modul für Login & Logout (modulare Firebase SDK)
 // Registrierung wird NICHT angeboten, nur Admins können neue Benutzer anlegen.
 
 import { initFirebase } from "./firebaseSetup.js";
@@ -13,13 +13,29 @@ export async function login(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     console.log("✅ Login erfolgreich");
-    alert("Login erfolgreich – Willkommen im Admin System!");
-    window.location.href = "overview.html"; // oder Dashboard
+
+    // Erfolg: Feedback über Login-Card
+    const loginCard = document.querySelector(".login-card");
+    if (loginCard) {
+      loginCard.classList.add("success");
+      setTimeout(() => {
+        loginCard.classList.add("fade-out-success");
+        window.location.href = "overview.html"; // Dashboard-Seite
+      }, 1200);
+    } else {
+      window.location.href = "overview.html";
+    }
   } catch (error) {
     console.error("❌ Login fehlgeschlagen:", error);
-    alert("Login fehlgeschlagen: " + error.message);
 
-    // Shake-Effekt für Login-Card (falls vorhanden)
+    // Fehlernachricht anzeigen
+    const errorMessage = document.querySelector(".error-message");
+    if (errorMessage) {
+      errorMessage.textContent = "Login fehlgeschlagen: " + error.message;
+      errorMessage.classList.remove("hidden");
+    }
+
+    // Shake-Effekt für Login-Card
     const loginCard = document.querySelector(".login-card");
     if (loginCard) {
       loginCard.classList.add("shake");
@@ -34,7 +50,6 @@ export async function logout() {
   try {
     await signOut(auth);
     console.log("✅ Logout erfolgreich");
-    alert("Logout erfolgreich – bis bald!");
     window.location.href = "login.html";
   } catch (error) {
     console.error("❌ Fehler beim Logout:", error);
@@ -51,4 +66,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-

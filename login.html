@@ -54,6 +54,9 @@
       <button id="loginBtn" class="btn btn-yellow">
         <i class="fa-solid fa-right-to-bracket"></i> Einloggen
       </button>
+
+      <!-- Spinner -->
+      <div class="spinner" id="spinner"></div>
     </div>
   </main>
 
@@ -71,6 +74,7 @@
     const errorMessage = document.getElementById("errorMessage");
     const togglePassword = document.getElementById("togglePassword");
     const passwordInput = document.getElementById("password");
+    const spinner = document.getElementById("spinner");
 
     // Splash Screen skip
     skipBtn.addEventListener("click", () => {
@@ -91,10 +95,20 @@
       const email = document.getElementById("email").value.trim();
       const password = passwordInput.value.trim();
 
+      // Spinner anzeigen
+      spinner.style.display = "block";
+      errorMessage.classList.add("hidden");
+
       try {
         await login(email, password);
-        window.location.href = "index.html";
+        // Erfolg: Success-Feedback
+        loginCard.classList.add("success");
+        setTimeout(() => {
+          loginCard.classList.add("fade-out-success");
+          window.location.href = "index.html";
+        }, 1200);
       } catch (err) {
+        spinner.style.display = "none";
         errorMessage.classList.remove("hidden");
         loginCard.classList.add("shake");
         setTimeout(() => loginCard.classList.remove("shake"), 600);

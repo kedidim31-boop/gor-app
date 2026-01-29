@@ -19,12 +19,13 @@ form.addEventListener("submit", async e => {
   e.preventDefault();
   const product = {
     name: document.getElementById("productName").value.trim(),
-    description: document.getElementById("productDescription").value.trim(),
+    description: document.getElementById("productDescription").value.trim() || "", // optional
     type: document.getElementById("productType").value.trim(),
     vendor: document.getElementById("productVendor").value.trim(),
     collections: document.getElementById("productCollections").value.trim(),
     sku: document.getElementById("productSKU").value.trim(),
     ean: document.getElementById("productEAN").value.trim(),
+    stock: parseInt(document.getElementById("productStock").value) || 0, // neues Feld
     price: parseFloat(document.getElementById("productPrice").value) || 0
   };
   try {
@@ -53,6 +54,7 @@ async function loadProducts() {
       <td>${data.collections || "-"}</td>
       <td>${data.sku || "-"}</td>
       <td>${data.ean || "-"}</td>
+      <td>${data.stock ?? 0}</td>
       <td><i class="fa-solid fa-money-bill-wave"></i> ${Number(data.price || 0).toFixed(2)} CHF</td>
       <td>
         <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">
@@ -93,8 +95,8 @@ document.getElementById("exportBtn").addEventListener("click", async () => {
   const snapshot = await getDocs(collection(db, "products"));
   let csvContent = "data:text/csv;charset=utf-8,";
 
-  // Shopify Kopfzeile
-  csvContent += "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Price\n";
+  // Shopify Kopfzeile erweitert um Stock
+  csvContent += "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
 
   snapshot.forEach(docSnap => {
     const p = docSnap.data();
@@ -107,6 +109,7 @@ document.getElementById("exportBtn").addEventListener("click", async () => {
     const published = "TRUE";
     const sku = p.sku || "";
     const barcode = p.ean || "";
+    const stock = p.stock ?? 0;
     const price = p.price || 0;
 
     const row = [
@@ -119,6 +122,7 @@ document.getElementById("exportBtn").addEventListener("click", async () => {
       published,
       sku,
       barcode,
+      stock,
       price
     ].join(",");
 

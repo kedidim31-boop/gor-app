@@ -28,6 +28,7 @@
     <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
     <a href="tasks.html" class="active"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </nav>
@@ -54,7 +55,9 @@
             <option value="abgeschlossen">Abgeschlossen</option>
           </select>
         </label>
-        <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-save"></i> Aufgabe speichern</button>
+        <button type="submit" class="btn btn-yellow">
+          <i class="fa-solid fa-save"></i> Aufgabe speichern
+        </button>
       </form>
     </div>
 
@@ -129,7 +132,7 @@
             </select>
           </td>
           <td>
-            <button class="btn btn-red deleteBtn" data-id="${docSnap.id}">
+            <button class="deleteBtn" data-id="${docSnap.id}">
               <i class="fa-solid fa-trash"></i> Löschen
             </button>
           </td>

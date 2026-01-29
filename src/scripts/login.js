@@ -10,11 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Splash automatisch ausblenden nach 3 Sekunden
   setTimeout(() => {
-    splash.classList.add("fade-out");
-    setTimeout(() => {
-      splash.style.display = "none";
-      loginCard.classList.add("fade-in");
-    }, 1000);
+    if (splash) {
+      splash.classList.add("fade-out");
+      setTimeout(() => {
+        splash.style.display = "none";
+        loginCard?.classList.add("fade-in");
+      }, 1000);
+    }
   }, 3000);
 
   // Skip Button sofort Splash überspringen
@@ -22,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     splash.classList.add("fade-out");
     setTimeout(() => {
       splash.style.display = "none";
-      loginCard.classList.add("fade-in");
+      loginCard?.classList.add("fade-in");
     }, 1000);
   });
 
@@ -34,10 +36,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Login Formular
-  form.addEventListener("submit", async e => {
+  form?.addEventListener("submit", async e => {
     e.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
+
+    if (!email || !password) {
+      errorMessage.textContent = "Bitte fülle alle Felder aus.";
+      errorMessage.classList.remove("hidden");
+      loginCard.classList.add("shake");
+      setTimeout(() => loginCard.classList.remove("shake"), 600);
+      return;
+    }
 
     try {
       // Firebase Login
@@ -49,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
       await signInWithEmailAndPassword(auth, email, password);
       window.location.href = "index.html";
     } catch (error) {
-      // Fehlerfeedback
+      // Fehlerfeedback mit Shake + Glow
       errorMessage.textContent = "Login fehlgeschlagen: " + error.message;
       errorMessage.classList.remove("hidden");
       loginCard.classList.add("shake");

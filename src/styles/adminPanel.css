@@ -1,20 +1,20 @@
 /* Admin Panel Seite – Cyberpunk Neon Look */
-/* Ergänzt globale neon-theme.css mit spezifischen Features */
+/* Ergänzt globale theme.css mit spezifischen Features */
 
 /* Formular für Benutzeranlage */
 #createUserForm {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1rem;
 }
 
 #createUserForm input,
 #createUserForm select {
-  background-color: #141432;
-  border: 2px solid #FFD300;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
   border-radius: 8px;
   padding: 10px;
-  color: #FFD300;
+  color: var(--color-neon-yellow);
   font-weight: bold;
   outline: none;
   transition: all 0.2s ease;
@@ -22,33 +22,28 @@
 
 #createUserForm input:focus,
 #createUserForm select:focus {
-  border-color: #70ffea;
-  box-shadow: 0 0 12px #70ffea, 0 0 24px rgba(112, 255, 234, 0.7);
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.7);
 }
 
 /* Dropdown für Rollen */
 #createUserForm select {
-  background-color: #141432;
-  border: 2px solid #FFD300;
-  border-radius: 6px;
-  padding: 6px;
-  color: #FFD300;
-  font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
 #createUserForm select:hover,
 #createUserForm select:focus {
-  border-color: #70ffea;
-  box-shadow: 0 0 10px #70ffea, 0 0 20px rgba(112, 255, 234, 0.7);
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise),
+              0 0 20px rgba(112, 255, 234, 0.7);
 }
 
 /* Tabelle für Mitarbeiterverwaltung */
 #adminEmployeeTable {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-top: 1.5rem;
 }
 
 #adminEmployeeTable th,
@@ -56,13 +51,13 @@
   text-align: center;
   padding: 10px;
   border-bottom: 1px solid #333;
-  color: #f0f0f0;
+  color: var(--color-text-light);
 }
 
 #adminEmployeeTable th {
-  background-color: #1a1a2e;
-  color: #FFD300;
-  text-shadow: 0 0 6px #FFD300;
+  background-color: var(--color-bg-panel);
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
 #adminEmployeeTable tr:hover {
@@ -72,8 +67,8 @@
 /* Buttons in Tabelle */
 #adminEmployeeTable .actionBtn {
   background-color: transparent;
-  border: 1px solid #70ffea;
-  color: #70ffea;
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
@@ -81,21 +76,23 @@
 }
 
 #adminEmployeeTable .actionBtn:hover {
-  background-color: #70ffea;
+  background-color: var(--color-neon-turquoise);
   color: #000;
-  box-shadow: 0 0 12px #70ffea, 0 0 24px rgba(112, 255, 234, 0.6);
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.6);
 }
 
 /* Delete Button */
 #adminEmployeeTable .deleteBtn {
-  border: 1px solid #ff4d4d;
-  color: #ff4d4d;
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
 }
 
 #adminEmployeeTable .deleteBtn:hover {
-  background-color: #ff4d4d;
+  background-color: var(--color-neon-red);
   color: #000;
-  box-shadow: 0 0 12px #ff4d4d, 0 0 24px rgba(255, 77, 77, 0.6);
+  box-shadow: 0 0 12px var(--color-neon-red),
+              0 0 24px rgba(255, 77, 77, 0.6);
 }
 
 /* Responsive Anpassung */

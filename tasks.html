@@ -39,23 +39,23 @@
     <div class="card">
       <h2><i class="fa-solid fa-plus-circle"></i> Neue Aufgabe erstellen</h2>
       <form id="taskForm" class="form-grid">
-        <label>
-          <i class="fa-solid fa-heading"></i> Titel
-          <input type="text" id="taskTitle" required>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-heading"></i>
+          <input type="text" id="taskTitle" placeholder="Titel" required>
         </label>
-        <label>
-          <i class="fa-solid fa-align-left"></i> Beschreibung
-          <textarea id="taskDescription"></textarea>
-        </label>
-        <label>
-          <i class="fa-solid fa-bars-progress"></i> Status
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-bars-progress"></i>
           <select id="taskStatus" required>
             <option value="offen">Offen</option>
             <option value="inBearbeitung">In Bearbeitung</option>
             <option value="abgeschlossen">Abgeschlossen</option>
           </select>
         </label>
-        <button type="submit" class="btn btn-yellow">
+        <label class="form-field full-width">
+          <i class="fa-solid fa-align-left"></i> Beschreibung
+          <textarea id="taskDescription" placeholder="Beschreibung"></textarea>
+        </label>
+        <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Aufgabe speichern
         </button>
       </form>

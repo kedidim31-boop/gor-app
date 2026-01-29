@@ -60,62 +60,7 @@
     </div>
   </main>
 
-  <!-- Firebase Logik -->
-  <script type="module">
-    import { initFirebase } from "./src/scripts/firebaseSetup.js";
-    import { login } from "./src/scripts/auth.js";
-
-    const { db } = initFirebase();
-
-    const splash = document.getElementById("splash");
-    const skipBtn = document.getElementById("skipBtn");
-    const loginCard = document.getElementById("loginCard");
-    const loginBtn = document.getElementById("loginBtn");
-    const errorMessage = document.getElementById("errorMessage");
-    const togglePassword = document.getElementById("togglePassword");
-    const passwordInput = document.getElementById("password");
-    const spinner = document.getElementById("spinner");
-
-    // Splash Screen skip
-    skipBtn.addEventListener("click", () => {
-      splash.classList.add("fade-out");
-      setTimeout(() => splash.style.display = "none", 1000);
-      loginCard.classList.add("fade-in");
-    });
-
-    // Passwort anzeigen/ausblenden
-    togglePassword.addEventListener("click", () => {
-      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-      passwordInput.setAttribute("type", type);
-      togglePassword.classList.toggle("fa-eye-slash");
-    });
-
-    // Login
-    loginBtn.addEventListener("click", async () => {
-      const email = document.getElementById("email").value.trim();
-      const password = passwordInput.value.trim();
-
-      // Spinner anzeigen
-      spinner.style.display = "block";
-      errorMessage.classList.add("hidden");
-
-      try {
-        await login(email, password);
-        // Erfolg: Success-Feedback
-        loginCard.classList.add("success");
-        setTimeout(() => {
-          loginCard.classList.add("fade-out-success");
-          window.location.href = "index.html";
-        }, 1200);
-      } catch (err) {
-        spinner.style.display = "none";
-        errorMessage.classList.remove("hidden");
-        loginCard.classList.add("shake");
-        setTimeout(() => loginCard.classList.remove("shake"), 600);
-      }
-    });
-  </script>
-
+  <!-- Fix: externe Login-Logik statt Inline -->
+  <script type="module" src="src/scripts/login.js"></script>
 </body>
 </html>
-

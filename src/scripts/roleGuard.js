@@ -2,10 +2,11 @@
 // Ergänzt mit konsistentem Feedback, Logging und Redirect-Handling
 
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { initFirebase } from "./firebaseSetup.js";
 
-export function enforceRole(requiredRole, redirectPage = "index.html") {
-  const { auth } = initFirebase();
+export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
+  const { auth, db } = initFirebase();
 
   onAuthStateChanged(auth, async user => {
     if (!user) {
@@ -16,21 +17,25 @@ export function enforceRole(requiredRole, redirectPage = "index.html") {
     }
 
     try {
-      // Token mit Rollen-Claims abrufen
-      const token = await user.getIdTokenResult();
-      const role = token.claims.role || "guest";
+      // Rolle aus Firestore abfragen
+      const userDoc = await getDoc(doc(db, "employees", user.uid));
+      let role = "guest";
 
-      if (role !== requiredRole) {
+      if (userDoc.exists()) {
+        role = userDoc.data().role || "guest";
+      }
+
+      if (!requiredRoles.includes(role)) {
         // Konsistentes UI-Feedback im Neon-Look
-        console.error(`❌ Zugriff verweigert – benötigte Rolle: ${requiredRole}, aktuelle Rolle: ${role}`);
-        alert(`⚠️ Zugriff verweigert – nur für ${requiredRole}s erlaubt!`);
+        console.error(`❌ Zugriff verweigert – benötigte Rollen: ${requiredRoles.join(", ")}, aktuelle Rolle: ${role}`);
+        alert(`⚠️ Zugriff verweigert – nur für ${requiredRoles.join(" / ")} erlaubt!`);
         window.location.href = redirectPage;
       } else {
         console.log(`✅ Zugriff erlaubt für Rolle: ${role}`);
         document.body.classList.add("role-allowed"); // optionales CSS-Flag für UI-Anpassungen
       }
     } catch (err) {
-      console.error("❌ Fehler beim Abrufen der Rollen-Claims:", err);
+      console.error("❌ Fehler beim Abrufen der Rolle:", err);
       alert("Fehler bei der Rollenprüfung – bitte erneut einloggen.");
       window.location.href = "login.html";
     }

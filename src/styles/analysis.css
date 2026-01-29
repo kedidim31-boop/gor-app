@@ -1,0 +1,123 @@
+/* Analysis Seite – Übersicht & Dashboard im Neon-Stil */
+/* Ergänzt globale neon-theme.css mit spezifischen Features */
+
+/* Body */
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #0d0d1a;
+  color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Branding Header */
+.branding-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(90deg, #111, #222);
+  border-bottom: 2px solid #FFD300;
+}
+
+.branding-header img {
+  height: 50px;
+  margin-right: 1rem;
+}
+
+.branding-text .subtitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #FFD300;
+}
+
+/* Navigation */
+.top-nav {
+  display: flex;
+  align-items: center;
+  background: #1a1a2e;
+  padding: 0.5rem 1rem;
+}
+
+.top-nav a,
+.top-nav button {
+  color: #f0f0f0;
+  text-decoration: none;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.top-nav a.active {
+  background: #FFD300;
+  color: #0d0d1a;
+  font-weight: bold;
+}
+
+.top-nav a:hover,
+.top-nav button:hover {
+  background: #333;
+  cursor: pointer;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: #f0f0f0;
+  font-size: 1rem;
+}
+
+/* Dashboard Layout */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem;
+}
+
+/* Karten */
+.card {
+  background: #1a1a2e;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
+  text-align: center;
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #FFD300;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.card p {
+  color: #ccc;
+  margin-top: 0.5rem;
+}
+
+/* Statistiken */
+.stat {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #70ffea;
+  text-shadow: 0 0 8px #70ffea;
+  margin: 0.5rem 0;
+}
+
+/* Charts */
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive Anpassung */
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    margin: 1rem;
+  }
+  .card {
+    padding: 1rem;
+  }
+}

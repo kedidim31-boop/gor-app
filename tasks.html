@@ -121,6 +121,9 @@
         const data = docSnap.data();
         const row = document.createElement("tr");
 
+        // Status-Klasse für ganze Zeile setzen
+        row.classList.add(`status-${data.status}`);
+
         row.innerHTML = `
           <td>${data.title}</td>
           <td>${data.description || "-"}</td>
@@ -146,6 +149,10 @@
           const id = e.target.dataset.id;
           const newStatus = e.target.value;
           await updateDoc(doc(db, "tasks", id), { status: newStatus });
+          // Zeilenklasse aktualisieren
+          const row = e.target.closest("tr");
+          row.className = "";
+          row.classList.add(`status-${newStatus}`);
         });
       });
 

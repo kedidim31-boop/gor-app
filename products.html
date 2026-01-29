@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Neon Theme -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
-  <link rel="stylesheet" href="src/styles/index.css"> <!-- Einheitliches Layout -->
+  <link rel="stylesheet" href="src/styles/products.css">
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -17,48 +17,80 @@
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-box"></i> Produkte<br>Verwaltung</div>
+      <div class="subtitle"><i class="fa-solid fa-box"></i> Gaming of Republic<br>Produkte</div>
     </div>
   </div>
 
-  <!-- Navigation -->
+  <!-- Navigation (wie index.html) -->
   <div class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
     <a href="products.html" class="active"><i class="fa-solid fa-box"></i> Produkte</a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
-    <a href="overview.html"><i class="fa-solid fa-chart-pie"></i> Übersicht</a>
-    <a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
     <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
   <!-- Produktverwaltung -->
-  <div class="card fade-in">
-    <h2><i class="fa-solid fa-plus-circle"></i> Neues Produkt hinzufügen</h2>
-    <form id="productForm">
-      <input type="text" id="productName" placeholder="Produktname" required>
-      <textarea id="productDescription" placeholder="Beschreibung"></textarea>
-      <input type="text" id="productSKU" placeholder="SKU" required>
-      <input type="number" id="productPrice" placeholder="Preis (CHF)" step="0.01" required>
-      <button type="submit"><i class="fa-solid fa-save"></i> Produkt speichern</button>
+  <div class="card">
+    <h2><i class="fa-solid fa-plus"></i> Neues Produkt anlegen</h2>
+    <form id="createProductForm">
+      <div class="input-group">
+        <i class="fa-solid fa-tag"></i>
+        <input type="text" id="productName" placeholder="Produktname" required>
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-align-left"></i>
+        <textarea id="productDescription" placeholder="Beschreibung" required></textarea>
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-layer-group"></i>
+        <input type="text" id="productType" placeholder="Typ" required>
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-industry"></i>
+        <input type="text" id="productVendor" placeholder="Anbieter" required>
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-folder"></i>
+        <input type="text" id="productCollections" placeholder="Kollektionen">
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-barcode"></i>
+        <input type="text" id="productSKU" placeholder="SKU" required>
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-barcode"></i>
+        <input type="text" id="productEAN" placeholder="EAN">
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-euro-sign"></i>
+        <input type="number" id="productPrice" placeholder="Preis" step="0.01" required>
+      </div>
+      <button type="submit" class="neon-btn"><i class="fa-solid fa-save"></i> Produkt speichern</button>
     </form>
   </div>
 
-  <div class="card fade-in">
-    <h2><i class="fa-solid fa-table"></i> Produktübersicht</h2>
+  <div class="card">
+    <h2><i class="fa-solid fa-boxes-stacked"></i> Produktübersicht</h2>
     <table id="productTable">
       <thead>
         <tr>
-          <th>Name</th>
+          <th>Produktname</th>
           <th>Beschreibung</th>
+          <th>Typ</th>
+          <th>Anbieter</th>
+          <th>Kollektionen</th>
           <th>SKU</th>
+          <th>EAN</th>
           <th>Preis</th>
           <th>Aktionen</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+        <!-- Produkte werden hier dynamisch geladen -->
+      </tbody>
     </table>
   </div>
 
@@ -67,29 +99,32 @@
     import { initFirebase } from "./src/scripts/firebaseSetup.js";
     import { enforceRole } from "./src/scripts/roleGuard.js";
     import { logout } from "./src/scripts/auth.js";
-    import { collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } 
-      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const { db } = initFirebase();
-    enforceRole(["admin", "mitarbeiter"], "login.html");
+    enforceRole(["admin","mitarbeiter"], "login.html");
 
-    document.getElementById("productForm").addEventListener("submit", async e => {
+    const form = document.getElementById("createProductForm");
+    const tableBody = document.querySelector("#productTable tbody");
+
+    form.addEventListener("submit", async e => {
       e.preventDefault();
       const product = {
-        name: productName.value,
-        description: productDescription.value,
-        sku: productSKU.value,
-        price: parseFloat(productPrice.value),
-        createdAt: serverTimestamp()
+        name: document.getElementById("productName").value,
+        description: document.getElementById("productDescription").value,
+        type: document.getElementById("productType").value,
+        vendor: document.getElementById("productVendor").value,
+        collections: document.getElementById("productCollections").value,
+        sku: document.getElementById("productSKU").value,
+        ean: document.getElementById("productEAN").value,
+        price: parseFloat(document.getElementById("productPrice").value)
       };
       await addDoc(collection(db, "products"), product);
-      alert("✅ Produkt gespeichert!");
+      form.reset();
       loadProducts();
-      e.target.reset();
     });
 
     async function loadProducts() {
-      const tableBody = document.querySelector("#productTable tbody");
       tableBody.innerHTML = "";
       const snapshot = await getDocs(collection(db, "products"));
       snapshot.forEach(docSnap => {
@@ -97,24 +132,29 @@
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${data.name}</td>
-          <td>${data.description || "-"}</td>
+          <td>${data.description}</td>
+          <td>${data.type}</td>
+          <td>${data.vendor}</td>
+          <td>${data.collections || "-"}</td>
           <td>${data.sku}</td>
-          <td>${data.price ? data.price.toFixed(2) : "-"}</td>
-          <td><button class="deleteBtn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i></button></td>
+          <td>${data.ean || "-"}</td>
+          <td>${data.price} €</td>
+          <td><button class="deleteBtn neon-btn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i> Löschen</button></td>
         `;
         tableBody.appendChild(row);
       });
 
       document.querySelectorAll(".deleteBtn").forEach(btn => {
         btn.addEventListener("click", async e => {
-          await deleteDoc(doc(db, "products", e.target.dataset.id));
-          alert("🗑️ Produkt gelöscht");
+          const id = e.target.closest("button").dataset.id;
+          await deleteDoc(doc(db, "products", id));
           loadProducts();
         });
       });
     }
 
     loadProducts();
+
     document.querySelector(".logout-btn").addEventListener("click", logout);
   </script>
 

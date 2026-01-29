@@ -12,13 +12,13 @@
 </head>
 <body>
 
-  <!-- Branding Header -->
-  <div class="branding-header">
-    <img src="public/logo.png" alt="Gaming of Republic Logo">
-    <div class="divider"></div>
-    <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-right-to-bracket"></i> Login</div>
-    </div>
+  <!-- Animierter Hintergrund -->
+  <div class="neon-bg"></div>
+
+  <!-- Splash Screen -->
+  <div class="splash-screen">
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="splash-logo">
+    <button class="skip-btn">Skip Intro</button>
   </div>
 
   <!-- Login Container -->
@@ -28,16 +28,27 @@
       <p class="login-subtitle">Bitte melde dich mit deinem Konto an</p>
 
       <form id="loginForm">
-        <label>
-          <i class="fa-solid fa-envelope"></i> E-Mail
-          <input type="email" id="loginEmail" placeholder="Deine E-Mail" required>
-        </label>
-        <label>
-          <i class="fa-solid fa-lock"></i> Passwort
-          <input type="password" id="loginPassword" placeholder="Dein Passwort" required>
-        </label>
+        <!-- E-Mail -->
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="loginEmail" placeholder=" " required>
+          <label for="loginEmail">E-Mail</label>
+        </div>
+
+        <!-- Passwort -->
+        <div class="input-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="loginPassword" placeholder=" " required>
+          <label for="loginPassword">Passwort</label>
+          <i class="fa-solid fa-eye toggle-password"></i>
+        </div>
+
         <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
       </form>
+
+      <!-- Fehlerfeedback -->
+      <div class="error-message hidden">Login fehlgeschlagen</div>
+      <p class="hint">⚡ Dein Zugang ist geschützt mit Gaming of Republic</p>
 
       <div class="login-extra">
         <a href="#" class="forgot-link"><i class="fa-solid fa-key"></i> Passwort vergessen?</a>
@@ -45,27 +56,8 @@
     </div>
   </div>
 
-  <!-- Firebase Login Logik -->
-  <script type="module">
-    import { initFirebase } from "./src/scripts/firebaseSetup.js";
-    import { signInWithEmailAndPassword, getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-
-    const { app } = initFirebase();
-    const auth = getAuth(app);
-
-    const form = document.getElementById("loginForm");
-    form.addEventListener("submit", async e => {
-      e.preventDefault();
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "index.html";
-      } catch (error) {
-        alert("Login fehlgeschlagen: " + error.message);
-      }
-    });
-  </script>
+  <!-- Splash & Login Logik -->
+  <script src="src/scripts/login.js"></script>
 
 </body>
 </html>

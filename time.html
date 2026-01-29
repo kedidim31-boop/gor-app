@@ -68,41 +68,7 @@
         </button>
       </form>
     </div>
-    <!-- Zeiterfassungsübersicht -->
-    <div class="card">
-      <h2><i class="fa-solid fa-table"></i> Zeiterfassungsübersicht</h2>
-      <table id="timeTable">
-        <thead>
-          <tr>
-            <th>Mitarbeiter</th>
-            <th>Datum</th>
-            <th>Beginn</th>
-            <th>Ende</th>
-            <th>Stunden</th>
-            <th>Beschreibung</th>
-            <th>Aktionen</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Einträge werden hier dynamisch geladen -->
-        </tbody>
-      </table>
-    </div>
 
-    <!-- Statistik -->
-    <div class="card">
-      <h2><i class="fa-solid fa-chart-line"></i> Übersicht</h2>
-      <p class="stat" id="totalHours">Gesamtstunden: 0</p>
-    </div>
-  </main>
-
-  <!-- Firebase Logik -->
-  <script type="module">
-    <!-- Dein Script bleibt wie gehabt -->
-  </script>
-
-</body>
-</html>
     <!-- Zeiterfassungsübersicht -->
     <div class="card">
       <h2><i class="fa-solid fa-table"></i> Zeiterfassungsübersicht</h2>
@@ -141,10 +107,8 @@
 
     const { db } = initFirebase();
 
-    // Zugriff: Admins & Mitarbeiter
     enforceRole(["admin", "mitarbeiter"], "login.html");
 
-    // Stunden automatisch berechnen
     const startInput = document.getElementById("startTime");
     const endInput = document.getElementById("endTime");
     const hoursInput = document.getElementById("hoursWorked");
@@ -165,14 +129,12 @@
     startInput.addEventListener("change", calculateHours);
     endInput.addEventListener("change", calculateHours);
 
-    // Datum formatieren TT.MM.JJJJ
     function formatDate(dateStr) {
       if (!dateStr) return "-";
       const [yyyy, mm, dd] = dateStr.split("-");
       return `${dd}.${mm}.${yyyy}`;
     }
 
-    // Zeiterfassung hinzufügen
     document.getElementById("timeForm").addEventListener("submit", async e => {
       e.preventDefault();
       const employee = document.getElementById("employeeName").value.trim();
@@ -196,7 +158,6 @@
       e.target.reset();
     });
 
-    // Zeiterfassungen laden
     async function loadTimeEntries() {
       const tableBody = document.querySelector("#timeTable tbody");
       tableBody.innerHTML = "";
@@ -224,10 +185,8 @@
         tableBody.appendChild(row);
       });
 
-      // Gesamtstunden aktualisieren
       document.getElementById("totalHours").textContent = "Gesamtstunden: " + totalHours;
 
-      // Löschen
       document.querySelectorAll(".deleteBtn").forEach(btn => {
         btn.addEventListener("click", async e => {
           const id = e.target.dataset.id;
@@ -237,10 +196,7 @@
       });
     }
 
-    // Initial laden
     loadTimeEntries();
-
-    // Logout
     document.querySelector(".logout-btn").addEventListener("click", logout);
   </script>
 

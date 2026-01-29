@@ -84,16 +84,6 @@
   grid-column: 1 / -1;
 }
 
-/* Statistische Werte */
-.stat {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--color-neon-turquoise);
-  text-shadow: 0 0 12px var(--color-neon-turquoise),
-               0 0 24px rgba(0, 255, 255, 0.7);
-  margin: 10px 0;
-}
-
 /* Tabelle für Zeiterfassung */
 #timeTable {
   width: 100%;

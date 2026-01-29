@@ -2,47 +2,77 @@
 /* Ergänzt globale theme.css mit spezifischen Features */
 
 /* Formular für Aufgabenverwaltung */
-#taskForm {
+#taskForm.form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
+  gap: 20px;
+  margin-top: 10px;
+  align-items: start;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.icon-input i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #ffffff;
+  font-size: 1rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.icon-input input,
+.icon-input select {
+  padding-left: 40px;
 }
 
 #taskForm input,
 #taskForm textarea,
 #taskForm select {
-  background-color: var(--color-bg-dark);
-  border: 1px solid var(--color-neon-yellow);
-  border-radius: 6px;
-  padding: 10px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 10px;
+  padding: 12px 14px;
   color: var(--color-text-light);
-  font-size: 14px;
+  font-weight: bold;
+  outline: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #taskForm input:focus,
 #taskForm textarea:focus,
 #taskForm select:focus {
   border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.6);
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.7);
+}
+
+#taskForm .full-width {
+  grid-column: 1 / -1;
 }
 
 #taskForm textarea {
-  grid-column: 1 / -1;
   min-height: 80px;
 }
 
 #taskForm button {
-  grid-column: 1 / -1;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 #taskForm button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 12px var(--color-neon-yellow),
-              0 0 24px rgba(255, 211, 0, 0.6);
+              0 0 24px rgba(255, 211, 0.6);
 }
 
 /* Tabelle für Aufgaben */
@@ -56,8 +86,9 @@
 #taskTable td {
   text-align: center;
   color: var(--color-text-light);
-  padding: 10px;
+  padding: 12px;
   border-bottom: 1px solid #333;
+  font-size: 0.95rem;
 }
 
 #taskTable th {
@@ -67,10 +98,10 @@
 
 /* Dropdown für Status */
 .statusSelect {
-  background-color: var(--color-bg-dark);
-  border: 1px solid var(--color-neon-yellow);
-  border-radius: 6px;
-  padding: 6px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 8px;
+  padding: 8px;
   color: var(--color-neon-yellow);
   font-weight: bold;
   cursor: pointer;
@@ -82,6 +113,22 @@
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 10px var(--color-neon-turquoise),
               0 0 20px rgba(112, 255, 234, 0.7);
+}
+
+/* Statusfarben */
+.status-offen {
+  color: var(--color-neon-yellow);
+  font-weight: bold;
+}
+
+.status-inBearbeitung {
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+}
+
+.status-abgeschlossen {
+  color: #00ff66; /* Neon-Grün */
+  font-weight: bold;
 }
 
 /* Buttons in Tabelle */
@@ -104,9 +151,18 @@
 
 /* Responsive Anpassung */
 @media (max-width: 768px) {
+  #taskForm.form-grid {
+    grid-template-columns: 1fr;
+  }
+
   #taskTable {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
   }
+}
+
+/* Globale Icon-Farbe */
+i.fa-solid {
+  color: #ffffff !important;
 }

@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Produkte</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Neon Theme & Produkt-Styling -->
+  <!-- Neon Theme -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
-  <link rel="stylesheet" href="src/styles/products.css">
+  <link rel="stylesheet" href="src/styles/index.css"> <!-- Einheitliches Layout -->
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- Branding -->
+  <!-- Branding Header -->
   <div class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
@@ -34,42 +34,27 @@
     <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
-  <!-- Produktformular -->
-  <div class="card">
+  <!-- Produktverwaltung -->
+  <div class="card fade-in">
     <h2><i class="fa-solid fa-plus-circle"></i> Neues Produkt hinzufügen</h2>
     <form id="productForm">
       <input type="text" id="productName" placeholder="Produktname" required>
       <textarea id="productDescription" placeholder="Beschreibung"></textarea>
-      <input type="text" id="productCollection" placeholder="Kollektion">
-      <input type="text" id="productType" placeholder="Typ">
       <input type="text" id="productSKU" placeholder="SKU" required>
-      <input type="text" id="productEAN" placeholder="EAN">
-      <input type="number" id="productStock" placeholder="Bestand" min="0">
-      <input type="number" id="productWeight" placeholder="Produktgewicht (g)" step="0.01">
-      <input type="text" id="productSupplier" placeholder="Anbieter">
       <input type="number" id="productPrice" placeholder="Preis (CHF)" step="0.01" required>
-      <input type="file" id="productImages" multiple accept="image/*">
       <button type="submit"><i class="fa-solid fa-save"></i> Produkt speichern</button>
     </form>
   </div>
 
-  <!-- Produktübersicht -->
-  <div class="card">
+  <div class="card fade-in">
     <h2><i class="fa-solid fa-table"></i> Produktübersicht</h2>
     <table id="productTable">
       <thead>
         <tr>
-          <th>Produktname</th>
+          <th>Name</th>
           <th>Beschreibung</th>
-          <th>Kollektion</th>
-          <th>Typ</th>
           <th>SKU</th>
-          <th>EAN</th>
-          <th>Bestand</th>
-          <th>Gewicht</th>
-          <th>Anbieter</th>
           <th>Preis</th>
-          <th>Bilder</th>
           <th>Aktionen</th>
         </tr>
       </thead>
@@ -77,52 +62,26 @@
     </table>
   </div>
 
-  <!-- Firebase & Produktlogik -->
+  <!-- Firebase Logik -->
   <script type="module">
     import { initFirebase } from "./src/scripts/firebaseSetup.js";
     import { enforceRole } from "./src/scripts/roleGuard.js";
     import { logout } from "./src/scripts/auth.js";
+    import { collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } 
+      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-    import {
-      collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-    import {
-      ref, uploadBytes, getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
-
-    const { db, storage } = initFirebase();
-
-    // Zugriff: Admins & Mitarbeiter
-    enforceRole(["admin", "mitarbeiter"], "index.html");
-
-    document.querySelector(".logout-btn").addEventListener("click", logout);
+    const { db } = initFirebase();
+    enforceRole(["admin", "mitarbeiter"], "login.html");
 
     document.getElementById("productForm").addEventListener("submit", async e => {
       e.preventDefault();
       const product = {
         name: productName.value,
         description: productDescription.value,
-        collection: productCollection.value,
-        type: productType.value,
         sku: productSKU.value,
-        ean: productEAN.value,
-        stock: parseInt(productStock.value) || 0,
-        weight: parseFloat(productWeight.value) || 0,
-        supplier: productSupplier.value,
         price: parseFloat(productPrice.value),
         createdAt: serverTimestamp()
       };
-
-      const files = productImages.files;
-      const imageUrls = [];
-      for (const file of files) {
-        const storageRef = ref(storage, `products/${product.sku}/${file.name}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        imageUrls.push(url);
-      }
-      product.images = imageUrls;
-
       await addDoc(collection(db, "products"), product);
       alert("✅ Produkt gespeichert!");
       loadProducts();
@@ -136,21 +95,11 @@
       snapshot.forEach(docSnap => {
         const data = docSnap.data();
         const row = document.createElement("tr");
-        const imageCells = data.images?.length
-          ? data.images.map(url => `<img src="${url}" style="width:50px;height:50px;">`).join(" ")
-          : "-";
         row.innerHTML = `
           <td>${data.name}</td>
           <td>${data.description || "-"}</td>
-          <td>${data.collection || "-"}</td>
-          <td>${data.type || "-"}</td>
           <td>${data.sku}</td>
-          <td>${data.ean || "-"}</td>
-          <td>${data.stock ?? "-"}</td>
-          <td>${data.weight ?? "-"}</td>
-          <td>${data.supplier || "-"}</td>
           <td>${data.price ? data.price.toFixed(2) : "-"}</td>
-          <td>${imageCells}</td>
           <td><button class="deleteBtn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i></button></td>
         `;
         tableBody.appendChild(row);
@@ -166,6 +115,7 @@
     }
 
     loadProducts();
+    document.querySelector(".logout-btn").addEventListener("click", logout);
   </script>
 
 </body>

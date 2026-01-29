@@ -1,8 +1,8 @@
-// roleGuard.js – globales Modul für Rollen-basierten Zugriff
+// src/scripts/roleGuard.js – globales Modul für Rollen-basierten Zugriff
 // Ergänzt mit konsistentem Feedback, Logging und Redirect-Handling
 
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { initFirebase } from "./firebaseSetup.js";
 
 export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
@@ -17,7 +17,7 @@ export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
     }
 
     try {
-      // Rolle aus Firestore abfragen
+      // Rolle aus Firestore abfragen (employees Collection mit UID als Dokument-ID)
       const userDoc = await getDoc(doc(db, "employees", user.uid));
       let role = "guest";
 
@@ -26,7 +26,7 @@ export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
       }
 
       if (!requiredRoles.includes(role)) {
-        // Konsistentes UI-Feedback im Neon-Look
+        // Zugriff verweigert
         console.error(`❌ Zugriff verweigert – benötigte Rollen: ${requiredRoles.join(", ")}, aktuelle Rolle: ${role}`);
         alert(`⚠️ Zugriff verweigert – nur für ${requiredRoles.join(" / ")} erlaubt!`);
         window.location.href = redirectPage;

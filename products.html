@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Produkte</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Global Neon Theme -->
+  <!-- Neon Theme & Produkt-Styling -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
   <link rel="stylesheet" href="src/styles/products.css">
-  <!-- Icon Library -->
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- Branding Header -->
+  <!-- Branding -->
   <div class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
@@ -34,7 +34,7 @@
     <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
-  <!-- Produktverwaltung -->
+  <!-- Produktformular -->
   <div class="card">
     <h2><i class="fa-solid fa-plus-circle"></i> Neues Produkt hinzufügen</h2>
     <form id="productForm">
@@ -52,49 +52,49 @@
       <button type="submit"><i class="fa-solid fa-save"></i> Produkt speichern</button>
     </form>
   </div>
+
+  <!-- Produktübersicht -->
   <div class="card">
     <h2><i class="fa-solid fa-table"></i> Produktübersicht</h2>
     <table id="productTable">
       <thead>
         <tr>
-          <th><i class="fa-solid fa-box"></i> Produktname</th>
-          <th><i class="fa-solid fa-align-left"></i> Beschreibung</th>
-          <th><i class="fa-solid fa-layer-group"></i> Kollektion</th>
-          <th><i class="fa-solid fa-tags"></i> Typ</th>
-          <th><i class="fa-solid fa-barcode"></i> SKU</th>
-          <th><i class="fa-solid fa-barcode"></i> EAN</th>
-          <th><i class="fa-solid fa-cubes"></i> Bestand</th>
-          <th><i class="fa-solid fa-weight-hanging"></i> Produktgewicht</th>
-          <th><i class="fa-solid fa-truck"></i> Anbieter</th>
-          <th><i class="fa-solid fa-franc-sign"></i> Preis (CHF)</th>
-          <th><i class="fa-solid fa-image"></i> Bilder</th>
-          <th><i class="fa-solid fa-gear"></i> Aktionen</th>
+          <th>Produktname</th>
+          <th>Beschreibung</th>
+          <th>Kollektion</th>
+          <th>Typ</th>
+          <th>SKU</th>
+          <th>EAN</th>
+          <th>Bestand</th>
+          <th>Gewicht</th>
+          <th>Anbieter</th>
+          <th>Preis</th>
+          <th>Bilder</th>
+          <th>Aktionen</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Produkte werden hier dynamisch geladen -->
-      </tbody>
+      <tbody></tbody>
     </table>
   </div>
 
-  <!-- Firebase Logik -->
+  <!-- Firebase & Produktlogik -->
   <script type="module">
-    import { initFirebase } from "./scripts/firebaseSetup.js";
-    import { enforceRole } from "./scripts/roleGuard.js";
-    import { logout } from "./scripts/auth.js";
+    import { initFirebase } from "./src/scripts/firebaseSetup.js";
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    import { logout } from "./src/scripts/auth.js";
 
-    import { collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } 
-      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-    import { ref, uploadBytes, getDownloadURL } 
-      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
+    import {
+      collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import {
+      ref, uploadBytes, getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
-    // Zentrale Firebase-Instanz
     const { db, storage } = initFirebase();
-
-    // Zugriff: nur Admins & Mitarbeiter
     enforceRole("mitarbeiter", "index.html");
 
-    // Produkt hinzufügen
+    document.querySelector(".logout-btn").addEventListener("click", logout);
+
     document.getElementById("productForm").addEventListener("submit", async e => {
       e.preventDefault();
       const product = {
@@ -110,6 +110,7 @@
         price: parseFloat(productPrice.value),
         createdAt: serverTimestamp()
       };
+
       const files = productImages.files;
       const imageUrls = [];
       for (const file of files) {
@@ -119,13 +120,13 @@
         imageUrls.push(url);
       }
       product.images = imageUrls;
+
       await addDoc(collection(db, "products"), product);
-      alert("Produkt gespeichert!");
+      alert("✅ Produkt gespeichert!");
       loadProducts();
       e.target.reset();
     });
 
-    // Produkte laden
     async function loadProducts() {
       const tableBody = document.querySelector("#productTable tbody");
       tableBody.innerHTML = "";
@@ -134,7 +135,7 @@
         const data = docSnap.data();
         const row = document.createElement("tr");
         const imageCells = data.images?.length
-          ? data.images.map(url => `<img src="${url}" alt="Produktbild" style="width:50px;height:50px;">`).join(" ")
+          ? data.images.map(url => `<img src="${url}" style="width:50px;height:50px;">`).join(" ")
           : "-";
         row.innerHTML = `
           <td>${data.name}</td>
@@ -148,24 +149,21 @@
           <td>${data.supplier || "-"}</td>
           <td>${data.price ? data.price.toFixed(2) : "-"}</td>
           <td>${imageCells}</td>
-          <td><button class="deleteBtn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i> Löschen</button></td>
+          <td><button class="deleteBtn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i></button></td>
         `;
         tableBody.appendChild(row);
       });
+
       document.querySelectorAll(".deleteBtn").forEach(btn => {
         btn.addEventListener("click", async e => {
           await deleteDoc(doc(db, "products", e.target.dataset.id));
-          alert("Produkt gelöscht");
+          alert("🗑️ Produkt gelöscht");
           loadProducts();
         });
       });
     }
 
-    // Initial laden
     loadProducts();
-
-    // Logout
-    document.querySelector(".logout-btn").addEventListener("click", logout);
   </script>
 
 </body>

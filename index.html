@@ -57,9 +57,20 @@
     </ul>
   </div>
 
-  <!-- Auth-Modul laden -->
- <script type="module" src="src/scripts/auth.js"></script>
+  <!-- Firebase & Auth Logik -->
+  <script type="module">
+    import { initFirebase } from "./src/scripts/firebaseSetup.js";
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    import { logout } from "./src/scripts/auth.js";
+
+    initFirebase();
+
+    // Zugriff: Admins & Mitarbeiter
+    enforceRole(["admin", "mitarbeiter"], "login.html");
+
+    // Logout
+    document.querySelector(".logout-btn").addEventListener("click", logout);
+  </script>
 
 </body>
 </html>
-

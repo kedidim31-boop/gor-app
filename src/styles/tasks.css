@@ -1,5 +1,5 @@
 /* Aufgaben Seite – Cyberpunk Neon Look */
-/* Ergänzt globale neon-theme.css mit spezifischen Features */
+/* Ergänzt globale theme.css mit spezifischen Features */
 
 /* Formular für Aufgabenverwaltung */
 #taskForm {
@@ -11,11 +11,11 @@
 #taskForm input,
 #taskForm textarea,
 #taskForm select {
-  background-color: #0d0d1a;
-  border: 1px solid #FFD300;
+  background-color: var(--color-bg-dark);
+  border: 1px solid var(--color-neon-yellow);
   border-radius: 6px;
   padding: 10px;
-  color: #fff;
+  color: var(--color-text-light);
   font-size: 14px;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -24,8 +24,9 @@
 #taskForm input:focus,
 #taskForm textarea:focus,
 #taskForm select:focus {
-  border-color: #70ffea;
-  box-shadow: 0 0 10px #70ffea, 0 0 20px rgba(112, 255, 234, 0.6);
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise),
+              0 0 20px rgba(112, 255, 234, 0.6);
 }
 
 #taskForm textarea {
@@ -40,6 +41,8 @@
 
 #taskForm button:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 12px var(--color-neon-yellow),
+              0 0 24px rgba(255, 211, 0, 0.6);
 }
 
 /* Tabelle für Aufgaben */
@@ -52,16 +55,23 @@
 #taskTable th,
 #taskTable td {
   text-align: center;
-  color: #fff;
+  color: var(--color-text-light);
+  padding: 10px;
+  border-bottom: 1px solid #333;
+}
+
+#taskTable th {
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
 /* Dropdown für Status */
 .statusSelect {
-  background-color: #0d0d1a;
-  border: 1px solid #FFD300;
+  background-color: var(--color-bg-dark);
+  border: 1px solid var(--color-neon-yellow);
   border-radius: 6px;
   padding: 6px;
-  color: #FFD300;
+  color: var(--color-neon-yellow);
   font-weight: bold;
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -69,15 +79,16 @@
 
 .statusSelect:hover,
 .statusSelect:focus {
-  border-color: #70ffea;
-  box-shadow: 0 0 10px #70ffea, 0 0 20px rgba(112, 255, 234, 0.7);
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise),
+              0 0 20px rgba(112, 255, 234, 0.7);
 }
 
 /* Buttons in Tabelle */
 .deleteBtn {
   background-color: transparent;
-  border: 1px solid #ff4d4d;
-  color: #ff4d4d;
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
@@ -85,7 +96,17 @@
 }
 
 .deleteBtn:hover {
-  background-color: #ff4d4d;
+  background-color: var(--color-neon-red);
   color: #000;
-  box-shadow: 0 0 12px #ff4d4d, 0 0 24px rgba(255, 77, 77, 0.6);
+  box-shadow: 0 0 12px var(--color-neon-red),
+              0 0 24px rgba(255, 77, 77, 0.6);
+}
+
+/* Responsive Anpassung */
+@media (max-width: 768px) {
+  #taskTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }

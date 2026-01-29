@@ -16,25 +16,24 @@
 }
 
 /* Formular für Zeiterfassung */
-#timeForm {
+#timeForm.form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
   margin-top: 10px;
+  align-items: start;
 }
 
-#timeForm label {
+/* Einheitliche Feldstruktur */
+.form-field {
   display: flex;
   flex-direction: column;
+  position: relative;
   font-size: 0.9rem;
   color: var(--color-text-muted);
 }
 
 /* Eingebettete Icons */
-.icon-input {
-  position: relative;
-}
-
 .icon-input i {
   position: absolute;
   top: 50%;
@@ -141,12 +140,12 @@
 
 /* Navigation Icon neben Zeiterfassung bleibt schwarz */
 .top-nav a.active i.fa-clock {
-  color: #000000 !important;
+  color: #ffffff !important;
 }
 
 /* Responsive Anpassung */
 @media (max-width: 768px) {
-  #timeForm {
+  #timeForm.form-grid {
     grid-template-columns: 1fr;
   }
 }

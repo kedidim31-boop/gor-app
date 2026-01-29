@@ -25,7 +25,7 @@ form.addEventListener("submit", async e => {
     collections: document.getElementById("productCollections").value.trim(),
     sku: document.getElementById("productSKU").value.trim(),
     ean: document.getElementById("productEAN").value.trim(),
-    price: parseFloat(document.getElementById("productPrice").value)
+    price: parseFloat(document.getElementById("productPrice").value) || 0
   };
   try {
     await addDoc(collection(db, "products"), product);
@@ -46,14 +46,14 @@ async function loadProducts() {
     const data = docSnap.data();
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${data.name}</td>
-      <td>${data.description}</td>
-      <td>${data.type}</td>
-      <td>${data.vendor}</td>
+      <td>${data.name || "-"}</td>
+      <td>${data.description || "-"}</td>
+      <td>${data.type || "-"}</td>
+      <td>${data.vendor || "-"}</td>
       <td>${data.collections || "-"}</td>
-      <td>${data.sku}</td>
+      <td>${data.sku || "-"}</td>
       <td>${data.ean || "-"}</td>
-      <td><i class="fa-solid fa-money-bill-wave"></i> ${data.price.toFixed(2)} CHF</td>
+      <td><i class="fa-solid fa-money-bill-wave"></i> ${Number(data.price || 0).toFixed(2)} CHF</td>
       <td>
         <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">
           <i class="fa-solid fa-trash"></i> Löschen
@@ -98,7 +98,38 @@ document.getElementById("exportBtn").addEventListener("click", async () => {
 
   snapshot.forEach(docSnap => {
     const p = docSnap.data();
-    const handle = p.name.toLowerCase().replace(/\s+/g, "-");
-    const title = p.name;
+    const handle = (p.name || "").toLowerCase().replace(/\s+/g, "-");
+    const title = p.name || "";
     const body = p.description || "";
     const vendor = p.vendor || "";
+    const type = p.type || "";
+    const tags = p.collections || "";
+    const published = "TRUE";
+    const sku = p.sku || "";
+    const barcode = p.ean || "";
+    const price = p.price || 0;
+
+    const row = [
+      handle,
+      `"${title}"`,
+      `"${body}"`,
+      `"${vendor}"`,
+      `"${type}"`,
+      `"${tags}"`,
+      published,
+      sku,
+      barcode,
+      price
+    ].join(",");
+
+    csvContent += row + "\n";
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "shopify_products.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});

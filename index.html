@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Gaming of Republic – Startseite</title>
+  <title>Gaming of Republic – Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Globale Theme Datei -->
   <link rel="stylesheet" href="src/styles/theme.css">
@@ -17,12 +17,12 @@
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-house"></i> Gaming of Republic<br>Startseite</div>
+      <div class="subtitle"><i class="fa-solid fa-house"></i> Gaming of Republic – Startseite</div>
     </div>
   </div>
 
   <!-- Navigation -->
-  <div class="top-nav">
+  <nav class="top-nav">
     <a href="index.html" class="active"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
     <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
@@ -30,28 +30,46 @@
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-  </div>
+  </nav>
 
   <!-- Hauptinhalt -->
-  <div class="card">
-    <h2><i class="fa-solid fa-handshake"></i> Willkommen im Team-System</h2>
-    <p>
-      Dieses System bietet allen Teammitgliedern eine zentrale Plattform für die tägliche Zusammenarbeit. 
-      Hier können Produkte verwaltet, Aufgaben koordiniert, Arbeitszeiten erfasst und Mitarbeiterdaten gepflegt werden. 
-      Ziel ist es, Transparenz zu schaffen, Prozesse zu vereinfachen und die Effizienz im Team zu steigern.
-    </p>
-  </div>
+  <main>
+    <div class="card welcome-card">
+      <h2><i class="fa-solid fa-handshake"></i> Willkommen im Team-System</h2>
+      <p>
+        Dieses System bietet allen Teammitgliedern eine zentrale Plattform für die tägliche Zusammenarbeit. 
+        Hier können Produkte verwaltet, Aufgaben koordiniert, Arbeitszeiten erfasst und Mitarbeiterdaten gepflegt werden. 
+        Ziel ist es, Transparenz zu schaffen, Prozesse zu vereinfachen und die Effizienz im Team zu steigern.
+      </p>
+      <a href="analysis.html" class="btn btn-yellow"><i class="fa-solid fa-chart-line"></i> Zum Dashboard</a>
+    </div>
 
-  <div class="card">
-    <h2><i class="fa-solid fa-bolt"></i> Direktzugriff</h2>
-    <ul>
-      <li><a href="products.html" class="btn btn-turquoise"><i class="fa-solid fa-box"></i> Produktverwaltung</a></li>
-      <li><a href="tasks.html" class="btn btn-turquoise"><i class="fa-solid fa-list-check"></i> Aufgabenmanagement</a></li>
-      <li><a href="time.html" class="btn btn-turquoise"><i class="fa-solid fa-clock"></i> Zeiterfassung</a></li>
-      <li><a href="analysis.html" class="btn btn-turquoise"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a></li>
-      <li><a href="adminPanel.html" class="btn btn-turquoise"><i class="fa-solid fa-user-shield"></i> Admin Panel</a></li>
-    </ul>
-  </div>
+    <div class="card quick-links">
+      <h2><i class="fa-solid fa-bolt"></i> Direktzugriff</h2>
+      <div class="dashboard">
+        <div class="card">
+          <h3><i class="fa-solid fa-box"></i> Produkte</h3>
+          <p>Verwalte deine Artikel und Bestände.</p>
+          <a href="products.html" class="btn btn-turquoise">Produktverwaltung öffnen</a>
+        </div>
+        <div class="card">
+          <h3><i class="fa-solid fa-list-check"></i> Aufgaben</h3>
+          <p>Organisiere deine To‑Dos und Teamaufgaben.</p>
+          <a href="tasks.html" class="btn btn-green">Aufgabenmanagement öffnen</a>
+        </div>
+        <div class="card">
+          <h3><i class="fa-solid fa-clock"></i> Zeiterfassung</h3>
+          <p>Behalte deine Arbeitszeit im Blick.</p>
+          <a href="time.html" class="btn btn-yellow">Zeiterfassung öffnen</a>
+        </div>
+        <div class="card">
+          <h3><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
+          <p>Verwalte Benutzer und Rollen.</p>
+          <a href="adminPanel.html" class="btn btn-red">Admin Panel öffnen</a>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <!-- Firebase Logik -->
   <script type="module">

@@ -6,7 +6,7 @@
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: radial-gradient(circle at center, #141432, #0d0d1a);
+  background: radial-gradient(circle at center, var(--color-bg-panel), var(--color-bg-dark));
   animation: huePulse 12s infinite alternate;
   z-index: -1;
 }
@@ -21,7 +21,7 @@
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-color: #0d0d1a;
+  background-color: var(--color-bg-dark);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,7 +86,7 @@
 
 /* Login Card */
 .login-card {
-  background: linear-gradient(145deg, #141432, #0d0d1a);
+  background: linear-gradient(145deg, var(--color-bg-panel), var(--color-bg-dark));
   border: 2px solid var(--color-neon-yellow);
   border-radius: 12px;
   padding: 30px;
@@ -125,7 +125,7 @@
   border: 1px solid var(--color-neon-yellow);
   border-radius: 6px;
   background-color: var(--color-bg-dark);
-  color: #fff;
+  color: var(--color-text-light);
   font-size: 15px;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
 }
@@ -135,7 +135,7 @@
   top: 50%;
   left: 40px;
   transform: translateY(-50%);
-  color: #aaa;
+  color: var(--color-text-muted);
   pointer-events: none;
   transition: 0.2s ease all;
 }
@@ -179,7 +179,7 @@
   margin-top: 10px;
   font-size: 0.9em;
   color: var(--color-neon-red);
-  text-shadow: 0 0 6px #ff0000;
+  text-shadow: 0 0 6px var(--color-neon-red);
 }
 
 .error-message.hidden {
@@ -203,5 +203,5 @@
 /* Inputs im Fehlerzustand */
 .login-card input.error {
   border-color: var(--color-neon-red);
-  box-shadow: 0 0 10px #ff0000;
+  box-shadow: 0 0 10px var(--color-neon-red);
 }

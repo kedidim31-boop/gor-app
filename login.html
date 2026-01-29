@@ -2,12 +2,12 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Login – Gaming of Republic</title>
+  <title>Gaming of Republic – Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Neon Theme -->
-  <link rel="stylesheet" href="src/styles/neon-theme.css">
+  <!-- Globale Neon Theme -->
+  <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/login.css">
-  <!-- Icon Library -->
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -17,116 +17,53 @@
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-right-to-bracket"></i> Gaming of Republic<br>Login</div>
+      <div class="subtitle"><i class="fa-solid fa-right-to-bracket"></i> Login</div>
     </div>
   </div>
 
-  <!-- Splash Screen -->
-  <div id="splash" class="splash-screen">
-    <img src="public/logo.png" alt="Gaming of Republic Logo" class="splash-logo">
-    <button id="skipBtn" class="skip-btn"><i class="fa-solid fa-forward"></i> Überspringen</button>
+  <!-- Login Container -->
+  <div class="login-container">
+    <div class="card login-card">
+      <h2><i class="fa-solid fa-user-shield"></i> Willkommen zurück</h2>
+      <p class="login-subtitle">Bitte melde dich mit deinem Konto an</p>
+
+      <form id="loginForm">
+        <label>
+          <i class="fa-solid fa-envelope"></i> E-Mail
+          <input type="email" id="loginEmail" placeholder="Deine E-Mail" required>
+        </label>
+        <label>
+          <i class="fa-solid fa-lock"></i> Passwort
+          <input type="password" id="loginPassword" placeholder="Dein Passwort" required>
+        </label>
+        <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+      </form>
+
+      <div class="login-extra">
+        <a href="#" class="forgot-link"><i class="fa-solid fa-key"></i> Passwort vergessen?</a>
+        <a href="register.html" class="register-link"><i class="fa-solid fa-user-plus"></i> Neues Konto erstellen</a>
+      </div>
+    </div>
   </div>
 
-  <!-- Login Card -->
-  <div class="login-card hidden">
-    <h2><i class="fa-solid fa-user-lock"></i> Anmeldung</h2>
-    <form id="loginForm">
-      <div class="input-group">
-        <i class="fa-solid fa-envelope"></i>
-        <input type="email" id="email" required placeholder=" ">
-        <label for="email">E-Mail</label>
-      </div>
-
-      <div class="input-group">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" id="password" required placeholder=" ">
-        <label for="password">Passwort</label>
-        <span class="toggle-password"><i class="fa-solid fa-eye"></i></span>
-      </div>
-
-      <button type="submit" class="login-btn"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
-      <p id="errorMessage" class="error-message hidden">
-        <i class="fa-solid fa-triangle-exclamation"></i> Login fehlgeschlagen – bitte überprüfe deine Angaben!
-      </p>
-    </form>
-    <p class="hint"><i class="fa-solid fa-user-shield"></i> Nur Admins können neue Benutzer im Admin Panel erstellen</p>
-  </div>
-
-  <!-- Firebase Login -->
+  <!-- Firebase Login Logik -->
   <script type="module">
     import { initFirebase } from "./src/scripts/firebaseSetup.js";
-    import { getAuth, signInWithEmailAndPassword } 
-      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } 
-      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { signInWithEmailAndPassword, getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-    const { app, db } = initFirebase();
+    const { app } = initFirebase();
     const auth = getAuth(app);
 
-    const splash = document.getElementById("splash");
-    const loginCard = document.querySelector(".login-card");
-    const skipBtn = document.getElementById("skipBtn");
-
-    function endSplash() {
-      splash.classList.add("fade-out");
-      setTimeout(() => {
-        splash.style.display = "none";
-        loginCard.classList.remove("hidden");
-        loginCard.classList.add("fade-in");
-      }, 800);
-    }
-
-    window.addEventListener("load", () => {
-      setTimeout(endSplash, 2000);
-    });
-
-    skipBtn.addEventListener("click", () => {
-      endSplash();
-      skipBtn.style.display = "none";
-    });
-
-    document.querySelector(".toggle-password").addEventListener("click", () => {
-      const input = document.getElementById("password");
-      const icon = document.querySelector(".toggle-password i");
-      if (input.type === "password") {
-        input.type = "text";
-        icon.classList.replace("fa-eye", "fa-eye-slash");
-      } else {
-        input.type = "password";
-        icon.classList.replace("fa-eye-slash", "fa-eye");
-      }
-    });
-
-    document.getElementById("loginForm").addEventListener("submit", async e => {
+    const form = document.getElementById("loginForm");
+    form.addEventListener("submit", async e => {
       e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-
-        // Rolle aus Firestore abfragen
-        const userDoc = await getDoc(doc(db, "employees", user.uid));
-        if (userDoc.exists()) {
-          const role = userDoc.data().role;
-
-          if (role === "admin") {
-            window.location.href = "index.html"; // Admin darf alles
-          } else if (role === "mitarbeiter") {
-            window.location.href = "index.html"; // Mitarbeiter auch Zugriff
-          } else {
-            alert("❌ Keine gültige Rolle gefunden!");
-          }
-        } else {
-          alert("❌ Benutzer hat keinen Eintrag in 'employees'");
-        }
-      } catch (err) {
-        const card = document.querySelector(".login-card");
-        const errorMsg = document.getElementById("errorMessage");
-        errorMsg.classList.remove("hidden");
-        card.classList.add("shake");
-        setTimeout(() => card.classList.remove("shake"), 600);
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "index.html";
+      } catch (error) {
+        alert("Login fehlgeschlagen: " + error.message);
       }
     });
   </script>

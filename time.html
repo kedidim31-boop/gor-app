@@ -30,6 +30,7 @@
     <a href="time.html" class="active"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+    <!-- Logout Button -->
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </nav>
 
@@ -91,104 +92,7 @@
     </div>
   </main>
 
-  <!-- Firebase Logik -->
-  <script type="module">
-    import { initFirebase } from "./src/scripts/firebaseSetup.js";
-    import { enforceRole } from "./src/scripts/roleGuard.js";
-    import { logout } from "./src/scripts/auth.js";
-    import { collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } 
-      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
-    const { db } = initFirebase();
-
-    enforceRole(["admin", "mitarbeiter"], "login.html");
-
-    const startInput = document.getElementById("startTime");
-    const endInput = document.getElementById("endTime");
-    const hoursInput = document.getElementById("hoursWorked");
-
-    function calculateHours() {
-      const start = startInput.value;
-      const end = endInput.value;
-      if (start && end) {
-        const [sh, sm] = start.split(":").map(Number);
-        const [eh, em] = end.split(":").map(Number);
-        const startMinutes = sh * 60 + sm;
-        const endMinutes = eh * 60 + em;
-        const diff = (endMinutes - startMinutes) / 60;
-        hoursInput.value = diff > 0 ? diff.toFixed(2) : "0.00";
-      }
-    }
-
-    startInput.addEventListener("change", calculateHours);
-    endInput.addEventListener("change", calculateHours);
-
-    function formatDate(dateStr) {
-      if (!dateStr) return "-";
-      const [yyyy, mm, dd] = dateStr.split("-");
-      return `${dd}.${mm}.${yyyy}`;
-    }
-
-    document.getElementById("timeForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const employee = document.getElementById("employeeName").value.trim();
-      const date = document.getElementById("workDate").value;
-      const start = startInput.value;
-      const end = endInput.value;
-      const hours = parseFloat(hoursInput.value);
-      const description = document.getElementById("workDescription").value.trim();
-
-      await addDoc(collection(db, "timeEntries"), {
-        employee,
-        date,
-        start,
-        end,
-        hours,
-        description,
-        createdAt: serverTimestamp()
-      });
-
-      loadTimeEntries();
-      e.target.reset();
-    });
-
-    async function loadTimeEntries() {
-      const tableBody = document.querySelector("#timeTable tbody");
-      tableBody.innerHTML = "";
-
-      const snapshot = await getDocs(collection(db, "timeEntries"));
-      snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${data.employee}</td>
-          <td>${formatDate(data.date)}</td>
-          <td>${data.start || "-"}</td>
-          <td>${data.end || "-"}</td>
-          <td>${data.hours}</td>
-          <td>${data.description || "-"}</td>
-          <td>
-            <button class="deleteBtn" data-id="${docSnap.id}">
-              <i class="fa-solid fa-trash"></i> Löschen
-            </button>
-          </td>
-        `;
-        tableBody.appendChild(row);
-      });
-
-      document.querySelectorAll(".deleteBtn").forEach(btn => {
-        btn.addEventListener("click", async e => {
-          const id = e.target.dataset.id;
-          await deleteDoc(doc(db, "timeEntries", id));
-          loadTimeEntries();
-        });
-      });
-    }
-
-    loadTimeEntries();
-    document.querySelector(".logout-btn").addEventListener("click", logout);
-  </script>
-
+  <!-- Firebase Logik ausgelagert -->
+  <script type="module" src="src/scripts/time.js"></script>
 </body>
 </html>

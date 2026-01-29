@@ -28,6 +28,7 @@
     <a href="products.html" class="active"><i class="fa-solid fa-box"></i> Produkte</a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </nav>
@@ -59,18 +60,20 @@
           <input type="text" id="productCollections">
         </label>
         <label>
-          <i class="fa-solid fa-barcode"></i> SKU
+          <i class="fa-solid fa-barcode"></i> SKU eingeben
           <input type="text" id="productSKU" required>
         </label>
         <label>
-          <i class="fa-solid fa-barcode"></i> EAN
+          <i class="fa-solid fa-barcode"></i> EAN eingeben
           <input type="text" id="productEAN">
         </label>
         <label>
-          <i class="fa-solid fa-money-bill-wave"></i> Preis (€)
+          <i class="fa-solid fa-money-bill-wave"></i> Preis (CHF)
           <input type="number" id="productPrice" step="0.01" required>
         </label>
-        <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-save"></i> Speichern</button>
+        <button type="submit" class="btn btn-yellow">
+          <i class="fa-solid fa-save"></i> Speichern
+        </button>
       </form>
     </div>
 
@@ -103,7 +106,8 @@
     import { initFirebase } from "./src/scripts/firebaseSetup.js";
     import { enforceRole } from "./src/scripts/roleGuard.js";
     import { logout } from "./src/scripts/auth.js";
-    import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { collection, addDoc, getDocs, deleteDoc, doc } 
+      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const { db } = initFirebase();
     enforceRole(["admin","mitarbeiter"], "login.html");
@@ -143,7 +147,11 @@
           <td>${data.sku}</td>
           <td>${data.ean || "-"}</td>
           <td><i class="fa-solid fa-money-bill-wave"></i> ${data.price.toFixed(2)} €</td>
-          <td><button class="btn btn-red deleteBtn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i> Löschen</button></td>
+          <td>
+            <button class="deleteBtn" data-id="${docSnap.id}">
+              <i class="fa-solid fa-trash"></i> Löschen
+            </button>
+          </td>
         `;
         tableBody.appendChild(row);
       });

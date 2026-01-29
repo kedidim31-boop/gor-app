@@ -48,14 +48,22 @@
           <input type="date" id="workDate" required>
         </label>
         <label>
-          <i class="fa-solid fa-hourglass-half"></i> Stunden
-          <input type="number" id="hoursWorked" step="0.1" required>
+          <i class="fa-solid fa-play"></i> Arbeitsbeginn
+          <input type="time" id="startTime" required>
         </label>
         <label>
+          <i class="fa-solid fa-stop"></i> Arbeitsende
+          <input type="time" id="endTime" required>
+        </label>
+        <label>
+          <i class="fa-solid fa-hourglass-half"></i> Stunden
+          <input type="number" id="hoursWorked" step="0.1" readonly>
+        </label>
+        <label class="full-width">
           <i class="fa-solid fa-align-left"></i> Beschreibung
           <textarea id="workDescription"></textarea>
         </label>
-        <button type="submit" class="btn btn-yellow">
+        <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Zeiterfassung speichern
         </button>
       </form>
@@ -69,6 +77,8 @@
           <tr>
             <th>Mitarbeiter</th>
             <th>Datum</th>
+            <th>Beginn</th>
+            <th>Ende</th>
             <th>Stunden</th>
             <th>Beschreibung</th>
             <th>Aktionen</th>
@@ -100,17 +110,42 @@
     // Zugriff: Admins & Mitarbeiter
     enforceRole(["admin", "mitarbeiter"], "login.html");
 
+    // Stunden automatisch berechnen
+    const startInput = document.getElementById("startTime");
+    const endInput = document.getElementById("endTime");
+    const hoursInput = document.getElementById("hoursWorked");
+
+    function calculateHours() {
+      const start = startInput.value;
+      const end = endInput.value;
+      if (start && end) {
+        const [sh, sm] = start.split(":").map(Number);
+        const [eh, em] = end.split(":").map(Number);
+        const startMinutes = sh * 60 + sm;
+        const endMinutes = eh * 60 + em;
+        const diff = (endMinutes - startMinutes) / 60;
+        hoursInput.value = diff > 0 ? diff.toFixed(2) : "0.00";
+      }
+    }
+
+    startInput.addEventListener("change", calculateHours);
+    endInput.addEventListener("change", calculateHours);
+
     // Zeiterfassung hinzufügen
     document.getElementById("timeForm").addEventListener("submit", async e => {
       e.preventDefault();
       const employee = document.getElementById("employeeName").value.trim();
       const date = document.getElementById("workDate").value;
-      const hours = parseFloat(document.getElementById("hoursWorked").value);
+      const start = startInput.value;
+      const end = endInput.value;
+      const hours = parseFloat(hoursInput.value);
       const description = document.getElementById("workDescription").value.trim();
 
       await addDoc(collection(db, "timeEntries"), {
         employee,
         date,
+        start,
+        end,
         hours,
         description,
         createdAt: serverTimestamp()
@@ -135,6 +170,8 @@
         row.innerHTML = `
           <td>${data.employee}</td>
           <td>${data.date}</td>
+          <td>${data.start || "-"}</td>
+          <td>${data.end || "-"}</td>
           <td>${data.hours}</td>
           <td>${data.description || "-"}</td>
           <td>

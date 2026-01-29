@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Global Neon Theme -->
+  <!-- Neon Theme -->
   <link rel="stylesheet" href="src/styles/neon-theme.css">
   <link rel="stylesheet" href="src/styles/adminPanel.css">
-  <!-- Icon Library -->
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -21,77 +21,75 @@
     </div>
   </div>
 
-  <!-- Navigation -->
+  <!-- Navigation (identisch zu index.html) -->
   <div class="top-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
-    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
-    <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
-    <a href="overview.html"><i class="fa-solid fa-chart-pie"></i> Übersicht</a>
-    <a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-    <a href="adminPanel.html" class="active"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+    <a href="#" data-section="home"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="#" data-section="overview"><i class="fa-solid fa-chart-pie"></i> Übersicht</a>
+    <a href="#" data-section="dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="#" class="active" data-section="admin"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
     <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
   <!-- Admin Panel Inhalt -->
-  <div class="card">
-    <h2><i class="fa-solid fa-user-plus"></i> Neuen Benutzer anlegen</h2>
-    <form id="createUserForm">
-      <div class="input-group">
-        <i class="fa-solid fa-envelope"></i>
-        <input type="email" id="newEmail" placeholder="E-Mail" required>
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" id="newPassword" placeholder="Passwort" required>
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-user-tag"></i>
-        <select id="newRole" required>
-          <option value="mitarbeiter">Mitarbeiter</option>
-          <option value="admin">Admin</option>
-        </select>
-      </div>
-      <button type="submit"><i class="fa-solid fa-save"></i> Benutzer erstellen</button>
-    </form>
-  </div>
+  <div class="section visible" id="admin">
+    <div class="card">
+      <h2><i class="fa-solid fa-user-plus"></i> Neuen Benutzer anlegen</h2>
+      <form id="createUserForm">
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="newEmail" placeholder="E-Mail" required>
+        </div>
+        <div class="input-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="newPassword" placeholder="Passwort" required>
+        </div>
+        <div class="input-group">
+          <i class="fa-solid fa-user-tag"></i>
+          <select id="newRole" required>
+            <option value="mitarbeiter">Mitarbeiter</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <button type="submit" class="neon-btn"><i class="fa-solid fa-save"></i> Benutzer erstellen</button>
+      </form>
+    </div>
 
-  <div class="card">
-    <h2><i class="fa-solid fa-users-gear"></i> Mitarbeiterverwaltung</h2>
-    <table id="adminEmployeeTable">
-      <thead>
-        <tr>
-          <th><i class="fa-solid fa-user"></i> Name</th>
-          <th><i class="fa-solid fa-envelope"></i> E-Mail</th>
-          <th><i class="fa-solid fa-user-tag"></i> Rolle</th>
-          <th><i class="fa-solid fa-gear"></i> Aktionen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Mitarbeiter werden hier dynamisch geladen -->
-      </tbody>
-    </table>
+    <div class="card">
+      <h2><i class="fa-solid fa-users-gear"></i> Mitarbeiterverwaltung</h2>
+      <table id="adminEmployeeTable">
+        <thead>
+          <tr>
+            <th><i class="fa-solid fa-user"></i> Name</th>
+            <th><i class="fa-solid fa-envelope"></i> E-Mail</th>
+            <th><i class="fa-solid fa-user-tag"></i> Rolle</th>
+            <th><i class="fa-solid fa-gear"></i> Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Mitarbeiter werden hier dynamisch geladen -->
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Firebase & Admin Panel Logik -->
   <script type="module">
-    import { initFirebase } from "./src/scripts/firebaseSetup.js";
-    import { enforceRole } from "./src/scripts/roleGuard.js";
-    import { logout } from "./src/scripts/auth.js";
     import { initAdminPanel } from "./src/scripts/adminPanel.js";
+    initAdminPanel();
 
-    // Zentrale Firebase-Instanz
-    const { db } = initFirebase();
+    // Navigation Tabs (optional)
+    document.querySelectorAll(".top-nav a").forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        document.querySelectorAll(".top-nav a").forEach(l => l.classList.remove("active"));
+        link.classList.add("active");
 
-    // Zugriff: nur Admins
-    enforceRole("admin", "index.html");
-
-    // Starte Admin Panel Logik
-    initAdminPanel(db);
-
-    // Logout
-    document.querySelector(".logout-btn").addEventListener("click", logout);
+        const sectionId = link.dataset.section;
+        document.querySelectorAll(".section").forEach(sec => sec.classList.remove("visible"));
+        const target = document.getElementById(sectionId);
+        if (target) target.classList.add("visible");
+      });
+    });
   </script>
 
 </body>

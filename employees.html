@@ -102,7 +102,7 @@
         createdAt: serverTimestamp()
       });
 
-      alert("Mitarbeiter gespeichert!");
+      alert("✅ Mitarbeiter gespeichert!");
       loadEmployees();
       e.target.reset();
     });
@@ -150,7 +150,7 @@
         btn.addEventListener("click", async e => {
           const id = e.target.dataset.id;
           await deleteDoc(doc(db, "employees", id));
-          alert("Mitarbeiter gelöscht");
+          alert("🗑️ Mitarbeiter gelöscht");
           loadEmployees();
         });
       });

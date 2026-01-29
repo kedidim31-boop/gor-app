@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="src/styles/analysis.css">
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -32,38 +34,38 @@
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
-  <!-- Dashboard -->
+  <!-- Dashboard Grid -->
   <div class="dashboard">
     <!-- Kennzahlen-Karten -->
-    <div class="card">
+    <div class="card stat-card">
       <h2><i class="fa-solid fa-users"></i> Mitarbeiter</h2>
       <div class="stat">12</div>
       <p>Aktive Teammitglieder</p>
     </div>
 
-    <div class="card">
+    <div class="card stat-card">
       <h2><i class="fa-solid fa-boxes-stacked"></i> Produkte</h2>
       <div class="stat">58</div>
       <p>Verfügbare Artikel</p>
     </div>
 
-    <div class="card">
+    <div class="card stat-card">
       <h2><i class="fa-solid fa-list-check"></i> Aufgaben</h2>
       <div class="stat">23</div>
       <p>Offene To‑Dos</p>
     </div>
 
-    <div class="card">
+    <div class="card stat-card">
       <h2><i class="fa-solid fa-clock"></i> Zeiterfassung</h2>
       <div class="stat">174h</div>
       <p>Gesamte Arbeitszeit</p>
     </div>
-  </div>
 
-  <!-- Charts -->
-  <div class="card">
-    <h2><i class="fa-solid fa-chart-pie"></i> Statistiken</h2>
-    <canvas id="overviewChart"></canvas>
+    <!-- Charts -->
+    <div class="card chart-card">
+      <h2><i class="fa-solid fa-chart-pie"></i> Statistiken</h2>
+      <canvas id="overviewChart"></canvas>
+    </div>
   </div>
 
   <!-- Firebase Logik -->
@@ -77,8 +79,7 @@
 
     document.querySelector(".logout-btn").addEventListener("click", logout);
 
-    // Beispiel Chart.js Integration
-    import Chart from "https://cdn.jsdelivr.net/npm/chart.js";
+    // Chart.js Integration
     const ctx = document.getElementById("overviewChart");
     new Chart(ctx, {
       type: "doughnut",
@@ -87,11 +88,13 @@
         datasets: [{
           data: [58, 23, 12, 174],
           backgroundColor: [
-            "var(--color-neon-yellow)",
-            "var(--color-neon-turquoise)",
-            "var(--color-neon-green)",
-            "var(--color-neon-red)"
-          ]
+            getComputedStyle(document.documentElement).getPropertyValue("--color-neon-yellow"),
+            getComputedStyle(document.documentElement).getPropertyValue("--color-neon-turquoise"),
+            getComputedStyle(document.documentElement).getPropertyValue("--color-neon-green"),
+            getComputedStyle(document.documentElement).getPropertyValue("--color-neon-red")
+          ],
+          borderColor: "#0d0d1a",
+          borderWidth: 2
         }]
       },
       options: {
@@ -99,6 +102,10 @@
           legend: {
             labels: { color: "#f0f0f0" }
           }
+        },
+        animation: {
+          animateScale: true,
+          animateRotate: true
         }
       }
     });

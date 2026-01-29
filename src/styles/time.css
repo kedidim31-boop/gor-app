@@ -1,5 +1,5 @@
 /* Zeiterfassung Seite – Cyberpunk Neon Look */
-/* Ergänzt globale neon-theme.css mit spezifischen Features */
+/* Ergänzt globale theme.css mit spezifischen Features */
 
 /* Karten für Zeiterfassung */
 .card {
@@ -8,41 +8,87 @@
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0 25px #70ffea, 0 0 50px rgba(112, 255, 234, 0.7);
+  box-shadow: 0 0 25px var(--color-neon-turquoise),
+              0 0 50px rgba(112, 255, 234, 0.7);
 }
 
 /* Formular für Zeiterfassung */
-form {
+#timeForm {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-form input,
-form textarea,
-form select {
-  background-color: #141432;
-  border: 2px solid #FFD300;
+#timeForm input,
+#timeForm textarea,
+#timeForm select {
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
   border-radius: 8px;
   padding: 10px;
-  color: #FFD300;
+  color: var(--color-neon-yellow);
   font-weight: bold;
   outline: none;
   transition: all 0.2s ease;
 }
 
-form input:focus,
-form textarea:focus,
-form select:focus {
-  border-color: #70ffea;
-  box-shadow: 0 0 12px #70ffea, 0 0 24px rgba(112, 255, 234, 0.7);
+#timeForm input:focus,
+#timeForm textarea:focus,
+#timeForm select:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.7);
 }
 
 /* Statistische Werte */
 .stat {
   font-size: 2rem;
   font-weight: bold;
-  color: #00ffff; /* Neon-Cyan für Abwechslung */
-  text-shadow: 0 0 12px #00ffff, 0 0 24px rgba(0, 255, 255, 0.7);
+  color: var(--color-neon-turquoise); /* Neon-Cyan */
+  text-shadow: 0 0 12px var(--color-neon-turquoise),
+               0 0 24px rgba(0, 255, 255, 0.7);
   margin: 10px 0;
+}
+
+/* Tabelle für Zeiterfassung */
+#timeTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#timeTable th,
+#timeTable td {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  color: var(--color-text-light);
+}
+
+#timeTable th {
+  background-color: var(--color-bg-panel);
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+#timeTable tr:hover {
+  background-color: #2a2a40;
+}
+
+/* Buttons */
+.deleteBtn {
+  background-color: transparent;
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deleteBtn:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-red),
+              0 0 24px rgba(255, 77, 77, 0.6);
 }

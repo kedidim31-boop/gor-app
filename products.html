@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Produkte</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Neon Theme -->
-  <link rel="stylesheet" href="src/styles/neon-theme.css">
+  <!-- Globale Theme -->
+  <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/products.css">
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -13,87 +13,90 @@
 <body>
 
   <!-- Branding Header -->
-  <div class="branding-header">
+  <header class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
       <div class="subtitle"><i class="fa-solid fa-box"></i> Produktverwaltung</div>
     </div>
-  </div>
+  </header>
 
   <!-- Navigation -->
-  <div class="top-nav">
+  <nav class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
     <a href="products.html" class="active"><i class="fa-solid fa-box"></i> Produkte</a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-  </div>
+    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+  </nav>
 
-  <!-- Produktformular -->
-  <div class="card">
-    <h2><i class="fa-solid fa-plus"></i> Neues Produkt hinzufügen</h2>
-    <form id="createProductForm" class="form-grid">
-      <label>
-        <i class="fa-solid fa-tag"></i> Produktname
-        <input type="text" id="productName" required>
-      </label>
-      <label>
-        <i class="fa-solid fa-align-left"></i> Beschreibung
-        <textarea id="productDescription" required></textarea>
-      </label>
-      <label>
-        <i class="fa-solid fa-layer-group"></i> Typ
-        <input type="text" id="productType" required>
-      </label>
-      <label>
-        <i class="fa-solid fa-industry"></i> Anbieter
-        <input type="text" id="productVendor" required>
-      </label>
-      <label>
-        <i class="fa-solid fa-folder"></i> Kollektionen
-        <input type="text" id="productCollections">
-      </label>
-      <label>
-        <i class="fa-solid fa-barcode"></i> SKU
-        <input type="text" id="productSKU" required>
-      </label>
-      <label>
-        <i class="fa-solid fa-barcode"></i> EAN
-        <input type="text" id="productEAN">
-      </label>
-      <label>
-        <i class="fa-solid fa-money-bill-wave"></i> Preis (€)
-        <input type="number" id="productPrice" step="0.01" required>
-      </label>
-      <button type="submit" class="neon-btn"><i class="fa-solid fa-save"></i> Speichern</button>
-    </form>
-  </div>
+  <!-- Hauptinhalt -->
+  <main>
+    <!-- Produktformular -->
+    <div class="card">
+      <h2><i class="fa-solid fa-plus"></i> Neues Produkt hinzufügen</h2>
+      <form id="createProductForm" class="form-grid">
+        <label>
+          <i class="fa-solid fa-tag"></i> Produktname
+          <input type="text" id="productName" required>
+        </label>
+        <label>
+          <i class="fa-solid fa-align-left"></i> Beschreibung
+          <textarea id="productDescription" required></textarea>
+        </label>
+        <label>
+          <i class="fa-solid fa-layer-group"></i> Typ
+          <input type="text" id="productType" required>
+        </label>
+        <label>
+          <i class="fa-solid fa-industry"></i> Anbieter
+          <input type="text" id="productVendor" required>
+        </label>
+        <label>
+          <i class="fa-solid fa-folder"></i> Kollektionen
+          <input type="text" id="productCollections">
+        </label>
+        <label>
+          <i class="fa-solid fa-barcode"></i> SKU
+          <input type="text" id="productSKU" required>
+        </label>
+        <label>
+          <i class="fa-solid fa-barcode"></i> EAN
+          <input type="text" id="productEAN">
+        </label>
+        <label>
+          <i class="fa-solid fa-money-bill-wave"></i> Preis (€)
+          <input type="number" id="productPrice" step="0.01" required>
+        </label>
+        <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-save"></i> Speichern</button>
+      </form>
+    </div>
 
-  <!-- Produktübersicht -->
-  <div class="card">
-    <h2><i class="fa-solid fa-boxes-stacked"></i> Produktübersicht</h2>
-    <table id="productTable">
-      <thead>
-        <tr>
-          <th>Produktname</th>
-          <th>Beschreibung</th>
-          <th>Typ</th>
-          <th>Anbieter</th>
-          <th>Kollektionen</th>
-          <th>SKU</th>
-          <th>EAN</th>
-          <th><i class="fa-solid fa-money-bill-wave"></i> Preis (€)</th>
-          <th>Aktionen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Produkte werden hier dynamisch geladen -->
-      </tbody>
-    </table>
-  </div>
+    <!-- Produktübersicht -->
+    <div class="card">
+      <h2><i class="fa-solid fa-boxes-stacked"></i> Produktübersicht</h2>
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>Produktname</th>
+            <th>Beschreibung</th>
+            <th>Typ</th>
+            <th>Anbieter</th>
+            <th>Kollektionen</th>
+            <th>SKU</th>
+            <th>EAN</th>
+            <th><i class="fa-solid fa-money-bill-wave"></i> Preis (€)</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Produkte werden hier dynamisch geladen -->
+        </tbody>
+      </table>
+    </div>
+  </main>
 
   <!-- Firebase Logik -->
   <script type="module">
@@ -111,13 +114,13 @@
     form.addEventListener("submit", async e => {
       e.preventDefault();
       const product = {
-        name: document.getElementById("productName").value,
-        description: document.getElementById("productDescription").value,
-        type: document.getElementById("productType").value,
-        vendor: document.getElementById("productVendor").value,
-        collections: document.getElementById("productCollections").value,
-        sku: document.getElementById("productSKU").value,
-        ean: document.getElementById("productEAN").value,
+        name: document.getElementById("productName").value.trim(),
+        description: document.getElementById("productDescription").value.trim(),
+        type: document.getElementById("productType").value.trim(),
+        vendor: document.getElementById("productVendor").value.trim(),
+        collections: document.getElementById("productCollections").value.trim(),
+        sku: document.getElementById("productSKU").value.trim(),
+        ean: document.getElementById("productEAN").value.trim(),
         price: parseFloat(document.getElementById("productPrice").value)
       };
       await addDoc(collection(db, "products"), product);
@@ -140,7 +143,7 @@
           <td>${data.sku}</td>
           <td>${data.ean || "-"}</td>
           <td><i class="fa-solid fa-money-bill-wave"></i> ${data.price.toFixed(2)} €</td>
-          <td><button class="deleteBtn neon-btn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i> Löschen</button></td>
+          <td><button class="btn btn-red deleteBtn" data-id="${docSnap.id}"><i class="fa-solid fa-trash"></i> Löschen</button></td>
         `;
         tableBody.appendChild(row);
       });

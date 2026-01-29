@@ -46,7 +46,7 @@
         </label>
         <label>
           <i class="fa-solid fa-align-left"></i> Beschreibung
-          <textarea id="productDescription" required></textarea>
+          <textarea id="productDescription"></textarea>
         </label>
         <label>
           <i class="fa-solid fa-layer-group"></i> Typ
@@ -69,6 +69,10 @@
           <input type="text" id="productEAN">
         </label>
         <label>
+          <i class="fa-solid fa-boxes-packing"></i> Bestand
+          <input type="number" id="productStock" step="1" required>
+        </label>
+        <label>
           <i class="fa-solid fa-money-bill-wave"></i> Preis (CHF)
           <input type="number" id="productPrice" step="0.01" required>
         </label>
@@ -81,7 +85,6 @@
     <!-- Produktübersicht -->
     <div class="card">
       <h2><i class="fa-solid fa-boxes-stacked"></i> Produktübersicht</h2>
-      <!-- Export-Button -->
       <button id="exportBtn" class="btn btn-yellow">
         <i class="fa-solid fa-file-csv"></i> Exportieren für Shopify
       </button>
@@ -95,6 +98,7 @@
             <th>Kollektionen</th>
             <th>SKU</th>
             <th>EAN</th>
+            <th><i class="fa-solid fa-boxes-packing"></i> Bestand</th>
             <th><i class="fa-solid fa-money-bill-wave"></i> Preis (CHF)</th>
             <th>Aktionen</th>
           </tr>

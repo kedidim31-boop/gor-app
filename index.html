@@ -25,80 +25,36 @@
 
   <!-- Navigation -->
   <div class="top-nav">
-    <a href="#" class="active" data-section="home"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="#" data-section="overview"><i class="fa-solid fa-chart-pie"></i> Übersicht</a>
-    <a href="#" data-section="dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="index.html" class="active"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="overview.html"><i class="fa-solid fa-chart-pie"></i> Übersicht</a>
+    <a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
+    <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
+    <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
     <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
   <!-- Hauptinhalt -->
-  <div id="home" class="section visible">
-    <div class="card">
-      <h2><i class="fa-solid fa-handshake"></i> Willkommen im Gaming of Republic Admin System</h2>
-      <p>
-        Dieses System bietet dir eine zentrale Oberfläche für Produktmanagement, Aufgabenverwaltung,
-        Zeiterfassung, Mitarbeiterübersicht und Admin‑Funktionen.<br>
-        Alles im Cyberpunk‑Neon‑Look und mit sicherer Firebase‑Integration.
-      </p>
-    </div>
-
-    <div class="card">
-      <h2><i class="fa-solid fa-bolt"></i> Schnellzugriff</h2>
-      <ul>
-        <li><i class="fa-solid fa-box"></i> Produkte verwalten</li>
-        <li><i class="fa-solid fa-list-check"></i> Aufgaben bearbeiten</li>
-        <li><i class="fa-solid fa-clock"></i> Zeiterfassung</li>
-        <li><i class="fa-solid fa-users"></i> Mitarbeiterübersicht</li>
-      </ul>
-    </div>
+  <div class="card">
+    <h2><i class="fa-solid fa-handshake"></i> Willkommen im Team-System</h2>
+    <p>
+      Dieses System bietet allen Teammitgliedern eine zentrale Plattform für die tägliche Zusammenarbeit. 
+      Hier können Produkte verwaltet, Aufgaben koordiniert, Arbeitszeiten erfasst und Mitarbeiterdaten gepflegt werden. 
+      Ziel ist es, Transparenz zu schaffen, Prozesse zu vereinfachen und die Effizienz im Team zu steigern.
+    </p>
   </div>
 
-  <!-- Übersicht -->
-  <div id="overview" class="section hidden">
-    <div class="dashboard">
-      <div class="card">
-        <h2><i class="fa-solid fa-box"></i> Produkte</h2>
-        <div class="stat" id="productCount">0</div>
-        <p>Gesamtzahl der Produkte</p>
-      </div>
-      <div class="card">
-        <h2><i class="fa-solid fa-list-check"></i> Aufgaben</h2>
-        <div class="stat" id="taskCount">0</div>
-        <p>Gesamtzahl der Aufgaben</p>
-      </div>
-      <div class="card">
-        <h2><i class="fa-solid fa-clock"></i> Zeiterfassungen</h2>
-        <div class="stat" id="timeCount">0</div>
-        <p>Gesamtzahl der Einträge</p>
-      </div>
-      <div class="card">
-        <h2><i class="fa-solid fa-users"></i> Mitarbeiter</h2>
-        <div class="stat" id="employeeCount">0</div>
-        <p>Gesamtzahl der Mitarbeiter</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dashboard -->
-  <div id="dashboard" class="section hidden">
-    <div class="dashboard">
-      <div class="card">
-        <h2><i class="fa-solid fa-box"></i> Produkte</h2>
-        <canvas id="productChart"></canvas>
-      </div>
-      <div class="card">
-        <h2><i class="fa-solid fa-list-check"></i> Aufgaben</h2>
-        <canvas id="taskChart"></canvas>
-      </div>
-      <div class="card">
-        <h2><i class="fa-solid fa-clock"></i> Zeiterfassungen</h2>
-        <canvas id="timeChart"></canvas>
-      </div>
-      <div class="card">
-        <h2><i class="fa-solid fa-users"></i> Mitarbeiter</h2>
-        <canvas id="employeeChart"></canvas>
-      </div>
-    </div>
+  <div class="card">
+    <h2><i class="fa-solid fa-bolt"></i> Direktzugriff</h2>
+    <ul>
+      <li><a href="products.html"><i class="fa-solid fa-box"></i> Produktverwaltung – Artikel und Bestände pflegen</a></li>
+      <li><a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgabenmanagement – Projekte und To‑Dos koordinieren</a></li>
+      <li><a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung – Arbeitszeiten dokumentieren</a></li>
+      <li><a href="overview.html"><i class="fa-solid fa-chart-pie"></i> Übersicht – Kennzahlen und Fortschritt im Blick</a></li>
+      <li><a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard – Daten und Statistiken visualisieren</a></li>
+      <li><a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel – Benutzer und Rollen verwalten</a></li>
+    </ul>
   </div>
 
   <!-- Firebase Logik -->
@@ -106,67 +62,9 @@
     import { initFirebase } from "./src/scripts/firebaseSetup.js";
     import { enforceRole } from "./src/scripts/roleGuard.js";
     import { logout } from "./src/scripts/auth.js";
-    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const { db } = initFirebase();
     enforceRole(["admin", "mitarbeiter"], "login.html");
-
-    // Navigation Tabs
-    document.querySelectorAll(".top-nav a").forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-        const section = link.dataset.section;
-        document.querySelectorAll(".section").forEach(sec => sec.classList.add("hidden"));
-        document.getElementById(section).classList.remove("hidden");
-      });
-    });
-
-    // Übersicht laden
-    async function loadOverview() {
-      const productSnapshot = await getDocs(collection(db, "products"));
-      document.getElementById("productCount").innerText = productSnapshot.size;
-
-      const taskSnapshot = await getDocs(collection(db, "tasks"));
-      document.getElementById("taskCount").innerText = taskSnapshot.size;
-
-      const timeSnapshot = await getDocs(collection(db, "timeEntries"));
-      document.getElementById("timeCount").innerText = timeSnapshot.size;
-
-      const employeeSnapshot = await getDocs(collection(db, "employees"));
-      document.getElementById("employeeCount").innerText = employeeSnapshot.size;
-
-      // Charts
-      createChart("productChart", "Produkte", productSnapshot.size, "#FFD300");
-      createChart("taskChart", "Aufgaben", taskSnapshot.size, "#70ffea");
-      createChart("timeChart", "Zeiterfassungen", timeSnapshot.size, "#FF69B4");
-      createChart("employeeChart", "Mitarbeiter", employeeSnapshot.size, "#00ff00");
-    }
-
-    function createChart(canvasId, label, value, color) {
-      const ctx = document.getElementById(canvasId).getContext("2d");
-      new Chart(ctx, {
-        type: "doughnut",
-        data: {
-          labels: [label],
-          datasets: [{
-            label: label,
-            data: [value],
-            backgroundColor: [color],
-            borderColor: "#0d0d1a",
-            borderWidth: 2
-          }]
-        },
-        options: {
-          plugins: {
-            legend: {
-              labels: { color: "#FFD300" }
-            }
-          }
-        }
-      });
-    }
-
-    loadOverview();
 
     // Logout
     document.querySelector(".logout-btn").addEventListener("click", logout);

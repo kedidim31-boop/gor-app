@@ -75,8 +75,8 @@
 
     const { db } = initFirebase();
 
-    // Zugriff: Mitarbeiter & Admins
-    enforceRole("mitarbeiter", "index.html");
+    // Zugriff: Admins & Mitarbeiter
+    enforceRole(["admin", "mitarbeiter"], "index.html");
 
     async function loadDashboard() {
       const productSnapshot = await getDocs(collection(db, "products"));

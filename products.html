@@ -80,6 +80,10 @@
     <!-- Produktübersicht -->
     <div class="card">
       <h2><i class="fa-solid fa-boxes-stacked"></i> Produktübersicht</h2>
+      <!-- Export-Button -->
+      <button id="exportBtn" class="btn btn-yellow">
+        <i class="fa-solid fa-file-csv"></i> Exportieren für Shopify
+      </button>
       <table id="productTable">
         <thead>
           <tr>
@@ -90,7 +94,7 @@
             <th>Kollektionen</th>
             <th>SKU</th>
             <th>EAN</th>
-            <th><i class="fa-solid fa-money-bill-wave"></i> Preis (€)</th>
+            <th><i class="fa-solid fa-money-bill-wave"></i> Preis (CHF)</th>
             <th>Aktionen</th>
           </tr>
         </thead>
@@ -146,7 +150,7 @@
           <td>${data.collections || "-"}</td>
           <td>${data.sku}</td>
           <td>${data.ean || "-"}</td>
-          <td><i class="fa-solid fa-money-bill-wave"></i> ${data.price.toFixed(2)} €</td>
+          <td><i class="fa-solid fa-money-bill-wave"></i> ${data.price.toFixed(2)} CHF</td>
           <td>
             <button class="deleteBtn" data-id="${docSnap.id}">
               <i class="fa-solid fa-trash"></i> Löschen
@@ -168,6 +172,52 @@
     loadProducts();
 
     document.querySelector(".logout-btn").addEventListener("click", logout);
+
+    // Shopify-kompatibler CSV-Export
+    document.getElementById("exportBtn").addEventListener("click", async () => {
+      const snapshot = await getDocs(collection(db, "products"));
+      let csvContent = "data:text/csv;charset=utf-8,";
+
+      // Shopify Kopfzeile
+      csvContent += "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Price\n";
+
+      snapshot.forEach(docSnap => {
+        const p = docSnap.data();
+        const handle = p.name.toLowerCase().replace(/\s+/g, "-");
+        const title = p.name;
+        const body = p.description || "";
+        const vendor = p.vendor || "";
+        const type = p.type || "";
+        const tags = p.collections || "";
+        const published = "TRUE";
+        const sku = p.sku || "";
+        const barcode = p.ean || "";
+        const price = p.price || 0;
+
+        const row = [
+          handle,
+          `"${title}"`,
+          `"${body}"`,
+          `"${vendor}"`,
+          `"${type}"`,
+          `"${tags}"`,
+          published,
+          sku,
+          barcode,
+          price
+        ].join(",");
+
+        csvContent += row + "\n";
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "shopify_products.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
   </script>
 
 </body>

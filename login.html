@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Globale Neon Theme -->
+  <!-- Globale Theme Datei -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/login.css">
-  <!-- Icons -->
+  <!-- Icon Library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -16,50 +16,91 @@
   <div class="neon-bg"></div>
 
   <!-- Splash Screen -->
-  <section class="splash-screen">
+  <div class="splash-screen" id="splash">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="splash-logo">
-    <button class="skip-btn">Skip Intro</button>
-  </section>
+    <button class="skip-btn" id="skipBtn">Skip Intro</button>
+  </div>
 
-  <!-- Login Container -->
-  <main class="login-container">
-    <div class="card login-card">
-      <h2><i class="fa-solid fa-user-shield"></i> Willkommen zurück</h2>
-      <p class="login-subtitle">Bitte melde dich mit deinem Konto an</p>
+  <!-- Login Card -->
+  <main>
+    <div class="login-card" id="loginCard">
+      <h2><i class="fa-solid fa-user-shield"></i> Login</h2>
 
-      <form id="loginForm" novalidate>
-        <!-- E-Mail -->
-        <div class="input-group">
-          <i class="fa-solid fa-envelope"></i>
-          <input type="email" id="loginEmail" placeholder=" " required>
-          <label for="loginEmail">E-Mail</label>
-        </div>
-
-        <!-- Passwort -->
-        <div class="input-group">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" id="loginPassword" placeholder=" " required>
-          <label for="loginPassword">Passwort</label>
-          <i class="fa-solid fa-eye toggle-password"></i>
-        </div>
-
-        <button type="submit" class="btn btn-yellow">
-          <i class="fa-solid fa-right-to-bracket"></i> Login
-        </button>
-      </form>
-
-      <!-- Fehlerfeedback -->
-      <div class="error-message hidden">Login fehlgeschlagen</div>
-      <p class="hint">⚡ Dein Zugang ist geschützt mit Gaming of Republic</p>
-
-      <div class="login-extra">
-        <a href="#" class="forgot-link"><i class="fa-solid fa-key"></i> Passwort vergessen?</a>
+      <!-- Eingabegruppen -->
+      <div class="input-group">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" id="email" placeholder=" " required>
+        <label for="email">E-Mail</label>
       </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="password" placeholder=" " required>
+        <label for="password">Passwort</label>
+        <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+      </div>
+
+      <!-- Fehlernachricht -->
+      <div class="error-message hidden" id="errorMessage">
+        <i class="fa-solid fa-triangle-exclamation"></i> Ungültige Zugangsdaten
+      </div>
+
+      <!-- Hinweis -->
+      <div class="hint">
+        <i class="fa-solid fa-circle-info"></i> Bitte melde dich mit deinen Teamdaten an.
+      </div>
+
+      <!-- Login Button -->
+      <button id="loginBtn" class="btn btn-yellow">
+        <i class="fa-solid fa-right-to-bracket"></i> Einloggen
+      </button>
     </div>
   </main>
 
-  <!-- Splash & Login Logik -->
-  <script type="module" src="src/scripts/login.js"></script>
+  <!-- Firebase Logik -->
+  <script type="module">
+    import { initFirebase } from "./src/scripts/firebaseSetup.js";
+    import { login } from "./src/scripts/auth.js";
+
+    const { db } = initFirebase();
+
+    const splash = document.getElementById("splash");
+    const skipBtn = document.getElementById("skipBtn");
+    const loginCard = document.getElementById("loginCard");
+    const loginBtn = document.getElementById("loginBtn");
+    const errorMessage = document.getElementById("errorMessage");
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+
+    // Splash Screen skip
+    skipBtn.addEventListener("click", () => {
+      splash.classList.add("fade-out");
+      setTimeout(() => splash.style.display = "none", 1000);
+      loginCard.classList.add("fade-in");
+    });
+
+    // Passwort anzeigen/ausblenden
+    togglePassword.addEventListener("click", () => {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      togglePassword.classList.toggle("fa-eye-slash");
+    });
+
+    // Login
+    loginBtn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = passwordInput.value.trim();
+
+      try {
+        await login(email, password);
+        window.location.href = "index.html";
+      } catch (err) {
+        errorMessage.classList.remove("hidden");
+        loginCard.classList.add("shake");
+        setTimeout(() => loginCard.classList.remove("shake"), 600);
+      }
+    });
+  </script>
 
 </body>
 </html>

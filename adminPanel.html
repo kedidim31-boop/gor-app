@@ -74,18 +74,24 @@
     </table>
   </div>
 
-  <!-- Modularer Firebase-Start -->
+  <!-- Firebase & Admin Panel Logik -->
   <script type="module">
-    import { initAdminPanel } from './src/scripts/adminPanel.js';
-    import { logout } from './src/scripts/auth.js';
+    import { initFirebase } from "./src/scripts/firebaseSetup.js";
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    import { logout } from "./src/scripts/auth.js";
+    import { initAdminPanel } from "./src/scripts/adminPanel.js";
 
-    // Starte Admin Panel
-    initAdminPanel();
+    // Zentrale Firebase-Instanz
+    const { db } = initFirebase();
+
+    // Zugriff: nur Admins
+    enforceRole("admin", "index.html");
+
+    // Starte Admin Panel Logik
+    initAdminPanel(db);
 
     // Logout
-    document.querySelector(".logout-btn").addEventListener("click", () => {
-      logout();
-    });
+    document.querySelector(".logout-btn").addEventListener("click", logout);
   </script>
 
 </body>

@@ -13,13 +13,13 @@
 <body>
 
   <!-- Branding Header -->
-  <div class="branding-header">
+  <header class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
       <div class="subtitle"><i class="fa-solid fa-house"></i> Gaming of Republic – Startseite</div>
     </div>
-  </div>
+  </header>
 
   <!-- Navigation -->
   <nav class="top-nav">
@@ -28,12 +28,14 @@
     <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </nav>
 
   <!-- Hauptinhalt -->
   <main>
+    <!-- Willkommen Karte -->
     <div class="card welcome-card">
       <h2><i class="fa-solid fa-handshake"></i> Willkommen im Team-System</h2>
       <p>
@@ -41,9 +43,12 @@
         Hier können Produkte verwaltet, Aufgaben koordiniert, Arbeitszeiten erfasst und Mitarbeiterdaten gepflegt werden. 
         Ziel ist es, Transparenz zu schaffen, Prozesse zu vereinfachen und die Effizienz im Team zu steigern.
       </p>
-      <a href="analysis.html" class="btn btn-yellow"><i class="fa-solid fa-chart-line"></i> Zum Dashboard</a>
+      <a href="analysis.html" class="btn btn-yellow">
+        <i class="fa-solid fa-chart-line"></i> Zum Dashboard
+      </a>
     </div>
 
+    <!-- Direktzugriff -->
     <div class="card quick-links">
       <h2><i class="fa-solid fa-bolt"></i> Direktzugriff</h2>
       <div class="dashboard">
@@ -61,6 +66,11 @@
           <h3><i class="fa-solid fa-clock"></i> Zeiterfassung</h3>
           <p>Behalte deine Arbeitszeit im Blick.</p>
           <a href="time.html" class="btn btn-yellow">Zeiterfassung öffnen</a>
+        </div>
+        <div class="card">
+          <h3><i class="fa-solid fa-users"></i> Mitarbeiter</h3>
+          <p>Pflege und verwalte deine Teamdaten.</p>
+          <a href="employees.html" class="btn btn-turquoise">Mitarbeiterverwaltung öffnen</a>
         </div>
         <div class="card">
           <h3><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>

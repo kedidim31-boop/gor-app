@@ -28,6 +28,7 @@
     <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html" class="active"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </nav>
@@ -54,7 +55,9 @@
           <i class="fa-solid fa-align-left"></i> Beschreibung
           <textarea id="workDescription"></textarea>
         </label>
-        <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-save"></i> Zeiterfassung speichern</button>
+        <button type="submit" class="btn btn-yellow">
+          <i class="fa-solid fa-save"></i> Zeiterfassung speichern
+        </button>
       </form>
     </div>
 
@@ -75,6 +78,12 @@
           <!-- Einträge werden hier dynamisch geladen -->
         </tbody>
       </table>
+    </div>
+
+    <!-- Statistik -->
+    <div class="card">
+      <h2><i class="fa-solid fa-chart-line"></i> Übersicht</h2>
+      <p class="stat" id="totalHours">Gesamtstunden: 0</p>
     </div>
   </main>
 
@@ -116,24 +125,29 @@
       const tableBody = document.querySelector("#timeTable tbody");
       tableBody.innerHTML = "";
 
+      let totalHours = 0;
       const snapshot = await getDocs(collection(db, "timeEntries"));
       snapshot.forEach(docSnap => {
         const data = docSnap.data();
-        const row = document.createElement("tr");
+        totalHours += data.hours;
 
+        const row = document.createElement("tr");
         row.innerHTML = `
           <td>${data.employee}</td>
           <td>${data.date}</td>
           <td>${data.hours}</td>
           <td>${data.description || "-"}</td>
           <td>
-            <button class="btn btn-red deleteBtn" data-id="${docSnap.id}">
+            <button class="deleteBtn" data-id="${docSnap.id}">
               <i class="fa-solid fa-trash"></i> Löschen
             </button>
           </td>
         `;
         tableBody.appendChild(row);
       });
+
+      // Gesamtstunden aktualisieren
+      document.getElementById("totalHours").textContent = "Gesamtstunden: " + totalHours;
 
       // Löschen
       document.querySelectorAll(".deleteBtn").forEach(btn => {

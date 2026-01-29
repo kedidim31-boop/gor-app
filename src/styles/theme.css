@@ -1,0 +1,96 @@
+/* Globale Farb- und Button-Definitionen – Cyberpunk Neon Look */
+
+/* Farbvariablen */
+:root {
+  --color-bg-dark: #0d0d1a;
+  --color-bg-panel: #1a1a2e;
+  --color-text-light: #f0f0f0;
+  --color-text-muted: #ccc;
+
+  --color-neon-yellow: #FFD300;
+  --color-neon-turquoise: #70ffea;
+  --color-neon-green: #00ff88;
+  --color-neon-red: #ff4d4d;
+}
+
+/* Body */
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+  margin: 0;
+  padding: 0;
+}
+
+/* Karten */
+.card {
+  background: var(--color-bg-panel);
+  margin: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+/* Buttons – Standard */
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.2s;
+  border: none;
+}
+
+/* Neon Gelb */
+.btn-yellow {
+  background: var(--color-neon-yellow);
+  color: var(--color-bg-dark);
+}
+
+.btn-yellow:hover {
+  box-shadow: 0 0 10px var(--color-neon-yellow), 0 0 20px var(--color-neon-yellow);
+  transform: translateY(-2px);
+}
+
+/* Neon Türkis */
+.btn-turquoise {
+  background: var(--color-neon-turquoise);
+  color: var(--color-bg-dark);
+}
+
+.btn-turquoise:hover {
+  box-shadow: 0 0 10px var(--color-neon-turquoise), 0 0 20px var(--color-neon-turquoise);
+  transform: translateY(-2px);
+}
+
+/* Neon Grün */
+.btn-green {
+  background: var(--color-neon-green);
+  color: var(--color-bg-dark);
+}
+
+.btn-green:hover {
+  box-shadow: 0 0 10px var(--color-neon-green), 0 0 20px var(--color-neon-green);
+  transform: translateY(-2px);
+}
+
+/* Neon Rot */
+.btn-red {
+  background: var(--color-neon-red);
+  color: #fff;
+}
+
+.btn-red:hover {
+  background: var(--color-neon-red);
+  color: var(--color-bg-dark);
+  box-shadow: 0 0 12px var(--color-neon-red), 0 0 24px rgba(255, 77, 77, 0.6);
+  transform: translateY(-2px);
+}

@@ -4,88 +4,98 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Aufgaben</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Global Neon Theme -->
-  <link rel="stylesheet" href="src/styles/neon-theme.css">
+  <!-- Globale Theme -->
+  <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/tasks.css">
-  <!-- Icon Library -->
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
   <!-- Branding Header -->
-  <div class="branding-header">
+  <header class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-list-check"></i> Aufgaben<br>Verwaltung</div>
+      <div class="subtitle"><i class="fa-solid fa-list-check"></i> Aufgabenverwaltung</div>
     </div>
-  </div>
+  </header>
 
   <!-- Navigation -->
-  <div class="top-nav">
+  <nav class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
     <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
     <a href="tasks.html" class="active"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
-    <a href="overview.html"><i class="fa-solid fa-chart-pie"></i> Übersicht</a>
-    <a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-  </div>
+    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+  </nav>
 
-  <!-- Aufgabenverwaltung -->
-  <div class="card">
-    <h2><i class="fa-solid fa-plus-circle"></i> Neue Aufgabe erstellen</h2>
-    <form id="taskForm">
-      <input type="text" id="taskTitle" placeholder="Titel der Aufgabe" required>
-      <textarea id="taskDescription" placeholder="Beschreibung"></textarea>
-      <select id="taskStatus" required>
-        <option value="offen">Offen</option>
-        <option value="inBearbeitung">In Bearbeitung</option>
-        <option value="abgeschlossen">Abgeschlossen</option>
-      </select>
-      <button type="submit"><i class="fa-solid fa-save"></i> Aufgabe speichern</button>
-    </form>
-  </div>
+  <!-- Hauptinhalt -->
+  <main>
+    <!-- Aufgabenformular -->
+    <div class="card">
+      <h2><i class="fa-solid fa-plus-circle"></i> Neue Aufgabe erstellen</h2>
+      <form id="taskForm" class="form-grid">
+        <label>
+          <i class="fa-solid fa-heading"></i> Titel
+          <input type="text" id="taskTitle" required>
+        </label>
+        <label>
+          <i class="fa-solid fa-align-left"></i> Beschreibung
+          <textarea id="taskDescription"></textarea>
+        </label>
+        <label>
+          <i class="fa-solid fa-bars-progress"></i> Status
+          <select id="taskStatus" required>
+            <option value="offen">Offen</option>
+            <option value="inBearbeitung">In Bearbeitung</option>
+            <option value="abgeschlossen">Abgeschlossen</option>
+          </select>
+        </label>
+        <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-save"></i> Aufgabe speichern</button>
+      </form>
+    </div>
 
-  <div class="card">
-    <h2><i class="fa-solid fa-table"></i> Aufgabenübersicht</h2>
-    <table id="taskTable">
-      <thead>
-        <tr>
-          <th><i class="fa-solid fa-heading"></i> Titel</th>
-          <th><i class="fa-solid fa-align-left"></i> Beschreibung</th>
-          <th><i class="fa-solid fa-bars-progress"></i> Status</th>
-          <th><i class="fa-solid fa-gear"></i> Aktionen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Aufgaben werden hier dynamisch geladen -->
-      </tbody>
-    </table>
-  </div>
+    <!-- Aufgabenübersicht -->
+    <div class="card">
+      <h2><i class="fa-solid fa-table"></i> Aufgabenübersicht</h2>
+      <table id="taskTable">
+        <thead>
+          <tr>
+            <th>Titel</th>
+            <th>Beschreibung</th>
+            <th>Status</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aufgaben werden hier dynamisch geladen -->
+        </tbody>
+      </table>
+    </div>
+  </main>
 
   <!-- Firebase Logik -->
   <script type="module">
     import { initFirebase } from "./src/scripts/firebaseSetup.js";
     import { enforceRole } from "./src/scripts/roleGuard.js";
     import { logout } from "./src/scripts/auth.js";
-
     import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp } 
       from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const { db } = initFirebase();
 
     // Zugriff: Admins & Mitarbeiter
-    enforceRole(["admin", "mitarbeiter"], "index.html");
+    enforceRole(["admin", "mitarbeiter"], "login.html");
 
     // Aufgabe hinzufügen
     document.getElementById("taskForm").addEventListener("submit", async e => {
       e.preventDefault();
-      const title = taskTitle.value;
-      const description = taskDescription.value;
-      const status = taskStatus.value;
+      const title = document.getElementById("taskTitle").value.trim();
+      const description = document.getElementById("taskDescription").value.trim();
+      const status = document.getElementById("taskStatus").value;
 
       await addDoc(collection(db, "tasks"), {
         title,
@@ -94,7 +104,6 @@
         createdAt: serverTimestamp()
       });
 
-      alert("✅ Aufgabe gespeichert!");
       loadTasks();
       e.target.reset();
     });
@@ -120,7 +129,7 @@
             </select>
           </td>
           <td>
-            <button class="deleteBtn" data-id="${docSnap.id}">
+            <button class="btn btn-red deleteBtn" data-id="${docSnap.id}">
               <i class="fa-solid fa-trash"></i> Löschen
             </button>
           </td>
@@ -134,7 +143,6 @@
           const id = e.target.dataset.id;
           const newStatus = e.target.value;
           await updateDoc(doc(db, "tasks", id), { status: newStatus });
-          alert("Status geändert zu: " + newStatus);
         });
       });
 
@@ -143,7 +151,6 @@
         btn.addEventListener("click", async e => {
           const id = e.target.dataset.id;
           await deleteDoc(doc(db, "tasks", id));
-          alert("🗑️ Aufgabe gelöscht");
           loadTasks();
         });
       });

@@ -4,7 +4,7 @@
 /* Formular für Aufgabenverwaltung */
 #taskForm.form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   margin-top: 10px;
   align-items: start;
@@ -30,7 +30,8 @@
 }
 
 .icon-input input,
-.icon-input select {
+.icon-input select,
+.icon-input textarea {
   padding-left: 40px;
 }
 
@@ -112,15 +113,21 @@
   box-shadow: inset 0 0 12px rgba(0, 255, 102, 0.4);
 }
 
-/* Status-Badges */
+/* Status-Badges mit Icons */
 .status-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: bold;
   margin-bottom: 6px;
   text-transform: capitalize;
+}
+
+.status-badge i {
+  font-size: 0.9rem;
 }
 
 .status-badge.status-offen {

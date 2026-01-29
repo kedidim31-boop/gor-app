@@ -89,12 +89,6 @@
         </tbody>
       </table>
     </div>
-
-    <!-- Statistik -->
-    <div class="card">
-      <h2><i class="fa-solid fa-chart-line"></i> Übersicht</h2>
-      <p class="stat" id="totalHours">Gesamtstunden: 0</p>
-    </div>
   </main>
 
   <!-- Firebase Logik -->
@@ -162,11 +156,9 @@
       const tableBody = document.querySelector("#timeTable tbody");
       tableBody.innerHTML = "";
 
-      let totalHours = 0;
       const snapshot = await getDocs(collection(db, "timeEntries"));
       snapshot.forEach(docSnap => {
         const data = docSnap.data();
-        totalHours += data.hours;
 
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -184,8 +176,6 @@
         `;
         tableBody.appendChild(row);
       });
-
-      document.getElementById("totalHours").textContent = "Gesamtstunden: " + totalHours;
 
       document.querySelectorAll(".deleteBtn").forEach(btn => {
         btn.addEventListener("click", async e => {

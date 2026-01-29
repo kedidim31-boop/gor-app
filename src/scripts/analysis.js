@@ -23,17 +23,19 @@ const chartColors = {
   products: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-yellow"),
   tasks: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-turquoise"),
   employees: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-green"),
-  time: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-red")
+  time: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-red"),
+  stock: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-purple") // neue Farbe für Bestand
 };
 
 const overviewChart = new Chart(ctxOverview, {
   type: "doughnut",
   data: {
-    labels: ["Produkte", "Aufgaben", "Mitarbeiter", "Zeit"],
+    labels: ["Produkte", "Bestand", "Aufgaben", "Mitarbeiter", "Zeit"],
     datasets: [{
-      data: [0, 0, 0, 0],
+      data: [0, 0, 0, 0, 0],
       backgroundColor: [
         chartColors.products,
+        chartColors.stock,
         chartColors.tasks,
         chartColors.employees,
         chartColors.time
@@ -73,6 +75,7 @@ const timeLineChart = new Chart(ctxTimeLine, {
 
 // Realtime Updates
 let productCount = 0;
+let totalStock = 0;
 let taskCount = 0;
 let employeeCount = 0;
 let totalHours = 0;
@@ -84,10 +87,18 @@ onSnapshot(collection(db, "employees"), snap => {
   updateOverviewChart();
 });
 
-// Produkte
+// Produkte inkl. Bestand
 onSnapshot(collection(db, "products"), snap => {
   productCount = snap.size;
+  totalStock = 0;
+
+  snap.forEach(docSnap => {
+    const p = docSnap.data();
+    totalStock += parseInt(p.stock ?? 0);
+  });
+
   document.getElementById("productCount").textContent = productCount;
+  document.getElementById("stockTotal").textContent = totalStock; // neues Feld im Dashboard
   updateOverviewChart();
 });
 
@@ -129,6 +140,7 @@ onSnapshot(collection(db, "timeEntries"), snap => {
 function updateOverviewChart() {
   overviewChart.data.datasets[0].data = [
     productCount,
+    totalStock,
     taskCount,
     employeeCount,
     totalHours

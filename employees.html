@@ -30,6 +30,7 @@
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html" class="active"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+    <!-- Logout Button -->
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </nav>
 
@@ -79,87 +80,7 @@
     </div>
   </main>
 
-  <!-- Firebase Logik -->
-  <script type="module">
-    import { initFirebase } from "./src/scripts/firebaseSetup.js";
-    import { enforceRole } from "./src/scripts/roleGuard.js";
-    import { logout } from "./src/scripts/auth.js";
-    import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp } 
-      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
-    const { db } = initFirebase();
-
-    // Zugriff: nur Admins
-    enforceRole(["admin"], "login.html");
-
-    const form = document.getElementById("employeeForm");
-    const tableBody = document.querySelector("#employeeTable tbody");
-
-    // Mitarbeiter hinzufügen
-    form.addEventListener("submit", async e => {
-      e.preventDefault();
-      const employee = {
-        name: document.getElementById("employeeName").value.trim(),
-        email: document.getElementById("employeeEmail").value.trim(),
-        role: document.getElementById("employeeRole").value,
-        createdAt: serverTimestamp()
-      };
-      await addDoc(collection(db, "employees"), employee);
-      form.reset();
-      loadEmployees();
-    });
-
-    // Mitarbeiter laden
-    async function loadEmployees() {
-      tableBody.innerHTML = "";
-      const snapshot = await getDocs(collection(db, "employees"));
-      snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${data.name}</td>
-          <td>${data.email}</td>
-          <td>
-            <select data-id="${docSnap.id}" class="roleSelect">
-              <option value="mitarbeiter" ${data.role === "mitarbeiter" ? "selected" : ""}>Mitarbeiter</option>
-              <option value="admin" ${data.role === "admin" ? "selected" : ""}>Admin</option>
-            </select>
-          </td>
-          <td>
-            <button class="actionBtn"><i class="fa-solid fa-pen"></i> Bearbeiten</button>
-            <button class="deleteBtn" data-id="${docSnap.id}">
-              <i class="fa-solid fa-trash"></i> Löschen
-            </button>
-          </td>
-        `;
-        tableBody.appendChild(row);
-      });
-
-      // Rollen ändern
-      document.querySelectorAll(".roleSelect").forEach(select => {
-        select.addEventListener("change", async e => {
-          const id = e.target.dataset.id;
-          const newRole = e.target.value;
-          await updateDoc(doc(db, "employees", id), { role: newRole });
-        });
-      });
-
-      // Löschen
-      document.querySelectorAll(".deleteBtn").forEach(btn => {
-        btn.addEventListener("click", async e => {
-          const id = e.target.dataset.id;
-          await deleteDoc(doc(db, "employees", id));
-          loadEmployees();
-        });
-      });
-    }
-
-    // Initial laden
-    loadEmployees();
-
-    // Logout
-    document.querySelector(".logout-btn").addEventListener("click", logout);
-  </script>
-
+  <!-- Firebase Logik ausgelagert -->
+  <script type="module" src="src/scripts/employees.js"></script>
 </body>
 </html>

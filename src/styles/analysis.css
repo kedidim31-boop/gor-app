@@ -82,8 +82,17 @@ body {
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Hover-Effekt für Karten */
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--color-neon-yellow),
+              0 0 40px rgba(255, 211, 0, 0.6);
+}
+
+/* Titel in Karten */
 .card h2 {
   margin-top: 0;
   color: var(--color-neon-yellow);

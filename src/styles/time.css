@@ -26,9 +26,30 @@
   color: var(--color-text-muted);
 }
 
+/* Eingebettete Icons */
+.icon-input {
+  position: relative;
+}
+
+.icon-input i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #ffffff; /* Icons weiß */
+  font-size: 1rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.icon-input input {
+  padding-left: 36px; /* Platz für Icon */
+}
+
+/* Standard-Icons im Formular */
 #timeForm i {
   margin-bottom: 4px;
-  color: var(--color-neon-yellow);
+  color: #ffffff; /* Icons weiß */
 }
 
 #timeForm input,

@@ -8,6 +8,13 @@
   gap: 1rem;
 }
 
+#employeeForm label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: var(--color-neon-yellow);
+}
+
 #employeeForm input,
 #employeeForm select {
   background-color: var(--color-bg-panel);
@@ -91,8 +98,13 @@
 
 /* Delete Button */
 #employeeTable .deleteBtn {
+  background-color: transparent;
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 #employeeTable .deleteBtn:hover {

@@ -15,27 +15,36 @@ const form = document.getElementById("employeeForm");
 const tableBody = document.querySelector("#employeeTable tbody");
 
 // Mitarbeiter hinzufügen
-form.addEventListener("submit", async e => {
-  e.preventDefault();
-  const employee = {
-    name: document.getElementById("employeeName").value.trim(),
-    email: document.getElementById("employeeEmail").value.trim(),
-    role: document.getElementById("employeeRole").value || "gast",
-    createdAt: serverTimestamp()
-  };
-  try {
-    await addDoc(collection(db, "employees"), employee);
-    form.reset();
-    loadEmployees();
-    alert("✅ Mitarbeiter erfolgreich gespeichert!");
-  } catch (err) {
-    console.error("❌ Fehler beim Speichern:", err);
-    alert("Fehler beim Speichern des Mitarbeiters.");
-  }
-});
+if (form) {
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const name = document.getElementById("employeeName").value.trim();
+    const email = document.getElementById("employeeEmail").value.trim();
+    const role = document.getElementById("employeeRole").value || "gast";
+
+    if (!name || !email || !role) {
+      alert("⚠️ Bitte alle Pflichtfelder ausfüllen!");
+      return;
+    }
+
+    const employee = { name, email, role, createdAt: serverTimestamp() };
+
+    try {
+      await addDoc(collection(db, "employees"), employee);
+      form.reset();
+      loadEmployees();
+      alert("✅ Mitarbeiter erfolgreich gespeichert!");
+    } catch (err) {
+      console.error("❌ Fehler beim Speichern:", err);
+      alert("Fehler beim Speichern des Mitarbeiters.");
+    }
+  });
+}
 
 // Mitarbeiter laden
 async function loadEmployees() {
+  if (!tableBody) return;
+
   tableBody.innerHTML = "";
   const snapshot = await getDocs(collection(db, "employees"));
   snapshot.forEach(docSnap => {

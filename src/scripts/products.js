@@ -19,15 +19,21 @@ form.addEventListener("submit", async e => {
   e.preventDefault();
   const product = {
     name: document.getElementById("productName").value.trim(),
-    description: document.getElementById("productDescription").value.trim() || "", // optional
+    description: document.getElementById("productDescription").value.trim() || "",
     type: document.getElementById("productType").value.trim(),
     vendor: document.getElementById("productVendor").value.trim(),
     collections: document.getElementById("productCollections").value.trim(),
     sku: document.getElementById("productSKU").value.trim(),
     ean: document.getElementById("productEAN").value.trim(),
-    stock: parseInt(document.getElementById("productStock").value) || 0, // neues Feld
+    stock: parseInt(document.getElementById("productStock").value) || 0,
     price: parseFloat(document.getElementById("productPrice").value) || 0
   };
+
+  if (!product.name || !product.type || !product.vendor) {
+    alert("⚠️ Bitte alle Pflichtfelder ausfüllen!");
+    return;
+  }
+
   try {
     await addDoc(collection(db, "products"), product);
     form.reset();
@@ -91,49 +97,52 @@ const logoutBtn = document.querySelector(".logout-btn");
 if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
 // Shopify-kompatibler CSV-Export
-document.getElementById("exportBtn").addEventListener("click", async () => {
-  const snapshot = await getDocs(collection(db, "products"));
-  let csvContent = "data:text/csv;charset=utf-8,";
+const exportBtn = document.getElementById("exportBtn");
+if (exportBtn) {
+  exportBtn.addEventListener("click", async () => {
+    const snapshot = await getDocs(collection(db, "products"));
+    let csvContent = "data:text/csv;charset=utf-8,";
 
-  // Shopify Kopfzeile erweitert um Stock
-  csvContent += "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
+    // Shopify Kopfzeile erweitert um Stock
+    csvContent += "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
 
-  snapshot.forEach(docSnap => {
-    const p = docSnap.data();
-    const handle = (p.name || "").toLowerCase().replace(/\s+/g, "-");
-    const title = p.name || "";
-    const body = p.description || "";
-    const vendor = p.vendor || "";
-    const type = p.type || "";
-    const tags = p.collections || "";
-    const published = "TRUE";
-    const sku = p.sku || "";
-    const barcode = p.ean || "";
-    const stock = p.stock ?? 0;
-    const price = p.price || 0;
+    snapshot.forEach(docSnap => {
+      const p = docSnap.data();
+      const handle = (p.name || "").toLowerCase().replace(/\s+/g, "-");
+      const title = p.name || "";
+      const body = p.description || "";
+      const vendor = p.vendor || "";
+      const type = p.type || "";
+      const tags = p.collections || "";
+      const published = "TRUE";
+      const sku = p.sku || "";
+      const barcode = p.ean || "";
+      const stock = p.stock ?? 0;
+      const price = p.price || 0;
 
-    const row = [
-      handle,
-      `"${title}"`,
-      `"${body}"`,
-      `"${vendor}"`,
-      `"${type}"`,
-      `"${tags}"`,
-      published,
-      sku,
-      barcode,
-      stock,
-      price
-    ].join(",");
+      const row = [
+        handle,
+        `"${title}"`,
+        `"${body}"`,
+        `"${vendor}"`,
+        `"${type}"`,
+        `"${tags}"`,
+        published,
+        sku,
+        barcode,
+        stock,
+        price
+      ].join(",");
 
-    csvContent += row + "\n";
+      csvContent += row + "\n";
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "shopify_products.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   });
-
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "shopify_products.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-});
+}

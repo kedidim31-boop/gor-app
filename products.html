@@ -40,43 +40,43 @@
     <div class="card">
       <h2><i class="fa-solid fa-plus"></i> Neues Produkt hinzufügen</h2>
       <form id="createProductForm" class="form-grid">
-        <label>
-          <i class="fa-solid fa-tag"></i> Produktname
-          <input type="text" id="productName" required>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-tag"></i>
+          <input type="text" id="productName" placeholder="Produktname" required>
         </label>
-        <label>
-          <i class="fa-solid fa-align-left"></i> Beschreibung
-          <textarea id="productDescription"></textarea>
+        <label class="form-field icon-input full-width">
+          <i class="fa-solid fa-align-left"></i>
+          <textarea id="productDescription" placeholder="Beschreibung"></textarea>
         </label>
-        <label>
-          <i class="fa-solid fa-layer-group"></i> Typ
-          <input type="text" id="productType" required>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-layer-group"></i>
+          <input type="text" id="productType" placeholder="Typ" required>
         </label>
-        <label>
-          <i class="fa-solid fa-industry"></i> Anbieter
-          <input type="text" id="productVendor" required>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-industry"></i>
+          <input type="text" id="productVendor" placeholder="Anbieter" required>
         </label>
-        <label>
-          <i class="fa-solid fa-folder"></i> Kollektionen
-          <input type="text" id="productCollections">
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-folder"></i>
+          <input type="text" id="productCollections" placeholder="Kollektionen">
         </label>
-        <label>
-          <i class="fa-solid fa-barcode"></i> SKU eingeben
-          <input type="text" id="productSKU" required>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-barcode"></i>
+          <input type="text" id="productSKU" placeholder="SKU eingeben" required>
         </label>
-        <label>
-          <i class="fa-solid fa-barcode"></i> EAN eingeben
-          <input type="text" id="productEAN">
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-barcode"></i>
+          <input type="text" id="productEAN" placeholder="EAN eingeben">
         </label>
-        <label>
-          <i class="fa-solid fa-boxes-packing"></i> Bestand
-          <input type="number" id="productStock" step="1" required>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-boxes-packing"></i>
+          <input type="number" id="productStock" step="1" placeholder="Bestand" required>
         </label>
-        <label>
-          <i class="fa-solid fa-money-bill-wave"></i> Preis (CHF)
-          <input type="number" id="productPrice" step="0.01" required>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-money-bill-wave"></i>
+          <input type="number" id="productPrice" step="0.01" placeholder="Preis (CHF)" required>
         </label>
-        <button type="submit" class="btn btn-yellow">
+        <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Speichern
         </button>
       </form>

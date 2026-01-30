@@ -88,8 +88,6 @@ body {
 /* Hover-Effekt für Karten */
 .card:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px var(--color-neon-yellow),
-              0 0 40px rgba(255, 211, 0, 0.6);
 }
 
 /* Titel in Karten */
@@ -109,18 +107,50 @@ body {
 .stat {
   font-size: 2rem;
   font-weight: bold;
-  color: var(--color-neon-turquoise);
-  text-shadow: 0 0 8px var(--color-neon-turquoise);
   margin: 0.5rem 0;
 }
 
-/* Spezielle Farbe für Bestand */
+/* Farben für einzelne Kennzahlen */
+#employeeCount {
+  color: var(--color-neon-green);
+  text-shadow: 0 0 8px var(--color-neon-green);
+}
+
+#productCount {
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 8px var(--color-neon-yellow);
+}
+
 #stockTotal {
-  color: var(--color-neon-purple, #d28cff);
-  text-shadow: 0 0 8px var(--color-neon-purple, #d28cff);
+  color: var(--color-neon-purple);
+  text-shadow: 0 0 8px var(--color-neon-purple);
+}
+
+#taskCount {
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 8px var(--color-neon-turquoise);
+}
+
+#timeTotal {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 8px var(--color-neon-red);
 }
 
 /* Charts */
+.chart-card {
+  background: var(--color-bg-panel, #1a1a2e);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(112, 255, 234, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px var(--color-neon-turquoise),
+              0 0 40px rgba(112, 255, 234, 0.6);
+}
+
 canvas {
   max-width: 100%;
   height: auto;

@@ -24,7 +24,7 @@ const chartColors = {
   tasks: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-turquoise"),
   employees: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-green"),
   time: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-red"),
-  stock: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-purple") // neue Farbe für Bestand
+  stock: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-purple")
 };
 
 const overviewChart = new Chart(ctxOverview, {
@@ -46,7 +46,7 @@ const overviewChart = new Chart(ctxOverview, {
   },
   options: {
     plugins: {
-      legend: { labels: { color: "#f0f0f0" } }
+      legend: { labels: { color: "#f0f0f0", font: { size: 14 } } }
     },
     animation: { animateScale: true, animateRotate: true }
   }
@@ -67,8 +67,8 @@ const timeLineChart = new Chart(ctxTimeLine, {
   },
   options: {
     scales: {
-      x: { ticks: { color: "#f0f0f0" } },
-      y: { ticks: { color: "#f0f0f0" } }
+      x: { ticks: { color: "#f0f0f0" }, grid: { color: "#333" } },
+      y: { ticks: { color: "#f0f0f0" }, grid: { color: "#333" } }
     }
   }
 });
@@ -83,7 +83,8 @@ let totalHours = 0;
 // Mitarbeiter
 onSnapshot(collection(db, "employees"), snap => {
   employeeCount = snap.size;
-  document.getElementById("employeeCount").textContent = employeeCount;
+  const el = document.getElementById("employeeCount");
+  if (el) el.textContent = employeeCount;
   updateOverviewChart();
 });
 
@@ -97,15 +98,18 @@ onSnapshot(collection(db, "products"), snap => {
     totalStock += parseInt(p.stock ?? 0);
   });
 
-  document.getElementById("productCount").textContent = productCount;
-  document.getElementById("stockTotal").textContent = totalStock; // neues Feld im Dashboard
+  const elProduct = document.getElementById("productCount");
+  const elStock = document.getElementById("stockTotal");
+  if (elProduct) elProduct.textContent = productCount;
+  if (elStock) elStock.textContent = totalStock;
   updateOverviewChart();
 });
 
 // Aufgaben
 onSnapshot(collection(db, "tasks"), snap => {
   taskCount = snap.size;
-  document.getElementById("taskCount").textContent = taskCount;
+  const el = document.getElementById("taskCount");
+  if (el) el.textContent = taskCount;
   updateOverviewChart();
 });
 
@@ -126,7 +130,8 @@ onSnapshot(collection(db, "timeEntries"), snap => {
     }
   });
 
-  document.getElementById("timeTotal").textContent = totalHours.toFixed(1) + "h";
+  const el = document.getElementById("timeTotal");
+  if (el) el.textContent = totalHours.toFixed(1) + "h";
 
   const sortedDates = Object.keys(hoursByDate).sort();
   timeLineChart.data.labels = sortedDates;

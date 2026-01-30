@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Globale Theme -->
   <link rel="stylesheet" href="src/styles/theme.css">
-  <link rel="stylesheet" href="src/styles/analysis.css">
+  <link rel="stylesheet" href="src/styles/index.css">
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <!-- Chart.js -->
@@ -37,17 +37,17 @@
 
   <!-- Hauptinhalt -->
   <main>
+    <!-- Kennzahlen Übersicht -->
     <div class="dashboard">
-      <!-- Kennzahlen-Karten -->
       <div class="card stat-card">
         <h2><i class="fa-solid fa-users"></i> Mitarbeiter</h2>
-        <div class="stat" id="employeeCount">–</div>
+        <div class="stat" id="overviewEmployees">–</div>
         <p>Aktive Teammitglieder</p>
       </div>
 
       <div class="card stat-card">
         <h2><i class="fa-solid fa-boxes-stacked"></i> Produkte</h2>
-        <div class="stat" id="productCount">–</div>
+        <div class="stat" id="overviewProducts">–</div>
         <p>Verfügbare Artikel</p>
       </div>
 
@@ -59,13 +59,13 @@
 
       <div class="card stat-card">
         <h2><i class="fa-solid fa-list-check"></i> Aufgaben</h2>
-        <div class="stat" id="taskCount">–</div>
+        <div class="stat" id="overviewTasks">–</div>
         <p>Offene To‑Dos</p>
       </div>
 
       <div class="card stat-card">
         <h2><i class="fa-solid fa-clock"></i> Zeiterfassung</h2>
-        <div class="stat" id="timeTotal">–</div>
+        <div class="stat" id="overviewTime">–</div>
         <p>Gesamte Arbeitszeit</p>
       </div>
 
@@ -78,6 +78,38 @@
       <div class="card chart-card">
         <h2><i class="fa-solid fa-chart-line"></i> Zeitverlauf</h2>
         <canvas id="timeLineChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Direktzugriff -->
+    <div class="card quick-links">
+      <h2><i class="fa-solid fa-bolt"></i> Direktzugriff</h2>
+      <div class="dashboard">
+        <div class="card">
+          <h3><i class="fa-solid fa-box"></i> Produkte</h3>
+          <p>Verwalte deine Artikel und Bestände.</p>
+          <a href="products.html" class="btn btn-turquoise">Produktverwaltung öffnen</a>
+        </div>
+        <div class="card">
+          <h3><i class="fa-solid fa-list-check"></i> Aufgaben</h3>
+          <p>Organisiere deine To‑Dos und Teamaufgaben.</p>
+          <a href="tasks.html" class="btn btn-green">Aufgabenmanagement öffnen</a>
+        </div>
+        <div class="card">
+          <h3><i class="fa-solid fa-clock"></i> Zeiterfassung</h3>
+          <p>Behalte deine Arbeitszeit im Blick.</p>
+          <a href="time.html" class="btn btn-yellow">Zeiterfassung öffnen</a>
+        </div>
+        <div class="card">
+          <h3><i class="fa-solid fa-users"></i> Mitarbeiter</h3>
+          <p>Pflege und verwalte deine Teamdaten.</p>
+          <a href="employees.html" class="btn btn-turquoise">Mitarbeiterverwaltung öffnen</a>
+        </div>
+        <div class="card">
+          <h3><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
+          <p>Verwalte Benutzer und Rollen.</p>
+          <a href="adminPanel.html" class="btn btn-red">Admin Panel öffnen</a>
+        </div>
       </div>
     </div>
   </main>

@@ -23,9 +23,9 @@
 #createProductForm input,
 #createProductForm textarea,
 #createProductForm select {
-  background-color: var(--color-bg-dark);
-  border: 1px solid var(--color-neon-yellow);
-  border-radius: 6px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 8px;
   padding: 10px;
   color: var(--color-text-light);
   font-size: 14px;
@@ -71,13 +71,17 @@
   color: var(--color-text-light);
   padding: 10px;
   border-bottom: 1px solid #333;
+  font-size: 0.95rem;
+}
+
+#productTable th {
+  background-color: var(--color-bg-panel);
 }
 
 /* Farbcode für technische Felder */
 #productTable th:nth-child(6),  /* SKU */
 #productTable th:nth-child(7),  /* EAN */
-#productTable th:nth-child(8),  /* Preis */
-#productTable th:nth-child(9)   /* Aktionen */ {
+#productTable th:nth-child(10)  /* Aktionen */ {
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
@@ -92,10 +96,27 @@
   text-shadow: 0 0 6px var(--color-neon-turquoise);
 }
 
+/* Bestand & Preis */
+#productTable th:nth-child(8) {
+  color: var(--color-neon-purple);
+  text-shadow: 0 0 6px var(--color-neon-purple);
+}
+
+#productTable th:nth-child(9) {
+  color: var(--color-neon-green);
+  text-shadow: 0 0 6px var(--color-neon-green);
+}
+
 /* Preis mit Bargeld-Icon */
-#productTable td:nth-child(8) i {
+#productTable td:nth-child(9) i {
   color: var(--color-neon-green);
   margin-right: 6px;
+}
+
+/* Hover-Effekt für Zeilen */
+#productTable tr:hover {
+  background-color: #2a2a40;
+  transition: background 0.2s ease;
 }
 
 /* Buttons in Tabelle */
@@ -120,7 +141,7 @@
 #exportBtn {
   margin: 10px 0;
   padding: 8px 16px;
-  border: 1px solid var(--color-neon-turquoise);
+  border: 2px solid var(--color-neon-turquoise);
   background-color: transparent;
   color: var(--color-neon-turquoise);
   font-weight: bold;

@@ -16,7 +16,7 @@ export function initAdminPanel() {
   const { db } = initFirebase();
 
   // Zugriff nur für Admins
-  enforceRole(["admin"], "login.html"); // redirect zu Login, wenn kein Admin
+  enforceRole(["admin"], "login.html");
 
   // Benutzer anlegen
   const form = document.getElementById("createUserForm");
@@ -28,7 +28,7 @@ export function initAdminPanel() {
       const role = document.getElementById("newRole").value;
 
       if (!email || !password || !role) {
-        alert("Bitte alle Felder ausfüllen!");
+        alert("⚠️ Bitte alle Felder ausfüllen!");
         return;
       }
 
@@ -58,11 +58,12 @@ export function initAdminPanel() {
 
       row.innerHTML = `
         <td>${data.name || "-"}</td>
-        <td>${data.email}</td>
+        <td>${data.email || "-"}</td>
         <td>
           <select data-id="${docSnap.id}" class="roleSelect">
             <option value="mitarbeiter" ${data.role === "mitarbeiter" ? "selected" : ""}>Mitarbeiter</option>
             <option value="admin" ${data.role === "admin" ? "selected" : ""}>Admin</option>
+            <option value="gast" ${data.role === "gast" ? "selected" : ""}>Gast</option>
           </select>
         </td>
         <td>
@@ -81,7 +82,7 @@ export function initAdminPanel() {
         const newRole = e.target.value;
         try {
           await updateDoc(doc(db, "employees", id), { role: newRole });
-          alert("Rolle geändert zu: " + newRole);
+          alert(`✅ Rolle geändert zu: ${newRole}`);
         } catch (err) {
           console.error("❌ Fehler beim Rollenwechsel:", err);
           alert("Fehler beim Rollenwechsel.");
@@ -113,8 +114,9 @@ export function initAdminPanel() {
   // Logout Button
   const logoutBtn = document.querySelector(".logout-btn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      logout();
-    });
+    logoutBtn.addEventListener("click", logout);
   }
 }
+
+// Admin Panel direkt initialisieren
+initAdminPanel();

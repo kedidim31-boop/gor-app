@@ -48,6 +48,11 @@ document.getElementById("timeForm").addEventListener("submit", async e => {
   const hours = parseFloat(hoursInput.value) || 0;
   const description = document.getElementById("workDescription").value.trim();
 
+  if (!employee || !date || hours <= 0) {
+    alert("⚠️ Bitte alle Pflichtfelder korrekt ausfüllen!");
+    return;
+  }
+
   try {
     await addDoc(collection(db, "timeEntries"), {
       employee,
@@ -70,6 +75,8 @@ document.getElementById("timeForm").addEventListener("submit", async e => {
 // Zeiterfassungen laden
 async function loadTimeEntries() {
   const tableBody = document.querySelector("#timeTable tbody");
+  if (!tableBody) return;
+
   tableBody.innerHTML = "";
 
   const snapshot = await getDocs(collection(db, "timeEntries"));
@@ -77,11 +84,11 @@ async function loadTimeEntries() {
     const data = docSnap.data();
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${data.employee}</td>
+      <td>${data.employee || "-"}</td>
       <td>${formatDate(data.date)}</td>
       <td>${data.start || "-"}</td>
       <td>${data.end || "-"}</td>
-      <td>${data.hours}</td>
+      <td>${data.hours?.toFixed(2) || "0.00"}</td>
       <td>${data.description || "-"}</td>
       <td>
         <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">

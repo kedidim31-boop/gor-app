@@ -1,4 +1,4 @@
-// src/scripts/index.js – Logik für Startseite / Home Dashboard
+// src/scripts/index.js – Logik für Startseite
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
@@ -8,10 +8,10 @@ import { collection, getDocs }
 
 const { db } = initFirebase();
 
-// Zugriff: Admins & Mitarbeiter
+// Zugriff für Admins & Mitarbeiter
 enforceRole(["admin", "mitarbeiter"], "login.html");
 
-// Logout
+// Logout Button
 const logoutBtn = document.querySelector(".logout-btn");
 if (logoutBtn) logoutBtn.addEventListener("click", logout);
 

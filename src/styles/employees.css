@@ -1,6 +1,29 @@
 /* Mitarbeiter Seite – Cyberpunk Neon Look */
 /* Ergänzt globale theme.css mit spezifischen Features */
 
+/* Karten */
+.card {
+  background: var(--color-bg-panel);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px var(--color-neon-yellow),
+              0 0 40px rgba(255, 211, 0, 0.6);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
 /* Formular für Mitarbeiterverwaltung */
 #employeeForm {
   display: flex;
@@ -76,6 +99,7 @@
 
 #employeeTable tr:hover {
   background-color: #2a2a40;
+  transition: background 0.2s ease;
 }
 
 /* Buttons in Tabelle */
@@ -120,5 +144,14 @@
     display: block;
     overflow-x: auto;
     white-space: nowrap;
+  }
+
+  #employeeForm {
+    gap: 0.8rem;
+  }
+
+  #employeeForm input,
+  #employeeForm select {
+    padding: 8px;
   }
 }

@@ -53,9 +53,12 @@
           <select id="newRole" required>
             <option value="mitarbeiter">Mitarbeiter</option>
             <option value="admin">Admin</option>
+            <option value="gast">Gast</option>
           </select>
         </label>
-        <button type="submit" class="btn btn-yellow"><i class="fa-solid fa-save"></i> Benutzer erstellen</button>
+        <button type="submit" class="btn btn-yellow">
+          <i class="fa-solid fa-save"></i> Benutzer erstellen
+        </button>
       </form>
     </div>
 
@@ -72,21 +75,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Beispielzeile, wird später dynamisch ersetzt -->
-          <tr>
-            <td>Max Mustermann</td>
-            <td>max@example.com</td>
-            <td>
-              <select class="roleSelect">
-                <option value="mitarbeiter" selected>Mitarbeiter</option>
-                <option value="admin">Admin</option>
-              </select>
-            </td>
-            <td>
-              <button class="actionBtn"><i class="fa-solid fa-pen"></i> Bearbeiten</button>
-              <button class="deleteBtn"><i class="fa-solid fa-trash"></i> Löschen</button>
-            </td>
-          </tr>
+          <!-- Mitarbeiter werden hier dynamisch geladen -->
         </tbody>
       </table>
     </div>

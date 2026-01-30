@@ -46,7 +46,7 @@ async function loadOverview() {
     const timeEl = document.getElementById("overviewTime");
     if (timeEl) timeEl.textContent = totalHours.toFixed(1) + "h";
 
-    // Optional: Charts aktualisieren wie bei analysis.js
+    // Charts aktualisieren
     updateCharts(productCount, taskCount, employeeCount, totalHours);
 
   } catch (err) {
@@ -54,7 +54,7 @@ async function loadOverview() {
   }
 }
 
-// Charts Setup (optional, identisch zu analysis.js)
+// Charts Setup (identisch zu analysis.js)
 function updateCharts(productCount, taskCount, employeeCount, totalHours) {
   const ctxOverview = document.getElementById("overviewChart");
   const ctxTimeLine = document.getElementById("timeLineChart");
@@ -69,6 +69,7 @@ function updateCharts(productCount, taskCount, employeeCount, totalHours) {
     stock: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-purple")
   };
 
+  // Übersicht Chart
   new Chart(ctxOverview, {
     type: "doughnut",
     data: {
@@ -93,6 +94,7 @@ function updateCharts(productCount, taskCount, employeeCount, totalHours) {
     }
   });
 
+  // Zeitverlauf Chart
   new Chart(ctxTimeLine, {
     type: "line",
     data: {

@@ -20,7 +20,7 @@ form.addEventListener("submit", async e => {
   const employee = {
     name: document.getElementById("employeeName").value.trim(),
     email: document.getElementById("employeeEmail").value.trim(),
-    role: document.getElementById("employeeRole").value,
+    role: document.getElementById("employeeRole").value || "gast",
     createdAt: serverTimestamp()
   };
   try {
@@ -42,12 +42,13 @@ async function loadEmployees() {
     const data = docSnap.data();
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${data.name}</td>
-      <td>${data.email}</td>
+      <td>${data.name || "-"}</td>
+      <td>${data.email || "-"}</td>
       <td>
         <select data-id="${docSnap.id}" class="roleSelect">
           <option value="mitarbeiter" ${data.role === "mitarbeiter" ? "selected" : ""}>Mitarbeiter</option>
           <option value="admin" ${data.role === "admin" ? "selected" : ""}>Admin</option>
+          <option value="gast" ${data.role === "gast" ? "selected" : ""}>Gast</option>
         </select>
       </td>
       <td>
@@ -66,7 +67,7 @@ async function loadEmployees() {
       const newRole = e.target.value;
       try {
         await updateDoc(doc(db, "employees", id), { role: newRole });
-        alert("Rolle geändert zu: " + newRole);
+        alert(`✅ Rolle geändert zu: ${newRole}`);
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
         alert("Fehler beim Rollenwechsel.");

@@ -67,55 +67,44 @@ body {
   font-size: 1rem;
 }
 
+/* Dashboard Layout */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem;
+}
+
 /* Karten */
 .card {
   background: var(--color-bg-panel);
-  margin: 1.5rem;
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: scale(1.05);
   box-shadow: 0 0 20px var(--color-neon-turquoise),
               0 0 40px rgba(112, 255, 234, 0.6);
 }
 
-.card h2 {
+.card h2,
+.card h3 {
   margin-top: 0;
   color: var(--color-neon-yellow);
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-bottom: 1rem;
 }
 
 .card p {
-  line-height: 1.5;
   color: var(--color-text-muted);
+  margin-top: 0.5rem;
 }
 
-/* Schnellzugriff Liste */
-.card ul {
-  list-style: none;
-  padding: 0;
-}
-
-.card ul li {
-  margin: 0.5rem 0;
-}
-
-.card ul li a {
-  color: var(--color-neon-turquoise);
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.card ul li a:hover {
-  color: var(--color-neon-yellow);
-}
-
-/* Kennzahlen-Boxen */
+/* Statistiken */
 .stat {
   font-size: 2rem;
   font-weight: bold;
@@ -143,17 +132,19 @@ body {
   text-shadow: 0 0 8px var(--color-neon-red);
 }
 
+/* Charts */
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Responsive Anpassung */
 @media (max-width: 768px) {
-  .top-nav {
-    flex-wrap: wrap;
-  }
-  .top-nav a,
-  .top-nav button {
-    margin-bottom: 0.5rem;
+  .dashboard {
+    grid-template-columns: 1fr;
+    margin: 1rem;
   }
   .card {
-    margin: 1rem;
     padding: 1rem;
   }
 }

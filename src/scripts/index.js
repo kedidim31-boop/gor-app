@@ -46,75 +46,9 @@ async function loadOverview() {
     const timeEl = document.getElementById("overviewTime");
     if (timeEl) timeEl.textContent = totalHours.toFixed(1) + "h";
 
-    // Charts aktualisieren
-    updateCharts(productCount, taskCount, employeeCount, totalHours);
-
   } catch (err) {
     console.error("❌ Fehler beim Laden der Übersicht:", err);
   }
-}
-
-// Charts Setup (identisch zu analysis.js)
-function updateCharts(productCount, taskCount, employeeCount, totalHours) {
-  const ctxOverview = document.getElementById("overviewChart");
-  const ctxTimeLine = document.getElementById("timeLineChart");
-
-  if (!ctxOverview || !ctxTimeLine) return;
-
-  const chartColors = {
-    products: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-yellow"),
-    tasks: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-turquoise"),
-    employees: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-green"),
-    time: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-red"),
-    stock: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-purple")
-  };
-
-  // Übersicht Chart
-  new Chart(ctxOverview, {
-    type: "doughnut",
-    data: {
-      labels: ["Produkte", "Aufgaben", "Mitarbeiter", "Zeit"],
-      datasets: [{
-        data: [productCount, taskCount, employeeCount, totalHours],
-        backgroundColor: [
-          chartColors.products,
-          chartColors.tasks,
-          chartColors.employees,
-          chartColors.time
-        ],
-        borderColor: "#0d0d1a",
-        borderWidth: 2
-      }]
-    },
-    options: {
-      plugins: {
-        legend: { labels: { color: "#f0f0f0" } }
-      },
-      animation: { animateScale: true, animateRotate: true }
-    }
-  });
-
-  // Zeitverlauf Chart
-  new Chart(ctxTimeLine, {
-    type: "line",
-    data: {
-      labels: ["Heute"], // Platzhalter, später dynamisch erweitern
-      datasets: [{
-        label: "Arbeitsstunden",
-        data: [totalHours],
-        borderColor: chartColors.time,
-        backgroundColor: chartColors.time,
-        tension: 0.3,
-        fill: false
-      }]
-    },
-    options: {
-      scales: {
-        x: { ticks: { color: "#f0f0f0" } },
-        y: { ticks: { color: "#f0f0f0" } }
-      }
-    }
-  });
 }
 
 // Initial laden

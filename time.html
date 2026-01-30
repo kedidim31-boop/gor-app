@@ -40,9 +40,9 @@
     <div class="card">
       <h2><i class="fa-solid fa-plus-circle"></i> Neue Zeiterfassung hinzufügen</h2>
       <form id="timeForm" class="form-grid">
-        <label class="form-field">
-          <i class="fa-solid fa-user"></i> Mitarbeitername
-          <input type="text" id="employeeName" required>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="employeeName" placeholder="Mitarbeitername" required>
         </label>
         <label class="form-field icon-input">
           <i class="fa-solid fa-calendar-day"></i>
@@ -56,13 +56,13 @@
           <i class="fa-solid fa-clock"></i>
           <input type="time" id="endTime" required>
         </label>
-        <label class="form-field">
-          <i class="fa-solid fa-hourglass-half"></i> Stunden
-          <input type="number" id="hoursWorked" step="0.1" readonly>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-hourglass-half"></i>
+          <input type="number" id="hoursWorked" step="0.1" readonly placeholder="Berechnete Stunden">
         </label>
-        <label class="form-field full-width">
-          <i class="fa-solid fa-align-left"></i> Beschreibung
-          <textarea id="workDescription"></textarea>
+        <label class="form-field full-width icon-input">
+          <i class="fa-solid fa-align-left"></i>
+          <textarea id="workDescription" placeholder="Beschreibung"></textarea>
         </label>
         <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Zeiterfassung speichern

@@ -132,12 +132,6 @@ body {
   text-shadow: 0 0 8px var(--color-neon-red);
 }
 
-/* Charts */
-canvas {
-  max-width: 100%;
-  height: auto;
-}
-
 /* Quick-Links Karten */
 .quick-links .card {
   background: var(--color-bg-panel);

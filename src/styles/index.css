@@ -74,6 +74,13 @@ body {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px var(--color-neon-turquoise),
+              0 0 40px rgba(112, 255, 234, 0.6);
 }
 
 .card h2 {
@@ -106,6 +113,34 @@ body {
 
 .card ul li a:hover {
   color: var(--color-neon-yellow);
+}
+
+/* Kennzahlen-Boxen */
+.stat {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+/* Farben für einzelne Werte */
+#overviewProducts {
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 8px var(--color-neon-yellow);
+}
+
+#overviewTasks {
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 8px var(--color-neon-turquoise);
+}
+
+#overviewEmployees {
+  color: var(--color-neon-green);
+  text-shadow: 0 0 8px var(--color-neon-green);
+}
+
+#overviewTime {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 8px var(--color-neon-red);
 }
 
 /* Responsive Anpassung */

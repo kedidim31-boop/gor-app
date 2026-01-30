@@ -97,6 +97,11 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
+#taskTable tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+
 /* Statusfarben für ganze Zeilen */
 .status-offen {
   background-color: rgba(255, 211, 0, 0.1);

@@ -12,31 +12,41 @@ const { db } = initFirebase();
 enforceRole(["admin", "mitarbeiter"], "login.html");
 
 // Aufgabe hinzufügen
-document.getElementById("taskForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const title = document.getElementById("taskTitle").value.trim();
-  const description = document.getElementById("taskDescription").value.trim();
-  const status = document.getElementById("taskStatus").value;
+const taskForm = document.getElementById("taskForm");
+if (taskForm) {
+  taskForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const title = document.getElementById("taskTitle").value.trim();
+    const description = document.getElementById("taskDescription").value.trim();
+    const status = document.getElementById("taskStatus").value;
 
-  try {
-    await addDoc(collection(db, "tasks"), {
-      title,
-      description,
-      status,
-      createdAt: serverTimestamp()
-    });
-    e.target.reset();
-    loadTasks();
-    alert("✅ Aufgabe erfolgreich gespeichert!");
-  } catch (err) {
-    console.error("❌ Fehler beim Speichern:", err);
-    alert("Fehler beim Speichern der Aufgabe.");
-  }
-});
+    if (!title || !status) {
+      alert("⚠️ Bitte Titel und Status ausfüllen!");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "tasks"), {
+        title,
+        description: description || "",
+        status,
+        createdAt: serverTimestamp()
+      });
+      e.target.reset();
+      loadTasks();
+      alert("✅ Aufgabe erfolgreich gespeichert!");
+    } catch (err) {
+      console.error("❌ Fehler beim Speichern:", err);
+      alert("Fehler beim Speichern der Aufgabe.");
+    }
+  });
+}
 
 // Aufgaben laden
 async function loadTasks() {
   const tableBody = document.querySelector("#taskTable tbody");
+  if (!tableBody) return;
+
   tableBody.innerHTML = "";
 
   const snapshot = await getDocs(collection(db, "tasks"));
@@ -54,7 +64,7 @@ async function loadTasks() {
     if (data.status === "abgeschlossen") badgeIcon = "<i class='fa-solid fa-check'></i>";
 
     row.innerHTML = `
-      <td>${data.title}</td>
+      <td>${data.title || "-"}</td>
       <td>${data.description || "-"}</td>
       <td>
         <span class="status-badge status-${data.status}">${badgeIcon} ${data.status}</span><br>
@@ -80,11 +90,9 @@ async function loadTasks() {
       const newStatus = e.target.value;
       try {
         await updateDoc(doc(db, "tasks", id), { status: newStatus });
-        // Zeilenklasse aktualisieren
         const row = e.target.closest("tr");
         row.className = "";
         row.classList.add(`status-${newStatus}`);
-        // Badge aktualisieren
         const badge = row.querySelector(".status-badge");
         let badgeIcon = "";
         if (newStatus === "offen") badgeIcon = "<i class='fa-solid fa-clock'></i>";

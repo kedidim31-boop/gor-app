@@ -14,15 +14,43 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordInput = document.getElementById("password");
   const togglePassword = document.getElementById("togglePassword");
   const spinner = document.getElementById("spinner");
+  const feedbackContainer = document.getElementById("feedbackContainer");
 
   // Firebase Setup
   const { app } = initFirebase();
   const auth = getAuth(app);
 
+  // Hilfsfunktion für Feedback-Banner
+  function showFeedback(message, type = "success") {
+    const banner = document.createElement("div");
+    banner.className = `feedback-banner ${type}`;
+    banner.textContent = message;
+    feedbackContainer.appendChild(banner);
+
+    // Banner nach 3 Sekunden automatisch entfernen
+    setTimeout(() => {
+      banner.style.opacity = "0";
+      banner.style.transform = "translateX(100%)";
+      setTimeout(() => banner.remove(), 500);
+    }, 3000);
+  }
+
   // Splash automatisch ausblenden nach 3 Sekunden
   setTimeout(() => {
     if (splash) {
       splash.classList.add("fade-out");
+
+      // Logo Fade-Out
+      const logo = splash.querySelector(".splash-logo");
+      if (logo) {
+        logo.style.animation = "none"; // Pulse stoppen
+        logo.classList.add("fade-out");
+      }
+
+      // Skip Button Fade-Out
+      const skipButton = splash.querySelector(".skip-btn");
+      if (skipButton) skipButton.classList.add("fade-out");
+
       setTimeout(() => {
         splash.style.display = "none";
         loginCard?.classList.add("fade-in");
@@ -33,6 +61,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Skip Button sofort Splash überspringen
   skipBtn?.addEventListener("click", () => {
     splash.classList.add("fade-out");
+
+    const logo = splash.querySelector(".splash-logo");
+    if (logo) {
+      logo.style.animation = "none";
+      logo.classList.add("fade-out");
+    }
+
+    skipBtn.classList.add("fade-out");
+
     setTimeout(() => {
       splash.style.display = "none";
       loginCard?.classList.add("fade-in");
@@ -57,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
       errorMessage.classList.remove("hidden");
       loginCard.classList.add("shake");
       setTimeout(() => loginCard.classList.remove("shake"), 600);
+      showFeedback("Bitte fülle alle Felder aus.", "error");
       return;
     }
 
@@ -70,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Erfolg: Success-Feedback
       spinner.style.display = "none";
       loginCard.classList.add("success");
+      showFeedback("Login erfolgreich!", "success");
 
       setTimeout(() => {
         loginCard.classList.add("fade-out-success");
@@ -86,6 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       passwordInput.classList.add("error");
       setTimeout(() => passwordInput.classList.remove("error"), 1500);
+
+      showFeedback("Login fehlgeschlagen!", "error");
     }
   });
 });

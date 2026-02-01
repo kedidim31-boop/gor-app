@@ -23,19 +23,21 @@
 
   <!-- Login Card -->
   <main>
-    <div class="login-card fade-in" id="loginCard">
+    <div class="login-card" id="loginCard">
       <h2><i class="fa-solid fa-user-shield"></i> Login</h2>
 
       <!-- Eingabegruppen -->
       <form id="loginForm">
         <div class="input-group">
           <i class="fa-solid fa-envelope"></i>
+          <!-- Wichtig: placeholder=" " für Floating Labels -->
           <input type="email" id="email" name="email" placeholder=" " required>
           <label for="email">E-Mail</label>
         </div>
 
         <div class="input-group">
           <i class="fa-solid fa-lock"></i>
+          <!-- Wichtig: placeholder=" " für Floating Labels -->
           <input type="password" id="password" name="password" placeholder=" " required>
           <label for="password">Passwort</label>
           <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
@@ -62,17 +64,8 @@
     </div>
   </main>
 
-  <!-- Passwort Toggle Script -->
-  <script>
-    const togglePassword = document.getElementById("togglePassword");
-    const passwordInput = document.getElementById("password");
-
-    togglePassword.addEventListener("click", () => {
-      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-      passwordInput.setAttribute("type", type);
-      togglePassword.classList.toggle("fa-eye-slash");
-    });
-  </script>
+  <!-- Feedback Container für Banner -->
+  <div id="feedbackContainer"></div>
 
   <!-- Fix: externe Login-Logik -->
   <script type="module" src="src/scripts/login.js"></script>

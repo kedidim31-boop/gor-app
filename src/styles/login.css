@@ -44,7 +44,7 @@
 
 @keyframes fadeOutLogo {
   from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 0; transform: scale(0.9); }
 }
 
 /* Splash Hintergrund Fade-Out */
@@ -54,7 +54,7 @@
 
 @keyframes fadeOutSplashBg {
   from { opacity: 1; }
-  to { opacity: 0; }
+  to   { opacity: 0; }
 }
 
 /* Skip Button */
@@ -86,12 +86,12 @@
 
 @keyframes fadeInSkip {
   from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeOutSkip {
   from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 0; transform: translateY(10px); }
 }
 /* Zentrierung des Login-Bereichs */
 main {
@@ -149,7 +149,7 @@ main {
   padding: 0 44px;
   border: 2px solid var(--color-neon-yellow);
   border-radius: 12px;
-  background-color: rgba(15, 15, 35, 0.9); /* dunkler Hintergrund */
+  background-color: rgba(15, 15, 35, 0.9);
   color: var(--color-text-light);
   font-size: 15px;
   font-weight: 500;
@@ -247,6 +247,7 @@ main {
 /* Hinweis-Box */
 .hint {
   margin-top: 14px;
+  margin-bottom: 20px; /* Abstand zum Button */
   padding: 10px 14px;
   border-radius: 8px;
   font-size: 14px;
@@ -270,6 +271,28 @@ main {
 @keyframes fadeInHint {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Login Button */
+#loginBtn {
+  margin-top: 10px; /* zusätzlicher Abstand nach oben */
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.6);
+}
+
+#loginBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 16px var(--color-neon-turquoise),
+              0 0 32px rgba(112, 255, 234, 0.8);
 }
 
 /* Spinner – Neon Look */

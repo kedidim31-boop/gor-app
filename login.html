@@ -21,13 +21,13 @@
     <button class="skip-btn" id="skipBtn" aria-label="Intro überspringen">Skip Intro</button>
   </div>
 
-  <!-- Login Card -->
+  <!-- Login Bereich -->
   <main>
     <div class="login-card" id="loginCard">
       <h2><i class="fa-solid fa-user-shield"></i> Login</h2>
 
       <!-- Eingabegruppen -->
-      <form id="loginForm">
+      <form id="loginForm" novalidate>
         <div class="input-group">
           <i class="fa-solid fa-envelope"></i>
           <!-- Wichtig: placeholder=" " für Floating Labels -->
@@ -40,7 +40,7 @@
           <!-- Wichtig: placeholder=" " für Floating Labels -->
           <input type="password" id="password" name="password" placeholder=" " required>
           <label for="password">Passwort</label>
-          <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+          <i class="fa-solid fa-eye toggle-password" id="togglePassword" aria-label="Passwort anzeigen/ausblenden"></i>
         </div>
 
         <!-- Fehlernachricht -->
@@ -67,7 +67,7 @@
   <!-- Feedback Container für Banner -->
   <div id="feedbackContainer"></div>
 
-  <!-- Fix: externe Login-Logik -->
+  <!-- Externe Login-Logik -->
   <script type="module" src="src/scripts/login.js"></script>
 </body>
 </html>

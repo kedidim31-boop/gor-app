@@ -135,7 +135,7 @@
               0 0 24px rgba(255, 77, 77, 0.6);
 }
 
-/* Feedback Banner */
+/* Feedback Banner – globales System */
 #feedbackContainer {
   position: fixed;
   top: 80px;
@@ -155,20 +155,20 @@
 }
 
 .feedback.success {
-  background-color: var(--color-neon-green);
-  box-shadow: 0 0 12px var(--color-neon-green),
+  background-color: var(--color-feedback-success);
+  box-shadow: 0 0 12px var(--color-feedback-success),
               0 0 24px rgba(0, 255, 128, 0.6);
 }
 
 .feedback.error {
-  background-color: var(--color-neon-red);
-  box-shadow: 0 0 12px var(--color-neon-red),
+  background-color: var(--color-feedback-error);
+  box-shadow: 0 0 12px var(--color-feedback-error),
               0 0 24px rgba(255, 77, 77, 0.6);
 }
 
 .feedback.warning {
-  background-color: var(--color-neon-yellow);
-  box-shadow: 0 0 12px var(--color-neon-yellow),
+  background-color: var(--color-feedback-warning);
+  box-shadow: 0 0 12px var(--color-feedback-warning),
               0 0 24px rgba(255, 211, 0, 0.6);
 }
 

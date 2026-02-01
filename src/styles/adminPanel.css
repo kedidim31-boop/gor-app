@@ -196,3 +196,171 @@
     padding: 8px;
   }
 }
+/* Formular für Benutzeranlage */
+#createUserForm.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+#createUserForm label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: var(--color-neon-yellow);
+}
+
+#createUserForm i {
+  margin-bottom: 0.3rem;
+  color: var(--color-neon-turquoise);
+}
+
+#createUserForm input,
+#createUserForm select {
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--color-neon-yellow);
+  font-weight: bold;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+#createUserForm input:focus,
+#createUserForm select:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.7);
+}
+
+/* Dropdown für Rollen */
+#createUserForm select {
+  cursor: pointer;
+}
+
+#createUserForm select:hover,
+#createUserForm select:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise),
+              0 0 20px rgba(112, 255, 234, 0.7);
+}
+/* Tabelle für Mitarbeiterverwaltung */
+#adminEmployeeTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+
+#adminEmployeeTable th,
+#adminEmployeeTable td {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  color: var(--color-text-light);
+}
+
+#adminEmployeeTable th {
+  background-color: var(--color-bg-panel);
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+#adminEmployeeTable tr:hover {
+  background-color: #2a2a40;
+}
+/* Buttons in Tabelle */
+#adminEmployeeTable .actionBtn {
+  background-color: transparent;
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#adminEmployeeTable .actionBtn:hover {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.6);
+}
+
+/* Delete Button */
+#adminEmployeeTable .deleteBtn {
+  background-color: transparent;
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#adminEmployeeTable .deleteBtn:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-red),
+              0 0 24px rgba(255, 77, 77, 0.6);
+}
+/* Feedback Banner – globales System */
+#feedbackContainer {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feedback {
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #000;
+  animation: fadeInOut 4s forwards;
+}
+
+.feedback.success {
+  background-color: var(--color-feedback-success);
+  box-shadow: 0 0 12px var(--color-feedback-success),
+              0 0 24px rgba(0, 255, 128, 0.6);
+}
+
+.feedback.error {
+  background-color: var(--color-feedback-error);
+  box-shadow: 0 0 12px var(--color-feedback-error),
+              0 0 24px rgba(255, 77, 77, 0.6);
+}
+
+.feedback.warning {
+  background-color: var(--color-feedback-warning);
+  box-shadow: 0 0 12px var(--color-feedback-warning),
+              0 0 24px rgba(255, 211, 0, 0.6);
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+/* Responsive Anpassung */
+@media (max-width: 768px) {
+  #adminEmployeeTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  #createUserForm.form-grid {
+    gap: 0.8rem;
+  }
+
+  #createUserForm input,
+  #createUserForm select {
+    padding: 8px;
+  }
+}

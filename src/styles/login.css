@@ -109,6 +109,24 @@
               0 0 25px rgba(255, 211, 0, 0.6);
   opacity: 0;
   transform: translateY(30px);
+  z-index: 500;
+  /* Fallback: nach 5s automatisch sichtbar */
+  animation: fallbackVisible 5s ease forwards;
+}
+
+/* Login Card Fade-In Fix */
+.login-card.fade-in {
+  animation: fadeIn 1.2s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fallback Keyframes */
+@keyframes fallbackVisible {
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Floating Labels Hinweis:
@@ -130,4 +148,9 @@
   font-weight: bold;
   box-shadow: 0 0 8px rgba(0,0,0,0.3);
   animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
 }

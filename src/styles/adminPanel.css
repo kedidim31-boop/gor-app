@@ -25,9 +25,9 @@
 }
 
 /* Formular für Benutzeranlage */
-#createUserForm {
-  display: flex;
-  flex-direction: column;
+#createUserForm.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1rem;
 }
 
@@ -36,6 +36,11 @@
   flex-direction: column;
   font-weight: bold;
   color: var(--color-neon-yellow);
+}
+
+#createUserForm i {
+  margin-bottom: 0.3rem;
+  color: var(--color-neon-turquoise);
 }
 
 #createUserForm input,
@@ -94,25 +99,6 @@
   background-color: #2a2a40;
 }
 
-/* Dropdown in Tabelle */
-#adminEmployeeTable .roleSelect {
-  background-color: var(--color-bg-panel);
-  border: 2px solid var(--color-neon-yellow);
-  border-radius: 6px;
-  padding: 6px;
-  color: var(--color-neon-yellow);
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-#adminEmployeeTable .roleSelect:hover,
-#adminEmployeeTable .roleSelect:focus {
-  border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.7);
-}
-
 /* Buttons in Tabelle */
 #adminEmployeeTable .actionBtn {
   background-color: transparent;
@@ -157,7 +143,7 @@
     white-space: nowrap;
   }
 
-  #createUserForm {
+  #createUserForm.form-grid {
     gap: 0.8rem;
   }
 

@@ -135,6 +135,50 @@
               0 0 24px rgba(255, 77, 77, 0.6);
 }
 
+/* Feedback Banner */
+#feedbackContainer {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feedback {
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #000;
+  animation: fadeInOut 4s forwards;
+}
+
+.feedback.success {
+  background-color: var(--color-neon-green);
+  box-shadow: 0 0 12px var(--color-neon-green),
+              0 0 24px rgba(0, 255, 128, 0.6);
+}
+
+.feedback.error {
+  background-color: var(--color-neon-red);
+  box-shadow: 0 0 12px var(--color-neon-red),
+              0 0 24px rgba(255, 77, 77, 0.6);
+}
+
+.feedback.warning {
+  background-color: var(--color-neon-yellow);
+  box-shadow: 0 0 12px var(--color-neon-yellow),
+              0 0 24px rgba(255, 211, 0, 0.6);
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
 /* Responsive Anpassung */
 @media (max-width: 768px) {
   #adminEmployeeTable {

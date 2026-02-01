@@ -4,13 +4,18 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Startseite</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- Globale Theme -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/index.css">
+
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+
+  <!-- Feedback Container (global) -->
+  <div id="feedbackContainer"></div>
 
   <!-- Branding Header -->
   <header class="branding-header">
@@ -21,16 +26,27 @@
     </div>
   </header>
 
-  <!-- Navigation -->
-  <nav class="top-nav">
+  <!-- Navigation (wird durch index.js rollenbasiert angepasst) -->
+  <nav class="top-nav" id="navMenu">
     <a href="index.html" class="active"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
     <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
-    <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+
+    <!-- Wird nur angezeigt, wenn Rolle = employee oder admin -->
+    <a href="employees.html" class="role-employee role-admin">
+      <i class="fa-solid fa-users"></i> Mitarbeiter
+    </a>
+
+    <!-- Wird nur angezeigt, wenn Rolle = admin -->
+    <a href="adminPanel.html" class="role-admin">
+      <i class="fa-solid fa-user-shield"></i> Admin Panel
+    </a>
+
+    <button class="btn btn-red logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
   </nav>
 
   <!-- Hauptinhalt -->
@@ -71,32 +87,39 @@
     <!-- Direktzugriff -->
     <div class="card quick-links">
       <h2><i class="fa-solid fa-bolt"></i> Direktzugriff</h2>
+
       <div class="dashboard">
+
         <div class="card">
           <h3><i class="fa-solid fa-box"></i> Produkte</h3>
           <p>Verwalte deine Artikel und Bestände.</p>
           <a href="products.html" class="btn btn-turquoise">Produktverwaltung öffnen</a>
         </div>
+
         <div class="card">
           <h3><i class="fa-solid fa-list-check"></i> Aufgaben</h3>
           <p>Organisiere deine To‑Dos und Teamaufgaben.</p>
           <a href="tasks.html" class="btn btn-green">Aufgabenmanagement öffnen</a>
         </div>
+
         <div class="card">
           <h3><i class="fa-solid fa-clock"></i> Zeiterfassung</h3>
           <p>Behalte deine Arbeitszeit im Blick.</p>
           <a href="time.html" class="btn btn-yellow">Zeiterfassung öffnen</a>
         </div>
-        <div class="card">
+
+        <div class="card role-employee role-admin">
           <h3><i class="fa-solid fa-users"></i> Mitarbeiter</h3>
           <p>Pflege und verwalte deine Teamdaten.</p>
           <a href="employees.html" class="btn btn-turquoise">Mitarbeiterverwaltung öffnen</a>
         </div>
-        <div class="card">
+
+        <div class="card role-admin">
           <h3><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
           <p>Verwalte Benutzer und Rollen.</p>
           <a href="adminPanel.html" class="btn btn-red">Admin Panel öffnen</a>
         </div>
+
       </div>
     </div>
   </main>

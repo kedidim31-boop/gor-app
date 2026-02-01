@@ -34,6 +34,9 @@
     <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </nav>
 
+  <!-- Feedback Container -->
+  <div id="feedbackContainer"></div>
+
   <!-- Hauptinhalt -->
   <main>
     <!-- Mitarbeiterformular -->
@@ -41,12 +44,36 @@
       <h2><i class="fa-solid fa-user-plus"></i> Neuen Mitarbeiter hinzufügen</h2>
       <form id="employeeForm" class="form-grid">
         <label class="form-field icon-input">
+          <i class="fa-solid fa-id-card"></i>
+          <input type="text" id="employeeNumber" placeholder="Mitarbeiternummer" readonly>
+        </label>
+        <label class="form-field icon-input">
           <i class="fa-solid fa-user"></i>
           <input type="text" id="employeeName" placeholder="Name" required>
         </label>
         <label class="form-field icon-input">
           <i class="fa-solid fa-envelope"></i>
           <input type="email" id="employeeEmail" placeholder="E-Mail" required>
+        </label>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-location-dot"></i>
+          <input type="text" id="employeeAddress" placeholder="Adresse" required>
+        </label>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-map-pin"></i>
+          <input type="text" id="employeeZip" placeholder="PLZ" required>
+        </label>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-city"></i>
+          <input type="text" id="employeeCity" placeholder="Ort" required>
+        </label>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-cake-candles"></i>
+          <input type="date" id="employeeBirthday" required>
+        </label>
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-phone"></i>
+          <input type="tel" id="employeePhone" placeholder="Telefonnummer" required>
         </label>
         <label class="form-field icon-input">
           <i class="fa-solid fa-user-tag"></i>
@@ -68,8 +95,14 @@
       <table id="employeeTable">
         <thead>
           <tr>
+            <th>Nummer</th>
             <th>Name</th>
             <th>E-Mail</th>
+            <th>Adresse</th>
+            <th>PLZ</th>
+            <th>Ort</th>
+            <th>Geburtstag</th>
+            <th>Telefon</th>
             <th>Rolle</th>
             <th>Aktionen</th>
           </tr>
@@ -83,5 +116,17 @@
 
   <!-- Firebase Logik ausgelagert -->
   <script type="module" src="src/scripts/employees.js"></script>
+
+  <!-- Mitarbeitermummer automatisch generieren -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const numberField = document.getElementById("employeeNumber");
+      if (numberField) {
+        // 6-stellige Zufallszahl generieren
+        const randomNumber = Math.floor(100000 + Math.random() * 900000);
+        numberField.value = randomNumber;
+      }
+    });
+  </script>
 </body>
 </html>

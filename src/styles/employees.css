@@ -1,5 +1,5 @@
 /* Mitarbeiter Seite – Cyberpunk Neon Look */
-/* Ergänzt globale theme.css mit spezifischen Features */
+/* Ergänzt theme.css mit spezifischen Features */
 
 /* Karten */
 .card {
@@ -23,7 +23,6 @@
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
-
 /* Formular für Mitarbeiterverwaltung */
 #employeeForm {
   display: flex;
@@ -31,7 +30,7 @@
   gap: 1.2rem;
 }
 
-/* Jede Zeile mit mehreren Feldern */
+/* Zeilen mit mehreren Feldern */
 .form-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -74,7 +73,6 @@
   box-shadow: 0 0 12px var(--color-neon-turquoise),
               0 0 24px rgba(112, 255, 234, 0.7);
 }
-
 /* Dropdown für Rollen */
 .roleSelect {
   background-color: var(--color-bg-panel);
@@ -93,13 +91,30 @@
   box-shadow: 0 0 10px var(--color-neon-turquoise),
               0 0 20px rgba(112, 255, 234, 0.7);
 }
+/* Dropdown für Rollen */
+.roleSelect {
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 6px;
+  padding: 6px;
+  color: var(--color-neon-yellow);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
+.roleSelect:hover,
+.roleSelect:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise),
+              0 0 20px rgba(112, 255, 234, 0.7);
+}
 /* Tabelle für Mitarbeiterübersicht */
 #employeeTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1.5rem;
-  table-layout: fixed; /* gleichmäßige Spaltenbreite */
+  table-layout: fixed;
 }
 
 #employeeTable th,
@@ -108,7 +123,7 @@
   padding: 10px;
   border-bottom: 1px solid #333;
   color: var(--color-text-light);
-  word-wrap: break-word; /* lange Inhalte umbrechen */
+  word-wrap: break-word;
 }
 
 #employeeTable th {
@@ -121,7 +136,6 @@
   background-color: #2a2a40;
   transition: background 0.2s ease;
 }
-
 /* Buttons in Tabelle */
 #employeeTable .actionBtn {
   background-color: transparent;
@@ -157,7 +171,6 @@
   box-shadow: 0 0 12px var(--color-neon-red),
               0 0 24px rgba(255, 77, 77, 0.6);
 }
-
 /* Feedback Banner – globales System */
 #feedbackContainer {
   position: fixed;
@@ -201,17 +214,16 @@
   90% { opacity: 1; }
   100% { opacity: 0; transform: translateY(-10px); }
 }
-
 /* Responsive Anpassung */
 @media (max-width: 992px) {
   .form-row {
-    grid-template-columns: 1fr 1fr; /* 2 Spalten auf Tablets */
+    grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 600px) {
   .form-row {
-    grid-template-columns: 1fr; /* 1 Spalte auf Smartphones */
+    grid-template-columns: 1fr;
   }
 }
 

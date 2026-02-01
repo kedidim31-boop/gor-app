@@ -16,6 +16,13 @@ enforceRole(["admin"], "login.html");
 const form = document.getElementById("employeeForm");
 const tableBody = document.querySelector("#employeeTable tbody");
 
+// Hilfsfunktion für Schweizer Datumsformat (TT.MM.JJJJ)
+function formatSwissDate(dateString) {
+  if (!dateString) return "";
+  const [year, month, day] = dateString.split("-");
+  return `${day}.${month}.${year}`;
+}
+
 // Mitarbeiter hinzufügen
 if (form) {
   form.addEventListener("submit", async e => {
@@ -27,7 +34,8 @@ if (form) {
     const address = document.getElementById("employeeAddress").value.trim();
     const zip = document.getElementById("employeeZip").value.trim();
     const city = document.getElementById("employeeCity").value.trim();
-    const birthday = document.getElementById("employeeBirthday").value;
+    const birthdayRaw = document.getElementById("employeeBirthday").value;
+    const birthday = formatSwissDate(birthdayRaw); // Umwandlung ins Schweizer Format
     const phone = document.getElementById("employeePhone").value.trim();
     const role = document.getElementById("employeeRole").value || "gast";
 

@@ -54,9 +54,9 @@
         <label>
           <i class="fa-solid fa-user-tag"></i> Rolle
           <select id="newRole" required>
-            <option value="mitarbeiter">Mitarbeiter</option>
+            <option value="employee">Mitarbeiter</option>
             <option value="admin">Admin</option>
-            <option value="gast">Gast</option>
+            <option value="guest">Gast</option>
           </select>
         </label>
         <button type="submit" class="btn btn-yellow">
@@ -83,6 +83,13 @@
       </table>
     </div>
   </main>
+
+  <!-- Rollen-Schutz -->
+  <script type="module">
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    // Nur Admins dürfen diese Seite sehen, sonst Meldung + Weiterleitung zur Startseite
+    enforceRole(["admin"], "index.html");
+  </script>
 
   <!-- Firebase Logik -->
   <script type="module" src="src/scripts/adminPanel.js"></script>

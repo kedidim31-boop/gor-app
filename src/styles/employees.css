@@ -28,14 +28,19 @@
 #employeeForm {
   display: flex;
   flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Jede Zeile mit mehreren Feldern */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
 
-#employeeForm label {
+.form-field {
   display: flex;
   flex-direction: column;
-  font-weight: bold;
-  color: var(--color-neon-yellow);
 }
 
 /* Eingabefelder mit Icons */
@@ -94,6 +99,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 1.5rem;
+  table-layout: fixed; /* gleichmäßige Spaltenbreite */
 }
 
 #employeeTable th,
@@ -102,6 +108,7 @@
   padding: 10px;
   border-bottom: 1px solid #333;
   color: var(--color-text-light);
+  word-wrap: break-word; /* lange Inhalte umbrechen */
 }
 
 #employeeTable th {
@@ -196,6 +203,18 @@
 }
 
 /* Responsive Anpassung */
+@media (max-width: 992px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr; /* 2 Spalten auf Tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr; /* 1 Spalte auf Smartphones */
+  }
+}
+
 @media (max-width: 768px) {
   #employeeTable {
     display: block;

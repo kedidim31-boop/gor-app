@@ -114,21 +114,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
-        const role = userData.role || "user";
+
+        // 🔥 Option B: Einheitliche Rollen
+        const role = userData.role || "guest";
 
         loginCard.classList.add("success");
         showFeedback(`Login erfolgreich – Rolle: ${role}`, "success");
 
         setTimeout(() => {
           loginCard.classList.add("fade-out-success");
+
           if (role === "admin") {
             window.location.href = "adminPanel.html";
-          } else if (role === "employee") {
+          } 
+          else if (role === "employee") {
             window.location.href = "employees.html";
-          } else {
+          } 
+          else {
             window.location.href = "index.html";
           }
+
         }, 1200);
+
       } else {
         showFeedback("Kein Benutzer-Dokument gefunden!", "error");
         console.error("Firestore: Kein Dokument für diesen User.");

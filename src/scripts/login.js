@@ -7,8 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const splash = document.querySelector(".splash-screen");
   const loginCard = document.querySelector(".login-card");
   const skipBtn = document.querySelector(".skip-btn");
+  const loginForm = document.getElementById("loginForm");
   const loginBtn = document.getElementById("loginBtn");
-  const errorMessage = document.querySelector(".error-message");
+  const errorMessage = document.getElementById("errorMessage");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
   const togglePassword = document.getElementById("togglePassword");
@@ -45,8 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
     togglePassword.classList.toggle("fa-eye-slash");
   });
 
-  // Login Button
-  loginBtn?.addEventListener("click", async e => {
+  // Login Formular
+  loginForm?.addEventListener("submit", async e => {
     e.preventDefault();
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
@@ -65,18 +66,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+
       // Erfolg: Success-Feedback
+      spinner.style.display = "none";
       loginCard.classList.add("success");
+
       setTimeout(() => {
         loginCard.classList.add("fade-out-success");
         window.location.href = "index.html";
       }, 1200);
+
     } catch (error) {
       spinner.style.display = "none";
       errorMessage.textContent = "Login fehlgeschlagen: " + error.message;
       errorMessage.classList.remove("hidden");
+
       loginCard.classList.add("shake");
       setTimeout(() => loginCard.classList.remove("shake"), 600);
+
       passwordInput.classList.add("error");
       setTimeout(() => passwordInput.classList.remove("error"), 1500);
     }

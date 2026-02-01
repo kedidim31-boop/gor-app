@@ -18,6 +18,20 @@ export function initAdminPanel() {
   // Zugriff nur für Admins
   enforceRole(["admin"], "login.html");
 
+  // Feedback Funktion
+  function showFeedback(message, type = "success") {
+    const container = document.getElementById("feedbackContainer");
+    if (!container) return;
+
+    const div = document.createElement("div");
+    div.className = `feedback ${type}`;
+    div.textContent = message;
+
+    container.appendChild(div);
+
+    setTimeout(() => div.remove(), 4000);
+  }
+
   // Benutzer anlegen
   const form = document.getElementById("createUserForm");
   if (form) {
@@ -28,7 +42,7 @@ export function initAdminPanel() {
       const role = document.getElementById("newRole").value;
 
       if (!email || !password || !role) {
-        alert("⚠️ Bitte alle Felder ausfüllen!");
+        showFeedback("⚠️ Bitte alle Felder ausfüllen!", "error");
         return;
       }
 
@@ -36,10 +50,10 @@ export function initAdminPanel() {
         await createUser(email, password, role); // legt User in Auth + Firestore an
         await loadEmployees();
         form.reset();
-        alert("✅ Benutzer erfolgreich erstellt!");
+        showFeedback("✅ Benutzer erfolgreich erstellt!", "success");
       } catch (err) {
         console.error("❌ Fehler beim Erstellen:", err);
-        alert("Fehler beim Erstellen des Benutzers.");
+        showFeedback("Fehler beim Erstellen des Benutzers.", "error");
       }
     });
   }
@@ -67,7 +81,7 @@ export function initAdminPanel() {
           </select>
         </td>
         <td>
-          <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">
+          <button class="deleteBtn" data-id="${docSnap.id}">
             <i class="fa-solid fa-trash"></i> Löschen
           </button>
         </td>
@@ -82,28 +96,32 @@ export function initAdminPanel() {
         const newRole = e.target.value;
         try {
           await updateDoc(doc(db, "employees", id), { role: newRole });
-          alert(`✅ Rolle geändert zu: ${newRole}`);
+          showFeedback(`✅ Rolle geändert zu: ${newRole}`, "success");
         } catch (err) {
           console.error("❌ Fehler beim Rollenwechsel:", err);
-          alert("Fehler beim Rollenwechsel.");
+          showFeedback("Fehler beim Rollenwechsel.", "error");
         }
       });
     });
 
-    // Löschen
+    // Löschen mit Bestätigungs‑Banner
     document.querySelectorAll(".deleteBtn").forEach(btn => {
       btn.addEventListener("click", async e => {
         const id = e.target.dataset.id;
-        if (confirm("Soll dieser Mitarbeiter wirklich gelöscht werden?")) {
+
+        // Gelbes Bestätigungs‑Banner statt confirm()
+        showFeedback("⚠️ Löschbestätigung erforderlich – erneut klicken zum Bestätigen!", "warning");
+
+        btn.addEventListener("click", async () => {
           try {
             await deleteDoc(doc(db, "employees", id));
-            alert("✅ Mitarbeiter gelöscht");
+            showFeedback("✅ Mitarbeiter gelöscht", "success");
             await loadEmployees();
           } catch (err) {
             console.error("❌ Fehler beim Löschen:", err);
-            alert("Fehler beim Löschen des Mitarbeiters.");
+            showFeedback("Fehler beim Löschen des Mitarbeiters.", "error");
           }
-        }
+        }, { once: true });
       });
     });
   }

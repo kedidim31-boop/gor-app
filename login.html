@@ -23,42 +23,56 @@
 
   <!-- Login Card -->
   <main>
-    <div class="login-card" id="loginCard">
+    <div class="login-card fade-in" id="loginCard">
       <h2><i class="fa-solid fa-user-shield"></i> Login</h2>
 
       <!-- Eingabegruppen -->
-      <div class="input-group">
-        <i class="fa-solid fa-envelope"></i>
-        <input type="email" id="email" placeholder=" " required>
-        <label for="email">E-Mail</label>
-      </div>
+      <form id="loginForm">
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="email" name="email" placeholder=" " required>
+          <label for="email">E-Mail</label>
+        </div>
 
-      <div class="input-group">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" id="password" placeholder=" " required>
-        <label for="password">Passwort</label>
-        <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
-      </div>
+        <div class="input-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="password" name="password" placeholder=" " required>
+          <label for="password">Passwort</label>
+          <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+        </div>
 
-      <!-- Fehlernachricht -->
-      <div class="error-message hidden" id="errorMessage">
-        <i class="fa-solid fa-triangle-exclamation"></i> Ungültige Zugangsdaten
-      </div>
+        <!-- Fehlernachricht -->
+        <div class="error-message hidden" id="errorMessage">
+          <i class="fa-solid fa-triangle-exclamation"></i> Ungültige Zugangsdaten
+        </div>
 
-      <!-- Hinweis -->
-      <div class="hint">
-        <i class="fa-solid fa-circle-info"></i> Bitte melde dich mit deinen Daten an.
-      </div>
+        <!-- Hinweis -->
+        <div class="hint">
+          <i class="fa-solid fa-circle-info"></i> Bitte melde dich mit deinen Daten an.
+        </div>
 
-      <!-- Login Button -->
-      <button id="loginBtn" class="btn btn-yellow">
-        <i class="fa-solid fa-right-to-bracket"></i> Einloggen
-      </button>
+        <!-- Login Button -->
+        <button type="submit" id="loginBtn" class="btn btn-yellow">
+          <i class="fa-solid fa-right-to-bracket"></i> Einloggen
+        </button>
 
-      <!-- Spinner -->
-      <div class="spinner" id="spinner"></div>
+        <!-- Spinner -->
+        <div class="spinner" id="spinner"></div>
+      </form>
     </div>
   </main>
+
+  <!-- Passwort Toggle Script -->
+  <script>
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+
+    togglePassword.addEventListener("click", () => {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      togglePassword.classList.toggle("fa-eye-slash");
+    });
+  </script>
 
   <!-- Fix: externe Login-Logik -->
   <script type="module" src="src/scripts/login.js"></script>

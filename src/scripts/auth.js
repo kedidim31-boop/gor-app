@@ -1,65 +1,34 @@
-// src/scripts/auth.js – Modul für Login & Logout (modulare Firebase SDK)
-// Registrierung wird NICHT angeboten, nur Admins können neue Benutzer anlegen.
+// src/scripts/auth.js – Modul für Logout (Login wird über login.js gesteuert)
 
 import { initFirebase } from "./firebaseSetup.js";
-import {
-  signInWithEmailAndPassword,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-
-// Login
-export async function login(email, password) {
-  const { auth } = initFirebase();
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    console.log("✅ Login erfolgreich");
-
-    // Erfolg: Feedback über Login-Card
-    const loginCard = document.querySelector(".login-card");
-    if (loginCard) {
-      loginCard.classList.add("success");
-      setTimeout(() => {
-        loginCard.classList.add("fade-out-success");
-        window.location.href = "overview.html"; // Dashboard-Seite
-      }, 1200);
-    } else {
-      window.location.href = "overview.html";
-    }
-  } catch (error) {
-    console.error("❌ Login fehlgeschlagen:", error);
-
-    // Fehlernachricht anzeigen
-    const errorMessage = document.querySelector(".error-message");
-    if (errorMessage) {
-      errorMessage.textContent = "Login fehlgeschlagen: " + error.message;
-      errorMessage.classList.remove("hidden");
-    }
-
-    // Shake-Effekt für Login-Card
-    const loginCard = document.querySelector(".login-card");
-    if (loginCard) {
-      loginCard.classList.add("shake");
-      setTimeout(() => loginCard.classList.remove("shake"), 600);
-    }
-  }
-}
+import { signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { showFeedback } from "./feedback.js";
 
 // Logout
 export async function logout() {
   const { auth } = initFirebase();
+
   try {
     await signOut(auth);
     console.log("✅ Logout erfolgreich");
-    window.location.href = "login.html";
+
+    // Neon-Feedback statt alert()
+    showFeedback("Du wurdest erfolgreich ausgeloggt.", "success");
+
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 800);
+
   } catch (error) {
     console.error("❌ Fehler beim Logout:", error);
-    alert("Fehler beim Logout – bitte erneut versuchen.");
+    showFeedback("Fehler beim Logout – bitte erneut versuchen.", "error");
   }
 }
 
 // 🔧 Globaler Logout-Button für jede Seite
 document.addEventListener("DOMContentLoaded", () => {
   const logoutButton = document.querySelector(".logout-btn");
+
   if (logoutButton) {
     logoutButton.addEventListener("click", () => {
       logout();

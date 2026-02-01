@@ -3,8 +3,10 @@
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
-import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp } 
-  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { showFeedback } from "./feedback.js"; // globales Feedback-System
+import { 
+  collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 const { db } = initFirebase();
 
@@ -18,25 +20,43 @@ const tableBody = document.querySelector("#employeeTable tbody");
 if (form) {
   form.addEventListener("submit", async e => {
     e.preventDefault();
+
+    const number = document.getElementById("employeeNumber").value.trim();
     const name = document.getElementById("employeeName").value.trim();
     const email = document.getElementById("employeeEmail").value.trim();
+    const address = document.getElementById("employeeAddress").value.trim();
+    const zip = document.getElementById("employeeZip").value.trim();
+    const city = document.getElementById("employeeCity").value.trim();
+    const birthday = document.getElementById("employeeBirthday").value;
+    const phone = document.getElementById("employeePhone").value.trim();
     const role = document.getElementById("employeeRole").value || "gast";
 
-    if (!name || !email || !role) {
-      alert("⚠️ Bitte alle Pflichtfelder ausfüllen!");
+    if (!name || !email || !address || !zip || !city || !birthday || !phone || !role) {
+      showFeedback("⚠️ Bitte alle Pflichtfelder ausfüllen!", "error");
       return;
     }
 
-    const employee = { name, email, role, createdAt: serverTimestamp() };
+    const employee = { 
+      number, 
+      name, 
+      email, 
+      address, 
+      zip, 
+      city, 
+      birthday, 
+      phone, 
+      role, 
+      createdAt: serverTimestamp() 
+    };
 
     try {
       await addDoc(collection(db, "employees"), employee);
       form.reset();
       loadEmployees();
-      alert("✅ Mitarbeiter erfolgreich gespeichert!");
+      showFeedback("✅ Mitarbeiter erfolgreich gespeichert!", "success");
     } catch (err) {
       console.error("❌ Fehler beim Speichern:", err);
-      alert("Fehler beim Speichern des Mitarbeiters.");
+      showFeedback("Fehler beim Speichern des Mitarbeiters.", "error");
     }
   });
 }
@@ -51,8 +71,14 @@ async function loadEmployees() {
     const data = docSnap.data();
     const row = document.createElement("tr");
     row.innerHTML = `
+      <td>${data.number || "-"}</td>
       <td>${data.name || "-"}</td>
       <td>${data.email || "-"}</td>
+      <td>${data.address || "-"}</td>
+      <td>${data.zip || "-"}</td>
+      <td>${data.city || "-"}</td>
+      <td>${data.birthday || "-"}</td>
+      <td>${data.phone || "-"}</td>
       <td>
         <select data-id="${docSnap.id}" class="roleSelect">
           <option value="mitarbeiter" ${data.role === "mitarbeiter" ? "selected" : ""}>Mitarbeiter</option>
@@ -76,28 +102,31 @@ async function loadEmployees() {
       const newRole = e.target.value;
       try {
         await updateDoc(doc(db, "employees", id), { role: newRole });
-        alert(`✅ Rolle geändert zu: ${newRole}`);
+        showFeedback(`✅ Rolle geändert zu: ${newRole}`, "success");
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
-        alert("Fehler beim Rollenwechsel.");
+        showFeedback("Fehler beim Rollenwechsel.", "error");
       }
     });
   });
 
-  // Löschen
+  // Löschen mit Bestätigungs-Banner
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.addEventListener("click", async e => {
       const id = e.target.dataset.id;
-      if (confirm("Soll dieser Mitarbeiter wirklich gelöscht werden?")) {
+
+      showFeedback("⚠️ Löschbestätigung erforderlich – erneut klicken zum Bestätigen!", "warning");
+
+      btn.addEventListener("click", async () => {
         try {
           await deleteDoc(doc(db, "employees", id));
-          alert("✅ Mitarbeiter gelöscht");
+          showFeedback("✅ Mitarbeiter gelöscht", "success");
           loadEmployees();
         } catch (err) {
           console.error("❌ Fehler beim Löschen:", err);
-          alert("Fehler beim Löschen des Mitarbeiters.");
+          showFeedback("Fehler beim Löschen des Mitarbeiters.", "error");
         }
-      }
+      }, { once: true });
     });
   });
 }

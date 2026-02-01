@@ -4,6 +4,7 @@ import { enforceRole } from "./roleGuard.js";
 import { createUser } from "./adminUser.js"; // nutzt Firebase Auth + Firestore
 import { logout } from "./auth.js";
 import { initFirebase } from "./firebaseSetup.js";
+import { showFeedback } from "./feedback.js"; // globales Feedback-System
 import {
   collection,
   getDocs,
@@ -17,20 +18,6 @@ export function initAdminPanel() {
 
   // Zugriff nur für Admins
   enforceRole(["admin"], "login.html");
-
-  // Feedback Funktion
-  function showFeedback(message, type = "success") {
-    const container = document.getElementById("feedbackContainer");
-    if (!container) return;
-
-    const div = document.createElement("div");
-    div.className = `feedback ${type}`;
-    div.textContent = message;
-
-    container.appendChild(div);
-
-    setTimeout(() => div.remove(), 4000);
-  }
 
   // Benutzer anlegen
   const form = document.getElementById("createUserForm");

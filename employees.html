@@ -89,9 +89,9 @@
           <label class="form-field icon-input">
             <i class="fa-solid fa-user-tag"></i>
             <select id="employeeRole" required>
-              <option value="mitarbeiter">Mitarbeiter</option>
+              <option value="employee">Mitarbeiter</option>
               <option value="admin">Admin</option>
-              <option value="gast">Gast</option>
+              <option value="guest">Gast</option>
             </select>
           </label>
         </div>
@@ -127,6 +127,13 @@
     </div>
   </main>
 
+  <!-- Rollen-Schutz -->
+  <script type="module">
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    // Nur Mitarbeiter dürfen diese Seite sehen, sonst Meldung + Weiterleitung zur Startseite
+    enforceRole(["employee"], "index.html");
+  </script>
+
   <!-- Firebase Logik ausgelagert -->
   <script type="module" src="src/scripts/employees.js"></script>
 
@@ -135,7 +142,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       const numberField = document.getElementById("employeeNumber");
       if (numberField) {
-        // 6-stellige Zufallszahl generieren
         const randomNumber = Math.floor(100000 + Math.random() * 900000);
         numberField.value = randomNumber;
       }

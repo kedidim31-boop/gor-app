@@ -43,46 +43,59 @@
     <div class="card">
       <h2><i class="fa-solid fa-user-plus"></i> Neuen Mitarbeiter hinzufügen</h2>
       <form id="employeeForm" class="form-grid">
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-id-card"></i>
-          <input type="text" id="employeeNumber" placeholder="Mitarbeiternummer" readonly>
-        </label>
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-user"></i>
-          <input type="text" id="employeeName" placeholder="Name" required>
-        </label>
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-envelope"></i>
-          <input type="email" id="employeeEmail" placeholder="E-Mail" required>
-        </label>
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-location-dot"></i>
-          <input type="text" id="employeeAddress" placeholder="Adresse" required>
-        </label>
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-map-pin"></i>
-          <input type="text" id="employeeZip" placeholder="PLZ" required>
-        </label>
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-city"></i>
-          <input type="text" id="employeeCity" placeholder="Ort" required>
-        </label>
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-cake-candles"></i>
-          <input type="date" id="employeeBirthday" required>
-        </label>
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-phone"></i>
-          <input type="tel" id="employeePhone" placeholder="Telefonnummer" required>
-        </label>
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-user-tag"></i>
-          <select id="employeeRole" required>
-            <option value="mitarbeiter">Mitarbeiter</option>
-            <option value="admin">Admin</option>
-            <option value="gast">Gast</option>
-          </select>
-        </label>
+
+        <!-- Erste Reihe -->
+        <div class="form-row">
+          <label class="form-field icon-input">
+            <i class="fa-solid fa-id-card"></i>
+            <input type="text" id="employeeNumber" placeholder="Mitarbeiternummer" readonly>
+          </label>
+          <label class="form-field icon-input">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="employeeName" placeholder="Name" required>
+          </label>
+          <label class="form-field icon-input">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="employeeEmail" placeholder="E-Mail" required>
+          </label>
+        </div>
+
+        <!-- Zweite Reihe -->
+        <div class="form-row">
+          <label class="form-field icon-input">
+            <i class="fa-solid fa-location-dot"></i>
+            <input type="text" id="employeeAddress" placeholder="Adresse" required>
+          </label>
+          <label class="form-field icon-input">
+            <i class="fa-solid fa-map-pin"></i>
+            <input type="text" id="employeeZip" placeholder="PLZ" required>
+          </label>
+          <label class="form-field icon-input">
+            <i class="fa-solid fa-city"></i>
+            <input type="text" id="employeeCity" placeholder="Ort" required>
+          </label>
+        </div>
+
+        <!-- Dritte Reihe -->
+        <div class="form-row">
+          <label class="form-field icon-input">
+            <i class="fa-solid fa-cake-candles"></i>
+            <input type="date" id="employeeBirthday" required>
+          </label>
+          <label class="form-field icon-input">
+            <i class="fa-solid fa-phone"></i>
+            <input type="tel" id="employeePhone" placeholder="Telefonnummer" required>
+          </label>
+          <label class="form-field icon-input">
+            <i class="fa-solid fa-user-tag"></i>
+            <select id="employeeRole" required>
+              <option value="mitarbeiter">Mitarbeiter</option>
+              <option value="admin">Admin</option>
+              <option value="gast">Gast</option>
+            </select>
+          </label>
+        </div>
+
         <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Mitarbeiter speichern
         </button>

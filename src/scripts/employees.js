@@ -35,9 +35,11 @@ if (form) {
     const zip = document.getElementById("employeeZip").value.trim();
     const city = document.getElementById("employeeCity").value.trim();
     const birthdayRaw = document.getElementById("employeeBirthday").value;
-    const birthday = formatSwissDate(birthdayRaw); // Umwandlung ins Schweizer Format
+    const birthday = formatSwissDate(birthdayRaw);
     const phone = document.getElementById("employeePhone").value.trim();
-    const role = document.getElementById("employeeRole").value || "gast";
+
+    // 🔥 Option B: Rollen = admin / employee / guest
+    const role = document.getElementById("employeeRole").value || "guest";
 
     if (!name || !email || !address || !zip || !city || !birthday || !phone || !role) {
       showFeedback("⚠️ Bitte alle Pflichtfelder ausfüllen!", "error");
@@ -75,8 +77,10 @@ async function loadEmployees() {
 
   tableBody.innerHTML = "";
   const snapshot = await getDocs(collection(db, "employees"));
+
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
+
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${data.number || "-"}</td>
@@ -87,19 +91,22 @@ async function loadEmployees() {
       <td>${data.city || "-"}</td>
       <td>${data.birthday || "-"}</td>
       <td>${data.phone || "-"}</td>
+
       <td>
         <select data-id="${docSnap.id}" class="roleSelect">
-          <option value="mitarbeiter" ${data.role === "mitarbeiter" ? "selected" : ""}>Mitarbeiter</option>
+          <option value="employee" ${data.role === "employee" ? "selected" : ""}>Employee</option>
           <option value="admin" ${data.role === "admin" ? "selected" : ""}>Admin</option>
-          <option value="gast" ${data.role === "gast" ? "selected" : ""}>Gast</option>
+          <option value="guest" ${data.role === "guest" ? "selected" : ""}>Guest</option>
         </select>
       </td>
+
       <td>
         <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">
           <i class="fa-solid fa-trash"></i> Löschen
         </button>
       </td>
     `;
+
     tableBody.appendChild(row);
   });
 
@@ -108,6 +115,7 @@ async function loadEmployees() {
     select.addEventListener("change", async e => {
       const id = e.target.dataset.id;
       const newRole = e.target.value;
+
       try {
         await updateDoc(doc(db, "employees", id), { role: newRole });
         showFeedback(`✅ Rolle geändert zu: ${newRole}`, "success");

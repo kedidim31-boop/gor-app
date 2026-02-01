@@ -30,14 +30,12 @@
       <form id="loginForm" novalidate>
         <div class="input-group">
           <i class="fa-solid fa-envelope"></i>
-          <!-- Wichtig: placeholder=" " für Floating Labels -->
           <input type="email" id="email" name="email" placeholder=" " required>
           <label for="email">E-Mail</label>
         </div>
 
         <div class="input-group">
           <i class="fa-solid fa-lock"></i>
-          <!-- Wichtig: placeholder=" " für Floating Labels -->
           <input type="password" id="password" name="password" placeholder=" " required>
           <label for="password">Passwort</label>
           <i class="fa-solid fa-eye toggle-password" id="togglePassword" aria-label="Passwort anzeigen/ausblenden"></i>
@@ -54,7 +52,7 @@
         </div>
 
         <!-- Login Button -->
-        <button type="submit" id="loginBtn" aria-label="Einloggen">
+        <button type="submit" id="loginBtn" class="btn btn-yellow" aria-label="Einloggen">
           <i class="fa-solid fa-right-to-bracket"></i> Einloggen
         </button>
 

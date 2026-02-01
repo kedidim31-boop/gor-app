@@ -114,7 +114,7 @@
   animation: fallbackVisible 5s ease forwards;
 }
 
-/* Login Card Fade-In Fix */
+/* Login Card Fade-In */
 .login-card.fade-in {
   animation: fadeIn 1.2s ease forwards;
 }

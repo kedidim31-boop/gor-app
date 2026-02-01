@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginCard = document.querySelector(".login-card");
   const skipBtn = document.querySelector(".skip-btn");
   const loginForm = document.getElementById("loginForm");
-  const loginBtn = document.getElementById("loginBtn");
   const errorMessage = document.getElementById("errorMessage");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");

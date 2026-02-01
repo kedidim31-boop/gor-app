@@ -1,22 +1,22 @@
 // src/scripts/roleGuard.js – globales Modul für Rollen-basierten Zugriff
-// Mit konsistentem Feedback, Logging und Redirect-Handling
+// Weiterleitung zur Startseite statt Login-Seite
 
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { initFirebase } from "./firebaseSetup.js";
 
-export function enforceRole(requiredRoles = [], redirectPage = "login.html") {
+export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
   const { auth, db } = initFirebase();
 
   onAuthStateChanged(auth, async user => {
     if (!user) {
-      console.warn("⚠️ Kein Benutzer eingeloggt – Redirect zu login.html");
-      window.location.href = "login.html";
+      console.warn("⚠️ Kein Benutzer eingeloggt – Redirect zur Startseite");
+      alert("Du bist nicht eingeloggt – Weiterleitung zur Startseite.");
+      window.location.href = redirectPage;
       return;
     }
 
     try {
-      // Firestore-Dokument abrufen (employees Collection mit UID als Dokument-ID)
       const userDocRef = doc(db, "employees", user.uid);
       const userDocSnap = await getDoc(userDocRef);
 
@@ -27,7 +27,7 @@ export function enforceRole(requiredRoles = [], redirectPage = "login.html") {
 
       if (!requiredRoles.includes(role)) {
         console.error(`❌ Zugriff verweigert – benötigte Rollen: ${requiredRoles.join(", ")}, aktuelle Rolle: ${role}`);
-        alert(`⚠️ Zugriff verweigert – nur für ${requiredRoles.join(" / ")} erlaubt!`);
+        alert(`⚠️ Keine Berechtigung – Weiterleitung zur Startseite.`);
         window.location.href = redirectPage;
       } else {
         console.log(`✅ Zugriff erlaubt für Rolle: ${role}`);
@@ -35,8 +35,8 @@ export function enforceRole(requiredRoles = [], redirectPage = "login.html") {
       }
     } catch (err) {
       console.error("❌ Fehler beim Abrufen der Rolle:", err);
-      alert("Fehler bei der Rollenprüfung – bitte erneut einloggen.");
-      window.location.href = "login.html";
+      alert("Fehler bei der Rollenprüfung – Weiterleitung zur Startseite.");
+      window.location.href = redirectPage;
     }
   });
 }

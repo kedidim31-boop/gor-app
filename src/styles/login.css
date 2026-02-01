@@ -94,6 +94,16 @@
   to { opacity: 0; transform: translateY(10px); }
 }
 
+/* Zentrierung des Login-Bereichs */
+main {
+  display: flex;
+  justify-content: center;   /* horizontal zentrieren */
+  align-items: center;       /* vertikal zentrieren */
+  min-height: 100vh;         /* volle Höhe des Viewports */
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
 /* Login Card */
 .login-card {
   background: rgba(20, 20, 50, 0.6);

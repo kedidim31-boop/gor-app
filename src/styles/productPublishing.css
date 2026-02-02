@@ -1,0 +1,262 @@
+/* Product Publishing – Cyberpunk Neon Look */
+/* Ergänzt theme.css + productDetails.css */
+
+/* -------------------------------------------------------------
+   🔹 Publishing Panel
+------------------------------------------------------------- */
+.product-publishing-panel {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(112, 255, 234, 0.25);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 0 18px rgba(112, 255, 234, 0.25);
+}
+
+.product-publishing-panel h3 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Publishing Status
+------------------------------------------------------------- */
+.publishing-status {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.publishing-status.published {
+  background-color: rgba(0, 255, 128, 0.15);
+  border: 1px solid var(--color-neon-green);
+  color: var(--color-neon-green);
+}
+
+.publishing-status.scheduled {
+  background-color: rgba(255, 211, 0, 0.15);
+  border: 1px solid var(--color-neon-yellow);
+  color: var(--color-neon-yellow);
+}
+
+.publishing-status.hidden {
+  background-color: rgba(255, 77, 77, 0.15);
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Visibility Selector
+------------------------------------------------------------- */
+.visibility-box {
+  margin-top: 20px;
+}
+
+.visibility-box label {
+  color: var(--color-neon-yellow);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.visibility-select {
+  margin-top: 8px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-turquoise);
+  color: var(--color-text-light);
+  font-weight: bold;
+  transition: all 0.25s ease;
+}
+
+.visibility-select:focus {
+  border-color: var(--color-neon-yellow);
+  box-shadow: 0 0 14px var(--color-neon-yellow);
+  outline: none;
+}
+
+/* -------------------------------------------------------------
+   🔹 Scheduling Box
+------------------------------------------------------------- */
+.publishing-schedule {
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.publishing-schedule h4 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+.schedule-input {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  color: var(--color-text-light);
+  font-weight: bold;
+  transition: all 0.25s ease;
+}
+
+.schedule-input:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 14px var(--color-neon-turquoise);
+  outline: none;
+}
+
+/* -------------------------------------------------------------
+   🔹 Publishing Channels
+------------------------------------------------------------- */
+.publishing-channels {
+  margin-top: 20px;
+}
+
+.publishing-channels h4 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+.publishing-channel-list {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.publishing-channel {
+  padding: 8px 14px;
+  border-radius: 8px;
+  background-color: rgba(112, 255, 234, 0.15);
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.publishing-channel i {
+  font-size: 1.2rem;
+}
+
+/* -------------------------------------------------------------
+   🔹 Preview Link
+------------------------------------------------------------- */
+.preview-link-box {
+  margin-top: 20px;
+}
+
+.preview-link {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background-color: rgba(112, 255, 234, 0.15);
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.preview-link:hover {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 14px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Publishing Actions
+------------------------------------------------------------- */
+.publishing-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+.publishing-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Publish Now */
+.publishing-btn.publish {
+  background-color: var(--color-neon-green);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-green);
+}
+
+.publishing-btn.publish:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-green);
+}
+
+/* Unpublish */
+.publishing-btn.unpublish {
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+.publishing-btn.unpublish:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Publishing Messages
+------------------------------------------------------------- */
+.publishing-message {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.publishing-message.success {
+  background-color: rgba(0, 255, 128, 0.15);
+  border: 1px solid var(--color-neon-green);
+  color: var(--color-neon-green);
+}
+
+.publishing-message.warning {
+  background-color: rgba(255, 211, 0, 0.15);
+  border: 1px solid var(--color-neon-yellow);
+  color: var(--color-neon-yellow);
+}
+
+.publishing-message.error {
+  background-color: rgba(255, 77, 77, 0.15);
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .publishing-actions {
+    flex-direction: column;
+  }
+}

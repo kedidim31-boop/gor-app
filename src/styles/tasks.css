@@ -1,7 +1,9 @@
 /* Aufgaben Seite – Cyberpunk Neon Look */
-/* Ergänzt globale theme.css mit spezifischen Features */
+/* Ergänzt theme.css mit spezifischen Features */
 
-/* Formular für Aufgabenverwaltung */
+/* -------------------------------------------------------------
+   🔹 Formular für Aufgabenverwaltung
+------------------------------------------------------------- */
 #taskForm.form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -18,12 +20,13 @@
   color: var(--color-text-muted);
 }
 
+/* Icons in Inputs */
 .icon-input i {
   position: absolute;
   top: 50%;
   left: 12px;
   transform: translateY(-50%);
-  color: #ffffff;
+  color: var(--color-neon-yellow);
   font-size: 1rem;
   pointer-events: none;
   z-index: 2;
@@ -35,6 +38,7 @@
   padding-left: 40px;
 }
 
+/* Inputs, Selects, Textareas */
 #taskForm input,
 #taskForm textarea,
 #taskForm select {
@@ -46,16 +50,23 @@
   font-weight: bold;
   outline: none;
   font-size: 0.95rem;
-  transition: all 0.2s ease;
-  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
+  transition: all 0.25s ease;
+  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
+}
+
+#taskForm input:hover,
+#taskForm textarea:hover,
+#taskForm select:hover {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
 
 #taskForm input:focus,
 #taskForm textarea:focus,
 #taskForm select:focus {
   border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.7);
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.55);
 }
 
 #taskForm .full-width {
@@ -63,24 +74,37 @@
 }
 
 #taskForm textarea {
-  min-height: 80px;
+  min-height: 90px;
+  resize: vertical;
 }
 
+/* Submit Button */
 #taskForm button {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background-color: var(--color-neon-yellow);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0 12px var(--color-neon-yellow),
+              0 0 24px rgba(255, 211, 0, 0.55);
 }
 
 #taskForm button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px var(--color-neon-yellow),
-              0 0 24px rgba(255, 211, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow),
+              0 0 36px rgba(255, 211, 0, 0.7);
 }
 
-/* Tabelle für Aufgaben */
+/* -------------------------------------------------------------
+   🔹 Tabelle für Aufgaben
+------------------------------------------------------------- */
 #taskTable {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-top: 20px;
+  table-layout: fixed;
 }
 
 #taskTable th,
@@ -90,6 +114,7 @@
   padding: 12px;
   border-bottom: 1px solid #333;
   font-size: 0.95rem;
+  word-wrap: break-word;
 }
 
 #taskTable th {
@@ -97,28 +122,37 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
+/* Alternierende Zeilen */
+#taskTable tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
 #taskTable tr:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #2a2a40;
   transition: background 0.2s ease;
 }
 
-/* Statusfarben für ganze Zeilen */
+/* -------------------------------------------------------------
+   🔹 Statusfarben für ganze Zeilen
+------------------------------------------------------------- */
 .status-offen {
   background-color: rgba(255, 211, 0, 0.1);
-  box-shadow: inset 0 0 12px rgba(255, 211, 0, 0.4);
+  box-shadow: inset 0 0 12px rgba(255, 211, 0, 0.35);
 }
 
 .status-inBearbeitung {
   background-color: rgba(0, 255, 255, 0.1);
-  box-shadow: inset 0 0 12px rgba(0, 255, 255, 0.4);
+  box-shadow: inset 0 0 12px rgba(0, 255, 255, 0.35);
 }
 
 .status-abgeschlossen {
   background-color: rgba(0, 255, 102, 0.1);
-  box-shadow: inset 0 0 12px rgba(0, 255, 102, 0.4);
+  box-shadow: inset 0 0 12px rgba(0, 255, 102, 0.35);
 }
 
-/* Status-Badges mit Icons */
+/* -------------------------------------------------------------
+   🔹 Status-Badges
+------------------------------------------------------------- */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -138,22 +172,24 @@
 .status-badge.status-offen {
   background-color: rgba(255, 211, 0, 0.2);
   color: var(--color-neon-yellow);
-  box-shadow: 0 0 8px rgba(255, 211, 0, 0.6);
+  box-shadow: 0 0 8px rgba(255, 211, 0, 0.55);
 }
 
 .status-badge.status-inBearbeitung {
   background-color: rgba(0, 255, 255, 0.2);
   color: var(--color-neon-turquoise);
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.55);
 }
 
 .status-badge.status-abgeschlossen {
   background-color: rgba(0, 255, 102, 0.2);
   color: #00ff66;
-  box-shadow: 0 0 8px rgba(0, 255, 102, 0.6);
+  box-shadow: 0 0 8px rgba(0, 255, 102, 0.55);
 }
 
-/* Dropdown für Status */
+/* -------------------------------------------------------------
+   🔹 Status Dropdown
+------------------------------------------------------------- */
 .statusSelect {
   background-color: var(--color-bg-panel);
   border: 2px solid var(--color-neon-yellow);
@@ -162,35 +198,40 @@
   color: var(--color-neon-yellow);
   font-weight: bold;
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .statusSelect:hover,
 .statusSelect:focus {
   border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.7);
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.55);
 }
 
-/* Buttons in Tabelle */
+/* -------------------------------------------------------------
+   🔹 Delete Button
+------------------------------------------------------------- */
 .deleteBtn {
   background-color: transparent;
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  font-weight: bold;
 }
 
 .deleteBtn:hover {
   background-color: var(--color-neon-red);
   color: #000;
-  box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.6);
+  box-shadow: 0 0 14px var(--color-neon-red),
+              0 0 28px rgba(255, 77, 77, 0.6);
 }
 
-/* Responsive Anpassung */
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
 @media (max-width: 768px) {
   #taskForm.form-grid {
     grid-template-columns: 1fr;
@@ -203,7 +244,9 @@
   }
 }
 
-/* Globale Icon-Farbe */
+/* -------------------------------------------------------------
+   🔹 Globale Icon-Farbe
+------------------------------------------------------------- */
 i.fa-solid {
   color: #ffffff !important;
 }

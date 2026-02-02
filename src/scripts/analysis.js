@@ -1,25 +1,31 @@
-// src/scripts/analysis.js – Logik für Übersicht & Dashboard
+// src/scripts/analysis.js – Logik für Übersicht & Dashboard (mehrsprachig + optimiert)
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
 import { showFeedback } from "./feedback.js";
+import { t } from "./lang.js";
+
 import {
   collection,
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// Firebase initialisieren
+// -------------------------------------------------------------
+// 🔹 Firebase initialisieren
+// -------------------------------------------------------------
 const { auth, db } = initFirebase();
 
-// Zugriff für Admins & Employees
-enforceRole(["admin", "employee"], "login.html");
+// Zugriff für Admin, Manager, Support, Employee
+enforceRole(["admin", "manager", "support", "employee"], "login.html");
 
 // Logout Button
 const logoutBtn = document.querySelector(".logout-btn");
 if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
-// Chart.js Elemente
+// -------------------------------------------------------------
+// 🔹 Chart.js Elemente
+// -------------------------------------------------------------
 const ctxOverview = document.getElementById("overviewChart");
 const ctxTimeLine = document.getElementById("timeLineChart");
 
@@ -32,11 +38,19 @@ const chartColors = {
   stock: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-purple").trim()
 };
 
-// Übersicht-Doughnut-Chart
+// -------------------------------------------------------------
+// 🔹 Übersicht-Doughnut-Chart (mehrsprachig)
+// -------------------------------------------------------------
 const overviewChart = new Chart(ctxOverview, {
   type: "doughnut",
   data: {
-    labels: ["Produkte", "Bestand", "Aufgaben", "Mitarbeiter", "Zeit"],
+    labels: [
+      t("products.name"),
+      t("products.stock"),
+      t("tasks.title"),
+      t("employees.name"),
+      t("time.hours")
+    ],
     datasets: [{
       data: [0, 0, 0, 0, 0],
       backgroundColor: [
@@ -63,13 +77,15 @@ const overviewChart = new Chart(ctxOverview, {
   }
 });
 
-// Zeitverlauf-Chart
+// -------------------------------------------------------------
+// 🔹 Zeitverlauf-Chart (mehrsprachig)
+// -------------------------------------------------------------
 const timeLineChart = new Chart(ctxTimeLine, {
   type: "line",
   data: {
     labels: [],
     datasets: [{
-      label: "Arbeitsstunden pro Tag",
+      label: t("time.hours"),
       data: [],
       borderColor: chartColors.time,
       backgroundColor: chartColors.time,
@@ -85,14 +101,18 @@ const timeLineChart = new Chart(ctxTimeLine, {
   }
 });
 
-// Realtime Variablen
+// -------------------------------------------------------------
+// 🔹 Realtime Variablen
+// -------------------------------------------------------------
 let productCount = 0;
 let totalStock = 0;
 let taskCount = 0;
 let employeeCount = 0;
 let totalHours = 0;
 
-// Mitarbeiter
+// -------------------------------------------------------------
+// 🔹 Mitarbeiter
+// -------------------------------------------------------------
 onSnapshot(collection(db, "employees"), snap => {
   employeeCount = snap.size;
 
@@ -102,7 +122,9 @@ onSnapshot(collection(db, "employees"), snap => {
   updateOverviewChart();
 });
 
-// Produkte + Bestand
+// -------------------------------------------------------------
+// 🔹 Produkte + Bestand
+// -------------------------------------------------------------
 onSnapshot(collection(db, "products"), snap => {
   productCount = snap.size;
   totalStock = 0;
@@ -121,7 +143,9 @@ onSnapshot(collection(db, "products"), snap => {
   updateOverviewChart();
 });
 
-// Aufgaben
+// -------------------------------------------------------------
+// 🔹 Aufgaben
+// -------------------------------------------------------------
 onSnapshot(collection(db, "tasks"), snap => {
   taskCount = snap.size;
 
@@ -131,7 +155,9 @@ onSnapshot(collection(db, "tasks"), snap => {
   updateOverviewChart();
 });
 
-// Zeiterfassung
+// -------------------------------------------------------------
+// 🔹 Zeiterfassung
+// -------------------------------------------------------------
 onSnapshot(collection(db, "timeEntries"), snap => {
   totalHours = 0;
   const hoursByDate = {};
@@ -159,7 +185,9 @@ onSnapshot(collection(db, "timeEntries"), snap => {
   updateOverviewChart();
 });
 
-// Übersicht-Chart aktualisieren
+// -------------------------------------------------------------
+// 🔹 Übersicht-Chart aktualisieren
+// -------------------------------------------------------------
 function updateOverviewChart() {
   overviewChart.data.datasets[0].data = [
     productCount,

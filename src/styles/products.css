@@ -1,8 +1,22 @@
-/* Produkte Seite – Cyberpunk Neon Look */
-/* Ergänzt theme.css mit spezifischen Features */
+/* =============================================================
+   🔥 PRODUCTS – CYBERPUNK NEON LOOK
+   Gaming of Republic – 2026
+   Komplett neu & optimiert
+============================================================= */
 
 /* -------------------------------------------------------------
-   🔹 Formular für Produkte
+   🔹 Layout & Cards (spezifisch für Produkte)
+------------------------------------------------------------- */
+main {
+  margin: 1.5rem;
+}
+
+.card {
+  margin-bottom: 1.5rem;
+}
+
+/* -------------------------------------------------------------
+   🔹 Produkt-Formular
 ------------------------------------------------------------- */
 #createProductForm {
   display: grid;
@@ -10,7 +24,7 @@
   gap: 18px;
 }
 
-#createProductForm label {
+#createProductForm .form-field {
   display: flex;
   flex-direction: column;
   font-size: 0.9rem;
@@ -18,9 +32,19 @@
   font-weight: 500;
 }
 
-#createProductForm i {
+#createProductForm .icon-input {
+  display: flex;
+  flex-direction: column;
+}
+
+#createProductForm .icon-input i {
   margin-bottom: 4px;
   color: var(--color-neon-yellow);
+}
+
+/* Full-width Felder (z. B. Beschreibung) */
+#createProductForm .full-width {
+  grid-column: 1 / -1;
 }
 
 /* Inputs, Textareas, Selects */
@@ -35,6 +59,11 @@
   font-size: 14px;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
   transition: all 0.25s ease;
+}
+
+#createProductForm input::placeholder,
+#createProductForm textarea::placeholder {
+  color: rgba(255,255,255,0.35);
 }
 
 #createProductForm input:hover,
@@ -54,7 +83,6 @@
 }
 
 #createProductForm textarea {
-  grid-column: 1 / -1;
   min-height: 90px;
   resize: vertical;
 }
@@ -80,7 +108,31 @@
 }
 
 /* -------------------------------------------------------------
-   🔹 Tabelle für Produkte
+   🔹 Export Button
+------------------------------------------------------------- */
+#exportBtn {
+  margin: 12px 0;
+  padding: 10px 18px;
+  border: 2px solid var(--color-neon-turquoise);
+  background-color: transparent;
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 10px var(--color-neon-turquoise);
+}
+
+#exportBtn:hover {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px var(--color-neon-turquoise),
+              0 0 40px rgba(112, 255, 234, 0.7);
+}
+
+/* -------------------------------------------------------------
+   🔹 Produkt-Tabelle
 ------------------------------------------------------------- */
 #productTable {
   width: 100%;
@@ -89,7 +141,6 @@
   table-layout: fixed;
 }
 
-/* Table Cells */
 #productTable th,
 #productTable td {
   text-align: center;
@@ -117,10 +168,7 @@
   transition: background 0.2s ease;
 }
 
-/* -------------------------------------------------------------
-   🔹 Farbcode für Spalten
-------------------------------------------------------------- */
-/* Technische Felder */
+/* Spalten-Farbcode */
 #productTable th:nth-child(6),
 #productTable th:nth-child(7),
 #productTable th:nth-child(10) {
@@ -128,7 +176,6 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* Inhaltliche Felder */
 #productTable th:nth-child(1),
 #productTable th:nth-child(2),
 #productTable th:nth-child(3),
@@ -138,13 +185,11 @@
   text-shadow: 0 0 6px var(--color-neon-turquoise);
 }
 
-/* Bestand */
 #productTable th:nth-child(8) {
   color: var(--color-neon-purple);
   text-shadow: 0 0 6px var(--color-neon-purple);
 }
 
-/* Preis */
 #productTable th:nth-child(9) {
   color: var(--color-neon-green);
   text-shadow: 0 0 6px var(--color-neon-green);
@@ -154,14 +199,65 @@
   color: var(--color-neon-green);
   margin-right: 6px;
 }
+/* -------------------------------------------------------------
+   🔹 Lager-Badges (OK / Low / Out-of-Stock)
+   nutzt dein globales Neon-System
+------------------------------------------------------------- */
+
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 80px;
+  color: #000;
+  user-select: none;
+  transition: all 0.25s ease;
+}
+
+/* Genug Bestand */
+.stock-ok {
+  background-color: var(--color-neon-green);
+  box-shadow: 0 0 10px var(--color-neon-green),
+              0 0 20px rgba(0, 255, 128, 0.55);
+}
+
+/* Niedriger Bestand */
+.stock-low {
+  background-color: var(--color-neon-yellow);
+  box-shadow: 0 0 10px var(--color-neon-yellow),
+              0 0 20px rgba(255, 211, 0, 0.55);
+}
+
+/* Kein Bestand */
+.stock-out {
+  background-color: var(--color-neon-red);
+  box-shadow: 0 0 10px var(--color-neon-red),
+              0 0 20px rgba(255, 77, 77, 0.55);
+}
+
+/* Hover-Effekt */
+.stock-badge:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+/* Zentrierung in Tabelle */
+#productTable td .stock-badge {
+  margin: 0 auto;
+}
 
 /* -------------------------------------------------------------
    🔹 Buttons in Tabelle
 ------------------------------------------------------------- */
-.deleteBtn {
+#productTable .actionBtn,
+#productTable .deleteBtn {
   background-color: transparent;
-  border: 1px solid var(--color-neon-red);
-  color: var(--color-neon-red);
   padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
@@ -169,35 +265,30 @@
   font-weight: bold;
 }
 
-.deleteBtn:hover {
+/* Delete */
+#productTable .deleteBtn {
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+#productTable .deleteBtn:hover {
   background-color: var(--color-neon-red);
   color: #000;
   box-shadow: 0 0 14px var(--color-neon-red),
               0 0 28px rgba(255, 77, 77, 0.6);
 }
 
-/* -------------------------------------------------------------
-   🔹 Export Button
-------------------------------------------------------------- */
-#exportBtn {
-  margin: 12px 0;
-  padding: 10px 18px;
-  border: 2px solid var(--color-neon-turquoise);
-  background-color: transparent;
+/* Optional: weitere Action-Buttons (z. B. Edit) */
+#productTable .actionBtn {
+  border: 1px solid var(--color-neon-turquoise);
   color: var(--color-neon-turquoise);
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
 
-#exportBtn:hover {
+#productTable .actionBtn:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px var(--color-neon-turquoise),
-              0 0 40px rgba(112, 255, 234, 0.7);
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.6);
 }
 
 /* -------------------------------------------------------------

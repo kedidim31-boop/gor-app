@@ -1,27 +1,43 @@
-// src/scripts/tasks.js – Logik für Aufgabenverwaltung
+// src/scripts/tasks.js – Logik für Aufgabenverwaltung (mehrsprachig + optimiert)
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
-import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp } 
-  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { showFeedback } from "./feedback.js";
+import { t } from "./lang.js";
+
+import {
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 const { db } = initFirebase();
 
-// Zugriff: Admins & Mitarbeiter
-enforceRole(["admin", "mitarbeiter"], "login.html");
+// -------------------------------------------------------------
+// 🔹 Zugriff: Admin, Manager, Support, Employee
+// -------------------------------------------------------------
+enforceRole(["admin", "manager", "support", "employee"], "login.html");
 
-// Aufgabe hinzufügen
+// -------------------------------------------------------------
+// 🔹 Aufgabe hinzufügen
+// -------------------------------------------------------------
 const taskForm = document.getElementById("taskForm");
+
 if (taskForm) {
   taskForm.addEventListener("submit", async e => {
     e.preventDefault();
+
     const title = document.getElementById("taskTitle").value.trim();
     const description = document.getElementById("taskDescription").value.trim();
     const status = document.getElementById("taskStatus").value;
 
     if (!title || !status) {
-      alert("⚠️ Bitte Titel und Status ausfüllen!");
+      showFeedback(t("errors.fail"), "error");
       return;
     }
 
@@ -32,17 +48,21 @@ if (taskForm) {
         status,
         createdAt: serverTimestamp()
       });
+
       e.target.reset();
       loadTasks();
-      alert("✅ Aufgabe erfolgreich gespeichert!");
+      showFeedback(t("feedback.ok"), "success");
+
     } catch (err) {
       console.error("❌ Fehler beim Speichern:", err);
-      alert("Fehler beim Speichern der Aufgabe.");
+      showFeedback(t("errors.fail"), "error");
     }
   });
 }
 
-// Aufgaben laden
+// -------------------------------------------------------------
+// 🔹 Aufgaben laden
+// -------------------------------------------------------------
 async function loadTasks() {
   const tableBody = document.querySelector("#taskTable tbody");
   if (!tableBody) return;
@@ -50,84 +70,122 @@ async function loadTasks() {
   tableBody.innerHTML = "";
 
   const snapshot = await getDocs(collection(db, "tasks"));
+
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
     const row = document.createElement("tr");
 
-    // Status-Klasse für ganze Zeile setzen
     row.classList.add(`status-${data.status}`);
 
-    // Badge mit Icon je nach Status
-    let badgeIcon = "";
-    if (data.status === "offen") badgeIcon = "<i class='fa-solid fa-clock'></i>";
-    if (data.status === "inBearbeitung") badgeIcon = "<i class='fa-solid fa-screwdriver-wrench'></i>";
-    if (data.status === "abgeschlossen") badgeIcon = "<i class='fa-solid fa-check'></i>";
+    const statusIcons = {
+      offen: "<i class='fa-solid fa-clock'></i>",
+      inBearbeitung: "<i class='fa-solid fa-screwdriver-wrench'></i>",
+      abgeschlossen: "<i class='fa-solid fa-check'></i>"
+    };
 
     row.innerHTML = `
       <td>${data.title || "-"}</td>
       <td>${data.description || "-"}</td>
+
       <td>
-        <span class="status-badge status-${data.status}">${badgeIcon} ${data.status}</span><br>
+        <span class="status-badge status-${data.status}">
+          ${statusIcons[data.status] || ""} ${t(`tasks.${data.status}`)}
+        </span><br>
+
         <select data-id="${docSnap.id}" class="statusSelect">
-          <option value="offen" ${data.status === "offen" ? "selected" : ""}>Offen</option>
-          <option value="inBearbeitung" ${data.status === "inBearbeitung" ? "selected" : ""}>In Bearbeitung</option>
-          <option value="abgeschlossen" ${data.status === "abgeschlossen" ? "selected" : ""}>Abgeschlossen</option>
+          <option value="offen" ${data.status === "offen" ? "selected" : ""}>${t("tasks.offen")}</option>
+          <option value="inBearbeitung" ${data.status === "inBearbeitung" ? "selected" : ""}>${t("tasks.inProgress")}</option>
+          <option value="abgeschlossen" ${data.status === "abgeschlossen" ? "selected" : ""}>${t("tasks.done")}</option>
         </select>
       </td>
+
       <td>
         <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">
-          <i class="fa-solid fa-trash"></i> Löschen
+          <i class="fa-solid fa-trash"></i> ${t("tasks.delete")}
         </button>
       </td>
     `;
+
     tableBody.appendChild(row);
   });
 
-  // Status ändern
+  attachStatusHandler();
+  attachDeleteHandler();
+}
+
+// -------------------------------------------------------------
+// 🔹 Status ändern
+// -------------------------------------------------------------
+function attachStatusHandler() {
   document.querySelectorAll(".statusSelect").forEach(select => {
     select.addEventListener("change", async e => {
       const id = e.target.dataset.id;
       const newStatus = e.target.value;
+
       try {
         await updateDoc(doc(db, "tasks", id), { status: newStatus });
+
         const row = e.target.closest("tr");
         row.className = "";
         row.classList.add(`status-${newStatus}`);
+
         const badge = row.querySelector(".status-badge");
-        let badgeIcon = "";
-        if (newStatus === "offen") badgeIcon = "<i class='fa-solid fa-clock'></i>";
-        if (newStatus === "inBearbeitung") badgeIcon = "<i class='fa-solid fa-screwdriver-wrench'></i>";
-        if (newStatus === "abgeschlossen") badgeIcon = "<i class='fa-solid fa-check'></i>";
-        badge.innerHTML = `${badgeIcon} ${newStatus}`;
+
+        const statusIcons = {
+          offen: "<i class='fa-solid fa-clock'></i>",
+          inBearbeitung: "<i class='fa-solid fa-screwdriver-wrench'></i>",
+          abgeschlossen: "<i class='fa-solid fa-check'></i>"
+        };
+
+        badge.innerHTML = `${statusIcons[newStatus] || ""} ${t(`tasks.${newStatus}`)}`;
         badge.className = `status-badge status-${newStatus}`;
+
+        showFeedback(t("feedback.ok"), "success");
+
       } catch (err) {
         console.error("❌ Fehler beim Statuswechsel:", err);
-        alert("Fehler beim Statuswechsel.");
-      }
-    });
-  });
-
-  // Löschen
-  document.querySelectorAll(".deleteBtn").forEach(btn => {
-    btn.addEventListener("click", async e => {
-      const id = e.target.dataset.id;
-      if (confirm("Soll diese Aufgabe wirklich gelöscht werden?")) {
-        try {
-          await deleteDoc(doc(db, "tasks", id));
-          alert("✅ Aufgabe gelöscht");
-          loadTasks();
-        } catch (err) {
-          console.error("❌ Fehler beim Löschen:", err);
-          alert("Fehler beim Löschen der Aufgabe.");
-        }
+        showFeedback(t("errors.fail"), "error");
       }
     });
   });
 }
 
-// Initial laden
+// -------------------------------------------------------------
+// 🔹 Löschen mit Bestätigungs-Banner
+// -------------------------------------------------------------
+function attachDeleteHandler() {
+  document.querySelectorAll(".deleteBtn").forEach(btn => {
+    btn.addEventListener("click", async e => {
+      const id = e.currentTarget.dataset.id;
+
+      showFeedback(t("admin.confirm"), "warning");
+
+      btn.addEventListener(
+        "click",
+        async () => {
+          try {
+            await deleteDoc(doc(db, "tasks", id));
+            showFeedback(t("tasks.delete"), "success");
+            loadTasks();
+
+          } catch (err) {
+            console.error("❌ Fehler beim Löschen:", err);
+            showFeedback(t("errors.fail"), "error");
+          }
+        },
+        { once: true }
+      );
+    });
+  });
+}
+
+// -------------------------------------------------------------
+// 🔹 Initial laden
+// -------------------------------------------------------------
 loadTasks();
 
-// Logout
+// -------------------------------------------------------------
+// 🔹 Logout
+// -------------------------------------------------------------
 const logoutBtn = document.querySelector(".logout-btn");
 if (logoutBtn) logoutBtn.addEventListener("click", logout);

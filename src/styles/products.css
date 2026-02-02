@@ -1,11 +1,13 @@
 /* Produkte Seite – Cyberpunk Neon Look */
-/* Ergänzt globale theme.css mit spezifischen Features */
+/* Ergänzt theme.css mit spezifischen Features */
 
-/* Formular für Produkte */
+/* -------------------------------------------------------------
+   🔹 Formular für Produkte
+------------------------------------------------------------- */
 #createProductForm {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
+  gap: 18px;
 }
 
 #createProductForm label {
@@ -13,6 +15,7 @@
   flex-direction: column;
   font-size: 0.9rem;
   color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 #createProductForm i {
@@ -20,150 +23,194 @@
   color: var(--color-neon-yellow);
 }
 
+/* Inputs, Textareas, Selects */
 #createProductForm input,
 #createProductForm textarea,
 #createProductForm select {
   background-color: var(--color-bg-panel);
   border: 2px solid var(--color-neon-yellow);
-  border-radius: 8px;
-  padding: 10px;
+  border-radius: 10px;
+  padding: 10px 12px;
   color: var(--color-text-light);
   font-size: 14px;
-  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
+  transition: all 0.25s ease;
+}
+
+#createProductForm input:hover,
+#createProductForm textarea:hover,
+#createProductForm select:hover {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
 
 #createProductForm input:focus,
 #createProductForm textarea:focus,
 #createProductForm select:focus {
   border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.6);
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.55);
+  outline: none;
 }
 
 #createProductForm textarea {
   grid-column: 1 / -1;
-  min-height: 80px;
+  min-height: 90px;
+  resize: vertical;
 }
 
+/* Submit Button */
 #createProductForm button {
   grid-column: 1 / -1;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background-color: var(--color-neon-yellow);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0 12px var(--color-neon-yellow),
+              0 0 24px rgba(255, 211, 0, 0.55);
 }
 
 #createProductForm button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px var(--color-neon-yellow),
-              0 0 24px rgba(255, 211, 0, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow),
+              0 0 36px rgba(255, 211, 0, 0.7);
 }
 
-/* Tabelle für Produkte */
+/* -------------------------------------------------------------
+   🔹 Tabelle für Produkte
+------------------------------------------------------------- */
 #productTable {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
-  overflow-x: auto;
+  margin-top: 20px;
+  table-layout: fixed;
 }
 
+/* Table Cells */
 #productTable th,
 #productTable td {
   text-align: center;
   color: var(--color-text-light);
-  padding: 10px;
+  padding: 12px;
   border-bottom: 1px solid #333;
   font-size: 0.95rem;
+  word-wrap: break-word;
 }
 
 #productTable th {
   background-color: var(--color-bg-panel);
+  font-weight: bold;
+  text-shadow: 0 0 6px rgba(255,255,255,0.15);
 }
 
-/* Farbcode für technische Felder */
-#productTable th:nth-child(6),  /* SKU */
-#productTable th:nth-child(7),  /* EAN */
-#productTable th:nth-child(10)  /* Aktionen */ {
-  color: var(--color-neon-yellow);
-  text-shadow: 0 0 6px var(--color-neon-yellow);
+/* Alternierende Zeilen */
+#productTable tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* Neon-Türkis für inhaltliche Felder */
-#productTable th:nth-child(1),  /* Produktname */
-#productTable th:nth-child(2),  /* Beschreibung */
-#productTable th:nth-child(3),  /* Typ */
-#productTable th:nth-child(4),  /* Anbieter */
-#productTable th:nth-child(5)   /* Kollektionen */ {
-  color: var(--color-neon-turquoise);
-  text-shadow: 0 0 6px var(--color-neon-turquoise);
-}
-
-/* Bestand & Preis */
-#productTable th:nth-child(8) {
-  color: var(--color-neon-purple);
-  text-shadow: 0 0 6px var(--color-neon-purple);
-}
-
-#productTable th:nth-child(9) {
-  color: var(--color-neon-green);
-  text-shadow: 0 0 6px var(--color-neon-green);
-}
-
-/* Preis mit Bargeld-Icon */
-#productTable td:nth-child(9) i {
-  color: var(--color-neon-green);
-  margin-right: 6px;
-}
-
-/* Hover-Effekt für Zeilen */
+/* Hover Effekt */
 #productTable tr:hover {
   background-color: #2a2a40;
   transition: background 0.2s ease;
 }
 
-/* Buttons in Tabelle */
+/* -------------------------------------------------------------
+   🔹 Farbcode für Spalten
+------------------------------------------------------------- */
+/* Technische Felder */
+#productTable th:nth-child(6),
+#productTable th:nth-child(7),
+#productTable th:nth-child(10) {
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* Inhaltliche Felder */
+#productTable th:nth-child(1),
+#productTable th:nth-child(2),
+#productTable th:nth-child(3),
+#productTable th:nth-child(4),
+#productTable th:nth-child(5) {
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+/* Bestand */
+#productTable th:nth-child(8) {
+  color: var(--color-neon-purple);
+  text-shadow: 0 0 6px var(--color-neon-purple);
+}
+
+/* Preis */
+#productTable th:nth-child(9) {
+  color: var(--color-neon-green);
+  text-shadow: 0 0 6px var(--color-neon-green);
+}
+
+#productTable td:nth-child(9) i {
+  color: var(--color-neon-green);
+  margin-right: 6px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Buttons in Tabelle
+------------------------------------------------------------- */
 .deleteBtn {
   background-color: transparent;
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  font-weight: bold;
 }
 
 .deleteBtn:hover {
   background-color: var(--color-neon-red);
   color: #000;
-  box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.6);
+  box-shadow: 0 0 14px var(--color-neon-red),
+              0 0 28px rgba(255, 77, 77, 0.6);
 }
 
-/* Export-Button */
+/* -------------------------------------------------------------
+   🔹 Export Button
+------------------------------------------------------------- */
 #exportBtn {
-  margin: 10px 0;
-  padding: 8px 16px;
+  margin: 12px 0;
+  padding: 10px 18px;
   border: 2px solid var(--color-neon-turquoise);
   background-color: transparent;
   color: var(--color-neon-turquoise);
   font-weight: bold;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 8px var(--color-neon-turquoise);
+  transition: all 0.25s ease;
+  box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
 
 #exportBtn:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
-  transform: scale(1.05);
+  transform: translateY(-2px);
   box-shadow: 0 0 20px var(--color-neon-turquoise),
               0 0 40px rgba(112, 255, 234, 0.7);
 }
 
-/* Responsive Scroll für kleine Bildschirme */
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
 @media (max-width: 768px) {
   #productTable {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
+  }
+
+  #createProductForm {
+    grid-template-columns: 1fr;
   }
 }

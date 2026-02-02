@@ -1,7 +1,7 @@
-// src/scripts/login.js – moderner Login-Flow (mehrsprachig + Neon-Feedback)
+// src/scripts/login.js – moderner Login-Flow (mehrsprachig + Neon-Feedback + Disabled-Check)
 
 import { initFirebase } from "./firebaseSetup.js";
-import { getAuth, signInWithEmailAndPassword } 
+import { getAuth, signInWithEmailAndPassword, signOut } 
   from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 import { 
@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("🔥 Firebase initialisiert:", app);
 
+  // -------------------------------------------------------------
+  // 🔹 Splash Screen
+  // -------------------------------------------------------------
   setTimeout(() => hideSplash(), 3000);
 
   function hideSplash() {
@@ -53,12 +56,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   skipBtn?.addEventListener("click", hideSplash);
 
+  // -------------------------------------------------------------
+  // 🔹 Passwort anzeigen/ausblenden
+  // -------------------------------------------------------------
   togglePassword?.addEventListener("click", () => {
     const type = passwordInput.type === "password" ? "text" : "password";
     passwordInput.type = type;
     togglePassword.classList.toggle("fa-eye-slash");
   });
 
+  // -------------------------------------------------------------
+  // 🔹 Login-Formular
+  // -------------------------------------------------------------
   loginForm?.addEventListener("submit", async e => {
     e.preventDefault();
     console.log("📨 Login-Formular abgeschickt.");
@@ -81,11 +90,14 @@ document.addEventListener("DOMContentLoaded", () => {
     errorMessage.classList.add("hidden");
 
     try {
+      // -------------------------------------------------------------
+      // 🔹 Firebase Auth Login
+      // -------------------------------------------------------------
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       // -------------------------------------------------------------
-      // 🔹 Firestore: User per E-Mail suchen (statt per UID)
+      // 🔹 Firestore: User per E-Mail suchen
       // -------------------------------------------------------------
       const q = query(
         collection(db, "employees"),
@@ -93,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       const querySnapshot = await getDocs(q);
-
       spinner.style.display = "none";
 
       if (querySnapshot.empty) {
@@ -103,10 +114,28 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const userData = querySnapshot.docs[0].data();
-      const role = userData.role || "guest";
 
+      // -------------------------------------------------------------
+      // 🔥 Benutzer deaktiviert? → Login blockieren
+      // -------------------------------------------------------------
+      if (userData.disabled === true) {
+        console.warn("⛔ Benutzer ist deaktiviert:", email);
+
+        showFeedback("Dieser Benutzer wurde deaktiviert.", "error");
+
+        await signOut(auth); // wichtig!
+        return;
+      }
+
+      // -------------------------------------------------------------
+      // 🔹 Rolle auslesen
+      // -------------------------------------------------------------
+      const role = userData.role || "guest";
       console.log("🔍 Rolle erkannt:", role);
 
+      // -------------------------------------------------------------
+      // 🔹 Erfolgsanimation
+      // -------------------------------------------------------------
       loginCard.classList.add("success");
       showFeedback(`${t("auth.in")} (${role})`, "success");
 

@@ -7,7 +7,7 @@ import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole, getUserRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
 import { showFeedback } from "./feedback.js";
-import { addAuditLog } from "./auditHandler.js";   // ⭐ NEU
+import { addAuditLog } from "./auditHandler.js";
 import { t } from "./lang.js";
 
 import {
@@ -20,7 +20,8 @@ import {
   doc,
   serverTimestamp,
   query,
-  orderBy
+  orderBy,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 const { auth, db } = initFirebase();
@@ -36,8 +37,20 @@ const commentModal = document.getElementById("commentModal");
 const commentForm = document.getElementById("commentForm");
 const commentTicketId = document.getElementById("commentTicketId");
 const commentText = document.getElementById("commentText");
+const ticketMessages = document.getElementById("ticketMessages");
 
-const ticketMessages = document.getElementById("ticketMessages"); // ⭐ NEU (Detail‑Ansicht)
+// KPI DOM
+const kpiOpen = document.getElementById("kpiOpen");
+const kpiInProgress = document.getElementById("kpiInProgress");
+const kpiClosed24h = document.getElementById("kpiClosed24h");
+const kpiOverSla = document.getElementById("kpiOverSla");
+
+// SLA Konfiguration (in Stunden)
+const SLA_HOURS = {
+  low: 72,
+  medium: 48,
+  high: 24
+};
 
 // User + Rolle
 let currentUser = null;
@@ -76,12 +89,10 @@ ticketForm?.addEventListener("submit", async e => {
       updatedAt: serverTimestamp()
     });
 
-    // ⭐ AUDIT LOG
     await addAuditLog(currentUser.email, "support_create_ticket", `Ticket: ${ref.id}`);
 
     ticketForm.reset();
     showFeedback(t("feedback.ok"), "success");
-    loadTickets();
 
   } catch (err) {
     console.error("❌ Fehler beim Erstellen:", err);
@@ -90,86 +101,125 @@ ticketForm?.addEventListener("submit", async e => {
 });
 
 // ======================================================================
-// 🔹 Tickets laden
+// 🔹 KPIs berechnen
 // ======================================================================
-async function loadTickets() {
-  if (!tableBody) return;
+function updateSupportKpis(tickets) {
+  let open = 0;
+  let inProgress = 0;
+  let closed24h = 0;
+  let overSla = 0;
 
-  tableBody.innerHTML = "";
+  const now = Date.now();
 
+  tickets.forEach(t => {
+    const createdAt = t.createdAt?.toDate ? t.createdAt.toDate().getTime() : null;
+    const status = t.status;
+    const priority = t.priority;
+
+    if (status === "open") open++;
+    if (status === "inProgress") inProgress++;
+
+    if (status === "closed" && createdAt) {
+      const diff = (now - createdAt) / 3600000;
+      if (diff <= 24) closed24h++;
+    }
+
+    if (createdAt && (status === "open" || status === "inProgress")) {
+      const diff = (now - createdAt) / 3600000;
+      if (diff > SLA_HOURS[priority]) overSla++;
+    }
+  });
+
+  kpiOpen.textContent = open;
+  kpiInProgress.textContent = inProgress;
+  kpiClosed24h.textContent = closed24h;
+  kpiOverSla.textContent = overSla;
+}
+
+// ======================================================================
+// 🔹 Live Listener + Push Notifications
+// ======================================================================
+function initLiveTicketListener() {
   const q = query(
     collection(db, "supportTickets"),
     orderBy("createdAt", "desc")
   );
 
-  const snapshot = await getDocs(q);
+  let initial = true;
 
-  snapshot.forEach(docSnap => {
-    const data = docSnap.data();
-    const id = docSnap.id;
+  onSnapshot(q, snapshot => {
+    const tickets = [];
+    tableBody.innerHTML = "";
 
-    const row = document.createElement("tr");
-    row.dataset.status = data.status;
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      const id = docSnap.id;
 
-    row.innerHTML = `
-      <td class="ticketTitle clickable" data-id="${id}">${data.title}</td>
-      <td>${data.message}</td>
-      <td>${renderPriorityBadge(data.priority)}</td>
+      tickets.push(data);
 
-      <td>
-        ${renderStatusBadge(data.status)}
-        <br>
-        ${renderStatusSelect(id, data.status)}
-      </td>
+      const row = document.createElement("tr");
+      row.dataset.status = data.status;
 
-      <td>
-        <button class="commentBtn btn-blue" data-id="${id}">
-          <i class="fa-solid fa-comment"></i>
-        </button>
-      </td>
+      row.innerHTML = `
+        <td class="ticketTitle clickable" data-id="${id}">${data.title}</td>
+        <td>${data.message}</td>
+        <td>${renderPriorityBadge(data.priority)}</td>
 
-      <td>
-        ${renderDeleteButton(id)}
-      </td>
-    `;
+        <td>
+          ${renderStatusBadge(data.status)}
+          <br>
+          ${renderStatusSelect(id, data.status)}
+        </td>
 
-    tableBody.appendChild(row);
+        <td>
+          <button class="commentBtn btn-blue" data-id="${id}">
+            <i class="fa-solid fa-comment"></i>
+          </button>
+        </td>
+
+        <td>
+          ${renderDeleteButton(id)}
+        </td>
+      `;
+
+      tableBody.appendChild(row);
+    });
+
+    updateSupportKpis(tickets);
+
+    attachStatusHandler();
+    attachCommentHandler();
+    attachDeleteHandler();
+    attachDetailHandler();
+
+    // Push Notification bei neuen Tickets
+    if (!initial) {
+      const added = snapshot.docChanges().find(c => c.type === "added");
+      if (added) {
+        const newData = added.doc.data();
+        if (newData.createdBy !== currentUser.email) {
+          showFeedback(`📩 Neues Ticket: ${newData.title}`, "success");
+        }
+      }
+    }
+
+    initial = false;
   });
-
-  attachStatusHandler();
-  attachCommentHandler();
-  attachDeleteHandler();
-  attachDetailHandler(); // ⭐ NEU
 }
 
 // ======================================================================
-// 🔹 Renderer: Status Badge
+// 🔹 Renderer
 // ======================================================================
 function renderStatusBadge(status) {
-  return `
-    <span class="status-badge ${status}">
-      ${t(`support.${status}`)}
-    </span>
-  `;
+  return `<span class="status-badge ${status}">${t(`support.${status}`)}</span>`;
 }
 
-// ======================================================================
-// 🔹 Renderer: Priority Badge
-// ======================================================================
 function renderPriorityBadge(priority) {
-  return `
-    <span class="priority-badge priority-${priority}">
-      ${t(`support.${priority}`)}
-    </span>
-  `;
+  return `<span class="priority-badge priority-${priority}">${t(`support.${priority}`)}</span>`;
 }
 
-// ======================================================================
-// 🔹 Renderer: Status Select (Rollen‑abhängig)
-// ======================================================================
 function renderStatusSelect(id, status) {
-  if (currentRole === "guest") return "";
-
+  if (currentRole === "support") return "";
   return `
     <select data-id="${id}" class="statusSelect">
       <option value="open" ${status === "open" ? "selected" : ""}>${t("support.open")}</option>
@@ -179,19 +229,9 @@ function renderStatusSelect(id, status) {
   `;
 }
 
-// ======================================================================
-// 🔹 Renderer: Delete Button (nur Admin/Manager)
-// ======================================================================
 function renderDeleteButton(id) {
-  if (currentRole === "support") {
-    return `<span style="opacity:0.4;">—</span>`;
-  }
-
-  return `
-    <button class="deleteBtn btn btn-red" data-id="${id}">
-      <i class="fa-solid fa-trash"></i>
-    </button>
-  `;
+  if (currentRole === "support") return `<span style="opacity:0.4;">—</span>`;
+  return `<button class="deleteBtn btn btn-red" data-id="${id}"><i class="fa-solid fa-trash"></i></button>`;
 }
 // ======================================================================
 // 🔹 Status ändern
@@ -208,11 +248,9 @@ function attachStatusHandler() {
           updatedAt: serverTimestamp()
         });
 
-        // ⭐ AUDIT LOG
         await addAuditLog(currentUser.email, "support_change_status", `Ticket: ${id}, Status: ${newStatus}`);
 
         showFeedback(t("feedback.ok"), "success");
-        loadTickets();
 
       } catch (err) {
         console.error("❌ Fehler beim Statuswechsel:", err);
@@ -231,7 +269,7 @@ function attachCommentHandler() {
       const id = btn.dataset.id;
       commentTicketId.value = id;
 
-      await loadComments(id); // ⭐ NEU
+      await loadComments(id);
       commentModal.classList.add("open");
     });
   });
@@ -250,8 +288,6 @@ document.addEventListener("keydown", e => {
 // 🔹 Kommentare laden (Chat‑Bubbles)
 // ======================================================================
 async function loadComments(ticketId) {
-  if (!ticketMessages) return;
-
   ticketMessages.innerHTML = "";
 
   const q = query(
@@ -299,13 +335,10 @@ commentForm?.addEventListener("submit", async e => {
       createdAt: serverTimestamp()
     });
 
-    // ⭐ AUDIT LOG
     await addAuditLog(currentUser.email, "support_add_comment", `Ticket: ${id}`);
 
-    showFeedback(t("support.commentAdded"), "success");
-
     commentText.value = "";
-    await loadComments(id); // ⭐ Live‑Reload
+    await loadComments(id);
 
   } catch (err) {
     console.error("❌ Fehler beim Kommentar:", err);
@@ -348,11 +381,10 @@ function attachDeleteHandler() {
         try {
           await deleteDoc(doc(db, "supportTickets", id));
 
-          // ⭐ AUDIT LOG
           await addAuditLog(currentUser.email, "support_delete_ticket", `Ticket: ${id}`);
 
           showFeedback(t("support.delete"), "success");
-          loadTickets();
+
         } catch (err) {
           console.error("❌ Fehler beim Löschen:", err);
           showFeedback(t("errors.fail"), "error");
@@ -365,9 +397,9 @@ function attachDeleteHandler() {
 }
 
 // ======================================================================
-// 🔹 Initial Load
+// 🔹 Initial Load (Live)
 // ======================================================================
-loadTickets();
+initLiveTicketListener();
 
 // ======================================================================
 // 🔹 Logout

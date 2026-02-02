@@ -39,16 +39,17 @@
        🔹 TOP NAVIGATION
   ============================================================ -->
   <nav class="top-nav glass-panel">
-    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht</a>
-    <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
-    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
-    <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
-    <a href="support.html" class="active"><i class="fa-solid fa-headset"></i> Support</a>
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.home">Home</span></a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
+    <a href="products.html"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
+    <a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a>
+    <a href="support.html" class="active"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
 
     <button class="btn btn-red logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i> Logout
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
 
@@ -59,36 +60,46 @@
        🔹 MAIN CONTENT
   ============================================================ -->
   <main class="support-page">
-
     <!-- ========================================================
          🔹 Ticket erstellen
     ======================================================== -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-plus"></i> Neues Ticket</h2>
+      <h2>
+        <i class="fa-solid fa-plus"></i>
+        <span data-i18n="support.newTicket">Neues Ticket</span>
+      </h2>
 
       <form id="ticketForm" class="form-grid">
 
         <label>
-          <i class="fa-solid fa-heading"></i> Titel
-          <input type="text" id="ticketTitle" required placeholder="Kurzer Titel">
+          <i class="fa-solid fa-heading"></i>
+          <span data-i18n="support.titleLabel">Titel</span>
+          <input type="text" id="ticketTitle" required
+                 placeholder="Kurzer Titel"
+                 data-i18n-placeholder="support.titlePlaceholder">
         </label>
 
         <label>
-          <i class="fa-solid fa-flag"></i> Priorität
+          <i class="fa-solid fa-flag"></i>
+          <span data-i18n="support.priority">Priorität</span>
           <select id="ticketPriority">
-            <option value="low">Niedrig</option>
-            <option value="medium">Mittel</option>
-            <option value="high">Hoch</option>
+            <option value="low" data-i18n="support.low">Niedrig</option>
+            <option value="medium" data-i18n="support.medium">Mittel</option>
+            <option value="high" data-i18n="support.high">Hoch</option>
           </select>
         </label>
 
         <label class="full-width">
-          <i class="fa-solid fa-message"></i> Nachricht
-          <textarea id="ticketMessage" rows="3" required placeholder="Beschreibe das Problem…"></textarea>
+          <i class="fa-solid fa-message"></i>
+          <span data-i18n="support.message">Nachricht</span>
+          <textarea id="ticketMessage" rows="3" required
+                    placeholder="Beschreibe das Problem…"
+                    data-i18n-placeholder="support.messagePlaceholder"></textarea>
         </label>
 
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-paper-plane"></i> Ticket erstellen
+          <i class="fa-solid fa-paper-plane"></i>
+          <span data-i18n="support.createTicket">Ticket erstellen</span>
         </button>
 
       </form>
@@ -98,27 +109,33 @@
          🔹 Ticket Übersicht
     ======================================================== -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-ticket"></i> Tickets</h2>
+      <h2>
+        <i class="fa-solid fa-ticket"></i>
+        <span data-i18n="support.ticketOverview">Tickets</span>
+      </h2>
 
       <div class="support-filters">
-        <input type="text" id="ticketSearch" placeholder="Suche nach Titel / Nachricht …">
+        <input type="text" id="ticketSearch"
+               placeholder="Suche nach Titel / Nachricht …"
+               data-i18n-placeholder="support.searchPlaceholder">
+
         <select id="ticketStatusFilter">
-          <option value="all">Alle</option>
-          <option value="open">Offen</option>
-          <option value="inProgress">In Bearbeitung</option>
-          <option value="closed">Geschlossen</option>
+          <option value="all" data-i18n="support.all">Alle</option>
+          <option value="open" data-i18n="support.open">Offen</option>
+          <option value="inProgress" data-i18n="support.inProgress">In Bearbeitung</option>
+          <option value="closed" data-i18n="support.closed">Geschlossen</option>
         </select>
       </div>
 
       <table id="supportTable">
         <thead>
           <tr>
-            <th>Titel</th>
-            <th>Nachricht</th>
-            <th>Priorität</th>
-            <th>Status</th>
-            <th>Kommentar</th>
-            <th>Löschen</th>
+            <th data-i18n="support.title">Titel</th>
+            <th data-i18n="support.message">Nachricht</th>
+            <th data-i18n="support.priority">Priorität</th>
+            <th data-i18n="support.status">Status</th>
+            <th data-i18n="support.comment">Kommentar</th>
+            <th data-i18n="support.delete">Löschen</th>
           </tr>
         </thead>
         <tbody>
@@ -130,22 +147,29 @@
     <!-- ========================================================
          🔹 Kommentar Modal
     ======================================================== -->
-    <div id="commentModal" class="modal">
-      <div class="modal-content glass-panel">
-        <h3><i class="fa-solid fa-comment"></i> Kommentar hinzufügen</h3>
+    <div id="commentModal" class="modal" aria-hidden="true">
+      <div class="modal-content glass-panel" role="dialog" aria-modal="true">
+        <h3>
+          <i class="fa-solid fa-comment"></i>
+          <span data-i18n="support.addComment">Kommentar hinzufügen</span>
+        </h3>
 
         <form id="commentForm">
           <input type="hidden" id="commentTicketId">
 
-          <textarea id="commentText" rows="4" placeholder="Kommentar schreiben…"></textarea>
+          <textarea id="commentText" rows="4"
+                    placeholder="Kommentar schreiben…"
+                    data-i18n-placeholder="support.commentPlaceholder"></textarea>
 
           <div class="modal-actions">
             <button type="button" id="closeCommentModal" class="btn btn-red">
-              <i class="fa-solid fa-xmark"></i> Abbrechen
+              <i class="fa-solid fa-xmark"></i>
+              <span data-i18n="support.cancel">Abbrechen</span>
             </button>
 
             <button type="submit" class="btn btn-green">
-              <i class="fa-solid fa-check"></i> Speichern
+              <i class="fa-solid fa-check"></i>
+              <span data-i18n="support.save">Speichern</span>
             </button>
           </div>
         </form>
@@ -153,8 +177,17 @@
     </div>
 
   </main>
+  <!-- ============================================================
+       🔹 ROLE GUARD (Fallback)
+  ============================================================ -->
+  <script type="module">
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    enforceRole(["admin", "manager", "support"], "index.html");
+  </script>
 
-  <!-- Scripts -->
+  <!-- ============================================================
+       🔹 SUPPORT LOGIK
+  ============================================================ -->
   <script type="module" src="src/scripts/support.js"></script>
 
 </body>

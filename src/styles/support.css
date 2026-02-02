@@ -1,6 +1,6 @@
 /* =============================================================
-   🔥 SUPPORT – CYBERPUNK NEON LOOK (Teil 1)
-   Layout, Formular, Inputs, Buttons
+   🔥 SUPPORT – CYBERPUNK NEON LOOK (FINAL VERSION – Teil 1)
+   Layout, Formular, Inputs, Buttons, Filter, Tabelle
 ============================================================= */
 
 /* -------------------------------------------------------------
@@ -95,10 +95,34 @@ main.support-page {
   box-shadow: 0 0 18px var(--color-neon-yellow),
               0 0 36px rgba(255, 211, 0, 0.7);
 }
-/* =============================================================
-   🔥 SUPPORT – CYBERPUNK NEON LOOK (Teil 2)
-   Tabelle, Status-Badges, Priorität-Badges
-============================================================= */
+
+/* -------------------------------------------------------------
+   🔹 Filterleiste
+------------------------------------------------------------- */
+.support-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.support-filters input,
+.support-filters select {
+  background: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-turquoise);
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.support-filters input:focus,
+.support-filters select:focus {
+  border-color: var(--color-neon-yellow);
+  box-shadow: 0 0 12px var(--color-neon-yellow),
+              0 0 24px rgba(255, 211, 0, 0.55);
+}
 
 /* -------------------------------------------------------------
    🔹 Ticket Tabelle
@@ -134,6 +158,10 @@ main.support-page {
   background-color: #2a2a40;
   transition: background 0.2s ease;
 }
+/* =============================================================
+   🔥 SUPPORT – CYBERPUNK NEON LOOK (FINAL VERSION – Teil 2)
+   Status-Badges, Priorität, Select, Buttons, Modal, Chat
+============================================================= */
 
 /* -------------------------------------------------------------
    🔹 Status-Badges
@@ -176,6 +204,29 @@ main.support-page {
 }
 
 /* -------------------------------------------------------------
+   🔹 Status Select
+------------------------------------------------------------- */
+.statusSelect {
+  margin-top: 6px;
+  background: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: var(--color-neon-yellow);
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.statusSelect:hover,
+.statusSelect:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise),
+              0 0 20px rgba(112, 255, 234, 0.55);
+}
+
+/* -------------------------------------------------------------
    🔹 Priorität-Badges
 ------------------------------------------------------------- */
 .priority-badge {
@@ -199,4 +250,155 @@ main.support-page {
 .priority-high {
   background-color: rgba(255, 77, 77, 0.15);
   color: var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Action Buttons
+------------------------------------------------------------- */
+.btn-blue {
+  background: transparent;
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-blue:hover {
+  background: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.55);
+}
+
+/* -------------------------------------------------------------
+   🔹 Kommentar Modal
+------------------------------------------------------------- */
+#commentModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,5,15,0.75);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#commentModal.open {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--color-bg-panel);
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 0 20px var(--color-neon-turquoise),
+              0 0 40px rgba(112,255,234,0.35);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+#commentForm textarea {
+  width: 100%;
+  min-height: 120px;
+  background: var(--color-bg-dark);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--color-text-light);
+  resize: vertical;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+#closeCommentModal {
+  background: var(--color-neon-red);
+  color: #000;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 12px var(--color-neon-red);
+}
+
+#closeCommentModal:hover {
+  filter: brightness(1.1);
+}
+
+/* -------------------------------------------------------------
+   🔹 Chat-Bubbles (Kommentare)
+------------------------------------------------------------- */
+#ticketMessages {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.message-bubble {
+  background: rgba(20,20,40,0.6);
+  border-left: 4px solid var(--color-neon-turquoise);
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(112,255,234,0.35);
+  animation: fadeIn 0.3s ease;
+}
+
+.message-bubble.self {
+  border-left: none;
+  border-right: 4px solid var(--color-neon-yellow);
+  align-self: flex-end;
+  background: rgba(40,40,20,0.6);
+  box-shadow: 0 0 12px rgba(255,211,0,0.35);
+}
+
+.message-author {
+  font-weight: bold;
+  color: var(--color-neon-turquoise);
+  margin-bottom: 4px;
+}
+
+.message-text {
+  color: var(--color-text-light);
+  margin-bottom: 6px;
+}
+
+.message-time {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive
+------------------------------------------------------------- */
+@media (max-width: 768px) {
+  #supportTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .support-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

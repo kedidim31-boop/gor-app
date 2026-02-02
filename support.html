@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming of Republic – Support & Tickets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Globale Styles -->
+  <link rel="stylesheet" href="src/styles/theme.css">
+  <link rel="stylesheet" href="src/styles/support.css">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- ============================================================
+       🔹 BRANDING HEADER
+  ============================================================ -->
+  <header class="branding-header glass-panel">
+    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <div class="divider"></div>
+    <div class="branding-text">
+      <div class="subtitle">
+        <i class="fa-solid fa-headset"></i> Support & Tickets
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       🔹 TOP NAVIGATION
+  ============================================================ -->
+  <nav class="top-nav glass-panel">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
+    <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
+    <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
+    <a href="support.html" class="active"><i class="fa-solid fa-headset"></i> Support</a>
+    <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+
+    <button class="btn btn-red logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </nav>
+
+  <!-- Feedback Container -->
+  <div id="feedbackContainer"></div>
+
+  <!-- ============================================================
+       🔹 MAIN CONTENT
+  ============================================================ -->
+  <main>
+
+    <!-- ========================================================
+         🔹 TICKET ERSTELLEN (Alle Rollen)
+    ======================================================== -->
+    <section class="card glass-panel">
+      <h2><i class="fa-solid fa-plus-circle"></i> Neues Support‑Ticket erstellen</h2>
+
+      <form id="ticketForm" class="form-grid">
+
+        <label class="form-field icon-input full-width">
+          <i class="fa-solid fa-heading"></i>
+          <input type="text" id="ticketTitle" placeholder="Titel" required>
+        </label>
+
+        <label class="form-field icon-input full-width">
+          <i class="fa-solid fa-align-left"></i>
+          <textarea id="ticketDescription" placeholder="Beschreibung" required></textarea>
+        </label>
+
+        <label class="form-field icon-input">
+          <i class="fa-solid fa-flag"></i>
+          <select id="ticketPriority" required>
+            <option value="low">Niedrig</option>
+            <option value="medium">Mittel</option>
+            <option value="high">Hoch</option>
+          </select>
+        </label>
+
+        <button type="submit" class="btn btn-yellow full-width">
+          <i class="fa-solid fa-paper-plane"></i> Ticket absenden
+        </button>
+
+      </form>
+    </section>
+
+    <!-- ========================================================
+         🔹 TICKET ÜBERSICHT
+         Rollen-Logik:
+         - Admin, Manager, Support → alle Tickets
+         - Employee → nur eigene Tickets
+    ======================================================== -->
+    <section class="card glass-panel">
+      <h2><i class="erstelle fa-solid fa-ticket"></i> Ticketübersicht</h2>
+
+      <div class="ticket-controls">
+        <input type="text" id="ticketSearch" placeholder="Suche nach Titel / Status / Priorität …">
+        <button id="refreshTickets" class="btn btn-turquoise">
+          <i class="fa-solid fa-rotate"></i> Aktualisieren
+        </button>
+      </div>
+
+      <table id="ticketTable">
+        <thead>
+          <tr>
+            <th>Titel</th>
+            <th>Beschreibung</th>
+            <th>Status</th>
+            <th>Priorität</th>
+            <th>Erstellt von</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- Dynamisch geladen -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ========================================================
+         🔹 TICKET DETAILS (Kommentare)
+         Wird dynamisch eingeblendet
+    ======================================================== -->
+    <section id="ticketDetails" class="card glass-panel hidden">
+      <h2><i class="fa-solid fa-comment-dots"></i> Ticket‑Details</h2>
+
+      <div id="ticketInfo"></div>
+
+      <div id="ticketMessages"></div>
+
+      <form id="messageForm" class="form-grid">
+        <label class="form-field icon-input full-width">
+          <i class="fa-solid fa-comment"></i>
+          <textarea id="messageText" placeholder="Antwort hinzufügen …" required></textarea>
+        </label>
+
+        <button type="submit" class="btn btn-green full-width">
+          <i class="fa-solid fa-paper-plane"></i> Senden
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       🔹 ROLE GUARD
+       Support, Manager, Admin → Vollzugriff
+       Employee → eingeschränkt (nur eigene Tickets)
+  ============================================================ -->
+  <script type="module">
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    enforceRole(["employee", "support", "manager", "admin"], "index.html");
+  </script>
+
+  <!-- ============================================================
+       🔹 SUPPORT LOGIK
+  ============================================================ -->
+  <script type="module" src="src/scripts/support.js"></script>
+
+</body>
+</html>

@@ -15,7 +15,7 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-const { db } = initFirebase();
+const { auth, db } = initFirebase();
 
 // -------------------------------------------------------------
 // 🔹 Zugriff für Admin, Manager, Support
@@ -29,10 +29,30 @@ const form = document.getElementById("createProductForm");
 const tableBody = document.querySelector("#productTable tbody");
 
 // -------------------------------------------------------------
+// 🔹 Schweizer Preisformat
+// -------------------------------------------------------------
+function formatPriceCH(value) {
+  return Number(value).toLocaleString("de-CH", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+// -------------------------------------------------------------
+// 🔹 Auto-SKU generieren (falls leer)
+// -------------------------------------------------------------
+function generateSKU() {
+  return "SKU-" + Math.floor(100000 + Math.random() * 900000);
+}
+
+// -------------------------------------------------------------
 // 🔹 Produkt hinzufügen
 // -------------------------------------------------------------
 form?.addEventListener("submit", async e => {
   e.preventDefault();
+
+  let sku = document.getElementById("productSKU").value.trim();
+  if (!sku) sku = generateSKU();
 
   const product = {
     name: document.getElementById("productName").value.trim(),
@@ -40,7 +60,7 @@ form?.addEventListener("submit", async e => {
     type: document.getElementById("productType").value.trim(),
     vendor: document.getElementById("productVendor").value.trim(),
     collections: document.getElementById("productCollections").value.trim(),
-    sku: document.getElementById("productSKU").value.trim(),
+    sku,
     ean: document.getElementById("productEAN").value.trim(),
     stock: parseInt(document.getElementById("productStock").value) || 0,
     price: parseFloat(document.getElementById("productPrice").value) || 0,
@@ -86,7 +106,7 @@ async function loadProducts() {
       <td>${data.sku || "-"}</td>
       <td>${data.ean || "-"}</td>
       <td>${data.stock ?? 0}</td>
-      <td><i class="fa-solid fa-money-bill-wave"></i> ${Number(data.price || 0).toFixed(2)} CHF</td>
+      <td><i class="fa-solid fa-money-bill-wave"></i> ${formatPriceCH(data.price || 0)} CHF</td>
 
       <td>
         <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">
@@ -106,8 +126,8 @@ async function loadProducts() {
 // -------------------------------------------------------------
 function attachDeleteHandler() {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
-    btn.addEventListener("click", async e => {
-      const id = e.currentTarget.dataset.id;
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
 
       showFeedback(t("admin.confirm"), "warning");
 
@@ -138,8 +158,7 @@ loadProducts();
 // -------------------------------------------------------------
 // 🔹 Logout
 // -------------------------------------------------------------
-const logoutBtn = document.querySelector(".logout-btn");
-if (logoutBtn) logoutBtn.addEventListener("click", logout);
+document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
 // -------------------------------------------------------------
 // 🔹 Shopify-kompatibler CSV-Export
@@ -151,12 +170,17 @@ if (exportBtn) {
     try {
       const snapshot = await getDocs(collection(db, "products"));
 
-      let csv = "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
+      let csv =
+        "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
 
       snapshot.forEach(docSnap => {
         const p = docSnap.data();
 
-        const handle = (p.name || "").toLowerCase().replace(/\s+/g, "-");
+        const handle = (p.name || "")
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, "");
+
         const row = [
           handle,
           `"${p.name || ""}"`,

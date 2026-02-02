@@ -1,6 +1,5 @@
 // ======================================================================
-// 🔥 SUPPORT.JS – Gaming of Republic (komplett neu & optimiert)
-// Mehrsprachig, Neon‑UI, Rollen‑Logik, Kommentare, Badges
+// 🔥 SUPPORT.JS – Gaming of Republic (optimiert & angepasst)
 // ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
@@ -24,14 +23,10 @@ import {
 
 const { auth, db } = initFirebase();
 
-// ======================================================================
-// 🔹 Zugriff: Admin, Manager, Support
-// ======================================================================
+// Zugriff
 enforceRole(["admin", "manager", "support"], "login.html");
 
-// ======================================================================
-// 🔹 DOM Elemente
-// ======================================================================
+// DOM
 const ticketForm = document.getElementById("ticketForm");
 const tableBody = document.querySelector("#supportTable tbody");
 
@@ -40,9 +35,7 @@ const commentForm = document.getElementById("commentForm");
 const commentTicketId = document.getElementById("commentTicketId");
 const commentText = document.getElementById("commentText");
 
-// ======================================================================
-// 🔹 User + Rolle laden
-// ======================================================================
+// User + Rolle
 let currentUser = null;
 let currentRole = null;
 
@@ -58,9 +51,9 @@ auth.onAuthStateChanged(async user => {
 ticketForm?.addEventListener("submit", async e => {
   e.preventDefault();
 
-  const title = document.getElementById("ticketTitle").value.trim();
-  const message = document.getElementById("ticketMessage").value.trim();
-  const priority = document.getElementById("ticketPriority").value;
+  const title = ticketTitle.value.trim();
+  const message = ticketMessage.value.trim();
+  const priority = ticketPriority.value;
 
   if (!title || !message) {
     showFeedback(t("errors.fail"), "error");
@@ -109,7 +102,7 @@ async function loadTickets() {
     const id = docSnap.id;
 
     const row = document.createElement("tr");
-    row.classList.add(`status-${data.status}`);
+    row.dataset.status = data.status;
 
     row.innerHTML = `
       <td>${data.title}</td>
@@ -119,23 +112,17 @@ async function loadTickets() {
       <td>
         ${renderStatusBadge(data.status)}
         <br>
-        <select data-id="${id}" class="statusSelect">
-          <option value="open" ${data.status === "open" ? "selected" : ""}>${t("support.open")}</option>
-          <option value="inProgress" ${data.status === "inProgress" ? "selected" : ""}>${t("support.inProgress")}</option>
-          <option value="closed" ${data.status === "closed" ? "selected" : ""}>${t("support.closed")}</option>
-        </select>
+        ${renderStatusSelect(id, data.status)}
       </td>
 
       <td>
-        <button class="commentBtn btn btn-turquoise" data-id="${id}">
-          <i class="fa-solid fa-comment"></i> ${t("support.comment")}
+        <button class="commentBtn btn-blue" data-id="${id}">
+          <i class="fa-solid fa-comment"></i>
         </button>
       </td>
 
       <td>
-        <button class="deleteBtn btn btn-red" data-id="${id}">
-          <i class="fa-solid fa-trash"></i> ${t("support.delete")}
-        </button>
+        ${renderDeleteButton(id)}
       </td>
     `;
 
@@ -148,36 +135,56 @@ async function loadTickets() {
 }
 
 // ======================================================================
-// 🔹 Status-Badge Renderer
+// 🔹 Renderer: Status Badge
 // ======================================================================
 function renderStatusBadge(status) {
-  const icons = {
-    open: "fa-envelope-open-text",
-    inProgress: "fa-spinner",
-    closed: "fa-check"
-  };
-
   return `
     <span class="status-badge ${status}">
-      <i class="fa-solid ${icons[status]}"></i>
       ${t(`support.${status}`)}
     </span>
   `;
 }
 
 // ======================================================================
-// 🔹 Priorität-Badge Renderer
+// 🔹 Renderer: Priority Badge
 // ======================================================================
 function renderPriorityBadge(priority) {
-  const colors = {
-    low: "badge-green",
-    medium: "badge-yellow",
-    high: "badge-red"
-  };
-
-  return `<span class="badge ${colors[priority]}">${t(`support.${priority}`)}</span>`;
+  return `
+    <span class="priority-badge priority-${priority}">
+      ${t(`support.${priority}`)}
+    </span>
+  `;
 }
 
+// ======================================================================
+// 🔹 Renderer: Status Select (Rollen‑abhängig)
+// ======================================================================
+function renderStatusSelect(id, status) {
+  if (currentRole === "guest") return "";
+
+  return `
+    <select data-id="${id}" class="statusSelect">
+      <option value="open" ${status === "open" ? "selected" : ""}>${t("support.open")}</option>
+      <option value="inProgress" ${status === "inProgress" ? "selected" : ""}>${t("support.inProgress")}</option>
+      <option value="closed" ${status === "closed" ? "selected" : ""}>${t("support.closed")}</option>
+    </select>
+  `;
+}
+
+// ======================================================================
+// 🔹 Renderer: Delete Button (nur Admin/Manager)
+// ======================================================================
+function renderDeleteButton(id) {
+  if (currentRole === "support") {
+    return `<span style="opacity:0.4;">—</span>`;
+  }
+
+  return `
+    <button class="deleteBtn btn btn-red" data-id="${id}">
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  `;
+}
 // ======================================================================
 // 🔹 Status ändern
 // ======================================================================
@@ -220,8 +227,13 @@ document.getElementById("closeCommentModal")?.addEventListener("click", () => {
   commentModal.classList.remove("open");
 });
 
+// ESC schließen
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") commentModal.classList.remove("open");
+});
+
 // ======================================================================
-// 🔹 Kommentar speichern (Sub‑Collection)
+// 🔹 Kommentar speichern
 // ======================================================================
 commentForm?.addEventListener("submit", async e => {
   e.preventDefault();
@@ -263,21 +275,18 @@ function attachDeleteHandler() {
 
       showFeedback(t("admin.confirm"), "warning");
 
-      btn.addEventListener(
-        "click",
-        async () => {
-          try {
-            await deleteDoc(doc(db, "supportTickets", id));
-            showFeedback(t("support.delete"), "success");
-            loadTickets();
+      const confirmHandler = async () => {
+        try {
+          await deleteDoc(doc(db, "supportTickets", id));
+          showFeedback(t("support.delete"), "success");
+          loadTickets();
+        } catch (err) {
+          console.error("❌ Fehler beim Löschen:", err);
+          showFeedback(t("errors.fail"), "error");
+        }
+      };
 
-          } catch (err) {
-            console.error("❌ Fehler beim Löschen:", err);
-            showFeedback(t("errors.fail"), "error");
-          }
-        },
-        { once: true }
-      );
+      btn.addEventListener("click", confirmHandler, { once: true });
     });
   });
 }

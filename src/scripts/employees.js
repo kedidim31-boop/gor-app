@@ -5,12 +5,14 @@ import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
 import { showFeedback } from "./feedback.js";
 import { t } from "./lang.js";
+// Optional: Audit-Log aktivieren
+// import { addAuditLog } from "./auditHandler.js";
 
 import { 
   collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-const { db } = initFirebase();
+const { auth, db } = initFirebase();
 
 // -------------------------------------------------------------
 // 🔹 Zugriff: Admin + Manager
@@ -33,13 +35,20 @@ function formatSwissDate(dateString) {
 }
 
 // -------------------------------------------------------------
+// 🔹 Auto-Mitarbeiternummer generieren (falls leer)
+// -------------------------------------------------------------
+function generateEmployeeNumber() {
+  return "EMP-" + Math.floor(100000 + Math.random() * 900000);
+}
+
+// -------------------------------------------------------------
 // 🔹 Mitarbeiter hinzufügen
 // -------------------------------------------------------------
 if (form) {
   form.addEventListener("submit", async e => {
     e.preventDefault();
 
-    const number = document.getElementById("employeeNumber").value.trim();
+    let number = document.getElementById("employeeNumber").value.trim();
     const name = document.getElementById("employeeName").value.trim();
     const email = document.getElementById("employeeEmail").value.trim();
     const address = document.getElementById("employeeAddress").value.trim();
@@ -48,8 +57,9 @@ if (form) {
     const birthdayRaw = document.getElementById("employeeBirthday").value;
     const birthday = formatSwissDate(birthdayRaw);
     const phone = document.getElementById("employeePhone").value.trim();
-
     const role = document.getElementById("employeeRole").value || "guest";
+
+    if (!number) number = generateEmployeeNumber();
 
     if (!name || !email || !address || !zip || !city || !birthday || !phone || !role) {
       showFeedback(t("errors.fail"), "error");
@@ -74,6 +84,10 @@ if (form) {
       form.reset();
       loadEmployees();
       showFeedback(t("feedback.ok"), "success");
+
+      // Optional: Audit-Log
+      // const adminId = auth.currentUser?.uid || "system";
+      // await addAuditLog(adminId, "create_employee", `Name: ${name}, Email: ${email}`);
 
     } catch (err) {
       console.error("❌ Fehler beim Speichern:", err);
@@ -142,6 +156,10 @@ function attachRoleChangeHandler() {
         await updateDoc(doc(db, "employees", id), { role: newRole });
         showFeedback(`${t("admin.changeRole")}: ${newRole}`, "success");
 
+        // Optional: Audit-Log
+        // const adminId = auth.currentUser?.uid || "system";
+        // await addAuditLog(adminId, "change_role", `UserID: ${id}, new role: ${newRole}`);
+
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
         showFeedback(t("errors.fail"), "error");
@@ -155,22 +173,30 @@ function attachRoleChangeHandler() {
 // -------------------------------------------------------------
 function attachDeleteHandler() {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
-    btn.addEventListener("click", async e => {
-      const id = e.target.dataset.id;
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
 
       showFeedback(t("admin.confirm"), "warning");
 
-      btn.addEventListener("click", async () => {
-        try {
-          await deleteDoc(doc(db, "employees", id));
-          showFeedback(t("employees.delete"), "success");
-          loadEmployees();
+      btn.addEventListener(
+        "click",
+        async () => {
+          try {
+            await deleteDoc(doc(db, "employees", id));
+            showFeedback(t("employees.delete"), "success");
+            loadEmployees();
 
-        } catch (err) {
-          console.error("❌ Fehler beim Löschen:", err);
-          showFeedback(t("errors.fail"), "error");
-        }
-      }, { once: true });
+            // Optional: Audit-Log
+            // const adminId = auth.currentUser?.uid || "system";
+            // await addAuditLog(adminId, "delete_employee", `UserID: ${id}`);
+
+          } catch (err) {
+            console.error("❌ Fehler beim Löschen:", err);
+            showFeedback(t("errors.fail"), "error");
+          }
+        },
+        { once: true }
+      );
     });
   });
 }
@@ -183,5 +209,4 @@ loadEmployees();
 // -------------------------------------------------------------
 // 🔹 Logout
 // -------------------------------------------------------------
-const logoutBtn = document.querySelector(".logout-btn");
-if (logoutBtn) logoutBtn.addEventListener("click", logout);
+document.querySelector(".logout-btn")?.addEventListener("click", logout);

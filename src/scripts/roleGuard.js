@@ -1,18 +1,22 @@
 // src/scripts/roleGuard.js – globales Modul für Rollen-basierten Zugriff (mehrsprachig + optimiert)
 
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { 
+  collection, query, where, getDocs 
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
 import { t } from "./lang.js";
 
 // -------------------------------------------------------------
-// 🔹 Rollenprüfung
+// 🔹 Rollenprüfung (E-Mail basiert)
 // -------------------------------------------------------------
 export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
   const { auth, db } = initFirebase();
 
   onAuthStateChanged(auth, async user => {
+
     // -------------------------------------------------------------
     // 🔹 Kein User eingeloggt
     // -------------------------------------------------------------
@@ -25,15 +29,20 @@ export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
 
     try {
       // -------------------------------------------------------------
-      // 🔹 Firestore-Dokument abrufen
+      // 🔹 Firestore: User per E-Mail suchen
       // -------------------------------------------------------------
-      const userDocRef = doc(db, "employees", user.uid);
-      const userDocSnap = await getDoc(userDocRef);
+      const q = query(
+        collection(db, "employees"),
+        where("email", "==", user.email)
+      );
+
+      const snapshot = await getDocs(q);
 
       let role = "guest";
 
-      if (userDocSnap.exists()) {
-        role = userDocSnap.data().role || "guest";
+      if (!snapshot.empty) {
+        const userData = snapshot.docs[0].data();
+        role = userData.role || "guest";
       }
 
       console.log(`🔍 Rolle erkannt: ${role}`);

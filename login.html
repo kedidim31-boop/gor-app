@@ -4,51 +4,70 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- Globale Theme Datei -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/login.css">
+
   <!-- Icon Library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-  <!-- Animierter Hintergrund -->
+  <!-- ============================================================
+       🔹 ANIMIERTER NEON-HINTERGRUND
+  ============================================================ -->
   <div class="neon-bg"></div>
 
-  <!-- Splash Screen -->
+  <!-- ============================================================
+       🔹 SPLASH SCREEN (Intro)
+  ============================================================ -->
   <div class="splash-screen" id="splash">
     <img src="./public/logo.png" alt="Gaming of Republic Logo" class="splash-logo">
-    <button class="skip-btn" id="skipBtn" aria-label="Intro überspringen">Skip Intro</button>
+
+    <button class="skip-btn" id="skipBtn" aria-label="Intro überspringen">
+      Skip Intro
+    </button>
   </div>
 
-  <!-- Login Bereich -->
+  <!-- ============================================================
+       🔹 LOGIN-BEREICH
+  ============================================================ -->
   <main>
     <div class="login-card" id="loginCard">
+
       <h2><i class="fa-solid fa-user-shield"></i> Login</h2>
 
-      <!-- Eingabegruppen -->
       <form id="loginForm" novalidate>
+
+        <!-- E-Mail -->
         <div class="input-group">
           <i class="fa-solid fa-envelope"></i>
-          <input type="email" id="email" name="email" placeholder=" " required>
+          <input type="email" id="email" name="email" placeholder=" " required autocomplete="username">
           <label for="email">E-Mail</label>
         </div>
 
+        <!-- Passwort -->
         <div class="input-group">
           <i class="fa-solid fa-lock"></i>
-          <input type="password" id="password" name="password" placeholder=" " required>
+          <input type="password" id="password" name="password" placeholder=" " required autocomplete="current-password">
           <label for="password">Passwort</label>
-          <i class="fa-solid fa-eye toggle-password" id="togglePassword" aria-label="Passwort anzeigen/ausblenden"></i>
+
+          <i class="fa-solid fa-eye toggle-password" id="togglePassword"
+             aria-label="Passwort anzeigen/ausblenden"></i>
         </div>
 
         <!-- Fehlernachricht -->
         <div class="error-message hidden" id="errorMessage">
-          <i class="fa-solid fa-triangle-exclamation"></i> Ungültige Zugangsdaten
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          Ungültige Zugangsdaten
         </div>
 
         <!-- Hinweis -->
         <div class="hint">
-          <i class="fa-solid fa-circle-info"></i> Bitte melde dich mit deinen Daten an.
+          <i class="fa-solid fa-circle-info"></i>
+          Bitte melde dich mit deinen Daten an.
         </div>
 
         <!-- Login Button -->
@@ -58,14 +77,21 @@
 
         <!-- Spinner -->
         <div class="spinner" id="spinner"></div>
+
       </form>
+
     </div>
   </main>
 
-  <!-- Feedback Container für dynamische Banner -->
+  <!-- ============================================================
+       🔹 FEEDBACK BANNER
+  ============================================================ -->
   <div id="feedbackContainer"></div>
 
-  <!-- Externe Login-Logik -->
+  <!-- ============================================================
+       🔹 LOGIN LOGIK
+  ============================================================ -->
   <script type="module" src="src/scripts/login.js"></script>
+
 </body>
 </html>

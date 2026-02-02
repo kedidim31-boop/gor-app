@@ -1,11 +1,13 @@
 // ======================================================================
-// 🔥 SUPPORT.JS – Gaming of Republic (optimiert & angepasst)
+// 🔥 SUPPORT.JS – FINAL VERSION (Teil 1)
+// Gaming of Republic – Support Center
 // ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole, getUserRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
 import { showFeedback } from "./feedback.js";
+import { addAuditLog } from "./auditHandler.js";   // ⭐ NEU
 import { t } from "./lang.js";
 
 import {
@@ -35,6 +37,8 @@ const commentForm = document.getElementById("commentForm");
 const commentTicketId = document.getElementById("commentTicketId");
 const commentText = document.getElementById("commentText");
 
+const ticketMessages = document.getElementById("ticketMessages"); // ⭐ NEU (Detail‑Ansicht)
+
 // User + Rolle
 let currentUser = null;
 let currentRole = null;
@@ -61,7 +65,7 @@ ticketForm?.addEventListener("submit", async e => {
   }
 
   try {
-    await addDoc(collection(db, "supportTickets"), {
+    const ref = await addDoc(collection(db, "supportTickets"), {
       title,
       message,
       priority,
@@ -71,6 +75,9 @@ ticketForm?.addEventListener("submit", async e => {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
+
+    // ⭐ AUDIT LOG
+    await addAuditLog(currentUser.email, "support_create_ticket", `Ticket: ${ref.id}`);
 
     ticketForm.reset();
     showFeedback(t("feedback.ok"), "success");
@@ -105,7 +112,7 @@ async function loadTickets() {
     row.dataset.status = data.status;
 
     row.innerHTML = `
-      <td>${data.title}</td>
+      <td class="ticketTitle clickable" data-id="${id}">${data.title}</td>
       <td>${data.message}</td>
       <td>${renderPriorityBadge(data.priority)}</td>
 
@@ -132,6 +139,7 @@ async function loadTickets() {
   attachStatusHandler();
   attachCommentHandler();
   attachDeleteHandler();
+  attachDetailHandler(); // ⭐ NEU
 }
 
 // ======================================================================
@@ -200,6 +208,9 @@ function attachStatusHandler() {
           updatedAt: serverTimestamp()
         });
 
+        // ⭐ AUDIT LOG
+        await addAuditLog(currentUser.email, "support_change_status", `Ticket: ${id}, Status: ${newStatus}`);
+
         showFeedback(t("feedback.ok"), "success");
         loadTickets();
 
@@ -212,12 +223,15 @@ function attachStatusHandler() {
 }
 
 // ======================================================================
-// 🔹 Kommentar Modal öffnen
+// 🔹 Kommentar Modal öffnen + Kommentare laden
 // ======================================================================
 function attachCommentHandler() {
   document.querySelectorAll(".commentBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      commentTicketId.value = btn.dataset.id;
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      commentTicketId.value = id;
+
+      await loadComments(id); // ⭐ NEU
       commentModal.classList.add("open");
     });
   });
@@ -231,6 +245,38 @@ document.getElementById("closeCommentModal")?.addEventListener("click", () => {
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") commentModal.classList.remove("open");
 });
+
+// ======================================================================
+// 🔹 Kommentare laden (Chat‑Bubbles)
+// ======================================================================
+async function loadComments(ticketId) {
+  if (!ticketMessages) return;
+
+  ticketMessages.innerHTML = "";
+
+  const q = query(
+    collection(db, "supportTickets", ticketId, "comments"),
+    orderBy("createdAt", "asc")
+  );
+
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach(docSnap => {
+    const c = docSnap.data();
+
+    const bubble = document.createElement("div");
+    bubble.classList.add("message-bubble");
+    if (c.author === currentUser.email) bubble.classList.add("self");
+
+    bubble.innerHTML = `
+      <div class="message-author">${c.author}</div>
+      <div class="message-text">${c.text}</div>
+      <div class="message-time">${c.createdAt?.toDate().toLocaleString("de-CH")}</div>
+    `;
+
+    ticketMessages.appendChild(bubble);
+  });
+}
 
 // ======================================================================
 // 🔹 Kommentar speichern
@@ -253,17 +299,40 @@ commentForm?.addEventListener("submit", async e => {
       createdAt: serverTimestamp()
     });
 
+    // ⭐ AUDIT LOG
+    await addAuditLog(currentUser.email, "support_add_comment", `Ticket: ${id}`);
+
     showFeedback(t("support.commentAdded"), "success");
 
-    commentModal.classList.remove("open");
-    commentForm.reset();
-    loadTickets();
+    commentText.value = "";
+    await loadComments(id); // ⭐ Live‑Reload
 
   } catch (err) {
     console.error("❌ Fehler beim Kommentar:", err);
     showFeedback(t("errors.fail"), "error");
   }
 });
+
+// ======================================================================
+// 🔹 Ticket Detail Ansicht (Titel anklicken)
+// ======================================================================
+function attachDetailHandler() {
+  document.querySelectorAll(".ticketTitle").forEach(title => {
+    title.addEventListener("click", async () => {
+      const id = title.dataset.id;
+
+      const snap = await getDoc(doc(db, "supportTickets", id));
+      const data = snap.data();
+
+      showFeedback(`📄 Ticket geöffnet: ${data.title}`, "success");
+
+      commentTicketId.value = id;
+      await loadComments(id);
+
+      commentModal.classList.add("open");
+    });
+  });
+}
 
 // ======================================================================
 // 🔹 Ticket löschen
@@ -278,6 +347,10 @@ function attachDeleteHandler() {
       const confirmHandler = async () => {
         try {
           await deleteDoc(doc(db, "supportTickets", id));
+
+          // ⭐ AUDIT LOG
+          await addAuditLog(currentUser.email, "support_delete_ticket", `Ticket: ${id}`);
+
           showFeedback(t("support.delete"), "success");
           loadTickets();
         } catch (err) {

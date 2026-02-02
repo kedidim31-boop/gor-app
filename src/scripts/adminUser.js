@@ -3,46 +3,54 @@
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
 import { logActivity } from "./activityHandler.js";
+import { t } from "./lang.js";
+
 import {
   setDoc,
   doc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
 import {
   createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-// 🔥 Option-B Rollen: "admin" | "employee" | "guest"
+// -------------------------------------------------------------
+// 🔹 Benutzer erstellen (Admin + Manager erlaubt)
+// -------------------------------------------------------------
 export async function createUser(email, password, role = "employee") {
   const { auth, db } = initFirebase();
 
   const currentUser = auth.currentUser;
   if (!currentUser) {
-    showFeedback("Bitte zuerst einloggen!", "error");
+    showFeedback(t("auth.out"), "error");
     return null;
   }
 
-  // 🔐 Admin-Berechtigung prüfen
+  // 🔐 Rollen prüfen (Admin + Manager dürfen Benutzer erstellen)
   const token = await currentUser.getIdTokenResult();
   const currentRole = token.claims.role || "guest";
 
-  if (currentRole !== "admin") {
-    showFeedback("❌ Nur Admins dürfen neue Benutzer erstellen!", "error");
+  if (!["admin", "manager"].includes(currentRole)) {
+    showFeedback(t("errors.fail"), "error");
     return null;
   }
 
   try {
+    // -------------------------------------------------------------
     // 1️⃣ Benutzer in Firebase Auth anlegen
+    // -------------------------------------------------------------
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const newUser = userCredential.user;
 
+    // -------------------------------------------------------------
     // 2️⃣ Benutzer in Firestore speichern (employees Collection)
-    //    Wichtig: UID als Dokument-ID → perfekte Zuordnung
+    // -------------------------------------------------------------
     await setDoc(doc(db, "employees", newUser.uid), {
       uid: newUser.uid,
       email,
       role,
-      name: "",          // Platzhalter, Admin kann später Namen setzen
+      name: "",
       address: "",
       zip: "",
       city: "",
@@ -52,17 +60,30 @@ export async function createUser(email, password, role = "employee") {
       createdAt: serverTimestamp()
     });
 
-    // 3️⃣ Erfolgsmeldung
-    showFeedback(`Neuer Benutzer angelegt: ${email} (${role})`, "success");
+    // -------------------------------------------------------------
+    // 3️⃣ Erfolgsmeldung (Mehrsprachig)
+    // -------------------------------------------------------------
+    showFeedback(`${t("admin.createUser")}: ${email}`, "success");
 
+    // -------------------------------------------------------------
     // 4️⃣ Aktivität loggen
-    await logActivity(currentUser.uid, "create_user", `User: ${email}, Rolle: ${role}`);
+    // -------------------------------------------------------------
+    await logActivity(
+      currentUser.uid,
+      "create_user",
+      `User: ${email}, Role: ${role}`
+    );
 
     return newUser.uid;
 
   } catch (error) {
     console.error("❌ Fehler beim Erstellen des Benutzers:", error);
-    showFeedback("Fehler beim Erstellen des Benutzers: " + error.message, "error");
+
+    showFeedback(
+      `${t("errors.fail")} (${error.message})`,
+      "error"
+    );
+
     return null;
   }
 }

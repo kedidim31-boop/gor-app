@@ -1,30 +1,32 @@
-/* Admin Panel – Cyberpunk Neon Look */
-/* Ergänzt theme.css mit spezifischen Features */
+/* Admin Panel – Cyberpunk Neon Look 2.0 */
+/* Modernisiert für Glass-Blur, Neon-Glow und konsistente UI */
 
 /* -------------------------------------------------------------
-   🔹 Karten
+   🔹 Karten (Panels)
 ------------------------------------------------------------- */
 .card {
   margin: 1.5rem;
   padding: 1.5rem;
-  border-radius: 10px;
-  background: var(--color-bg-panel);
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
+  border-radius: 12px;
+  background: rgba(20, 20, 40, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 20px var(--color-neon-yellow),
-              0 0 40px rgba(255, 211, 0, 0.55);
+  transform: translateY(-4px);
+  box-shadow: 0 0 25px var(--color-neon-yellow),
+              0 0 50px rgba(255, 211, 0, 0.55);
 }
 
 .card h2 {
   margin-top: 0;
   color: var(--color-neon-yellow);
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   margin-bottom: 1rem;
-  text-shadow: 0 0 6px var(--color-neon-yellow);
+  text-shadow: 0 0 8px var(--color-neon-yellow);
 }
 
 /* -------------------------------------------------------------
@@ -50,14 +52,14 @@
 
 #createUserForm input,
 #createUserForm select {
-  background-color: var(--color-bg-panel);
+  background: rgba(15, 15, 30, 0.8);
   border: 2px solid var(--color-neon-yellow);
   border-radius: 8px;
   padding: 10px 12px;
   color: var(--color-neon-yellow);
   font-weight: bold;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 #createUserForm input::placeholder {
@@ -67,18 +69,14 @@
 #createUserForm input:focus,
 #createUserForm select:focus {
   border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.55);
-}
-
-#createUserForm select {
-  cursor: pointer;
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.55);
 }
 
 #createUserForm select:hover {
   border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.55);
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.55);
 }
 
 /* -------------------------------------------------------------
@@ -89,21 +87,26 @@
   border-collapse: collapse;
   margin-top: 1.5rem;
   table-layout: fixed;
+  background: rgba(20, 20, 40, 0.6);
+  backdrop-filter: blur(6px);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 #adminEmployeeTable th,
 #adminEmployeeTable td {
   text-align: center;
   padding: 12px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--color-text-light);
   word-wrap: break-word;
 }
 
 #adminEmployeeTable th {
-  background-color: var(--color-bg-panel);
+  background: rgba(30, 30, 50, 0.9);
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
+  font-size: 0.95rem;
 }
 
 /* Alternierende Zeilen */
@@ -112,8 +115,31 @@
 }
 
 #adminEmployeeTable tr:hover {
-  background-color: #2a2a40;
+  background-color: rgba(255, 255, 255, 0.08);
   transition: background 0.2s ease;
+}
+
+/* -------------------------------------------------------------
+   🔹 Rollen-Badges
+------------------------------------------------------------- */
+.roleSelect option[value="admin"] {
+  color: var(--color-neon-red);
+}
+
+.roleSelect option[value="manager"] {
+  color: var(--color-neon-purple);
+}
+
+.roleSelect option[value="support"] {
+  color: var(--color-neon-yellow);
+}
+
+.roleSelect option[value="employee"] {
+  color: var(--color-neon-green);
+}
+
+.roleSelect option[value="guest"] {
+  color: #aaa;
 }
 
 /* -------------------------------------------------------------
@@ -125,7 +151,7 @@
   padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   font-weight: bold;
 }
 
@@ -138,8 +164,8 @@
 #adminEmployeeTable .actionBtn:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
-  box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.55);
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.55);
 }
 
 /* Delete */
@@ -151,54 +177,8 @@
 #adminEmployeeTable .deleteBtn:hover {
   background-color: var(--color-neon-red);
   color: #000;
-  box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.55);
-}
-
-/* -------------------------------------------------------------
-   🔹 Feedback Banner
-------------------------------------------------------------- */
-#feedbackContainer {
-  position: fixed;
-  top: 80px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.feedback {
-  padding: 12px 18px;
-  border-radius: 6px;
-  font-weight: bold;
-  color: #000;
-  animation: fadeInOut 4s forwards;
-}
-
-.feedback.success {
-  background-color: var(--color-feedback-success);
-  box-shadow: 0 0 12px var(--color-feedback-success),
-              0 0 24px rgba(0, 255, 128, 0.55);
-}
-
-.feedback.error {
-  background-color: var(--color-feedback-error);
-  box-shadow: 0 0 12px var(--color-feedback-error),
-              0 0 24px rgba(255, 77, 77, 0.55);
-}
-
-.feedback.warning {
-  background-color: var(--color-feedback-warning);
-  box-shadow: 0 0 12px var(--color-feedback-warning),
-              0 0 24px rgba(255, 211, 0, 0.55);
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(-10px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-10px); }
+  box-shadow: 0 0 14px var(--color-neon-red),
+              0 0 28px rgba(255, 77, 77, 0.55);
 }
 
 /* -------------------------------------------------------------

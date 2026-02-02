@@ -1,0 +1,159 @@
+/* Inventory Search – Cyberpunk Neon Look */
+/* Ergänzt theme.css + inventory.css */
+
+/* -------------------------------------------------------------
+   🔹 Suchfeld Container
+------------------------------------------------------------- */
+.inventory-search-container {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Suchfeld (Input + Icon)
+------------------------------------------------------------- */
+.inventory-search {
+  position: relative;
+  width: 100%;
+}
+
+.inventory-search i {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: var(--color-neon-yellow);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.inventory-search input {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 10px;
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  font-weight: bold;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
+}
+
+.inventory-search input:hover {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise);
+}
+
+.inventory-search input:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 
+    0 0 14px var(--color-neon-turquoise),
+    0 0 28px rgba(112, 255, 234, 0.55);
+  outline: none;
+}
+
+/* -------------------------------------------------------------
+   🔹 Filter Panel
+------------------------------------------------------------- */
+.inventory-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.inventory-filter {
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-turquoise);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.inventory-filter:hover {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 14px var(--color-neon-turquoise);
+}
+
+/* Aktiver Filter */
+.inventory-filter.active {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 18px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Reset Button
+------------------------------------------------------------- */
+.inventory-reset-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.inventory-reset-btn:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 18px var(--color-neon-red),
+              0 0 36px rgba(255, 77, 77, 0.7);
+}
+
+/* -------------------------------------------------------------
+   🔹 Result Counter
+------------------------------------------------------------- */
+.inventory-result-count {
+  font-size: 0.9rem;
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+  font-weight: bold;
+}
+
+/* -------------------------------------------------------------
+   🔹 Treffer Highlighting
+------------------------------------------------------------- */
+.search-highlight {
+  background-color: rgba(255, 211, 0, 0.25);
+  color: var(--color-neon-yellow);
+  padding: 2px 4px;
+  border-radius: 4px;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Keine Treffer
+------------------------------------------------------------- */
+.inventory-no-results {
+  margin-top: 20px;
+  padding: 14px;
+  text-align: center;
+  background-color: rgba(255, 77, 77, 0.15);
+  border: 2px solid var(--color-neon-red);
+  border-radius: 10px;
+  color: var(--color-neon-red);
+  font-weight: bold;
+  box-shadow: 0 0 12px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .inventory-filters {
+    flex-direction: column;
+  }
+
+  .inventory-filter {
+    text-align: center;
+  }
+}

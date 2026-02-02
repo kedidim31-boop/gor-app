@@ -41,9 +41,11 @@ export function initAdminPanel() {
       }
 
       try {
-        const adminId = auth.currentUser?.uid || "system";
+        const adminId = auth.currentUser?.email || "system";
 
+        // 🔥 createUser speichert jetzt per E-Mail (nicht UID)
         await createUser(email, password, role);
+
         await loadEmployees(db);
         form.reset();
 
@@ -78,14 +80,16 @@ async function loadEmployees(db) {
 
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
+    const id = docSnap.id; // 🔥 jetzt E-Mail als ID
+
     const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${data.name || "-"}</td>
-      <td>${data.email || "-"}</td>
+      <td>${data.email || id}</td>
 
       <td>
-        <select data-id="${docSnap.id}" class="roleSelect">
+        <select data-id="${id}" class="roleSelect">
           <option value="employee" ${data.role === "employee" ? "selected" : ""}>${t("roles.employee")}</option>
           <option value="support" ${data.role === "support" ? "selected" : ""}>${t("roles.support")}</option>
           <option value="manager" ${data.role === "manager" ? "selected" : ""}>${t("roles.manager")}</option>
@@ -95,7 +99,7 @@ async function loadEmployees(db) {
       </td>
 
       <td>
-        <button class="deleteBtn actionBtn" data-id="${docSnap.id}">
+        <button class="deleteBtn actionBtn" data-id="${id}">
           <i class="fa-solid fa-trash"></i> ${t("employees.delete")}
         </button>
       </td>
@@ -123,9 +127,9 @@ function attachRoleChangeHandler(db) {
         showFeedback(`${t("admin.changeRole")}: ${newRole}`, "success");
 
         const { auth } = initFirebase();
-        const adminId = auth.currentUser?.uid || "system";
+        const adminId = auth.currentUser?.email || "system";
 
-        await addAuditLog(adminId, "change_role", `UserID: ${id}, new role: ${newRole}`);
+        await addAuditLog(adminId, "change_role", `User: ${id}, new role: ${newRole}`);
 
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
@@ -154,9 +158,9 @@ function attachDeleteHandler(db) {
             showFeedback(t("employees.delete"), "success");
 
             const { auth } = initFirebase();
-            const adminId = auth.currentUser?.uid || "system";
+            const adminId = auth.currentUser?.email || "system";
 
-            await addAuditLog(adminId, "delete_user", `UserID: ${id}`);
+            await addAuditLog(adminId, "delete_user", `User: ${id}`);
 
             await loadEmployees(db);
 

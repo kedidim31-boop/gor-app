@@ -1,25 +1,37 @@
-/* Globale Farb- und Button-Definitionen – Cyberpunk Neon Look */
+/* -------------------------------------------------------------
+   🔹 Globale Farb- und Button-Definitionen – Cyberpunk Neon Look
+------------------------------------------------------------- */
 
-/* Farbvariablen */
 :root {
+  /* Hintergrundfarben */
   --color-bg-dark: #0d0d1a;
   --color-bg-panel: #1a1a2e;
-  --color-text-light: #f0f0f0;
-  --color-text-muted: #ccc;
 
+  /* Textfarben */
+  --color-text-light: #f0f0f0;
+  --color-text-muted: #bfbfbf;
+
+  /* Neon Farben */
   --color-neon-yellow: #FFD300;
   --color-neon-turquoise: #70ffea;
   --color-neon-green: #00ff88;
   --color-neon-red: #ff4d4d;
-  --color-neon-purple: #d28cff; /* neu für Bestand */
+  --color-neon-purple: #d28cff;
 
   /* Feedback Banner Farben */
   --color-feedback-success: var(--color-neon-green);
   --color-feedback-error: var(--color-neon-red);
   --color-feedback-warning: var(--color-neon-yellow);
+
+  /* Globale Glow-Intensitäten */
+  --glow-soft: 0 0 10px;
+  --glow-medium: 0 0 18px;
+  --glow-strong: 0 0 36px;
 }
 
-/* Body */
+/* -------------------------------------------------------------
+   🔹 Body
+------------------------------------------------------------- */
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background-color: var(--color-bg-dark);
@@ -28,13 +40,16 @@ body {
   padding: 0;
 }
 
-/* Branding Header */
+/* -------------------------------------------------------------
+   🔹 Branding Header
+------------------------------------------------------------- */
 .branding-header {
   display: flex;
   align-items: center;
   padding: 1rem;
   background: linear-gradient(90deg, #111, #222);
   border-bottom: 2px solid var(--color-neon-yellow);
+  box-shadow: var(--glow-soft) rgba(255, 211, 0, 0.4);
 }
 
 .branding-header img {
@@ -43,17 +58,21 @@ body {
 }
 
 .branding-text .subtitle {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: bold;
   color: var(--color-neon-yellow);
+  text-shadow: var(--glow-soft) var(--color-neon-yellow);
 }
 
-/* Navigation oben */
+/* -------------------------------------------------------------
+   🔹 Navigation oben
+------------------------------------------------------------- */
 .top-nav {
   display: flex;
   align-items: center;
   background: var(--color-bg-panel);
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .top-nav a,
@@ -62,22 +81,25 @@ body {
   text-decoration: none;
   margin-right: 1rem;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: background 0.3s;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  font-weight: 500;
 }
 
 .top-nav a.active {
   background: var(--color-neon-yellow);
-  color: var(--color-bg-dark);
+  color: #000;
   font-weight: bold;
+  box-shadow: var(--glow-soft) var(--color-neon-yellow);
 }
 
 .top-nav a:hover,
 .top-nav button:hover {
-  background: #333;
+  background: rgba(255,255,255,0.08);
   cursor: pointer;
 }
 
+/* Logout Button (global) */
 .logout-btn {
   background: transparent;
   border: none;
@@ -85,7 +107,9 @@ body {
   font-size: 1rem;
 }
 
-/* Bottom Navigation für Mobile */
+/* -------------------------------------------------------------
+   🔹 Bottom Navigation (Mobile)
+------------------------------------------------------------- */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -95,6 +119,7 @@ body {
   justify-content: space-around;
   padding: 10px 0;
   border-top: 1px solid #333;
+  z-index: 999;
 }
 
 .bottom-nav a {
@@ -107,16 +132,25 @@ body {
 .bottom-nav a.active {
   color: var(--color-neon-yellow);
   font-weight: bold;
+  text-shadow: var(--glow-soft) var(--color-neon-yellow);
 }
 
-/* Karten */
+/* -------------------------------------------------------------
+   🔹 Karten (global)
+------------------------------------------------------------- */
 .card {
   background: var(--color-bg-panel);
   margin: 1.5rem;
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
-  color: var(--color-text-light);
+  border-radius: 10px;
+  box-shadow: var(--glow-soft) rgba(255, 211, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--glow-medium) var(--color-neon-yellow),
+              var(--glow-strong) rgba(255, 211, 0, 0.55);
 }
 
 .card h2 {
@@ -124,53 +158,50 @@ body {
   color: var(--color-neon-yellow);
   font-size: 1.3rem;
   margin-bottom: 1rem;
+  text-shadow: var(--glow-soft) var(--color-neon-yellow);
 }
 
-/* Buttons – Standard */
+/* -------------------------------------------------------------
+   🔹 Buttons – Standard Neon System
+------------------------------------------------------------- */
 .btn {
   display: inline-block;
   padding: 0.7rem 1.2rem;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  transition: box-shadow 0.3s, transform 0.2s;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   border: none;
 }
 
 /* Neon Gelb */
 .btn-yellow {
   background: var(--color-neon-yellow);
-  color: var(--color-bg-dark);
+  color: #000;
 }
-
 .btn-yellow:hover {
-  box-shadow: 0 0 10px var(--color-neon-yellow),
-              0 0 20px var(--color-neon-yellow);
   transform: translateY(-2px);
+  box-shadow: var(--glow-medium) var(--color-neon-yellow);
 }
 
 /* Neon Türkis */
 .btn-turquoise {
   background: var(--color-neon-turquoise);
-  color: var(--color-bg-dark);
+  color: #000;
 }
-
 .btn-turquoise:hover {
-  box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px var(--color-neon-turquoise);
   transform: translateY(-2px);
+  box-shadow: var(--glow-medium) var(--color-neon-turquoise);
 }
 
 /* Neon Grün */
 .btn-green {
   background: var(--color-neon-green);
-  color: var(--color-bg-dark);
+  color: #000;
 }
-
 .btn-green:hover {
-  box-shadow: 0 0 10px var(--color-neon-green),
-              0 0 20px var(--color-neon-green);
   transform: translateY(-2px);
+  box-shadow: var(--glow-medium) var(--color-neon-green);
 }
 
 /* Neon Rot */
@@ -178,16 +209,14 @@ body {
   background: var(--color-neon-red);
   color: #fff;
 }
-
 .btn-red:hover {
-  background: var(--color-neon-red);
-  color: var(--color-bg-dark);
-  box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.6);
   transform: translateY(-2px);
+  box-shadow: var(--glow-medium) var(--color-neon-red);
 }
 
-/* Globales Feedback-System */
+/* -------------------------------------------------------------
+   🔹 Globales Feedback-System
+------------------------------------------------------------- */
 #feedbackContainer {
   position: fixed;
   top: 80px;
@@ -198,11 +227,10 @@ body {
   gap: 10px;
 }
 
-/* Globale Feedback Banner */
 .feedback,
 .feedback-banner {
   padding: 12px 18px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: bold;
   color: #000;
   animation: fadeInOut 4s forwards;
@@ -211,22 +239,19 @@ body {
 .feedback.success,
 .feedback-banner.success {
   background-color: var(--color-feedback-success);
-  box-shadow: 0 0 12px var(--color-feedback-success),
-              0 0 24px rgba(0, 255, 128, 0.6);
+  box-shadow: var(--glow-medium) var(--color-feedback-success);
 }
 
 .feedback.error,
 .feedback-banner.error {
   background-color: var(--color-feedback-error);
-  box-shadow: 0 0 12px var(--color-feedback-error),
-              0 0 24px rgba(255, 77, 77, 0.6);
+  box-shadow: var(--glow-medium) var(--color-feedback-error);
 }
 
 .feedback.warning,
 .feedback-banner.warning {
   background-color: var(--color-feedback-warning);
-  box-shadow: 0 0 12px var(--color-feedback-warning),
-              0 0 24px rgba(255, 211, 0, 0.6);
+  box-shadow: var(--glow-medium) var(--color-feedback-warning);
 }
 
 @keyframes fadeInOut {
@@ -234,4 +259,19 @@ body {
   10% { opacity: 1; transform: translateY(0); }
   90% { opacity: 1; }
   100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* -------------------------------------------------------------
+   🔹 Globale Utility Klassen
+------------------------------------------------------------- */
+.glow-yellow { text-shadow: var(--glow-soft) var(--color-neon-yellow); }
+.glow-red { text-shadow: var(--glow-soft) var(--color-neon-red); }
+.glow-green { text-shadow: var(--glow-soft) var(--color-neon-green); }
+.glow-turquoise { text-shadow: var(--glow-soft) var(--color-neon-turquoise); }
+
+.glass-panel {
+  background: rgba(20,20,40,0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  padding: 1rem;
 }

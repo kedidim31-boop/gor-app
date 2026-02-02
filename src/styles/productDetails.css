@@ -1,0 +1,278 @@
+/* Product Details – Cyberpunk Neon Look */
+/* Ergänzt theme.css + products.css */
+
+/* -------------------------------------------------------------
+   🔹 Produktdetails Container
+------------------------------------------------------------- */
+.product-details-container {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 211, 0, 0.25);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
+}
+
+/* Titel */
+.product-details-container h2 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.6rem;
+  text-shadow: 0 0 8px var(--color-neon-yellow);
+}
+
+/* Untertitel */
+.product-details-subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Produktdetails Grid
+------------------------------------------------------------- */
+.product-details-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .product-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* -------------------------------------------------------------
+   🔹 Linke Seite: Bilder + Varianten
+------------------------------------------------------------- */
+.product-details-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Hauptbild */
+.product-main-image {
+  width: 100%;
+  height: 320px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid var(--color-neon-turquoise);
+  box-shadow: 0 0 16px rgba(112, 255, 234, 0.35);
+  transition: all 0.25s ease;
+}
+
+.product-main-image:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 24px var(--color-neon-turquoise),
+              0 0 48px rgba(112, 255, 234, 0.55);
+}
+
+/* Thumbnail Grid */
+.product-thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 12px;
+}
+
+.product-thumbnail {
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.25s ease;
+}
+
+.product-thumbnail:hover {
+  border-color: var(--color-neon-yellow);
+  box-shadow: 0 0 12px var(--color-neon-yellow);
+}
+
+.product-thumbnail.active {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 16px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Rechte Seite: Produktinfos
+------------------------------------------------------------- */
+.product-details-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Info Box */
+.product-info-box {
+  background: var(--color-bg-panel);
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
+  transition: all 0.25s ease;
+}
+
+.product-info-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow),
+              0 0 36px rgba(255, 211, 0, 0.55);
+}
+
+/* Info Titel */
+.product-info-box h3 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.2rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* Info Text */
+.product-info-box p {
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  margin-top: 6px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Preis & Bestand
+------------------------------------------------------------- */
+.product-price {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-neon-green);
+  text-shadow: 0 0 8px var(--color-neon-green);
+}
+
+.product-stock {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.product-stock.low {
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+.product-stock.zero {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 8px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Collections & Tags
+------------------------------------------------------------- */
+.product-collections,
+.product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.product-tag,
+.product-collection {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: rgba(112, 255, 234, 0.15);
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.product-tag i,
+.product-collection i {
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.product-tag i:hover,
+.product-collection i:hover {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 8px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Aktionen (Buttons)
+------------------------------------------------------------- */
+.product-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.product-action-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Edit */
+.product-action-btn.edit {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-turquoise);
+}
+
+.product-action-btn.edit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-turquoise),
+              0 0 36px rgba(112, 255, 234, 0.7);
+}
+
+/* Delete */
+.product-action-btn.delete {
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+.product-action-btn.delete:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-red),
+              0 0 36px rgba(255, 77, 77, 0.7);
+}
+
+/* -------------------------------------------------------------
+   🔹 SEO Box
+------------------------------------------------------------- */
+.product-seo-box {
+  background: var(--color-bg-panel);
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(112, 255, 234, 0.25);
+}
+
+.product-seo-box h3 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+.product-seo-box textarea {
+  width: 100%;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--color-text-light);
+  font-weight: bold;
+  min-height: 100px;
+  transition: all 0.25s ease;
+}
+
+.product-seo-box textarea:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.55);
+  outline: none;
+}

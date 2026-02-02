@@ -7,25 +7,32 @@ import { logActivity } from "./activityHandler.js";
 import { t } from "./lang.js";
 
 // -------------------------------------------------------------
-// 🔹 Logout-Funktion
+// 🔹 Logout-Funktion (modernisiert)
 // -------------------------------------------------------------
 export async function logout() {
   const { auth } = initFirebase();
 
   try {
     const user = auth.currentUser;
-    const userId = user ? user.uid : "unknown";
 
+    // 🔥 E-Mail statt UID verwenden (UID ist nicht mehr relevant)
+    const userIdentifier = user?.email || "unknown";
+
+    // Firebase Logout
     await signOut(auth);
     console.log("📘 Logout erfolgreich");
 
     // Aktivität loggen
-    await logActivity(userId, "logout", "User logged out");
+    await logActivity(
+      userIdentifier,
+      "logout",
+      `User ${userIdentifier} logged out`
+    );
 
-    // Mehrsprachiges Neon-Feedback
+    // Neon-Feedback
     showFeedback(t("auth.out"), "success");
 
-    // Kurze Verzögerung für Animation
+    // Kleine Verzögerung für Animation
     setTimeout(() => {
       window.location.href = "login.html";
     }, 800);

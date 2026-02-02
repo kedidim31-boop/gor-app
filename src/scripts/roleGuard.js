@@ -10,7 +10,7 @@ import { showFeedback } from "./feedback.js";
 import { t } from "./lang.js";
 
 // -------------------------------------------------------------
-// 🔹 Rollenprüfung (E-Mail basiert)
+// 🔹 Rollenprüfung + deaktivierte Benutzer blockieren
 // -------------------------------------------------------------
 export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
   const { auth, db } = initFirebase();
@@ -38,14 +38,35 @@ export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
 
       const snapshot = await getDocs(q);
 
-      let role = "guest";
-
-      if (!snapshot.empty) {
-        const userData = snapshot.docs[0].data();
-        role = userData.role || "guest";
+      if (snapshot.empty) {
+        console.error("❌ Kein Firestore-Dokument für diesen Benutzer gefunden.");
+        showFeedback(t("errors.noAccess"), "error");
+        window.location.href = redirectPage;
+        return;
       }
 
+      const userData = snapshot.docs[0].data();
+      const role = userData.role || "guest";
+
       console.log(`🔍 Rolle erkannt: ${role}`);
+
+      // -------------------------------------------------------------
+      // 🔥 Benutzer deaktiviert? → Sofort blockieren
+      // -------------------------------------------------------------
+      if (userData.disabled === true) {
+        console.warn("⛔ Benutzer ist deaktiviert:", user.email);
+
+        showFeedback("Dieser Benutzer wurde deaktiviert.", "error");
+
+        // Wichtig: Benutzer ausloggen
+        auth.signOut();
+
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 800);
+
+        return;
+      }
 
       // -------------------------------------------------------------
       // 🔹 Zugriff verweigert

@@ -1,5 +1,8 @@
-// src/scripts/activityHandler.js – globales Modul für Aktivitäten-Logging
-// Neon-Feedback 2.0 + E-Mail-basiertes User-System + optimierte Firestore-Abfragen
+// ======================================================================
+// 🔥 activityHandler.js – FINAL VERSION (Teil 1)
+// Globales Audit-Log Modul für Gaming of Republic
+// Kompatibel mit Firestore Rules + E-Mail-basiertem User-System
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
@@ -16,23 +19,23 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
+// Firebase initialisieren
 const { db } = initFirebase();
 
 // -------------------------------------------------------------
-// 🔹 Aktivität protokollieren (modernisiert)
+// 🔹 Audit-Log schreiben (Admin, Manager, Support, Employee)
+//    → Firestore Rules erlauben: allow create: if request.auth != null;
 // -------------------------------------------------------------
-export async function logActivity(userIdentifier, action, details = "") {
+export async function addAuditLog(userIdentifier, action, details = "") {
   if (!db) {
-    console.error("❌ Firestore nicht initialisiert – Aktivität kann nicht protokolliert werden.");
+    console.error("❌ Firestore nicht initialisiert – Audit-Log kann nicht gespeichert werden.");
     return null;
   }
 
-  // 🔥 E-Mail statt UID verwenden
   const userId = userIdentifier || "unknown";
 
-  // 🔥 Validierung
   if (!action || typeof action !== "string") {
-    console.warn("⚠️ Ungültige Aktion – Logging übersprungen.");
+    console.warn("⚠️ Ungültige Aktion – Audit-Log übersprungen.");
     return null;
   }
 
@@ -44,22 +47,28 @@ export async function logActivity(userIdentifier, action, details = "") {
       timestamp: serverTimestamp()
     };
 
-    const docRef = await addDoc(collection(db, "activities"), entry);
+    const ref = await addDoc(collection(db, "activities"), entry);
 
-    console.log(`📘 Aktivität protokolliert: ${action} (ID: ${docRef.id})`);
-    return docRef.id;
+    console.log(`📘 Audit-Log gespeichert: ${action} (ID: ${ref.id})`);
+    return ref.id;
 
   } catch (error) {
-    console.error("❌ Fehler beim Protokollieren der Aktivität:", error);
-    showFeedback(t("errors.fail"), "error");
+    console.error("❌ Fehler beim Speichern des Audit-Logs:", error);
+
+    // Firestore Rules Fehler sauber anzeigen
+    if (error.code === "permission-denied") {
+      showFeedback(t("errors.permissionDenied") || "Keine Berechtigung für Audit-Log.", "error");
+    } else {
+      showFeedback(t("errors.fail"), "error");
+    }
+
     return null;
   }
 }
-
-// -------------------------------------------------------------
-// 🔹 Letzte Aktivitäten abrufen
-// -------------------------------------------------------------
-export async function getRecentActivities(limit = 10) {
+// ======================================================================
+// 🔹 Letzte Aktivitäten abrufen (Admin + Manager laut Rules)
+// ======================================================================
+export async function getRecentActivities(limit = 20) {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert – Aktivitäten können nicht geladen werden.");
     return [];
@@ -74,13 +83,10 @@ export async function getRecentActivities(limit = 10) {
 
     const snapshot = await getDocs(q);
 
-    const activities = snapshot.docs.map(docSnap => ({
+    return snapshot.docs.map(docSnap => ({
       id: docSnap.id,
       ...docSnap.data()
     }));
-
-    console.log(`📄 ${activities.length} Aktivitäten geladen`);
-    return activities;
 
   } catch (error) {
     console.error("❌ Fehler beim Laden der Aktivitäten:", error);
@@ -89,10 +95,10 @@ export async function getRecentActivities(limit = 10) {
   }
 }
 
-// -------------------------------------------------------------
+// ======================================================================
 // 🔹 Aktivitäten eines bestimmten Benutzers abrufen (E-Mail basiert)
-// -------------------------------------------------------------
-export async function getUserActivities(userIdentifier, limit = 10) {
+// ======================================================================
+export async function getUserActivities(userIdentifier, limit = 20) {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert – Benutzeraktivitäten können nicht geladen werden.");
     return [];
@@ -110,13 +116,10 @@ export async function getUserActivities(userIdentifier, limit = 10) {
 
     const snapshot = await getDocs(q);
 
-    const activities = snapshot.docs.map(docSnap => ({
+    return snapshot.docs.map(docSnap => ({
       id: docSnap.id,
       ...docSnap.data()
     }));
-
-    console.log(`📘 ${activities.length} Aktivitäten für Benutzer '${userId}' geladen`);
-    return activities;
 
   } catch (error) {
     console.error(`❌ Fehler beim Laden der Aktivitäten für Benutzer '${userId}':`, error);

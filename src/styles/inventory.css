@@ -1,0 +1,208 @@
+/* Inventarseite – Cyberpunk Neon Look */
+/* Ergänzt theme.css mit spezifischen Features */
+
+/* -------------------------------------------------------------
+   🔹 Tabellenlayout
+------------------------------------------------------------- */
+#inventoryTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed;
+}
+
+#inventoryTable th,
+#inventoryTable td {
+  text-align: center;
+  padding: 12px;
+  border-bottom: 1px solid #333;
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  word-wrap: break-word;
+}
+
+#inventoryTable th {
+  background-color: var(--color-bg-panel);
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* Alternierende Zeilen */
+#inventoryTable tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+#inventoryTable tr:hover {
+  background-color: #2a2a40;
+  transition: background 0.2s ease;
+}
+
+/* -------------------------------------------------------------
+   🔹 Bestandswerte farblich hervorheben
+------------------------------------------------------------- */
+.stock-value {
+  font-weight: bold;
+  color: var(--color-neon-purple);
+  text-shadow: 0 0 6px var(--color-neon-purple);
+}
+
+/* Niedriger Bestand */
+.stock-low {
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* Kein Bestand */
+.stock-zero {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 8px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Preisfeld
+------------------------------------------------------------- */
+#inventoryTable td .fa-money-bill-wave {
+  color: var(--color-neon-green);
+  margin-right: 6px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Adjust Button (Bestand anpassen)
+------------------------------------------------------------- */
+.adjustBtn {
+  background-color: transparent;
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: bold;
+}
+
+.adjustBtn:hover {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.6);
+  transform: translateY(-2px);
+}
+
+/* -------------------------------------------------------------
+   🔹 Export Button
+------------------------------------------------------------- */
+#exportInventoryBtn {
+  margin: 12px 0;
+  padding: 10px 18px;
+  border: 2px solid var(--color-neon-yellow);
+  background-color: transparent;
+  color: var(--color-neon-yellow);
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 10px var(--color-neon-yellow);
+}
+
+#exportInventoryBtn:hover {
+  background-color: var(--color-neon-yellow);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px var(--color-neon-yellow),
+              0 0 40px rgba(255, 211, 0, 0.7);
+}
+
+/* -------------------------------------------------------------
+   🔹 Modal (inventoryModal.js kompatibel)
+------------------------------------------------------------- */
+.inventory-modal {
+  background: rgba(20, 20, 40, 0.7);
+  backdrop-filter: blur(12px);
+  border: 2px solid var(--color-neon-turquoise);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 420px;
+  margin: auto;
+  box-shadow: 0 0 20px var(--color-neon-turquoise),
+              0 0 40px rgba(112, 255, 234, 0.6);
+  animation: modalFadeIn 0.4s ease forwards;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.inventory-modal h3 {
+  color: var(--color-neon-yellow);
+  text-align: center;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* Modal Inputs */
+.inventory-modal input {
+  width: 100%;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--color-text-light);
+  font-weight: bold;
+  margin-bottom: 14px;
+  transition: all 0.25s ease;
+}
+
+.inventory-modal input:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.55);
+}
+
+/* Modal Buttons */
+.modal-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-top: 10px;
+}
+
+.modal-btn.confirm {
+  background-color: var(--color-neon-green);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-green);
+}
+
+.modal-btn.confirm:hover {
+  box-shadow: 0 0 18px var(--color-neon-green),
+              0 0 36px rgba(0, 255, 128, 0.7);
+  transform: translateY(-2px);
+}
+
+.modal-btn.cancel {
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+.modal-btn.cancel:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 18px var(--color-neon-red),
+              0 0 36px rgba(255, 77, 77, 0.7);
+  transform: translateY(-2px);
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 768px) {
+  #inventoryTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

@@ -20,16 +20,21 @@ const { auth, db } = initFirebase();
 enforceRole(["admin", "manager", "support", "employee"], "login.html");
 
 // Logout Button
-const logoutBtn = document.querySelector(".logout-btn");
-if (logoutBtn) logoutBtn.addEventListener("click", logout);
+document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
 // -------------------------------------------------------------
-// 🔹 Chart.js Elemente
+// 🔹 Chart.js Elemente (mit Fallback)
 // -------------------------------------------------------------
 const ctxOverview = document.getElementById("overviewChart");
 const ctxTimeLine = document.getElementById("timeLineChart");
 
-// Farben aus CSS-Variablen
+if (!ctxOverview || !ctxTimeLine) {
+  console.warn("⚠️ Dashboard Charts nicht gefunden – analysis.js wird teilweise übersprungen.");
+}
+
+// -------------------------------------------------------------
+// 🔹 Farben aus CSS-Variablen
+// -------------------------------------------------------------
 const chartColors = {
   products: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-yellow").trim(),
   tasks: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-turquoise").trim(),
@@ -39,67 +44,71 @@ const chartColors = {
 };
 
 // -------------------------------------------------------------
-// 🔹 Übersicht-Doughnut-Chart (mehrsprachig)
+// 🔹 Übersicht-Doughnut-Chart
 // -------------------------------------------------------------
-const overviewChart = new Chart(ctxOverview, {
-  type: "doughnut",
-  data: {
-    labels: [
-      t("products.name"),
-      t("products.stock"),
-      t("tasks.title"),
-      t("employees.name"),
-      t("time.hours")
-    ],
-    datasets: [{
-      data: [0, 0, 0, 0, 0],
-      backgroundColor: [
-        chartColors.products,
-        chartColors.stock,
-        chartColors.tasks,
-        chartColors.employees,
-        chartColors.time
-      ],
-      borderColor: "#0d0d1a",
-      borderWidth: 2
-    }]
-  },
-  options: {
-    plugins: {
-      legend: {
-        labels: {
-          color: "#f0f0f0",
-          font: { size: 14 }
-        }
+const overviewChart = ctxOverview
+  ? new Chart(ctxOverview, {
+      type: "doughnut",
+      data: {
+        labels: [
+          t("products.name"),
+          t("products.stock"),
+          t("tasks.title"),
+          t("employees.name"),
+          t("time.hours")
+        ],
+        datasets: [{
+          data: [0, 0, 0, 0, 0],
+          backgroundColor: [
+            chartColors.products,
+            chartColors.stock,
+            chartColors.tasks,
+            chartColors.employees,
+            chartColors.time
+          ],
+          borderColor: "#0d0d1a",
+          borderWidth: 2
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: "#f0f0f0",
+              font: { size: 14 }
+            }
+          }
+        },
+        animation: { animateScale: true, animateRotate: true }
       }
-    },
-    animation: { animateScale: true, animateRotate: true }
-  }
-});
+    })
+  : null;
 
 // -------------------------------------------------------------
-// 🔹 Zeitverlauf-Chart (mehrsprachig)
+// 🔹 Zeitverlauf-Chart
 // -------------------------------------------------------------
-const timeLineChart = new Chart(ctxTimeLine, {
-  type: "line",
-  data: {
-    labels: [],
-    datasets: [{
-      label: t("time.hours"),
-      data: [],
-      borderColor: chartColors.time,
-      backgroundColor: chartColors.time,
-      tension: 0.3,
-      fill: false
-    }]
-  },
-  options: {
-    scales: {
-      x: { ticks: { color: "#f0f0f0" }, grid: { color: "#333" } },
-      y: { ticks: { color: "#f0f0f0" }, grid: { color: "#333" } }
-    }
-  }
-});
+const timeLineChart = ctxTimeLine
+  ? new Chart(ctxTimeLine, {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [{
+          label: t("time.hours"),
+          data: [],
+          borderColor: chartColors.time,
+          backgroundColor: chartColors.time,
+          tension: 0.3,
+          fill: false
+        }]
+      },
+      options: {
+        scales: {
+          x: { ticks: { color: "#f0f0f0" }, grid: { color: "#333" } },
+          y: { ticks: { color: "#f0f0f0" }, grid: { color: "#333" } }
+        }
+      }
+    })
+  : null;
 
 // -------------------------------------------------------------
 // 🔹 Realtime Variablen
@@ -115,10 +124,7 @@ let totalHours = 0;
 // -------------------------------------------------------------
 onSnapshot(collection(db, "employees"), snap => {
   employeeCount = snap.size;
-
-  const el = document.getElementById("employeeCount");
-  if (el) el.textContent = employeeCount;
-
+  document.getElementById("employeeCount").textContent = employeeCount;
   updateOverviewChart();
 });
 
@@ -134,11 +140,8 @@ onSnapshot(collection(db, "products"), snap => {
     totalStock += Number(p.stock ?? 0);
   });
 
-  const elProduct = document.getElementById("productCount");
-  const elStock = document.getElementById("stockTotal");
-
-  if (elProduct) elProduct.textContent = productCount;
-  if (elStock) elStock.textContent = totalStock;
+  document.getElementById("productCount").textContent = productCount;
+  document.getElementById("stockTotal").textContent = totalStock;
 
   updateOverviewChart();
 });
@@ -148,10 +151,7 @@ onSnapshot(collection(db, "products"), snap => {
 // -------------------------------------------------------------
 onSnapshot(collection(db, "tasks"), snap => {
   taskCount = snap.size;
-
-  const el = document.getElementById("taskCount");
-  if (el) el.textContent = taskCount;
-
+  document.getElementById("taskCount").textContent = taskCount;
   updateOverviewChart();
 });
 
@@ -173,28 +173,36 @@ onSnapshot(collection(db, "timeEntries"), snap => {
     }
   });
 
-  const el = document.getElementById("timeTotal");
-  if (el) el.textContent = totalHours.toFixed(1) + "h";
+  document.getElementById("timeTotal").textContent = totalHours.toFixed(1) + "h";
 
   const sortedDates = Object.keys(hoursByDate).sort();
 
-  timeLineChart.data.labels = sortedDates;
-  timeLineChart.data.datasets[0].data = sortedDates.map(d => hoursByDate[d]);
-  timeLineChart.update();
+  if (timeLineChart) {
+    timeLineChart.data.labels = sortedDates;
+    timeLineChart.data.datasets[0].data = sortedDates.map(d => hoursByDate[d]);
+    timeLineChart.update();
+  }
 
   updateOverviewChart();
 });
 
 // -------------------------------------------------------------
-// 🔹 Übersicht-Chart aktualisieren
+// 🔹 Übersicht-Chart aktualisieren (mit Debounce)
 // -------------------------------------------------------------
+let updateTimeout = null;
+
 function updateOverviewChart() {
-  overviewChart.data.datasets[0].data = [
-    productCount,
-    totalStock,
-    taskCount,
-    employeeCount,
-    totalHours
-  ];
-  overviewChart.update();
+  if (!overviewChart) return;
+
+  clearTimeout(updateTimeout);
+  updateTimeout = setTimeout(() => {
+    overviewChart.data.datasets[0].data = [
+      productCount,
+      totalStock,
+      taskCount,
+      employeeCount,
+      totalHours
+    ];
+    overviewChart.update();
+  }, 150);
 }

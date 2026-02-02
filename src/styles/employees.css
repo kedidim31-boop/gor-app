@@ -1,9 +1,17 @@
-/* Mitarbeiter Seite – Cyberpunk Neon Look */
-/* Ergänzt theme.css mit spezifischen Features */
+/* ======================================================================
+   🔥 EMPLOYEES – Teil 1
+   Layout, Cards, Formular, Filter, Tabelle
+   ====================================================================== */
 
 /* -------------------------------------------------------------
-   🔹 Karten
+   🔹 Karten / Container
 ------------------------------------------------------------- */
+.employee-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .card {
   background: var(--color-bg-panel);
   padding: 1.5rem;
@@ -28,6 +36,41 @@
 }
 
 /* -------------------------------------------------------------
+   🔹 Filter / Suchleiste
+------------------------------------------------------------- */
+.employee-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.employee-filters input,
+.employee-filters select {
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-turquoise);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  min-width: 180px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.employee-filters input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.employee-filters input:focus,
+.employee-filters select:focus {
+  border-color: var(--color-neon-yellow);
+  box-shadow: 0 0 12px var(--color-neon-yellow),
+              0 0 24px rgba(255, 211, 0, 0.55);
+}
+
+/* -------------------------------------------------------------
    🔹 Formular für Mitarbeiterverwaltung
 ------------------------------------------------------------- */
 #employeeForm {
@@ -38,13 +81,21 @@
 
 .form-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.2rem;
 }
 
 .form-field {
   display: flex;
   flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+/* Label */
+.form-field label {
+  font-weight: 500;
 }
 
 /* Eingabefelder mit Icons */
@@ -71,6 +122,7 @@
   font-weight: bold;
   outline: none;
   transition: all 0.2s ease;
+  font-size: 0.9rem;
 }
 
 #employeeForm input::placeholder {
@@ -84,25 +136,25 @@
               0 0 24px rgba(112, 255, 234, 0.55);
 }
 
-/* -------------------------------------------------------------
-   🔹 Rollen-Dropdown
-------------------------------------------------------------- */
-.roleSelect {
-  background-color: var(--color-bg-panel);
-  border: 2px solid var(--color-neon-yellow);
-  border-radius: 6px;
-  padding: 8px;
-  color: var(--color-neon-yellow);
+/* Submit Button */
+#employeeForm button[type="submit"] {
+  align-self: flex-start;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--color-neon-yellow);
+  color: #000;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: 0 0 12px var(--color-neon-yellow),
+              0 0 24px rgba(255, 211, 0, 0.55);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.roleSelect:hover,
-.roleSelect:focus {
-  border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.55);
+#employeeForm button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow),
+              0 0 36px rgba(255, 211, 0, 0.7);
 }
 
 /* -------------------------------------------------------------
@@ -122,6 +174,7 @@
   border-bottom: 1px solid #333;
   color: var(--color-text-light);
   word-wrap: break-word;
+  font-size: 0.9rem;
 }
 
 #employeeTable th {
@@ -140,8 +193,114 @@
   transition: background 0.2s ease;
 }
 
+/* Swiss Layout: Adresse-Spalte */
+#employeeTable td:nth-child(6) {
+  text-align: left;
+  white-space: normal;
+}
+/* ======================================================================
+   🔥 EMPLOYEES – Teil 2
+   Badges, Buttons, Feedback, Responsive
+   ====================================================================== */
+
 /* -------------------------------------------------------------
-   🔹 Buttons in Tabelle
+   🔹 Rollen-Badges
+------------------------------------------------------------- */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+/* Basisfarben pro Rolle */
+.role-badge.role-admin {
+  background: rgba(255, 77, 77, 0.15);
+  color: var(--color-neon-red);
+  box-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
+}
+
+.role-badge.role-manager {
+  background: rgba(255, 211, 0, 0.15);
+  color: var(--color-neon-yellow);
+  box-shadow: 0 0 8px rgba(255, 211, 0, 0.6);
+}
+
+.role-badge.role-support {
+  background: rgba(112, 255, 234, 0.15);
+  color: var(--color-neon-turquoise);
+  box-shadow: 0 0 8px rgba(112, 255, 234, 0.6);
+}
+
+.role-badge.role-employee {
+  background: rgba(0, 255, 128, 0.15);
+  color: var(--color-neon-green);
+  box-shadow: 0 0 8px rgba(0, 255, 128, 0.6);
+}
+
+.role-badge.role-guest {
+  background: rgba(180, 180, 180, 0.15);
+  color: #cccccc;
+  box-shadow: 0 0 8px rgba(180, 180, 180, 0.6);
+}
+
+/* -------------------------------------------------------------
+   🔹 Status-Badges (Aktiv / Deaktiviert)
+------------------------------------------------------------- */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 6px;
+}
+
+.status-badge.status-active {
+  background-color: rgba(0, 255, 128, 0.18);
+  color: var(--color-neon-green);
+  box-shadow: 0 0 8px rgba(0, 255, 128, 0.6);
+}
+
+.status-badge.status-disabled {
+  background-color: rgba(255, 77, 77, 0.18);
+  color: var(--color-neon-red);
+  box-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
+}
+
+/* -------------------------------------------------------------
+   🔹 Rollen-Dropdown in Tabelle
+------------------------------------------------------------- */
+.roleSelect {
+  margin-top: 4px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: var(--color-neon-yellow);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.roleSelect:hover,
+.roleSelect:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise),
+              0 0 20px rgba(112, 255, 234, 0.55);
+}
+
+/* -------------------------------------------------------------
+   🔹 Action-Buttons in Tabelle
 ------------------------------------------------------------- */
 #employeeTable .actionBtn,
 #employeeTable .deleteBtn {
@@ -151,9 +310,13 @@
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: bold;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Action */
+/* Generic Action */
 #employeeTable .actionBtn {
   border: 1px solid var(--color-neon-turquoise);
   color: var(--color-neon-turquoise);
@@ -180,73 +343,7 @@
 }
 
 /* -------------------------------------------------------------
-   🔹 STATUS BADGES (Aktiv / Deaktiviert)
-------------------------------------------------------------- */
-.badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #000;
-  box-shadow: 0 0 10px rgba(255,255,255,0.25);
-}
-
-.badge-green {
-  background-color: var(--color-neon-green);
-  box-shadow: 0 0 12px var(--color-neon-green),
-              0 0 24px rgba(0, 255, 128, 0.55);
-}
-
-.badge-red {
-  background-color: var(--color-neon-red);
-  box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.55);
-}
-
-/* -------------------------------------------------------------
-   🔹 DISABLE / ENABLE BUTTONS
-------------------------------------------------------------- */
-.disableBtn,
-.enableBtn {
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-/* Deaktivieren */
-.disableBtn {
-  border-color: var(--color-neon-yellow);
-  color: var(--color-neon-yellow);
-}
-
-.disableBtn:hover {
-  background-color: var(--color-neon-yellow);
-  color: #000;
-  box-shadow: 0 0 12px var(--color-neon-yellow),
-              0 0 24px rgba(255, 211, 0, 0.55);
-}
-
-/* Aktivieren */
-.enableBtn {
-  border-color: var(--color-neon-green);
-  color: var(--color-neon-green);
-}
-
-.enableBtn:hover {
-  background-color: var(--color-neon-green);
-  color: #000;
-  box-shadow: 0 0 12px var(--color-neon-green),
-              0 0 24px rgba(0, 255, 128, 0.55);
-}
-
-/* -------------------------------------------------------------
-   🔹 Feedback Banner
+   🔹 Feedback Banner (Neon)
 ------------------------------------------------------------- */
 #feedbackContainer {
   position: fixed;
@@ -264,6 +361,7 @@
   font-weight: bold;
   color: #000;
   animation: fadeInOut 4s forwards;
+  min-width: 220px;
 }
 
 .feedback.success {
@@ -321,4 +419,11 @@
   #employeeForm select {
     padding: 8px;
   }
+}
+
+/* -------------------------------------------------------------
+   🔹 Globale Icon-Farbe (optional)
+------------------------------------------------------------- */
+#employeeTable i.fa-solid {
+  color: #ffffff;
 }

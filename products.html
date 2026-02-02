@@ -4,24 +4,33 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Produkte</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- Globale Theme -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/products.css">
+
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-  <!-- Branding Header -->
+  <!-- ============================================================
+       🔹 BRANDING HEADER
+  ============================================================ -->
   <header class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-box"></i> Produktverwaltung</div>
+      <div class="subtitle">
+        <i class="fa-solid fa-box"></i> Produktverwaltung
+      </div>
     </div>
   </header>
 
-  <!-- Navigation -->
+  <!-- ============================================================
+       🔹 TOP NAVIGATION
+  ============================================================ -->
   <nav class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
@@ -30,64 +39,90 @@
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <!-- Logout Button -->
-    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+
+    <button class="btn btn-red logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
   </nav>
 
-  <!-- Hauptinhalt -->
+  <!-- Feedback Container -->
+  <div id="feedbackContainer"></div>
+
+  <!-- ============================================================
+       🔹 MAIN CONTENT
+  ============================================================ -->
   <main>
-    <!-- Produktformular -->
+
+    <!-- ========================================================
+         🔹 PRODUKT ANLEGEN
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-plus"></i> Neues Produkt hinzufügen</h2>
+
       <form id="createProductForm" class="form-grid">
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-tag"></i>
           <input type="text" id="productName" placeholder="Produktname" required>
         </label>
+
         <label class="form-field icon-input full-width">
           <i class="fa-solid fa-align-left"></i>
           <textarea id="productDescription" placeholder="Beschreibung"></textarea>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-layer-group"></i>
           <input type="text" id="productType" placeholder="Typ" required>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-industry"></i>
           <input type="text" id="productVendor" placeholder="Anbieter" required>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-folder"></i>
           <input type="text" id="productCollections" placeholder="Kollektionen">
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-barcode"></i>
           <input type="text" id="productSKU" placeholder="SKU eingeben" required>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-barcode"></i>
           <input type="text" id="productEAN" placeholder="EAN eingeben">
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-boxes-packing"></i>
           <input type="number" id="productStock" step="1" placeholder="Bestand" required>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-money-bill-wave"></i>
           <input type="number" id="productPrice" step="0.01" placeholder="Preis (CHF)" required>
         </label>
+
         <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Speichern
         </button>
+
       </form>
     </div>
 
-    <!-- Produktübersicht -->
+    <!-- ========================================================
+         🔹 PRODUKTÜBERSICHT
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-boxes-stacked"></i> Produktübersicht</h2>
+
       <button id="exportBtn" class="btn btn-yellow">
         <i class="fa-solid fa-file-csv"></i> Exportieren für Shopify
       </button>
+
       <table id="productTable">
         <thead>
           <tr>
@@ -103,14 +138,19 @@
             <th>Aktionen</th>
           </tr>
         </thead>
+
         <tbody>
           <!-- Produkte werden hier dynamisch geladen -->
         </tbody>
       </table>
     </div>
+
   </main>
 
-  <!-- Firebase Logik ausgelagert -->
+  <!-- ============================================================
+       🔹 PRODUKT LOGIK
+  ============================================================ -->
   <script type="module" src="src/scripts/products.js"></script>
+
 </body>
 </html>

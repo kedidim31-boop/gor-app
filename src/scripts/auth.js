@@ -1,10 +1,33 @@
-// src/scripts/auth.js – globales Logout-Modul (Login wird über login.js gesteuert)
+// src/scripts/auth.js – globales Logout- und Sicherheitsmodul
 
 import { initFirebase } from "./firebaseSetup.js";
 import { signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 import { showFeedback } from "./feedback.js";
 import { logActivity } from "./activityHandler.js";
 import { t } from "./lang.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+// -------------------------------------------------------------
+// 🔹 Sicherheits-Check: Benutzer deaktiviert?
+// -------------------------------------------------------------
+export async function checkUserDisabled(email) {
+  const { db } = initFirebase();
+
+  try {
+    const userDoc = await getDoc(doc(db, "employees", email));
+
+    if (userDoc.exists() && userDoc.data().disabled === true) {
+      console.warn("⛔ Benutzer ist deaktiviert:", email);
+      return true;
+    }
+
+    return false;
+
+  } catch (err) {
+    console.error("❌ Fehler beim Prüfen des Benutzerstatus:", err);
+    return false;
+  }
+}
 
 // -------------------------------------------------------------
 // 🔹 Logout-Funktion (modernisiert)
@@ -14,8 +37,6 @@ export async function logout() {
 
   try {
     const user = auth.currentUser;
-
-    // 🔥 E-Mail statt UID verwenden (UID ist nicht mehr relevant)
     const userIdentifier = user?.email || "unknown";
 
     // Firebase Logout

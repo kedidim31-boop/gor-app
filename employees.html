@@ -4,24 +4,33 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Mitarbeiter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Globale Theme -->
+
+  <!-- Globale Styles -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/employees.css">
+
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-  <!-- Branding Header -->
+  <!-- ============================================================
+       🔹 BRANDING HEADER
+  ============================================================ -->
   <header class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-users"></i> Mitarbeiterverwaltung</div>
+      <div class="subtitle">
+        <i class="fa-solid fa-users"></i> Mitarbeiterverwaltung
+      </div>
     </div>
   </header>
 
-  <!-- Navigation -->
+  <!-- ============================================================
+       🔹 TOP NAVIGATION
+  ============================================================ -->
   <nav class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
@@ -30,62 +39,76 @@
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html" class="active"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <!-- Logout Button -->
-    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+
+    <button class="btn btn-red logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
   </nav>
 
   <!-- Feedback Container -->
   <div id="feedbackContainer"></div>
 
-  <!-- Hauptinhalt -->
+  <!-- ============================================================
+       🔹 MAIN CONTENT
+  ============================================================ -->
   <main>
-    <!-- Mitarbeiterformular -->
+
+    <!-- ========================================================
+         🔹 MITARBEITER ANLEGEN
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-user-plus"></i> Neuen Mitarbeiter hinzufügen</h2>
+
       <form id="employeeForm" class="form-grid">
 
-        <!-- Erste Reihe -->
+        <!-- Reihe 1 -->
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-id-card"></i>
             <input type="text" id="employeeNumber" placeholder="Mitarbeiternummer" readonly>
           </label>
+
           <label class="form-field icon-input">
             <i class="fa-solid fa-user"></i>
             <input type="text" id="employeeName" placeholder="Name" required>
           </label>
+
           <label class="form-field icon-input">
             <i class="fa-solid fa-envelope"></i>
             <input type="email" id="employeeEmail" placeholder="E-Mail" required>
           </label>
         </div>
 
-        <!-- Zweite Reihe -->
+        <!-- Reihe 2 -->
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-location-dot"></i>
             <input type="text" id="employeeAddress" placeholder="Adresse" required>
           </label>
+
           <label class="form-field icon-input">
             <i class="fa-solid fa-map-pin"></i>
             <input type="text" id="employeeZip" placeholder="PLZ" required>
           </label>
+
           <label class="form-field icon-input">
             <i class="fa-solid fa-city"></i>
             <input type="text" id="employeeCity" placeholder="Ort" required>
           </label>
         </div>
 
-        <!-- Dritte Reihe -->
+        <!-- Reihe 3 -->
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-cake-candles"></i>
             <input type="date" id="employeeBirthday" required>
           </label>
+
           <label class="form-field icon-input">
             <i class="fa-solid fa-phone"></i>
             <input type="tel" id="employeePhone" placeholder="Telefonnummer" required>
           </label>
+
           <label class="form-field icon-input">
             <i class="fa-solid fa-user-tag"></i>
             <select id="employeeRole" required>
@@ -99,12 +122,16 @@
         <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Mitarbeiter speichern
         </button>
+
       </form>
     </div>
 
-    <!-- Mitarbeiterübersicht -->
+    <!-- ========================================================
+         🔹 MITARBEITERÜBERSICHT
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-users"></i> Mitarbeiterübersicht</h2>
+
       <table id="employeeTable">
         <thead>
           <tr>
@@ -120,21 +147,26 @@
             <th>Aktionen</th>
           </tr>
         </thead>
+
         <tbody>
-          <!-- Mitarbeiter werden hier dynamisch geladen -->
+          <!-- Dynamisch geladen -->
         </tbody>
       </table>
     </div>
+
   </main>
 
-  <!-- Rollen-Schutz -->
+  <!-- ============================================================
+       🔹 ROLE GUARD
+  ============================================================ -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
-    // Nur Mitarbeiter dürfen diese Seite sehen, sonst Meldung + Weiterleitung zur Startseite
     enforceRole(["employee"], "index.html");
   </script>
 
-  <!-- Firebase Logik ausgelagert -->
+  <!-- ============================================================
+       🔹 EMPLOYEE LOGIK
+  ============================================================ -->
   <script type="module" src="src/scripts/employees.js"></script>
 
   <!-- Mitarbeitermummer automatisch generieren -->
@@ -147,5 +179,6 @@
       }
     });
   </script>
+
 </body>
 </html>

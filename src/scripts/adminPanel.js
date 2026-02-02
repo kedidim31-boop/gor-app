@@ -1,4 +1,4 @@
-// src/scripts/adminPanel.js – zentrale Logik für Admin Panel (modulare Firebase SDK)
+// src/scripts/adminPanel.js – optimierte Admin Panel Logik
 
 import { enforceRole } from "./roleGuard.js";
 import { createUser } from "./adminUser.js";
@@ -41,17 +41,15 @@ export function initAdminPanel() {
       }
 
       try {
-        const adminId = auth.currentUser?.email || "system";
+        const adminEmail = auth.currentUser?.email || "system";
 
-        // 🔥 createUser speichert jetzt per E-Mail (nicht UID)
         await createUser(email, password, role);
+        await addAuditLog(adminEmail, "create_user", `User: ${email}, Role: ${role}`);
 
-        await loadEmployees(db);
         form.reset();
-
         showFeedback(t("admin.saved"), "success");
 
-        await addAuditLog(adminId, "create_user", `User: ${email}, Role: ${role}`);
+        await loadEmployees(db);
 
       } catch (err) {
         console.error("❌ Fehler beim Erstellen:", err);
@@ -72,7 +70,7 @@ export function initAdminPanel() {
 // -------------------------------------------------------------
 async function loadEmployees(db) {
   const tableBody = document.querySelector("#adminEmployeeTable tbody");
-  if (!tableBody || !db) return;
+  if (!tableBody) return;
 
   tableBody.innerHTML = "";
 
@@ -80,21 +78,16 @@ async function loadEmployees(db) {
 
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
-    const id = docSnap.id; // 🔥 jetzt E-Mail als ID
+    const id = docSnap.id; // E-Mail als ID
 
     const row = document.createElement("tr");
-
     row.innerHTML = `
       <td>${data.name || "-"}</td>
       <td>${data.email || id}</td>
 
       <td>
         <select data-id="${id}" class="roleSelect">
-          <option value="employee" ${data.role === "employee" ? "selected" : ""}>${t("roles.employee")}</option>
-          <option value="support" ${data.role === "support" ? "selected" : ""}>${t("roles.support")}</option>
-          <option value="manager" ${data.role === "manager" ? "selected" : ""}>${t("roles.manager")}</option>
-          <option value="admin" ${data.role === "admin" ? "selected" : ""}>${t("roles.admin")}</option>
-          <option value="guest" ${data.role === "guest" ? "selected" : ""}>${t("roles.guest")}</option>
+          ${roleOptions(data.role)}
         </select>
       </td>
 
@@ -113,6 +106,20 @@ async function loadEmployees(db) {
 }
 
 // -------------------------------------------------------------
+// 🔹 Rollen-Auswahl dynamisch generieren
+// -------------------------------------------------------------
+function roleOptions(currentRole) {
+  const roles = ["employee", "support", "manager", "admin", "guest"];
+
+  return roles
+    .map(role => {
+      const selected = role === currentRole ? "selected" : "";
+      return `<option value="${role}" ${selected}>${t(`roles.${role}`)}</option>`;
+    })
+    .join("");
+}
+
+// -------------------------------------------------------------
 // 🔹 Rollenänderung
 // -------------------------------------------------------------
 function attachRoleChangeHandler(db) {
@@ -127,9 +134,9 @@ function attachRoleChangeHandler(db) {
         showFeedback(`${t("admin.changeRole")}: ${newRole}`, "success");
 
         const { auth } = initFirebase();
-        const adminId = auth.currentUser?.email || "system";
+        const adminEmail = auth.currentUser?.email || "system";
 
-        await addAuditLog(adminId, "change_role", `User: ${id}, new role: ${newRole}`);
+        await addAuditLog(adminEmail, "change_role", `User: ${id}, new role: ${newRole}`);
 
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
@@ -147,20 +154,22 @@ function attachDeleteHandler(db) {
     btn.addEventListener("click", () => {
       const id = btn.dataset.id;
 
+      // Erstes Feedback = Warnung
       showFeedback(t("admin.confirm"), "warning");
 
+      // Zweiter Klick = Löschen
       btn.addEventListener(
         "click",
         async () => {
           try {
             await deleteDoc(doc(db, "employees", id));
 
-            showFeedback(t("employees.delete"), "success");
-
             const { auth } = initFirebase();
-            const adminId = auth.currentUser?.email || "system";
+            const adminEmail = auth.currentUser?.email || "system";
 
-            await addAuditLog(adminId, "delete_user", `User: ${id}`);
+            await addAuditLog(adminEmail, "delete_user", `User: ${id}`);
+
+            showFeedback(t("employees.delete"), "success");
 
             await loadEmployees(db);
 

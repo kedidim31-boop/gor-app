@@ -21,7 +21,7 @@
   <!-- ============================================================
        🔹 BRANDING HEADER
   ============================================================ -->
-  <header class="branding-header">
+  <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
@@ -34,7 +34,7 @@
   <!-- ============================================================
        🔹 TOP NAVIGATION
   ============================================================ -->
-  <nav class="top-nav">
+  <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html" class="active"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
     <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
@@ -48,44 +48,44 @@
     </button>
   </nav>
 
+  <!-- Feedback Container -->
+  <div id="feedbackContainer"></div>
+
   <!-- ============================================================
        🔹 MAIN CONTENT
   ============================================================ -->
   <main>
 
-    <!-- ========================================================
-         🔹 DASHBOARD GRID
-    ======================================================== -->
     <div class="dashboard">
 
       <!-- ======================================================
-           🔹 KPI CARDS (Kennzahlen)
+           🔹 KPI CARDS
       ====================================================== -->
-      <div class="card stat-card">
+      <div class="card stat-card glass-panel">
         <h2><i class="fa-solid fa-users"></i> Mitarbeiter</h2>
         <div class="stat" id="employeeCount">–</div>
         <p>Aktive Teammitglieder</p>
       </div>
 
-      <div class="card stat-card">
+      <div class="card stat-card glass-panel">
         <h2><i class="fa-solid fa-boxes-stacked"></i> Produkte</h2>
         <div class="stat" id="productCount">–</div>
         <p>Verfügbare Artikel</p>
       </div>
 
-      <div class="card stat-card">
+      <div class="card stat-card glass-panel">
         <h2><i class="fa-solid fa-boxes-packing"></i> Bestand</h2>
         <div class="stat" id="stockTotal">–</div>
         <p>Gesamter Lagerbestand</p>
       </div>
 
-      <div class="card stat-card">
+      <div class="card stat-card glass-panel">
         <h2><i class="fa-solid fa-list-check"></i> Aufgaben</h2>
         <div class="stat" id="taskCount">–</div>
         <p>Offene To‑Dos</p>
       </div>
 
-      <div class="card stat-card">
+      <div class="card stat-card glass-panel">
         <h2><i class="fa-solid fa-clock"></i> Zeiterfassung</h2>
         <div class="stat" id="timeTotal">–</div>
         <p>Gesamte Arbeitszeit</p>
@@ -94,38 +94,44 @@
       <!-- ======================================================
            🔹 CHARTS
       ====================================================== -->
-      <div class="card chart-card">
+      <div class="card chart-card glass-panel">
         <h2><i class="fa-solid fa-chart-pie"></i> Statistiken</h2>
         <canvas id="overviewChart"></canvas>
       </div>
 
-      <div class="card chart-card">
+      <div class="card chart-card glass-panel">
         <h2><i class="fa-solid fa-chart-line"></i> Zeitverlauf</h2>
         <canvas id="timeLineChart"></canvas>
       </div>
 
       <!-- ======================================================
-           🔹 OPTIONAL: FUTURE MODULES (Platzhalter)
-           Diese Sektionen sind vorbereitet für spätere Erweiterungen
+           🔹 OPTIONAL MODULES
       ====================================================== -->
-
-      <div class="card placeholder-card">
+      <div class="card placeholder-card glass-panel">
         <h2><i class="fa-solid fa-arrow-trend-up"></i> Umsatzentwicklung</h2>
         <p>Modul folgt…</p>
       </div>
 
-      <div class="card placeholder-card">
+      <div class="card placeholder-card glass-panel">
         <h2><i class="fa-solid fa-store"></i> Verkaufsstatistik</h2>
         <p>Modul folgt…</p>
       </div>
 
-      <div class="card placeholder-card">
+      <div class="card placeholder-card glass-panel">
         <h2><i class="fa-solid fa-warehouse"></i> Lagerbewegungen</h2>
         <p>Modul folgt…</p>
       </div>
 
     </div>
   </main>
+
+  <!-- ============================================================
+       🔹 ROLE GUARD (Admin + Manager)
+  ============================================================ -->
+  <script type="module">
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    enforceRole(["admin", "manager"], "index.html");
+  </script>
 
   <!-- ============================================================
        🔹 ANALYSIS LOGIK

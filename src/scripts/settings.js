@@ -7,9 +7,10 @@ import { logout } from "./auth.js";
 import { t, setLanguage } from "./lang.js";
 
 import {
-  getAuth,
   updatePassword,
-  updateEmail
+  updateEmail,
+  reauthenticateWithCredential,
+  EmailAuthProvider
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 import {
@@ -40,19 +41,25 @@ async function loadProfile() {
   const user = auth.currentUser;
   if (!user) return;
 
-  const userDoc = await getDoc(doc(db, "employees", user.uid));
+  try {
+    const userDoc = await getDoc(doc(db, "employees", user.uid));
 
-  if (!userDoc.exists()) {
+    if (!userDoc.exists()) {
+      showFeedback(t("errors.load"), "error");
+      return;
+    }
+
+    const data = userDoc.data();
+
+    document.getElementById("profileName").value = data.name || "";
+    document.getElementById("profileEmail").value = user.email || "";
+    document.getElementById("profilePhone").value = data.phone || "";
+    document.getElementById("profileRole").value = data.role || "guest";
+
+  } catch (err) {
+    console.error("❌ Fehler beim Laden des Profils:", err);
     showFeedback(t("errors.load"), "error");
-    return;
   }
-
-  const data = userDoc.data();
-
-  document.getElementById("profileName").value = data.name || "";
-  document.getElementById("profileEmail").value = user.email || "";
-  document.getElementById("profilePhone").value = data.phone || "";
-  document.getElementById("profileRole").value = data.role || "guest";
 }
 
 // -------------------------------------------------------------
@@ -74,10 +81,24 @@ profileForm?.addEventListener("submit", async e => {
   }
 
   try {
-    // Firebase Auth E-Mail aktualisieren
-    await updateEmail(user, email);
+    // -------------------------------------------------------------
+    // 🔸 E-Mail ändern → Firebase verlangt Re-Auth
+    // -------------------------------------------------------------
+    if (email !== user.email) {
+      const currentPassword = prompt(t("settings.reauth"));
+      if (!currentPassword) {
+        showFeedback(t("errors.fail"), "error");
+        return;
+      }
 
-    // Firestore Profil aktualisieren
+      const credential = EmailAuthProvider.credential(user.email, currentPassword);
+      await reauthenticateWithCredential(user, credential);
+      await updateEmail(user, email);
+    }
+
+    // -------------------------------------------------------------
+    // 🔸 Firestore Profil aktualisieren
+    // -------------------------------------------------------------
     await updateDoc(doc(db, "employees", user.uid), {
       name,
       phone
@@ -120,24 +141,46 @@ passwordForm?.addEventListener("submit", async e => {
 });
 
 // -------------------------------------------------------------
-// 🔹 Sprache ändern
+// 🔹 Sprache ändern (mit Persistenz)
 // -------------------------------------------------------------
 languageSelect?.addEventListener("change", () => {
   const lang = languageSelect.value;
+
   setLanguage(lang);
+  localStorage.setItem("gor-language", lang);
+
   showFeedback(t("settings.langChanged"), "success");
 });
 
 // -------------------------------------------------------------
-// 🔹 Theme ändern (Dark / Light / Neon)
+// 🔹 Theme ändern (Dark / Light / Neon) + Persistenz
 // -------------------------------------------------------------
 themeSelect?.addEventListener("change", () => {
   const theme = themeSelect.value;
 
   document.body.dataset.theme = theme;
+  localStorage.setItem("gor-theme", theme);
 
   showFeedback(t("settings.themeChanged"), "success");
 });
+
+// -------------------------------------------------------------
+// 🔹 Theme & Sprache beim Laden setzen
+// -------------------------------------------------------------
+(function applySavedSettings() {
+  const savedLang = localStorage.getItem("gor-language");
+  const savedTheme = localStorage.getItem("gor-theme");
+
+  if (savedLang) {
+    languageSelect.value = savedLang;
+    setLanguage(savedLang);
+  }
+
+  if (savedTheme) {
+    themeSelect.value = savedTheme;
+    document.body.dataset.theme = savedTheme;
+  }
+})();
 
 // -------------------------------------------------------------
 // 🔹 Initial laden
@@ -147,5 +190,4 @@ loadProfile();
 // -------------------------------------------------------------
 // 🔹 Logout
 // -------------------------------------------------------------
-const logoutBtn = document.querySelector(".logout-btn");
-if (logoutBtn) logoutBtn.addEventListener("click", logout);
+document.querySelector(".logout-btn")?.addEventListener("click", logout);

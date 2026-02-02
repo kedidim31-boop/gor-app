@@ -1,0 +1,251 @@
+/* Product Collections – Cyberpunk Neon Look */
+/* Ergänzt theme.css + products.css */
+
+/* -------------------------------------------------------------
+   🔹 Collections Panel
+------------------------------------------------------------- */
+.collections-panel {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 211, 0, 0.25);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 0 14px rgba(255, 211, 0, 0.25);
+}
+
+/* -------------------------------------------------------------
+   🔹 Collections Grid
+------------------------------------------------------------- */
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Collection Card
+------------------------------------------------------------- */
+.collection-card {
+  background: var(--color-bg-panel);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 0 12px rgba(112, 255, 234, 0.25);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.collection-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px var(--color-neon-turquoise),
+              0 0 40px rgba(112, 255, 234, 0.55);
+}
+
+/* Titel */
+.collection-card h3 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.2rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* Beschreibung */
+.collection-card p {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Collection Tags (Produktzuordnung)
+------------------------------------------------------------- */
+.collection-tags {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.collection-tag {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background-color: rgba(112, 255, 234, 0.15);
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.collection-tag i {
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.collection-tag i:hover {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 8px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Add Collection Button
+------------------------------------------------------------- */
+.add-collection-btn {
+  margin-top: 14px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background-color: var(--color-neon-yellow);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 12px var(--color-neon-yellow);
+}
+
+.add-collection-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow),
+              0 0 36px rgba(255, 211, 0, 0.7);
+}
+
+/* -------------------------------------------------------------
+   🔹 Delete Collection Button
+------------------------------------------------------------- */
+.delete-collection-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: bold;
+}
+
+.delete-collection-btn:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 14px var(--color-neon-red),
+              0 0 28px rgba(255, 77, 77, 0.6);
+}
+
+/* -------------------------------------------------------------
+   🔹 Collection Modal
+------------------------------------------------------------- */
+.collection-modal {
+  width: 100%;
+  max-width: 480px;
+  background: rgba(20, 20, 40, 0.75);
+  backdrop-filter: blur(14px);
+  border: 2px solid var(--color-neon-turquoise);
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: 
+    0 0 20px var(--color-neon-turquoise),
+    0 0 40px rgba(112, 255, 234, 0.55);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: collectionModalFadeIn 0.45s ease forwards;
+}
+
+@keyframes collectionModalFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.collection-modal h3 {
+  margin-top: 0;
+  text-align: center;
+  color: var(--color-neon-yellow);
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Modal Inputs
+------------------------------------------------------------- */
+.collection-modal input,
+.collection-modal textarea,
+.collection-modal select {
+  width: 100%;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--color-text-light);
+  font-weight: bold;
+  margin-bottom: 16px;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
+}
+
+.collection-modal input:focus,
+.collection-modal textarea:focus,
+.collection-modal select:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 
+    0 0 14px var(--color-neon-turquoise),
+    0 0 28px rgba(112, 255, 234, 0.55);
+  outline: none;
+}
+
+/* -------------------------------------------------------------
+   🔹 Modal Buttons
+------------------------------------------------------------- */
+.collection-modal-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-top: 10px;
+}
+
+/* Confirm */
+.collection-modal-btn.confirm {
+  background-color: var(--color-neon-green);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-green);
+}
+
+.collection-modal-btn.confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 0 18px var(--color-neon-green),
+    0 0 36px rgba(0, 255, 128, 0.7);
+}
+
+/* Cancel */
+.collection-modal-btn.cancel {
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+.collection-modal-btn.cancel:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 0 18px var(--color-neon-red),
+    0 0 36px rgba(255, 77, 77, 0.7);
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .collections-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}

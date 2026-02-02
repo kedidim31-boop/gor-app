@@ -107,6 +107,7 @@
             <th>Name</th>
             <th>E-Mail</th>
             <th>Rolle</th>
+            <th>Status</th> <!-- ⭐ NEU -->
             <th>Aktionen</th>
           </tr>
         </thead>
@@ -152,7 +153,7 @@
   ============================================================ -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
-    enforceRole(["admin"], "index.html");
+    enforceRole(["admin", "manager"], "index.html");
   </script>
 
   <!-- ============================================================

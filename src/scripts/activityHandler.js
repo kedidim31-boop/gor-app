@@ -1,8 +1,10 @@
 // src/scripts/activityHandler.js – globales Modul für Aktivitäten-Logging
-// Nutzt modularen Firestore + globales Neon-Feedback-System
+// Modularer Firestore + Neon-Feedback + Sprachsystem
 
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
+import { t } from "./lang.js";
+
 import {
   collection,
   addDoc,
@@ -16,7 +18,9 @@ import {
 
 const { db } = initFirebase();
 
+// -------------------------------------------------------------
 // 🔹 Neue Aktivität protokollieren
+// -------------------------------------------------------------
 export async function logActivity(userId, action, details = "") {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert – Aktivität kann nicht protokolliert werden.");
@@ -32,20 +36,20 @@ export async function logActivity(userId, action, details = "") {
     };
 
     const docRef = await addDoc(collection(db, "activities"), entry);
-    console.log(`✅ Aktivität protokolliert: ${action} (ID: ${docRef.id})`);
 
-    // Optional: Nur bei bestimmten Aktionen Feedback anzeigen
-    // showFeedback("Aktivität erfolgreich protokolliert.", "success");
-
+    console.log(`📘 Aktivität protokolliert: ${action} (ID: ${docRef.id})`);
     return docRef.id;
+
   } catch (error) {
     console.error("❌ Fehler beim Protokollieren der Aktivität:", error);
-    showFeedback("Fehler beim Protokollieren der Aktivität.", "error");
+    showFeedback(t("errors.fail"), "error");
     return null;
   }
 }
 
+// -------------------------------------------------------------
 // 🔹 Letzte Aktivitäten abrufen
+// -------------------------------------------------------------
 export async function getRecentActivities(limit = 10) {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert – Aktivitäten können nicht geladen werden.");
@@ -60,21 +64,25 @@ export async function getRecentActivities(limit = 10) {
     );
 
     const snapshot = await getDocs(q);
+
     const activities = snapshot.docs.map(docSnap => ({
       id: docSnap.id,
       ...docSnap.data()
     }));
 
-    console.log(`✅ ${activities.length} Aktivität(en) geladen`);
+    console.log(`📄 ${activities.length} Aktivitäten geladen`);
     return activities;
+
   } catch (error) {
     console.error("❌ Fehler beim Laden der Aktivitäten:", error);
-    showFeedback("Fehler beim Laden der Aktivitäten.", "error");
+    showFeedback(t("errors.load"), "error");
     return [];
   }
 }
 
+// -------------------------------------------------------------
 // 🔹 Aktivitäten eines bestimmten Benutzers abrufen
+// -------------------------------------------------------------
 export async function getUserActivities(userId, limit = 10) {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert – Benutzeraktivitäten können nicht geladen werden.");
@@ -90,16 +98,18 @@ export async function getUserActivities(userId, limit = 10) {
     );
 
     const snapshot = await getDocs(q);
+
     const activities = snapshot.docs.map(docSnap => ({
       id: docSnap.id,
       ...docSnap.data()
     }));
 
-    console.log(`✅ ${activities.length} Aktivität(en) für Benutzer '${userId}' geladen`);
+    console.log(`📘 ${activities.length} Aktivitäten für Benutzer '${userId}' geladen`);
     return activities;
+
   } catch (error) {
     console.error(`❌ Fehler beim Laden der Aktivitäten für Benutzer '${userId}':`, error);
-    showFeedback("Fehler beim Laden der Benutzeraktivitäten.", "error");
+    showFeedback(t("errors.load"), "error");
     return [];
   }
 }

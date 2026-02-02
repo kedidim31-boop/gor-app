@@ -18,7 +18,7 @@
   <!-- ============================================================
        🔹 BRANDING HEADER
   ============================================================ -->
-  <header class="branding-header">
+  <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
@@ -31,7 +31,7 @@
   <!-- ============================================================
        🔹 TOP NAVIGATION
   ============================================================ -->
-  <nav class="top-nav">
+  <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
     <a href="products.html" class="active"><i class="fa-solid fa-box"></i> Produkte</a>
@@ -55,8 +55,9 @@
 
     <!-- ========================================================
          🔹 PRODUKT ANLEGEN
+         (Admin + Manager + Support)
     ======================================================== -->
-    <div class="card">
+    <section class="card glass-panel">
       <h2><i class="fa-solid fa-plus"></i> Neues Produkt hinzufügen</h2>
 
       <form id="createProductForm" class="form-grid">
@@ -111,12 +112,12 @@
         </button>
 
       </form>
-    </div>
+    </section>
 
     <!-- ========================================================
          🔹 PRODUKTÜBERSICHT
     ======================================================== -->
-    <div class="card">
+    <section class="card glass-panel">
       <h2><i class="fa-solid fa-boxes-stacked"></i> Produktübersicht</h2>
 
       <button id="exportBtn" class="btn btn-yellow">
@@ -143,9 +144,17 @@
           <!-- Produkte werden hier dynamisch geladen -->
         </tbody>
       </table>
-    </div>
+    </section>
 
   </main>
+
+  <!-- ============================================================
+       🔹 ROLE GUARD (Alle dürfen lesen, aber nur bestimmte Rollen schreiben)
+  ============================================================ -->
+  <script type="module">
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    enforceRole(["employee", "support", "manager", "admin"], "index.html");
+  </script>
 
   <!-- ============================================================
        🔹 PRODUKT LOGIK

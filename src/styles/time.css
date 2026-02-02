@@ -1,18 +1,21 @@
 /* Zeiterfassung Seite – Cyberpunk Neon Look */
 /* Ergänzt globale theme.css mit spezifischen Features */
 
-/* Karten für Zeiterfassung */
+/* -------------------------------------------------------------
+   🔹 Karten für Zeiterfassung
+------------------------------------------------------------- */
 .card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
   padding: 24px;
   border-radius: 12px;
   background-color: var(--color-bg-panel);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 25px var(--color-neon-turquoise),
-              0 0 50px rgba(112, 255, 234, 0.7);
+  transform: translateY(-4px);
+  box-shadow: 0 0 20px var(--color-neon-turquoise),
+              0 0 40px rgba(112, 255, 234, 0.55);
 }
 
 .card h2 {
@@ -20,9 +23,12 @@
   color: var(--color-neon-yellow);
   font-size: 1.3rem;
   margin-bottom: 1rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* Formular für Zeiterfassung */
+/* -------------------------------------------------------------
+   🔹 Formular für Zeiterfassung
+------------------------------------------------------------- */
 #timeForm.form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -31,7 +37,6 @@
   align-items: start;
 }
 
-/* Einheitliche Feldstruktur */
 .form-field {
   display: flex;
   flex-direction: column;
@@ -40,13 +45,13 @@
   color: var(--color-text-muted);
 }
 
-/* Eingebettete Icons */
+/* Icons */
 .icon-input i {
   position: absolute;
   top: 50%;
   left: 12px;
   transform: translateY(-50%);
-  color: #ffffff;
+  color: var(--color-neon-yellow);
   font-size: 1rem;
   pointer-events: none;
   z-index: 2;
@@ -57,7 +62,7 @@
   padding-left: 40px;
 }
 
-/* Eingabefelder */
+/* Inputs, Textareas, Selects */
 #timeForm input,
 #timeForm textarea,
 #timeForm select {
@@ -69,25 +74,33 @@
   font-weight: bold;
   outline: none;
   font-size: 0.95rem;
-  transition: all 0.2s ease;
-  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.3);
+  transition: all 0.25s ease;
+  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
+}
+
+#timeForm input:hover,
+#timeForm textarea:hover,
+#timeForm select:hover {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
 
 #timeForm input:focus,
 #timeForm textarea:focus,
 #timeForm select:focus {
   border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.7);
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.55);
 }
 
-/* Stundenfeld speziell hervorheben */
+/* Stundenfeld */
 #hoursWorked {
-  background-color: rgba(255, 211, 0, 0.1);
+  background-color: rgba(255, 211, 0, 0.12);
   border: 2px solid var(--color-neon-yellow);
   color: var(--color-neon-yellow);
   font-weight: bold;
   text-align: center;
+  box-shadow: inset 0 0 8px rgba(255, 211, 0, 0.35);
 }
 
 /* Beschreibung & Button über volle Breite */
@@ -95,11 +108,14 @@
   grid-column: 1 / -1;
 }
 
-/* Tabelle für Zeiterfassung */
+/* -------------------------------------------------------------
+   🔹 Tabelle für Zeiterfassung
+------------------------------------------------------------- */
 #timeTable {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-top: 20px;
+  table-layout: fixed;
 }
 
 #timeTable th,
@@ -109,6 +125,7 @@
   border-bottom: 1px solid #333;
   color: var(--color-text-light);
   font-size: 0.95rem;
+  word-wrap: break-word;
 }
 
 #timeTable th {
@@ -117,35 +134,47 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
+/* Alternierende Zeilen */
+#timeTable tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
 #timeTable tr:hover {
   background-color: #2a2a40;
   transition: background 0.2s ease;
 }
 
-/* Buttons */
+/* -------------------------------------------------------------
+   🔹 Buttons
+------------------------------------------------------------- */
 .deleteBtn {
   background-color: transparent;
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  font-weight: bold;
 }
 
 .deleteBtn:hover {
   background-color: var(--color-neon-red);
   color: #000;
-  box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.6);
+  box-shadow: 0 0 14px var(--color-neon-red),
+              0 0 28px rgba(255, 77, 77, 0.6);
 }
 
-/* Navigation Icon neben Zeiterfassung bleibt weiß */
+/* -------------------------------------------------------------
+   🔹 Navigation Icon (Zeiterfassung)
+------------------------------------------------------------- */
 .top-nav a.active i.fa-clock {
   color: #ffffff !important;
 }
 
-/* Responsive Anpassung */
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
 @media (max-width: 768px) {
   #timeForm.form-grid {
     grid-template-columns: 1fr;
@@ -158,7 +187,9 @@
   }
 }
 
-/* Globale Icon-Farbe */
+/* -------------------------------------------------------------
+   🔹 Globale Icon-Farbe
+------------------------------------------------------------- */
 i.fa-solid {
   color: #ffffff !important;
 }

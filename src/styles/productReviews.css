@@ -1,0 +1,304 @@
+/* Product Reviews – Cyberpunk Neon Look */
+/* Ergänzt theme.css + productDetails.css */
+
+/* -------------------------------------------------------------
+   🔹 Reviews Panel
+------------------------------------------------------------- */
+.product-reviews-panel {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 211, 0, 0.25);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
+}
+
+.product-reviews-panel h3 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Review Analytics (Average Rating + Distribution)
+------------------------------------------------------------- */
+.review-analytics {
+  display: flex;
+  gap: 24px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.review-average {
+  background: var(--color-bg-panel);
+  padding: 18px;
+  border-radius: 12px;
+  flex: 1;
+  min-width: 220px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(112, 255, 234, 0.25);
+}
+
+.review-average h4 {
+  margin: 0;
+  color: var(--color-neon-green);
+  font-size: 2rem;
+  text-shadow: 0 0 8px var(--color-neon-green);
+}
+
+.review-average-stars {
+  margin-top: 6px;
+  color: var(--color-neon-yellow);
+  font-size: 1.4rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+.review-distribution {
+  flex: 2;
+  min-width: 260px;
+}
+
+.review-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.review-bar-label {
+  width: 40px;
+  color: var(--color-text-light);
+}
+
+.review-bar-fill {
+  flex: 1;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.review-bar-fill span {
+  display: block;
+  height: 100%;
+  background: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Review Filters
+------------------------------------------------------------- */
+.review-filters {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.review-filter {
+  padding: 8px 14px;
+  border-radius: 8px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.review-filter:hover {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 14px var(--color-neon-turquoise);
+}
+
+.review-filter.active {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 18px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Review List
+------------------------------------------------------------- */
+.review-list {
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.review-item {
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.25s ease;
+}
+
+.review-item:hover {
+  background-color: rgba(112, 255, 234, 0.15);
+}
+
+/* Header */
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-author {
+  font-weight: bold;
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+.review-date {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+/* Stars */
+.review-stars {
+  margin-top: 6px;
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* Text */
+.review-text {
+  margin-top: 10px;
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+}
+
+/* -------------------------------------------------------------
+   🔹 Review Status Badges
+------------------------------------------------------------- */
+.review-status {
+  margin-top: 10px;
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.review-status.verified {
+  background-color: rgba(0, 255, 128, 0.15);
+  border: 1px solid var(--color-neon-green);
+  color: var(--color-neon-green);
+}
+
+.review-status.moderated {
+  background-color: rgba(255, 211, 0, 0.15);
+  border: 1px solid var(--color-neon-yellow);
+  color: var(--color-neon-yellow);
+}
+
+.review-status.blocked {
+  background-color: rgba(255, 77, 77, 0.15);
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Review Actions
+------------------------------------------------------------- */
+.review-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.review-action-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Approve */
+.review-action-btn.approve {
+  background-color: var(--color-neon-green);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-green);
+}
+
+.review-action-btn.approve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-green);
+}
+
+/* Hide */
+.review-action-btn.hide {
+  background-color: var(--color-neon-yellow);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-yellow);
+}
+
+.review-action-btn.hide:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow);
+}
+
+/* Delete */
+.review-action-btn.delete {
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+.review-action-btn.delete:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Review Reply Box
+------------------------------------------------------------- */
+.review-reply-box {
+  margin-top: 16px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.review-reply-box textarea {
+  width: 100%;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-turquoise);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--color-text-light);
+  font-weight: bold;
+  min-height: 80px;
+  transition: all 0.25s ease;
+}
+
+.review-reply-box textarea:focus {
+  border-color: var(--color-neon-yellow);
+  box-shadow: 0 0 14px var(--color-neon-yellow);
+  outline: none;
+}
+
+.review-reply-btn {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 12px var(--color-neon-turquoise);
+}
+
+.review-reply-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-turquoise);
+}

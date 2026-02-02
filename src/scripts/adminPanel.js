@@ -1,4 +1,4 @@
-// src/scripts/adminPanel.js – optimierte Admin Panel Logik
+// src/scripts/adminPanel.js – FINAL VERSION (Audit + Filter + Badges)
 
 import { enforceRole } from "./roleGuard.js";
 import { createUser } from "./adminUser.js";
@@ -6,6 +6,7 @@ import { logout } from "./auth.js";
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
 import { addAuditLog } from "./auditHandler.js";
+import { getRecentActivities } from "./activityHandler.js";
 import { t } from "./lang.js";
 
 import {
@@ -22,7 +23,6 @@ import {
 export function initAdminPanel() {
   const { auth, db } = initFirebase();
 
-  // Zugriff nur für Admin & Manager
   enforceRole(["admin", "manager"], "login.html");
 
   // Benutzer anlegen
@@ -50,6 +50,7 @@ export function initAdminPanel() {
         showFeedback(t("admin.saved"), "success");
 
         await loadEmployees(db);
+        await loadAuditLog();
 
       } catch (err) {
         console.error("❌ Fehler beim Erstellen:", err);
@@ -60,9 +61,19 @@ export function initAdminPanel() {
 
   // Initial laden
   loadEmployees(db);
+  loadAuditLog();
 
-  // Logout Button
+  // Logout
   document.querySelector(".logout-btn")?.addEventListener("click", logout);
+
+  // Mitarbeiter-Suche
+  document.getElementById("employeeSearch")?.addEventListener("input", filterEmployees);
+
+  // Audit-Suche
+  document.getElementById("auditSearch")?.addEventListener("input", filterAudit);
+
+  // Audit Refresh
+  document.getElementById("refreshAudit")?.addEventListener("click", loadAuditLog);
 }
 
 // -------------------------------------------------------------
@@ -78,7 +89,7 @@ async function loadEmployees(db) {
 
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
-    const id = docSnap.id; // E-Mail als ID
+    const id = docSnap.id;
 
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -86,6 +97,7 @@ async function loadEmployees(db) {
       <td>${data.email || id}</td>
 
       <td>
+        <div class="role-badge role-${data.role}">${t(`roles.${data.role}`)}</div>
         <select data-id="${id}" class="roleSelect">
           ${roleOptions(data.role)}
         </select>
@@ -138,6 +150,9 @@ function attachRoleChangeHandler(db) {
 
         await addAuditLog(adminEmail, "change_role", `User: ${id}, new role: ${newRole}`);
 
+        await loadEmployees(db);
+        await loadAuditLog();
+
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
         showFeedback(t("errors.fail"), "error");
@@ -154,10 +169,8 @@ function attachDeleteHandler(db) {
     btn.addEventListener("click", () => {
       const id = btn.dataset.id;
 
-      // Erstes Feedback = Warnung
       showFeedback(t("admin.confirm"), "warning");
 
-      // Zweiter Klick = Löschen
       btn.addEventListener(
         "click",
         async () => {
@@ -172,6 +185,7 @@ function attachDeleteHandler(db) {
             showFeedback(t("employees.delete"), "success");
 
             await loadEmployees(db);
+            await loadAuditLog();
 
           } catch (err) {
             console.error("❌ Fehler beim Löschen:", err);
@@ -181,6 +195,55 @@ function attachDeleteHandler(db) {
         { once: true }
       );
     });
+  });
+}
+
+// -------------------------------------------------------------
+// 🔹 Mitarbeiter-Suche (Live-Filter)
+// -------------------------------------------------------------
+function filterEmployees(e) {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll("#adminEmployeeTable tbody tr").forEach(row => {
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(term) ? "" : "none";
+  });
+}
+
+// -------------------------------------------------------------
+// 🔹 Audit Log laden
+// -------------------------------------------------------------
+async function loadAuditLog() {
+  const table = document.querySelector("#auditTable tbody");
+  if (!table) return;
+
+  table.innerHTML = "";
+
+  const logs = await getRecentActivities(50);
+
+  logs.forEach(log => {
+    const row = document.createElement("tr");
+
+    const time = log.timestamp?.toDate().toLocaleString("de-CH") || "-";
+
+    row.innerHTML = `
+      <td>${time}</td>
+      <td>${log.userId}</td>
+      <td>${log.action}</td>
+      <td>${log.details}</td>
+    `;
+
+    table.appendChild(row);
+  });
+}
+
+// -------------------------------------------------------------
+// 🔹 Audit-Suche
+// -------------------------------------------------------------
+function filterAudit(e) {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll("#auditTable tbody tr").forEach(row => {
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(term) ? "" : "none";
   });
 }
 

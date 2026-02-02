@@ -2,6 +2,8 @@
 
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
+import { t } from "./lang.js";
+
 import {
   collection,
   addDoc,
@@ -15,7 +17,9 @@ import {
 
 const { db } = initFirebase();
 
+// -------------------------------------------------------------
 // 🔹 Neues Audit-Log hinzufügen
+// -------------------------------------------------------------
 export async function addAuditLog(userId, action, details = "") {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert – Audit-Log kann nicht gespeichert werden.");
@@ -32,21 +36,24 @@ export async function addAuditLog(userId, action, details = "") {
 
     const docRef = await addDoc(collection(db, "auditLogs"), entry);
 
-    console.log(`✅ Audit-Log gespeichert: ${action} (ID: ${docRef.id})`);
-    // Optional: showFeedback("Audit-Log gespeichert", "success");
-
+    console.log(`📘 Audit gespeichert: ${action} (ID: ${docRef.id})`);
     return docRef.id;
 
   } catch (error) {
     console.error("❌ Fehler beim Speichern des Audit-Logs:", error);
-    showFeedback("Fehler beim Speichern des Audit-Logs.", "error");
+    showFeedback(t("errors.fail"), "error");
     return null;
   }
 }
 
+// -------------------------------------------------------------
 // 🔹 Alle Audit-Logs abrufen
+// -------------------------------------------------------------
 export async function getAuditLogs(limit = 20) {
-  if (!db) return [];
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert – Audit-Logs können nicht geladen werden.");
+    return [];
+  }
 
   try {
     const q = query(
@@ -67,14 +74,19 @@ export async function getAuditLogs(limit = 20) {
 
   } catch (error) {
     console.error("❌ Fehler beim Laden der Audit-Logs:", error);
-    showFeedback("Fehler beim Laden der Audit-Logs.", "error");
+    showFeedback(t("errors.load"), "error");
     return [];
   }
 }
 
+// -------------------------------------------------------------
 // 🔹 Audit-Logs eines bestimmten Benutzers abrufen
+// -------------------------------------------------------------
 export async function getAuditLogsByUser(userId, limit = 10) {
-  if (!db) return [];
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert – Benutzer-Audit-Logs können nicht geladen werden.");
+    return [];
+  }
 
   try {
     const q = query(
@@ -91,12 +103,12 @@ export async function getAuditLogsByUser(userId, limit = 10) {
       ...docSnap.data()
     }));
 
-    console.log(`📄 ${logs.length} Audit-Logs für User '${userId}' geladen`);
+    console.log(`📘 ${logs.length} Audit-Logs für User '${userId}' geladen`);
     return logs;
 
   } catch (error) {
     console.error(`❌ Fehler beim Laden der Audit-Logs für User '${userId}':`, error);
-    showFeedback("Fehler beim Laden der Benutzer-Audit-Logs.", "error");
+    showFeedback(t("errors.load"), "error");
     return [];
   }
 }

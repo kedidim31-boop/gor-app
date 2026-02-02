@@ -1,22 +1,27 @@
-/* Analysis Seite – Übersicht & Dashboard im Neon-Stil */
-/* Ergänzt globale theme.css mit spezifischen Features */
+/* Analysis Seite – Cyberpunk Neon Dashboard */
+/* Ergänzt theme.css mit spezifischen Features */
 
-/* Body */
+/* -------------------------------------------------------------
+   🔹 Body
+------------------------------------------------------------- */
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: var(--color-bg-main, #0d0d1a);
-  color: var(--color-text-light, #f0f0f0);
+  background-color: var(--color-bg-main);
+  color: var(--color-text-light);
   margin: 0;
   padding: 0;
 }
 
-/* Branding Header */
+/* -------------------------------------------------------------
+   🔹 Branding Header
+------------------------------------------------------------- */
 .branding-header {
   display: flex;
   align-items: center;
   padding: 1rem;
   background: linear-gradient(90deg, #111, #222);
   border-bottom: 2px solid var(--color-neon-yellow);
+  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
 }
 
 .branding-header img {
@@ -28,46 +33,54 @@ body {
   font-size: 1.2rem;
   font-weight: bold;
   color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* Navigation */
+/* -------------------------------------------------------------
+   🔹 Navigation
+------------------------------------------------------------- */
 .top-nav {
   display: flex;
   align-items: center;
-  background: var(--color-bg-panel, #1a1a2e);
-  padding: 0.5rem 1rem;
+  background: var(--color-bg-panel);
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .top-nav a,
 .top-nav button {
-  color: var(--color-text-light, #f0f0f0);
+  color: var(--color-text-light);
   text-decoration: none;
   margin-right: 1rem;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: background 0.3s;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  font-weight: 500;
 }
 
 .top-nav a.active {
   background: var(--color-neon-yellow);
-  color: #0d0d1a;
+  color: #000;
   font-weight: bold;
+  box-shadow: 0 0 10px var(--color-neon-yellow);
 }
 
 .top-nav a:hover,
 .top-nav button:hover {
-  background: #333;
+  background: rgba(255, 255, 255, 0.08);
   cursor: pointer;
 }
 
 .logout-btn {
   background: transparent;
   border: none;
-  color: var(--color-text-light, #f0f0f0);
+  color: var(--color-text-light);
   font-size: 1rem;
 }
 
-/* Dashboard Layout */
+/* -------------------------------------------------------------
+   🔹 Dashboard Layout
+------------------------------------------------------------- */
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -75,27 +88,30 @@ body {
   margin: 1.5rem;
 }
 
-/* Karten */
+/* -------------------------------------------------------------
+   🔹 Karten (KPIs)
+------------------------------------------------------------- */
 .card {
-  background: var(--color-bg-panel, #1a1a2e);
+  background: var(--color-bg-panel);
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Hover-Effekt für Karten */
 .card:hover {
-  transform: scale(1.05);
+  transform: translateY(-4px);
+  box-shadow: 0 0 20px var(--color-neon-yellow),
+              0 0 40px rgba(255, 211, 0, 0.55);
 }
 
-/* Titel in Karten */
 .card h2 {
   margin-top: 0;
   color: var(--color-neon-yellow);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   margin-bottom: 1rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
 .card p {
@@ -103,52 +119,57 @@ body {
   margin-top: 0.5rem;
 }
 
-/* Statistiken */
+/* -------------------------------------------------------------
+   🔹 Statistiken (Zahlen)
+------------------------------------------------------------- */
 .stat {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: bold;
   margin: 0.5rem 0;
+  letter-spacing: 1px;
 }
 
-/* Farben für einzelne Kennzahlen */
+/* Neon-Farben für KPIs */
 #employeeCount {
   color: var(--color-neon-green);
-  text-shadow: 0 0 8px var(--color-neon-green);
+  text-shadow: 0 0 10px var(--color-neon-green);
 }
 
 #productCount {
   color: var(--color-neon-yellow);
-  text-shadow: 0 0 8px var(--color-neon-yellow);
+  text-shadow: 0 0 10px var(--color-neon-yellow);
 }
 
 #stockTotal {
   color: var(--color-neon-purple);
-  text-shadow: 0 0 8px var(--color-neon-purple);
+  text-shadow: 0 0 10px var(--color-neon-purple);
 }
 
 #taskCount {
   color: var(--color-neon-turquoise);
-  text-shadow: 0 0 8px var(--color-neon-turquoise);
+  text-shadow: 0 0 10px var(--color-neon-turquoise);
 }
 
 #timeTotal {
   color: var(--color-neon-red);
-  text-shadow: 0 0 8px var(--color-neon-red);
+  text-shadow: 0 0 10px var(--color-neon-red);
 }
 
-/* Charts */
+/* -------------------------------------------------------------
+   🔹 Charts
+------------------------------------------------------------- */
 .chart-card {
-  background: var(--color-bg-panel, #1a1a2e);
+  background: var(--color-bg-panel);
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(112, 255, 234, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(112, 255, 234, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .chart-card:hover {
-  transform: scale(1.03);
+  transform: translateY(-3px);
   box-shadow: 0 0 20px var(--color-neon-turquoise),
-              0 0 40px rgba(112, 255, 234, 0.6);
+              0 0 40px rgba(112, 255, 234, 0.55);
 }
 
 canvas {
@@ -156,13 +177,17 @@ canvas {
   height: auto;
 }
 
-/* Responsive Anpassung */
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassungen
+------------------------------------------------------------- */
 @media (max-width: 768px) {
   .dashboard {
     grid-template-columns: 1fr;
     margin: 1rem;
   }
-  .card {
+
+  .card,
+  .chart-card {
     padding: 1rem;
   }
 }

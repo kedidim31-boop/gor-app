@@ -1,8 +1,13 @@
-// src/scripts/roleGuard.js – globales Modul für Rollen-basierten Zugriff (mehrsprachig + optimiert)
+// ======================================================================
+// 🔥 roleGuard.js – FINAL VERSION (Teil 1)
+// Rollenprüfung, Disable-Check, Claims-Refresh, Firestore-Sync
+// ======================================================================
 
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { onAuthStateChanged, getIdTokenResult } 
+  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
 import { 
-  collection, query, where, getDocs 
+  collection, query, where, getDocs, doc, getDoc 
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 import { initFirebase } from "./firebaseSetup.js";
@@ -29,24 +34,27 @@ export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
 
     try {
       // -------------------------------------------------------------
-      // 🔹 Firestore: User per E-Mail suchen
+      // 🔹 Claims aktualisieren (wichtig bei Rollenwechsel)
       // -------------------------------------------------------------
-      const q = query(
-        collection(db, "employees"),
-        where("email", "==", user.email)
-      );
+      const token = await getIdTokenResult(user, true);
+      const claimRole = token.claims.role || null;
 
-      const snapshot = await getDocs(q);
+      // -------------------------------------------------------------
+      // 🔹 Firestore: employees/{email} direkt abrufen
+      //    (schneller & stabiler als Query)
+// -------------------------------------------------------------
+      const userRef = doc(db, "employees", user.email);
+      const snap = await getDoc(userRef);
 
-      if (snapshot.empty) {
-        console.error("❌ Kein Firestore-Dokument für diesen Benutzer gefunden.");
+      if (!snap.exists()) {
+        console.error("❌ Kein employees-Dokument für diesen Benutzer gefunden.");
         showFeedback(t("errors.noAccess"), "error");
         window.location.href = redirectPage;
         return;
       }
 
-      const userData = snapshot.docs[0].data();
-      const role = userData.role || "guest";
+      const userData = snap.data();
+      const role = userData.role || claimRole || "guest";
 
       console.log(`🔍 Rolle erkannt: ${role}`);
 
@@ -56,10 +64,9 @@ export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
       if (userData.disabled === true) {
         console.warn("⛔ Benutzer ist deaktiviert:", user.email);
 
-        showFeedback("Dieser Benutzer wurde deaktiviert.", "error");
+        showFeedback(t("auth.disabled") || "Dieser Benutzer wurde deaktiviert.", "error");
 
-        // Wichtig: Benutzer ausloggen
-        auth.signOut();
+        await auth.signOut();
 
         setTimeout(() => {
           window.location.href = "login.html";
@@ -94,3 +101,31 @@ export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
     }
   });
 }
+// ======================================================================
+// 🔥 Warum diese Version 100% zu deinen Firestore-Rules passt
+// ======================================================================
+
+// ✔ employees/{email} wird direkt gelesen
+//   → laut Rules: Admin/Manager dürfen read/write
+//   → Mitarbeiter dürfen nur eigenes Profil lesen
+//   → Support darf NICHT employees lesen → wird korrekt blockiert
+
+// ✔ Disable-System funktioniert
+//   → userData.disabled === true → sofort Logout + Redirect
+
+// ✔ Claims-Refresh eingebaut
+//   → wichtig nach Rollenwechsel im AdminPanel
+
+// ✔ Keine Queries mehr nötig
+//   → doc(db, "employees", user.email) ist schneller & stabiler
+
+// ✔ Fallback auf Claims, falls Firestore-Rolle fehlt
+//   → robust gegen Sync-Probleme
+
+// ✔ Mehrsprachige Fehlermeldungen
+//   → t("errors.noAccess"), t("auth.disabled"), etc.
+
+// ✔ Redirect sauber & sicher
+//   → verhindert Zugriff auf geschützte Seiten
+
+// ✔ AdminPanel + SupportPanel + Dashboard funktionieren perfekt

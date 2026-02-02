@@ -1,5 +1,5 @@
 // src/scripts/activityHandler.js – globales Modul für Aktivitäten-Logging
-// Modularer Firestore + Neon-Feedback + Sprachsystem
+// Neon-Feedback 2.0 + E-Mail-basiertes User-System + optimierte Firestore-Abfragen
 
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
@@ -19,19 +19,28 @@ import {
 const { db } = initFirebase();
 
 // -------------------------------------------------------------
-// 🔹 Neue Aktivität protokollieren
+// 🔹 Aktivität protokollieren (modernisiert)
 // -------------------------------------------------------------
-export async function logActivity(userId, action, details = "") {
+export async function logActivity(userIdentifier, action, details = "") {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert – Aktivität kann nicht protokolliert werden.");
     return null;
   }
 
+  // 🔥 E-Mail statt UID verwenden
+  const userId = userIdentifier || "unknown";
+
+  // 🔥 Validierung
+  if (!action || typeof action !== "string") {
+    console.warn("⚠️ Ungültige Aktion – Logging übersprungen.");
+    return null;
+  }
+
   try {
     const entry = {
-      userId: userId || "unknown",
+      userId,
       action,
-      details,
+      details: details || "",
       timestamp: serverTimestamp()
     };
 
@@ -81,13 +90,15 @@ export async function getRecentActivities(limit = 10) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Aktivitäten eines bestimmten Benutzers abrufen
+// 🔹 Aktivitäten eines bestimmten Benutzers abrufen (E-Mail basiert)
 // -------------------------------------------------------------
-export async function getUserActivities(userId, limit = 10) {
+export async function getUserActivities(userIdentifier, limit = 10) {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert – Benutzeraktivitäten können nicht geladen werden.");
     return [];
   }
+
+  const userId = userIdentifier || "unknown";
 
   try {
     const q = query(

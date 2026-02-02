@@ -2,6 +2,8 @@
 
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
+import { t } from "./lang.js";
+
 import {
   collection,
   getDocs,
@@ -12,7 +14,9 @@ import {
 
 const { db } = initFirebase();
 
+// -------------------------------------------------------------
 // 🔹 Dashboard-Kennzahlen laden (Produkte, Mitarbeiter, Aufgaben, Zeit)
+// -------------------------------------------------------------
 export async function loadDashboardStats() {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert.");
@@ -39,12 +43,14 @@ export async function loadDashboardStats() {
 
   } catch (error) {
     console.error("❌ Fehler beim Laden der Dashboard-Kennzahlen:", error);
-    showFeedback("Fehler beim Laden der Dashboard-Kennzahlen.", "error");
+    showFeedback(t("errors.load"), "error");
     return {};
   }
 }
 
+// -------------------------------------------------------------
 // 🔹 Letzte Aktivitäten abrufen
+// -------------------------------------------------------------
 export async function loadRecentActivities(limit = 5) {
   if (!db) {
     console.error("❌ Firestore nicht initialisiert.");
@@ -65,12 +71,12 @@ export async function loadRecentActivities(limit = 5) {
       ...docSnap.data()
     }));
 
-    console.log(`📄 ${activities.length} letzte Aktivität(en) geladen`);
+    console.log(`📄 ${activities.length} Aktivitäten geladen`);
     return activities;
 
   } catch (error) {
     console.error("❌ Fehler beim Laden der Aktivitäten:", error);
-    showFeedback("Fehler beim Laden der Aktivitäten.", "error");
+    showFeedback(t("errors.load"), "error");
     return [];
   }
 }

@@ -1,4 +1,4 @@
-// src/scripts/adminPanel.js – FINAL VERSION (Audit + Filter + Badges)
+// src/scripts/adminPanel.js – FINAL VERSION (Audit + Filter + Badges + Disable User)
 
 import { enforceRole } from "./roleGuard.js";
 import { createUser } from "./adminUser.js";
@@ -103,9 +103,23 @@ async function loadEmployees(db) {
         </select>
       </td>
 
+      <!-- ⭐ NEU: Status -->
+      <td>
+        ${data.disabled 
+          ? `<span class="role-badge role-guest">Deaktiviert</span>`
+          : `<span class="role-badge role-employee">Aktiv</span>`
+        }
+      </td>
+
       <td>
         <button class="deleteBtn actionBtn" data-id="${id}">
           <i class="fa-solid fa-trash"></i> ${t("employees.delete")}
+        </button>
+
+        <!-- ⭐ NEU: Deaktivieren / Aktivieren -->
+        <button class="disableBtn actionBtn" data-id="${id}">
+          <i class="fa-solid fa-user-slash"></i>
+          ${data.disabled ? "Aktivieren" : "Deaktivieren"}
         </button>
       </td>
     `;
@@ -115,6 +129,7 @@ async function loadEmployees(db) {
 
   attachRoleChangeHandler(db);
   attachDeleteHandler(db);
+  attachDisableHandler(db); // ⭐ NEU
 }
 
 // -------------------------------------------------------------
@@ -155,6 +170,46 @@ function attachRoleChangeHandler(db) {
 
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
+        showFeedback(t("errors.fail"), "error");
+      }
+    });
+  });
+}
+
+// -------------------------------------------------------------
+// 🔹 Benutzer deaktivieren / aktivieren ⭐ NEU
+// -------------------------------------------------------------
+function attachDisableHandler(db) {
+  document.querySelectorAll(".disableBtn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+
+      try {
+        const userRef = doc(db, "employees", id);
+
+        // Status umschalten
+        const newStatus = btn.innerText.includes("Deaktivieren");
+
+        await updateDoc(userRef, { disabled: newStatus });
+
+        const { auth } = initFirebase();
+        const adminEmail = auth.currentUser?.email || "system";
+
+        await addAuditLog(
+          adminEmail,
+          newStatus ? "disable_user" : "enable_user",
+          `User: ${id}`
+        );
+
+        showFeedback(
+          newStatus ? "Benutzer deaktiviert" : "Benutzer aktiviert",
+          newStatus ? "warning" : "success"
+        );
+
+        await loadEmployees(db);
+
+      } catch (err) {
+        console.error("❌ Fehler beim Deaktivieren:", err);
         showFeedback(t("errors.fail"), "error");
       }
     });

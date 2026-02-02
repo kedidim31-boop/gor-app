@@ -1,0 +1,257 @@
+/* Product Security – Cyberpunk Neon Look */
+/* Ergänzt theme.css + productDetails.css */
+
+/* -------------------------------------------------------------
+   🔹 Security Panel
+------------------------------------------------------------- */
+.product-security-panel {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 77, 77, 0.25);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 0 18px rgba(255, 77, 77, 0.25);
+}
+
+.product-security-panel h3 {
+  margin-top: 0;
+  color: var(--color-neon-red);
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Security Status Badge
+------------------------------------------------------------- */
+.security-status {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.security-status.secure {
+  background-color: rgba(0, 255, 128, 0.15);
+  border: 1px solid var(--color-neon-green);
+  color: var(--color-neon-green);
+}
+
+.security-status.warning {
+  background-color: rgba(255, 211, 0, 0.15);
+  border: 1px solid var(--color-neon-yellow);
+  color: var(--color-neon-yellow);
+}
+
+.security-status.critical {
+  background-color: rgba(255, 77, 77, 0.15);
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Role Access Grid
+------------------------------------------------------------- */
+.security-role-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Role Card
+------------------------------------------------------------- */
+.security-role-card {
+  background: var(--color-bg-panel);
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 0 12px rgba(255, 77, 77, 0.25);
+  transition: all 0.25s ease;
+}
+
+.security-role-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-red),
+              0 0 36px rgba(255, 77, 77, 0.55);
+}
+
+.security-role-card h4 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.1rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Permission List
+------------------------------------------------------------- */
+.permission-list {
+  margin-top: 12px;
+}
+
+.permission-item {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(112, 255, 234, 0.1);
+  border: 1px solid rgba(112, 255, 234, 0.25);
+  margin-bottom: 8px;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.permission-item i {
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Sensitive Fields
+------------------------------------------------------------- */
+.sensitive-fields {
+  margin-top: 20px;
+}
+
+.sensitive-field {
+  padding: 12px;
+  border-radius: 10px;
+  background-color: rgba(255, 77, 77, 0.1);
+  border: 1px solid rgba(255, 77, 77, 0.25);
+  margin-bottom: 10px;
+  color: var(--color-neon-red);
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sensitive-field i {
+  font-size: 1.2rem;
+}
+
+/* -------------------------------------------------------------
+   🔹 API Access Box
+------------------------------------------------------------- */
+.api-access-box {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.api-access-box h4 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+.api-token {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  color: var(--color-text-light);
+  font-weight: bold;
+  word-break: break-all;
+  transition: all 0.25s ease;
+}
+
+.api-token:hover {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 14px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Security Actions
+------------------------------------------------------------- */
+.security-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.security-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Regenerate Token */
+.security-btn.regen {
+  background-color: var(--color-neon-yellow);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-yellow);
+}
+
+.security-btn.regen:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow);
+}
+
+/* Lock Product */
+.security-btn.lock {
+  background-color: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-red);
+}
+
+.security-btn.lock:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Security Logs
+------------------------------------------------------------- */
+.security-logs {
+  margin-top: 24px;
+}
+
+.security-log {
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 10px;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+}
+
+.security-log:hover {
+  background-color: rgba(112, 255, 234, 0.15);
+}
+
+.security-log.ok {
+  border-left: 4px solid var(--color-neon-green);
+}
+
+.security-log.warning {
+  border-left: 4px solid var(--color-neon-yellow);
+}
+
+.security-log.critical {
+  border-left: 4px solid var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .security-role-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .security-actions {
+    flex-direction: column;
+  }
+}

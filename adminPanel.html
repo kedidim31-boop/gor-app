@@ -4,24 +4,33 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Globale Theme -->
+
+  <!-- Globale Styles -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/adminPanel.css">
+
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-  <!-- Branding Header -->
+  <!-- ============================================================
+       🔹 BRANDING HEADER
+  ============================================================ -->
   <header class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-user-shield"></i> Admin Panel</div>
+      <div class="subtitle">
+        <i class="fa-solid fa-user-shield"></i> Admin Panel
+      </div>
     </div>
   </header>
 
-  <!-- Navigation -->
+  <!-- ============================================================
+       🔹 TOP NAVIGATION
+  ============================================================ -->
   <nav class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
@@ -30,27 +39,39 @@
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html" class="active"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <!-- Logout Button -->
-    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+
+    <!-- Logout -->
+    <button class="btn btn-red logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
   </nav>
 
-  <!-- Feedback Container (für globale Banner) -->
+  <!-- Feedback Container -->
   <div id="feedbackContainer"></div>
 
-  <!-- Hauptinhalt -->
+  <!-- ============================================================
+       🔹 MAIN CONTENT
+  ============================================================ -->
   <main>
-    <!-- Benutzer anlegen -->
+
+    <!-- ========================================================
+         🔹 Benutzer anlegen
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-user-plus"></i> Neuen Benutzer anlegen</h2>
+
       <form id="createUserForm" class="form-grid">
+
         <label>
           <i class="fa-solid fa-envelope"></i> E-Mail
           <input type="email" id="newEmail" required>
         </label>
+
         <label>
           <i class="fa-solid fa-lock"></i> Passwort
           <input type="password" id="newPassword" required>
         </label>
+
         <label>
           <i class="fa-solid fa-user-tag"></i> Rolle
           <select id="newRole" required>
@@ -59,15 +80,20 @@
             <option value="guest">Gast</option>
           </select>
         </label>
+
         <button type="submit" class="btn btn-yellow">
           <i class="fa-solid fa-save"></i> Benutzer erstellen
         </button>
+
       </form>
     </div>
 
-    <!-- Mitarbeiterverwaltung -->
+    <!-- ========================================================
+         🔹 Mitarbeiterverwaltung
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-users-gear"></i> Mitarbeiterverwaltung</h2>
+
       <table id="adminEmployeeTable">
         <thead>
           <tr>
@@ -77,21 +103,27 @@
             <th>Aktionen</th>
           </tr>
         </thead>
+
         <tbody>
-          <!-- Mitarbeiter werden hier dynamisch geladen -->
+          <!-- Dynamisch geladen -->
         </tbody>
       </table>
     </div>
+
   </main>
 
-  <!-- Rollen-Schutz -->
+  <!-- ============================================================
+       🔹 ROLE GUARD
+  ============================================================ -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
-    // Nur Admins dürfen diese Seite sehen, sonst Meldung + Weiterleitung zur Startseite
     enforceRole(["admin"], "index.html");
   </script>
 
-  <!-- Firebase Logik -->
+  <!-- ============================================================
+       🔹 ADMIN PANEL LOGIK
+  ============================================================ -->
   <script type="module" src="src/scripts/adminPanel.js"></script>
+
 </body>
 </html>

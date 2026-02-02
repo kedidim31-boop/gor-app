@@ -5,11 +5,9 @@ import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
 import { showFeedback } from "./feedback.js";
 import { t } from "./lang.js";
-// Optional: Audit-Log aktivieren
-// import { addAuditLog } from "./auditHandler.js";
 
 import { 
-  collection, addDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp 
+  collection, setDoc, getDocs, updateDoc, deleteDoc, doc, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 const { auth, db } = initFirebase();
@@ -35,7 +33,7 @@ function formatSwissDate(dateString) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Auto-Mitarbeiternummer generieren (falls leer)
+// 🔹 Auto-Mitarbeiternummer generieren
 // -------------------------------------------------------------
 function generateEmployeeNumber() {
   return "EMP-" + Math.floor(100000 + Math.random() * 900000);
@@ -61,7 +59,7 @@ if (form) {
 
     if (!number) number = generateEmployeeNumber();
 
-    if (!name || !email || !address || !zip || !city || !birthday || !phone || !role) {
+    if (!name || !email || !address || !zip || !city || !birthday || !phone) {
       showFeedback(t("errors.fail"), "error");
       return;
     }
@@ -80,14 +78,12 @@ if (form) {
     };
 
     try {
-      await addDoc(collection(db, "employees"), employee);
+      // 🔥 Dokument-ID = E-Mail
+      await setDoc(doc(db, "employees", email), employee);
+
       form.reset();
       loadEmployees();
       showFeedback(t("feedback.ok"), "success");
-
-      // Optional: Audit-Log
-      // const adminId = auth.currentUser?.uid || "system";
-      // await addAuditLog(adminId, "create_employee", `Name: ${name}, Email: ${email}`);
 
     } catch (err) {
       console.error("❌ Fehler beim Speichern:", err);
@@ -107,12 +103,13 @@ async function loadEmployees() {
 
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
+    const id = docSnap.id; // 🔥 E-Mail als ID
 
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${data.number || "-"}</td>
       <td>${data.name || "-"}</td>
-      <td>${data.email || "-"}</td>
+      <td>${data.email || id}</td>
       <td>${data.address || "-"}</td>
       <td>${data.zip || "-"}</td>
       <td>${data.city || "-"}</td>
@@ -120,7 +117,7 @@ async function loadEmployees() {
       <td>${data.phone || "-"}</td>
 
       <td>
-        <select data-id="${docSnap.id}" class="roleSelect">
+        <select data-id="${id}" class="roleSelect">
           <option value="employee" ${data.role === "employee" ? "selected" : ""}>${t("roles.employee")}</option>
           <option value="support" ${data.role === "support" ? "selected" : ""}>${t("roles.support")}</option>
           <option value="manager" ${data.role === "manager" ? "selected" : ""}>${t("roles.manager")}</option>
@@ -130,7 +127,7 @@ async function loadEmployees() {
       </td>
 
       <td>
-        <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">
+        <button class="deleteBtn btn btn-red" data-id="${id}">
           <i class="fa-solid fa-trash"></i> ${t("employees.delete")}
         </button>
       </td>
@@ -156,10 +153,6 @@ function attachRoleChangeHandler() {
         await updateDoc(doc(db, "employees", id), { role: newRole });
         showFeedback(`${t("admin.changeRole")}: ${newRole}`, "success");
 
-        // Optional: Audit-Log
-        // const adminId = auth.currentUser?.uid || "system";
-        // await addAuditLog(adminId, "change_role", `UserID: ${id}, new role: ${newRole}`);
-
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
         showFeedback(t("errors.fail"), "error");
@@ -169,7 +162,7 @@ function attachRoleChangeHandler() {
 }
 
 // -------------------------------------------------------------
-// 🔹 Löschen mit Bestätigung
+// 🔹 Löschen
 // -------------------------------------------------------------
 function attachDeleteHandler() {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
@@ -185,10 +178,6 @@ function attachDeleteHandler() {
             await deleteDoc(doc(db, "employees", id));
             showFeedback(t("employees.delete"), "success");
             loadEmployees();
-
-            // Optional: Audit-Log
-            // const adminId = auth.currentUser?.uid || "system";
-            // await addAuditLog(adminId, "delete_employee", `UserID: ${id}`);
 
           } catch (err) {
             console.error("❌ Fehler beim Löschen:", err);

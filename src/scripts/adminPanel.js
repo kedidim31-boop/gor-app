@@ -5,7 +5,7 @@ import { createUser } from "./adminUser.js";
 import { logout } from "./auth.js";
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
-import { logActivity } from "./activityHandler.js";
+import { addAuditLog } from "./auditHandler.js";
 import { t } from "./lang.js";
 
 import {
@@ -41,7 +41,7 @@ export function initAdminPanel() {
       }
 
       try {
-        const currentUserId = auth.currentUser?.uid || "system";
+        const adminId = auth.currentUser?.uid || "system";
 
         await createUser(email, password, role);
         await loadEmployees(db);
@@ -49,7 +49,7 @@ export function initAdminPanel() {
 
         showFeedback(t("admin.saved"), "success");
 
-        await logActivity(currentUserId, "create_user", `User: ${email}, Role: ${role}`);
+        await addAuditLog(adminId, "create_user", `User: ${email}, Role: ${role}`);
 
       } catch (err) {
         console.error("❌ Fehler beim Erstellen:", err);
@@ -62,8 +62,7 @@ export function initAdminPanel() {
   loadEmployees(db);
 
   // Logout Button
-  const logoutBtn = document.querySelector(".logout-btn");
-  if (logoutBtn) logoutBtn.addEventListener("click", logout);
+  document.querySelector(".logout-btn")?.addEventListener("click", logout);
 }
 
 // -------------------------------------------------------------
@@ -126,7 +125,7 @@ function attachRoleChangeHandler(db) {
         const { auth } = initFirebase();
         const adminId = auth.currentUser?.uid || "system";
 
-        await logActivity(adminId, "change_role", `UserID: ${id}, new role: ${newRole}`);
+        await addAuditLog(adminId, "change_role", `UserID: ${id}, new role: ${newRole}`);
 
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
@@ -141,8 +140,8 @@ function attachRoleChangeHandler(db) {
 // -------------------------------------------------------------
 function attachDeleteHandler(db) {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
-    btn.addEventListener("click", async e => {
-      const id = e.currentTarget.dataset.id;
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
 
       showFeedback(t("admin.confirm"), "warning");
 
@@ -157,7 +156,7 @@ function attachDeleteHandler(db) {
             const { auth } = initFirebase();
             const adminId = auth.currentUser?.uid || "system";
 
-            await logActivity(adminId, "delete_user", `UserID: ${id}`);
+            await addAuditLog(adminId, "delete_user", `UserID: ${id}`);
 
             await loadEmployees(db);
 

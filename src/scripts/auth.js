@@ -1,22 +1,34 @@
-// src/scripts/auth.js – globales Logout- und Sicherheitsmodul
+// ======================================================================
+// 🔥 auth.js – FINAL VERSION (Teil 1)
+// Login-Check, Disable-System, Claims-Refresh, Logout
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
-import { signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 import { showFeedback } from "./feedback.js";
-import { logActivity } from "./activityHandler.js";
+import { addAuditLog } from "./activityHandler.js";
 import { t } from "./lang.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+import {
+  signOut,
+  getIdTokenResult,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 // -------------------------------------------------------------
-// 🔹 Sicherheits-Check: Benutzer deaktiviert?
+// 🔹 Benutzer deaktiviert? (employees/{email})
 // -------------------------------------------------------------
 export async function checkUserDisabled(email) {
   const { db } = initFirebase();
 
   try {
-    const userDoc = await getDoc(doc(db, "employees", email));
+    const snap = await getDoc(doc(db, "employees", email));
 
-    if (userDoc.exists() && userDoc.data().disabled === true) {
+    if (snap.exists() && snap.data().disabled === true) {
       console.warn("⛔ Benutzer ist deaktiviert:", email);
       return true;
     }
@@ -30,8 +42,55 @@ export async function checkUserDisabled(email) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Logout-Funktion (modernisiert)
+// 🔹 Login‑Überwachung (Disable + Claims Refresh)
 // -------------------------------------------------------------
+export function initAuthWatcher() {
+  const { auth, db } = initFirebase();
+
+  onAuthStateChanged(auth, async user => {
+    if (!user) return;
+
+    try {
+      // 🔥 Claims aktualisieren (wichtig nach Rollenwechsel)
+      await user.getIdToken(true);
+      const token = await getIdTokenResult(user);
+      const claimRole = token.claims.role || null;
+
+      // 🔥 Firestore employees/{email} abrufen
+      const snap = await getDoc(doc(db, "employees", user.email));
+
+      if (!snap.exists()) {
+        console.error("❌ Kein employees-Dokument gefunden:", user.email);
+        return;
+      }
+
+      const data = snap.data();
+
+      // 🔥 Benutzer deaktiviert?
+      if (data.disabled === true) {
+        console.warn("⛔ Benutzer ist deaktiviert:", user.email);
+
+        showFeedback(t("auth.disabled"), "error");
+
+        await signOut(auth);
+
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 800);
+
+        return;
+      }
+
+      console.log(`🔐 Login OK – Rolle: ${data.role || claimRole}`);
+
+    } catch (err) {
+      console.error("❌ Fehler im AuthWatcher:", err);
+    }
+  });
+}
+// ======================================================================
+// 🔹 Logout-Funktion (modernisiert + Audit + UI)
+// ======================================================================
 export async function logout() {
   const { auth } = initFirebase();
 
@@ -39,21 +98,20 @@ export async function logout() {
     const user = auth.currentUser;
     const userIdentifier = user?.email || "unknown";
 
-    // Firebase Logout
-    await signOut(auth);
-    console.log("📘 Logout erfolgreich");
-
-    // Aktivität loggen
-    await logActivity(
+    // 🔥 Audit Log
+    await addAuditLog(
       userIdentifier,
       "logout",
       `User ${userIdentifier} logged out`
     );
 
-    // Neon-Feedback
+    // 🔥 Firebase Logout
+    await signOut(auth);
+    console.log("📘 Logout erfolgreich");
+
+    // 🔥 Neon Feedback
     showFeedback(t("auth.out"), "success");
 
-    // Kleine Verzögerung für Animation
     setTimeout(() => {
       window.location.href = "login.html";
     }, 800);
@@ -64,9 +122,9 @@ export async function logout() {
   }
 }
 
-// -------------------------------------------------------------
+// ======================================================================
 // 🔧 Globaler Logout-Button (einmalig registrieren)
-// -------------------------------------------------------------
+// ======================================================================
 document.addEventListener("DOMContentLoaded", () => {
   const logoutButton = document.querySelector(".logout-btn");
 

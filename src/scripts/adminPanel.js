@@ -1,11 +1,13 @@
 // src/scripts/adminPanel.js – zentrale Logik für Admin Panel (modulare Firebase SDK)
 
 import { enforceRole } from "./roleGuard.js";
-import { createUser } from "./adminUser.js"; 
+import { createUser } from "./adminUser.js";
 import { logout } from "./auth.js";
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
 import { logActivity } from "./activityHandler.js";
+import { t } from "./lang.js";
+
 import {
   collection,
   getDocs,
@@ -14,11 +16,14 @@ import {
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
+// -------------------------------------------------------------
+// 🔹 Admin Panel initialisieren
+// -------------------------------------------------------------
 export function initAdminPanel() {
   const { auth, db } = initFirebase();
 
-  // Zugriff nur für Admins
-  enforceRole(["admin"], "login.html");
+  // Zugriff nur für Admin & Manager
+  enforceRole(["admin", "manager"], "login.html");
 
   // Benutzer anlegen
   const form = document.getElementById("createUserForm");
@@ -31,25 +36,24 @@ export function initAdminPanel() {
       const role = document.getElementById("newRole").value;
 
       if (!email || !password || !role) {
-        showFeedback("⚠️ Bitte alle Felder ausfüllen!", "error");
+        showFeedback(t("errors.fail"), "error");
         return;
       }
 
       try {
-        const currentUser = auth.currentUser;
-        const currentUserId = currentUser ? currentUser.uid : "system";
+        const currentUserId = auth.currentUser?.uid || "system";
 
         await createUser(email, password, role);
         await loadEmployees(db);
         form.reset();
-        showFeedback("✅ Benutzer erfolgreich erstellt!", "success");
 
-        // Aktivität loggen
-        await logActivity(currentUserId, "create_user", `User: ${email}, Rolle: ${role}`);
+        showFeedback(t("admin.saved"), "success");
+
+        await logActivity(currentUserId, "create_user", `User: ${email}, Role: ${role}`);
 
       } catch (err) {
         console.error("❌ Fehler beim Erstellen:", err);
-        showFeedback("Fehler beim Erstellen des Benutzers.", "error");
+        showFeedback(t("errors.fail"), "error");
       }
     });
   }
@@ -62,7 +66,9 @@ export function initAdminPanel() {
   if (logoutBtn) logoutBtn.addEventListener("click", logout);
 }
 
-// Mitarbeiter / Benutzer im Admin Panel laden
+// -------------------------------------------------------------
+// 🔹 Mitarbeiter / Benutzer laden
+// -------------------------------------------------------------
 async function loadEmployees(db) {
   const tableBody = document.querySelector("#adminEmployeeTable tbody");
   if (!tableBody || !db) return;
@@ -78,16 +84,20 @@ async function loadEmployees(db) {
     row.innerHTML = `
       <td>${data.name || "-"}</td>
       <td>${data.email || "-"}</td>
+
       <td>
         <select data-id="${docSnap.id}" class="roleSelect">
-          <option value="employee" ${data.role === "employee" ? "selected" : ""}>Employee</option>
-          <option value="admin" ${data.role === "admin" ? "selected" : ""}>Admin</option>
-          <option value="guest" ${data.role === "guest" ? "selected" : ""}>Guest</option>
+          <option value="employee" ${data.role === "employee" ? "selected" : ""}>${t("roles.employee")}</option>
+          <option value="support" ${data.role === "support" ? "selected" : ""}>${t("roles.support")}</option>
+          <option value="manager" ${data.role === "manager" ? "selected" : ""}>${t("roles.manager")}</option>
+          <option value="admin" ${data.role === "admin" ? "selected" : ""}>${t("roles.admin")}</option>
+          <option value="guest" ${data.role === "guest" ? "selected" : ""}>${t("roles.guest")}</option>
         </select>
       </td>
+
       <td>
         <button class="deleteBtn actionBtn" data-id="${docSnap.id}">
-          <i class="fa-solid fa-trash"></i> Löschen
+          <i class="fa-solid fa-trash"></i> ${t("employees.delete")}
         </button>
       </td>
     `;
@@ -95,7 +105,14 @@ async function loadEmployees(db) {
     tableBody.appendChild(row);
   });
 
-  // Rollenänderung
+  attachRoleChangeHandler(db);
+  attachDeleteHandler(db);
+}
+
+// -------------------------------------------------------------
+// 🔹 Rollenänderung
+// -------------------------------------------------------------
+function attachRoleChangeHandler(db) {
   document.querySelectorAll(".roleSelect").forEach(select => {
     select.addEventListener("change", async e => {
       const id = e.target.dataset.id;
@@ -103,44 +120,50 @@ async function loadEmployees(db) {
 
       try {
         await updateDoc(doc(db, "employees", id), { role: newRole });
-        showFeedback(`✅ Rolle geändert zu: ${newRole}`, "success");
 
-        // Aktivität loggen
+        showFeedback(`${t("admin.changeRole")}: ${newRole}`, "success");
+
         const { auth } = initFirebase();
         const adminId = auth.currentUser?.uid || "system";
-        await logActivity(adminId, "change_role", `UserID: ${id}, neue Rolle: ${newRole}`);
+
+        await logActivity(adminId, "change_role", `UserID: ${id}, new role: ${newRole}`);
 
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
-        showFeedback("Fehler beim Rollenwechsel.", "error");
+        showFeedback(t("errors.fail"), "error");
       }
     });
   });
+}
 
-  // Löschen mit Bestätigungs‑Banner
+// -------------------------------------------------------------
+// 🔹 Löschen mit Bestätigung
+// -------------------------------------------------------------
+function attachDeleteHandler(db) {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.addEventListener("click", async e => {
       const id = e.currentTarget.dataset.id;
 
-      showFeedback("⚠️ Löschbestätigung erforderlich – erneut klicken zum Bestätigen!", "warning");
+      showFeedback(t("admin.confirm"), "warning");
 
       btn.addEventListener(
         "click",
         async () => {
           try {
             await deleteDoc(doc(db, "employees", id));
-            showFeedback("✅ Mitarbeiter gelöscht", "success");
 
-            // Aktivität loggen
+            showFeedback(t("employees.delete"), "success");
+
             const { auth } = initFirebase();
             const adminId = auth.currentUser?.uid || "system";
+
             await logActivity(adminId, "delete_user", `UserID: ${id}`);
 
             await loadEmployees(db);
 
           } catch (err) {
             console.error("❌ Fehler beim Löschen:", err);
-            showFeedback("Fehler beim Löschen des Mitarbeiters.", "error");
+            showFeedback(t("errors.fail"), "error");
           }
         },
         { once: true }
@@ -149,5 +172,7 @@ async function loadEmployees(db) {
   });
 }
 
-// Admin Panel direkt initialisieren
+// -------------------------------------------------------------
+// 🔹 Admin Panel direkt initialisieren
+// -------------------------------------------------------------
 initAdminPanel();

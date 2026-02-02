@@ -73,12 +73,12 @@ if (form) {
       city, 
       birthday, 
       phone, 
-      role, 
+      role,
+      disabled: false, // ⭐ NEU
       createdAt: serverTimestamp() 
     };
 
     try {
-      // 🔥 Dokument-ID = E-Mail
       await setDoc(doc(db, "employees", email), employee);
 
       form.reset();
@@ -103,9 +103,22 @@ async function loadEmployees() {
 
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
-    const id = docSnap.id; // 🔥 E-Mail als ID
+    const id = docSnap.id;
 
     const row = document.createElement("tr");
+
+    const statusBadge = data.disabled
+      ? `<span class="badge badge-red">Deaktiviert</span>`
+      : `<span class="badge badge-green">Aktiv</span>`;
+
+    const disableButton = data.disabled
+      ? `<button class="enableBtn btn btn-green" data-id="${id}">
+           <i class="fa-solid fa-user-check"></i> Aktivieren
+         </button>`
+      : `<button class="disableBtn btn btn-yellow" data-id="${id}">
+           <i class="fa-solid fa-user-slash"></i> Deaktivieren
+         </button>`;
+
     row.innerHTML = `
       <td>${data.number || "-"}</td>
       <td>${data.name || "-"}</td>
@@ -126,7 +139,10 @@ async function loadEmployees() {
         </select>
       </td>
 
+      <td>${statusBadge}</td>
+
       <td>
+        ${disableButton}
         <button class="deleteBtn btn btn-red" data-id="${id}">
           <i class="fa-solid fa-trash"></i> ${t("employees.delete")}
         </button>
@@ -137,6 +153,8 @@ async function loadEmployees() {
   });
 
   attachRoleChangeHandler();
+  attachDisableHandler(); // ⭐ NEU
+  attachEnableHandler();  // ⭐ NEU
   attachDeleteHandler();
 }
 
@@ -155,6 +173,50 @@ function attachRoleChangeHandler() {
 
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
+        showFeedback(t("errors.fail"), "error");
+      }
+    });
+  });
+}
+
+// -------------------------------------------------------------
+// 🔹 Benutzer deaktivieren ⭐ NEU
+// -------------------------------------------------------------
+function attachDisableHandler() {
+  document.querySelectorAll(".disableBtn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+
+      try {
+        await updateDoc(doc(db, "employees", id), { disabled: true });
+
+        showFeedback("Benutzer deaktiviert", "warning");
+        loadEmployees();
+
+      } catch (err) {
+        console.error("❌ Fehler beim Deaktivieren:", err);
+        showFeedback(t("errors.fail"), "error");
+      }
+    });
+  });
+}
+
+// -------------------------------------------------------------
+// 🔹 Benutzer aktivieren ⭐ NEU
+// -------------------------------------------------------------
+function attachEnableHandler() {
+  document.querySelectorAll(".enableBtn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+
+      try {
+        await updateDoc(doc(db, "employees", id), { disabled: false });
+
+        showFeedback("Benutzer aktiviert", "success");
+        loadEmployees();
+
+      } catch (err) {
+        console.error("❌ Fehler beim Aktivieren:", err);
         showFeedback(t("errors.fail"), "error");
       }
     });

@@ -317,3 +317,27 @@ export const LANG = {
     }
   }
 };
+
+// -------------------------------------------------------------
+// 🔥 Ergänzung: Sprachsystem-Logik (für Umschalter & Übersetzungen)
+// -------------------------------------------------------------
+
+export let currentLang = localStorage.getItem("lang") || "de";
+
+export function setLang(langCode) {
+  if (!LANG[langCode]) return;
+  currentLang = langCode;
+  localStorage.setItem("lang", langCode);
+}
+
+export function t(path) {
+  const parts = path.split(".");
+  let value = LANG[currentLang];
+
+  for (const p of parts) {
+    if (!value || typeof value !== "object") return "";
+    value = value[p];
+  }
+
+  return typeof value === "string" ? value : "";
+}

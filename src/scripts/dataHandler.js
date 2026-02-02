@@ -1,85 +1,107 @@
-// dataHandler.js – globales Modul für Datenverwaltung im Gaming of Republic Admin System
-// Ergänzt mit konsistentem Neon-Theme, Logging und Error-Handling
+// src/scripts/dataHandler.js – globales Datenverwaltungs-Modul (modulare Firebase SDK)
 
 import { initFirebase } from "./firebaseSetup.js";
+import { showFeedback } from "./feedback.js";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+  deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// Daten hinzufügen
-export async function addData(collection, data) {
-  const { db } = initFirebase();
-  if (!db) return;
+const { db } = initFirebase();
 
-  try {
-    const docRef = await db.collection(collection).add(data);
-    console.log(`✅ Dokument hinzugefügt in '${collection}' mit ID: ${docRef.id}`);
-    return docRef.id;
-  } catch (error) {
-    console.error("❌ Fehler beim Hinzufügen von Daten:", error);
-    alert("Fehler beim Speichern – bitte erneut versuchen.");
-  }
-}
-
-// Daten abrufen (alle Dokumente)
-export async function getData(collection) {
-  const { db } = initFirebase();
-  if (!db) return [];
-
-  try {
-    const snapshot = await db.collection(collection).get();
-    const results = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log(`✅ ${results.length} Dokument(e) aus '${collection}' geladen`);
-    return results;
-  } catch (error) {
-    console.error("❌ Fehler beim Abrufen von Daten:", error);
-    alert("Fehler beim Laden der Daten – bitte erneut versuchen.");
-    return [];
-  }
-}
-
-// Einzelnes Dokument abrufen
-export async function getDataById(collection, id) {
-  const { db } = initFirebase();
+// 🔹 Dokument hinzufügen
+export async function addData(collectionName, data) {
   if (!db) return null;
 
   try {
-    const doc = await db.collection(collection).doc(id).get();
-    if (doc.exists) {
-      console.log(`✅ Dokument '${id}' aus '${collection}' geladen`);
-      return { id: doc.id, ...doc.data() };
-    } else {
-      console.warn(`⚠️ Dokument '${id}' existiert nicht in '${collection}'`);
-      return null;
-    }
+    const docRef = await addDoc(collection(db, collectionName), data);
+    console.log(`📄 Dokument hinzugefügt in '${collectionName}' (ID: ${docRef.id})`);
+    return docRef.id;
+
   } catch (error) {
-    console.error("❌ Fehler beim Abrufen des Dokuments:", error);
-    alert("Fehler beim Laden des Dokuments – bitte erneut versuchen.");
+    console.error("❌ Fehler beim Hinzufügen von Daten:", error);
+    showFeedback("Fehler beim Speichern der Daten.", "error");
     return null;
   }
 }
 
-// Daten aktualisieren
-export async function updateData(collection, id, newData) {
-  const { db } = initFirebase();
-  if (!db) return;
+// 🔹 Alle Dokumente abrufen
+export async function getData(collectionName) {
+  if (!db) return [];
 
   try {
-    await db.collection(collection).doc(id).update(newData);
-    console.log(`✅ Dokument '${id}' in '${collection}' aktualisiert`);
+    const snapshot = await getDocs(collection(db, collectionName));
+    const results = snapshot.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
+    }));
+
+    console.log(`📄 ${results.length} Dokument(e) aus '${collectionName}' geladen`);
+    return results;
+
   } catch (error) {
-    console.error("❌ Fehler beim Aktualisieren von Daten:", error);
-    alert("Fehler beim Aktualisieren – bitte erneut versuchen.");
+    console.error("❌ Fehler beim Abrufen der Daten:", error);
+    showFeedback("Fehler beim Laden der Daten.", "error");
+    return [];
   }
 }
 
-// Daten löschen
-export async function deleteData(collection, id) {
-  const { db } = initFirebase();
-  if (!db) return;
+// 🔹 Einzelnes Dokument abrufen
+export async function getDataById(collectionName, id) {
+  if (!db) return null;
 
   try {
-    await db.collection(collection).doc(id).delete();
-    console.log(`✅ Dokument '${id}' aus '${collection}' gelöscht`);
+    const docRef = doc(db, collectionName, id);
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) {
+      console.warn(`⚠️ Dokument '${id}' existiert nicht in '${collectionName}'`);
+      return null;
+    }
+
+    console.log(`📄 Dokument '${id}' aus '${collectionName}' geladen`);
+    return { id: snapshot.id, ...snapshot.data() };
+
   } catch (error) {
-    console.error("❌ Fehler beim Löschen von Daten:", error);
-    alert("Fehler beim Löschen – bitte erneut versuchen.");
+    console.error("❌ Fehler beim Abrufen des Dokuments:", error);
+    showFeedback("Fehler beim Laden des Dokuments.", "error");
+    return null;
+  }
+}
+
+// 🔹 Dokument aktualisieren
+export async function updateData(collectionName, id, newData) {
+  if (!db) return false;
+
+  try {
+    await updateDoc(doc(db, collectionName, id), newData);
+    console.log(`📄 Dokument '${id}' in '${collectionName}' aktualisiert`);
+    return true;
+
+  } catch (error) {
+    console.error("❌ Fehler beim Aktualisieren:", error);
+    showFeedback("Fehler beim Aktualisieren der Daten.", "error");
+    return false;
+  }
+}
+
+// 🔹 Dokument löschen
+export async function deleteData(collectionName, id) {
+  if (!db) return false;
+
+  try {
+    await deleteDoc(doc(db, collectionName, id));
+    console.log(`🗑️ Dokument '${id}' aus '${collectionName}' gelöscht`);
+    return true;
+
+  } catch (error) {
+    console.error("❌ Fehler beim Löschen:", error);
+    showFeedback("Fehler beim Löschen der Daten.", "error");
+    return false;
   }
 }

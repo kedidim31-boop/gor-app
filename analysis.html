@@ -4,26 +4,36 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Übersicht & Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Globale Theme -->
+
+  <!-- Globale Styles -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/analysis.css">
+
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
-  <!-- Branding Header -->
+  <!-- ============================================================
+       🔹 BRANDING HEADER
+  ============================================================ -->
   <header class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</div>
+      <div class="subtitle">
+        <i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard
+      </div>
     </div>
   </header>
 
-  <!-- Navigation -->
+  <!-- ============================================================
+       🔹 TOP NAVIGATION
+  ============================================================ -->
   <nav class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html" class="active"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
@@ -32,15 +42,25 @@
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <!-- Logout Button -->
-    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+
+    <button class="btn btn-red logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
   </nav>
 
-  <!-- Hauptinhalt -->
+  <!-- ============================================================
+       🔹 MAIN CONTENT
+  ============================================================ -->
   <main>
-    <!-- Dashboard Grid -->
+
+    <!-- ========================================================
+         🔹 DASHBOARD GRID
+    ======================================================== -->
     <div class="dashboard">
-      <!-- Kennzahlen-Karten -->
+
+      <!-- ======================================================
+           🔹 KPI CARDS (Kennzahlen)
+      ====================================================== -->
       <div class="card stat-card">
         <h2><i class="fa-solid fa-users"></i> Mitarbeiter</h2>
         <div class="stat" id="employeeCount">–</div>
@@ -71,20 +91,46 @@
         <p>Gesamte Arbeitszeit</p>
       </div>
 
-      <!-- Charts -->
+      <!-- ======================================================
+           🔹 CHARTS
+      ====================================================== -->
       <div class="card chart-card">
         <h2><i class="fa-solid fa-chart-pie"></i> Statistiken</h2>
-        <canvas id="overviewChart" width="400" height="400"></canvas>
+        <canvas id="overviewChart"></canvas>
       </div>
 
       <div class="card chart-card">
         <h2><i class="fa-solid fa-chart-line"></i> Zeitverlauf</h2>
-        <canvas id="timeLineChart" width="600" height="300"></canvas>
+        <canvas id="timeLineChart"></canvas>
       </div>
+
+      <!-- ======================================================
+           🔹 OPTIONAL: FUTURE MODULES (Platzhalter)
+           Diese Sektionen sind vorbereitet für spätere Erweiterungen
+      ====================================================== -->
+
+      <div class="card placeholder-card">
+        <h2><i class="fa-solid fa-arrow-trend-up"></i> Umsatzentwicklung</h2>
+        <p>Modul folgt…</p>
+      </div>
+
+      <div class="card placeholder-card">
+        <h2><i class="fa-solid fa-store"></i> Verkaufsstatistik</h2>
+        <p>Modul folgt…</p>
+      </div>
+
+      <div class="card placeholder-card">
+        <h2><i class="fa-solid fa-warehouse"></i> Lagerbewegungen</h2>
+        <p>Modul folgt…</p>
+      </div>
+
     </div>
   </main>
 
-  <!-- Firebase Logik ausgelagert -->
+  <!-- ============================================================
+       🔹 ANALYSIS LOGIK
+  ============================================================ -->
   <script type="module" src="src/scripts/analysis.js"></script>
+
 </body>
 </html>

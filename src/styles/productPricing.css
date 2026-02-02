@@ -1,0 +1,211 @@
+/* Product Pricing – Cyberpunk Neon Look */
+/* Ergänzt theme.css + products.css */
+
+/* -------------------------------------------------------------
+   🔹 Pricing Panel
+------------------------------------------------------------- */
+.product-pricing-panel {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 211, 0, 0.25);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
+}
+
+.product-pricing-panel h3 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Pricing Grid
+------------------------------------------------------------- */
+.product-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Pricing Box
+------------------------------------------------------------- */
+.pricing-box {
+  background: var(--color-bg-panel);
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(112, 255, 234, 0.25);
+  transition: all 0.25s ease;
+}
+
+.pricing-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-turquoise),
+              0 0 36px rgba(112, 255, 234, 0.55);
+}
+
+.pricing-box h4 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  font-size: 1.1rem;
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Inputs
+------------------------------------------------------------- */
+.pricing-box input,
+.pricing-box select {
+  width: 100%;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--color-text-light);
+  font-weight: bold;
+  margin-top: 10px;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
+}
+
+.pricing-box input:focus,
+.pricing-box select:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 
+    0 0 14px var(--color-neon-turquoise),
+    0 0 28px rgba(112, 255, 234, 0.55);
+  outline: none;
+}
+
+/* -------------------------------------------------------------
+   🔹 Rabatt Badge
+------------------------------------------------------------- */
+.discount-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: rgba(255, 211, 0, 0.2);
+  border: 1px solid var(--color-neon-yellow);
+  color: var(--color-neon-yellow);
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-top: 10px;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Preisvergleich (UVP vs. Verkaufspreis)
+------------------------------------------------------------- */
+.price-compare {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+}
+
+.price-compare .old-price {
+  text-decoration: line-through;
+  color: var(--color-neon-red);
+  text-shadow: 0 0 6px var(--color-neon-red);
+}
+
+.price-compare .new-price {
+  color: var(--color-neon-green);
+  font-weight: bold;
+  text-shadow: 0 0 6px var(--color-neon-green);
+}
+
+/* -------------------------------------------------------------
+   🔹 Marge Anzeige
+------------------------------------------------------------- */
+.margin-display {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+/* Gute Marge */
+.margin-good {
+  background-color: rgba(0, 255, 128, 0.15);
+  border: 1px solid var(--color-neon-green);
+  color: var(--color-neon-green);
+  box-shadow: 0 0 12px rgba(0, 255, 128, 0.35);
+}
+
+/* Niedrige Marge */
+.margin-low {
+  background-color: rgba(255, 211, 0, 0.15);
+  border: 1px solid var(--color-neon-yellow);
+  color: var(--color-neon-yellow);
+  box-shadow: 0 0 12px rgba(255, 211, 0, 0.35);
+}
+
+/* Verlust */
+.margin-negative {
+  background-color: rgba(255, 77, 77, 0.15);
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+  box-shadow: 0 0 12px rgba(255, 77, 77, 0.35);
+}
+
+/* -------------------------------------------------------------
+   🔹 Aktionen (Buttons)
+------------------------------------------------------------- */
+.pricing-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.pricing-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Speichern */
+.pricing-btn.save {
+  background-color: var(--color-neon-green);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-green);
+}
+
+.pricing-btn.save:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 0 18px var(--color-neon-green),
+    0 0 36px rgba(0, 255, 128, 0.7);
+}
+
+/* Reset */
+.pricing-btn.reset {
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+.pricing-btn.reset:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 0 18px var(--color-neon-red),
+    0 0 36px rgba(255, 77, 77, 0.7);
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .product-pricing-grid {
+    grid-template-columns: 1fr;
+  }
+}

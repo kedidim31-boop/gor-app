@@ -1,5 +1,5 @@
 // ======================================================================
-// 🔥 ADMIN PANEL – Teil 1
+// 🔥 ADMIN PANEL – FINAL (Teil 1)
 // Setup, Init, User Creation, Employee Loader, Role UI, Status Badges
 // ======================================================================
 
@@ -20,12 +20,13 @@ import {
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
+// 🔹 Firebase einmal initialisieren (für alle Funktionen)
+const { auth, db } = initFirebase();
+
 // -------------------------------------------------------------
 // 🔹 Admin Panel initialisieren
 // -------------------------------------------------------------
 export function initAdminPanel() {
-  const { auth, db } = initFirebase();
-
   // Zugriff nur für Admin + Manager
   enforceRole(["admin", "manager"], "login.html");
 
@@ -53,18 +54,23 @@ export function initAdminPanel() {
         form.reset();
         showFeedback(t("admin.saved"), "success");
 
-        await loadEmployees(db);
+        await loadEmployees();
         await loadAuditLog();
 
       } catch (err) {
         console.error("❌ Fehler beim Erstellen:", err);
-        showFeedback(t("errors.fail"), "error");
+
+        if (err.code === "auth/email-already-in-use") {
+          showFeedback(t("admin.emailInUse") || "E-Mail wird bereits verwendet.", "error");
+        } else {
+          showFeedback(t("errors.fail"), "error");
+        }
       }
     });
   }
 
   // Initial laden
-  loadEmployees(db);
+  loadEmployees();
   loadAuditLog();
 
   // Logout
@@ -79,9 +85,9 @@ export function initAdminPanel() {
 }
 
 // -------------------------------------------------------------
-// 🔹 Mitarbeiter laden
+// 🔹 Mitarbeiter laden (employees – DocID = E-Mail)
 // -------------------------------------------------------------
-async function loadEmployees(db) {
+async function loadEmployees() {
   const tableBody = document.querySelector("#adminEmployeeTable tbody");
   if (!tableBody) return;
 
@@ -91,13 +97,13 @@ async function loadEmployees(db) {
 
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
-    const id = docSnap.id;
-
-    const row = document.createElement("tr");
+    const id = docSnap.id; // = E-Mail laut Rules
 
     const statusBadge = data.disabled
       ? `<span class="role-badge role-guest">${t("employees.disabled") || "Deaktiviert"}</span>`
       : `<span class="role-badge role-employee">${t("employees.active") || "Aktiv"}</span>`;
+
+    row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${data.name || "-"}</td>
@@ -127,9 +133,9 @@ async function loadEmployees(db) {
     tableBody.appendChild(row);
   });
 
-  attachRoleChangeHandler(db);
-  attachDeleteHandler(db);
-  attachDisableHandler(db);
+  attachRoleChangeHandler();
+  attachDeleteHandler();
+  attachDisableHandler();
 }
 
 // -------------------------------------------------------------
@@ -146,30 +152,29 @@ function roleOptions(currentRole) {
     .join("");
 }
 // ======================================================================
-// 🔥 ADMIN PANEL – Teil 2
+// 🔥 ADMIN PANEL – FINAL (Teil 2)
 // Role Change, Disable System, Delete System, Audit Log, Filters
 // ======================================================================
 
 // -------------------------------------------------------------
-// 🔹 Rollen ändern
+// 🔹 Rollen ändern (employees – Admin/Manager laut Rules)
 // -------------------------------------------------------------
-function attachRoleChangeHandler(db) {
+function attachRoleChangeHandler() {
   document.querySelectorAll(".roleSelect").forEach(select => {
     select.addEventListener("change", async e => {
-      const id = e.target.dataset.id;
+      const id = e.target.dataset.id; // E-Mail
       const newRole = e.target.value;
 
       try {
         await updateDoc(doc(db, "employees", id), { role: newRole });
 
-        const { auth } = initFirebase();
         const adminEmail = auth.currentUser?.email || "system";
 
         await addAuditLog(adminEmail, "change_role", `User: ${id}, new role: ${newRole}`);
 
         showFeedback(`${t("admin.changeRole")}: ${newRole}`, "success");
 
-        await loadEmployees(db);
+        await loadEmployees();
         await loadAuditLog();
 
       } catch (err) {
@@ -182,20 +187,26 @@ function attachRoleChangeHandler(db) {
 
 // -------------------------------------------------------------
 // 🔹 Benutzer deaktivieren / aktivieren
+//    -> employees + users synchron halten (disabled Flag)
 // -------------------------------------------------------------
-function attachDisableHandler(db) {
+function attachDisableHandler() {
   document.querySelectorAll(".disableBtn").forEach(btn => {
     btn.addEventListener("click", async () => {
-      const id = btn.dataset.id;
+      const id = btn.dataset.id; // E-Mail = DocID in employees + users
 
       try {
-        const userRef = doc(db, "employees", id);
-
         const newStatus = btn.innerText.includes(t("employees.disable"));
 
-        await updateDoc(userRef, { disabled: newStatus });
+        // employees (gemäss Rules: Admin/Manager dürfen write)
+        await updateDoc(doc(db, "employees", id), { disabled: newStatus });
 
-        const { auth } = initFirebase();
+        // users (gemäss Rules: Admin/Manager dürfen write)
+        try {
+          await updateDoc(doc(db, "users", id), { disabled: newStatus });
+        } catch (innerErr) {
+          console.warn("⚠️ Konnte users-Dokument nicht updaten (evtl. nicht vorhanden):", innerErr);
+        }
+
         const adminEmail = auth.currentUser?.email || "system";
 
         await addAuditLog(
@@ -209,7 +220,7 @@ function attachDisableHandler(db) {
           newStatus ? "warning" : "success"
         );
 
-        await loadEmployees(db);
+        await loadEmployees();
 
       } catch (err) {
         console.error("❌ Fehler beim Deaktivieren:", err);
@@ -221,11 +232,12 @@ function attachDisableHandler(db) {
 
 // -------------------------------------------------------------
 // 🔹 Benutzer löschen
+//    -> employees + users löschen (Admin/Manager laut Rules)
 // -------------------------------------------------------------
-function attachDeleteHandler(db) {
+function attachDeleteHandler() {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.addEventListener("click", () => {
-      const id = btn.dataset.id;
+      const id = btn.dataset.id; // E-Mail
 
       showFeedback(t("admin.confirm"), "warning");
 
@@ -233,16 +245,23 @@ function attachDeleteHandler(db) {
         "click",
         async () => {
           try {
+            // employees löschen
             await deleteDoc(doc(db, "employees", id));
 
-            const { auth } = initFirebase();
+            // users löschen (falls vorhanden)
+            try {
+              await deleteDoc(doc(db, "users", id));
+            } catch (innerErr) {
+              console.warn("⚠️ Konnte users-Dokument nicht löschen (evtl. nicht vorhanden):", innerErr);
+            }
+
             const adminEmail = auth.currentUser?.email || "system";
 
             await addAuditLog(adminEmail, "delete_user", `User: ${id}`);
 
             showFeedback(t("employees.delete"), "success");
 
-            await loadEmployees(db);
+            await loadEmployees();
             await loadAuditLog();
 
           } catch (err) {
@@ -267,7 +286,7 @@ function filterEmployees(e) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Audit Log laden
+// 🔹 Audit Log laden (activities – laut Rules)
 // -------------------------------------------------------------
 async function loadAuditLog() {
   const table = document.querySelector("#auditTable tbody");

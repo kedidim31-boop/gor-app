@@ -3,30 +3,36 @@
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
-import { collection, onSnapshot } 
-  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { showFeedback } from "./feedback.js";
+import {
+  collection,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-const { db } = initFirebase();
+// Firebase initialisieren
+const { auth, db } = initFirebase();
 
-// Zugriff für Admins & Mitarbeiter
-enforceRole(["admin", "mitarbeiter"], "login.html");
+// Zugriff für Admins & Employees
+enforceRole(["admin", "employee"], "login.html");
 
 // Logout Button
 const logoutBtn = document.querySelector(".logout-btn");
 if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
-// Chart.js Setup
+// Chart.js Elemente
 const ctxOverview = document.getElementById("overviewChart");
 const ctxTimeLine = document.getElementById("timeLineChart");
 
+// Farben aus CSS-Variablen
 const chartColors = {
-  products: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-yellow"),
-  tasks: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-turquoise"),
-  employees: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-green"),
-  time: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-red"),
-  stock: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-purple")
+  products: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-yellow").trim(),
+  tasks: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-turquoise").trim(),
+  employees: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-green").trim(),
+  time: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-red").trim(),
+  stock: getComputedStyle(document.documentElement).getPropertyValue("--color-neon-purple").trim()
 };
 
+// Übersicht-Doughnut-Chart
 const overviewChart = new Chart(ctxOverview, {
   type: "doughnut",
   data: {
@@ -46,12 +52,18 @@ const overviewChart = new Chart(ctxOverview, {
   },
   options: {
     plugins: {
-      legend: { labels: { color: "#f0f0f0", font: { size: 14 } } }
+      legend: {
+        labels: {
+          color: "#f0f0f0",
+          font: { size: 14 }
+        }
+      }
     },
     animation: { animateScale: true, animateRotate: true }
   }
 });
 
+// Zeitverlauf-Chart
 const timeLineChart = new Chart(ctxTimeLine, {
   type: "line",
   data: {
@@ -73,7 +85,7 @@ const timeLineChart = new Chart(ctxTimeLine, {
   }
 });
 
-// Realtime Updates
+// Realtime Variablen
 let productCount = 0;
 let totalStock = 0;
 let taskCount = 0;
@@ -83,33 +95,39 @@ let totalHours = 0;
 // Mitarbeiter
 onSnapshot(collection(db, "employees"), snap => {
   employeeCount = snap.size;
+
   const el = document.getElementById("employeeCount");
   if (el) el.textContent = employeeCount;
+
   updateOverviewChart();
 });
 
-// Produkte inkl. Bestand
+// Produkte + Bestand
 onSnapshot(collection(db, "products"), snap => {
   productCount = snap.size;
   totalStock = 0;
 
   snap.forEach(docSnap => {
     const p = docSnap.data();
-    totalStock += parseInt(p.stock ?? 0);
+    totalStock += Number(p.stock ?? 0);
   });
 
   const elProduct = document.getElementById("productCount");
   const elStock = document.getElementById("stockTotal");
+
   if (elProduct) elProduct.textContent = productCount;
   if (elStock) elStock.textContent = totalStock;
+
   updateOverviewChart();
 });
 
 // Aufgaben
 onSnapshot(collection(db, "tasks"), snap => {
   taskCount = snap.size;
+
   const el = document.getElementById("taskCount");
   if (el) el.textContent = taskCount;
+
   updateOverviewChart();
 });
 
@@ -120,13 +138,12 @@ onSnapshot(collection(db, "timeEntries"), snap => {
 
   snap.forEach(docSnap => {
     const entry = docSnap.data();
-    const h = parseFloat(entry.hours || 0);
-    totalHours += h;
+    const hours = Number(entry.hours || 0);
+    totalHours += hours;
 
     const date = entry.date || "";
     if (date) {
-      if (!hoursByDate[date]) hoursByDate[date] = 0;
-      hoursByDate[date] += h;
+      hoursByDate[date] = (hoursByDate[date] || 0) + hours;
     }
   });
 
@@ -134,6 +151,7 @@ onSnapshot(collection(db, "timeEntries"), snap => {
   if (el) el.textContent = totalHours.toFixed(1) + "h";
 
   const sortedDates = Object.keys(hoursByDate).sort();
+
   timeLineChart.data.labels = sortedDates;
   timeLineChart.data.datasets[0].data = sortedDates.map(d => hoursByDate[d]);
   timeLineChart.update();
@@ -141,7 +159,7 @@ onSnapshot(collection(db, "timeEntries"), snap => {
   updateOverviewChart();
 });
 
-// Chart aktualisieren
+// Übersicht-Chart aktualisieren
 function updateOverviewChart() {
   overviewChart.data.datasets[0].data = [
     productCount,

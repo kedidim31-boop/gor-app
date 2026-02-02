@@ -44,24 +44,25 @@ export async function createUser(email, password, role = "employee") {
     const newUser = userCredential.user;
 
     // -------------------------------------------------------------
-    // 2️⃣ Benutzer in Firestore speichern (employees Collection)
+    // 2️⃣ Benutzer in Firestore speichern
+    //    🔥 Dokument-ID = E-Mail (statt UID)
     // -------------------------------------------------------------
-    await setDoc(doc(db, "employees", newUser.uid), {
-      uid: newUser.uid,
+    await setDoc(doc(db, "employees", email), {
       email,
       role,
+      uid: newUser.uid,        // optional: UID trotzdem speichern
       name: "",
       address: "",
       zip: "",
       city: "",
       phone: "",
       birthday: "",
-      createdBy: currentUser.uid,
+      createdBy: currentUser.email,
       createdAt: serverTimestamp()
     });
 
     // -------------------------------------------------------------
-    // 3️⃣ Erfolgsmeldung (Mehrsprachig)
+    // 3️⃣ Erfolgsmeldung
     // -------------------------------------------------------------
     showFeedback(`${t("admin.createUser")}: ${email}`, "success");
 
@@ -69,12 +70,12 @@ export async function createUser(email, password, role = "employee") {
     // 4️⃣ Aktivität loggen
     // -------------------------------------------------------------
     await logActivity(
-      currentUser.uid,
+      currentUser.email,
       "create_user",
       `User: ${email}, Role: ${role}`
     );
 
-    return newUser.uid;
+    return email; // 🔥 Dokument-ID zurückgeben
 
   } catch (error) {
     console.error("❌ Fehler beim Erstellen des Benutzers:", error);

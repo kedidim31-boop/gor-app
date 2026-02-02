@@ -1,0 +1,198 @@
+/* Product Analytics – Cyberpunk Neon Look */
+/* Ergänzt theme.css + productDetails.css */
+
+/* -------------------------------------------------------------
+   🔹 Analytics Panel
+------------------------------------------------------------- */
+.product-analytics-panel {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(112, 255, 234, 0.25);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 0 18px rgba(112, 255, 234, 0.25);
+}
+
+.product-analytics-panel h3 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Analytics Grid
+------------------------------------------------------------- */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Analytics Card
+------------------------------------------------------------- */
+.analytics-card {
+  background: var(--color-bg-panel);
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
+  transition: all 0.25s ease;
+}
+
+.analytics-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow),
+              0 0 36px rgba(255, 211, 0, 0.55);
+}
+
+.analytics-card h4 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.1rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* Value */
+.analytics-value {
+  margin-top: 8px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-neon-green);
+  text-shadow: 0 0 8px var(--color-neon-green);
+}
+
+/* Subtext */
+.analytics-subtext {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+/* -------------------------------------------------------------
+   🔹 Trend Indicators
+------------------------------------------------------------- */
+.analytics-trend {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.analytics-trend.up {
+  color: var(--color-neon-green);
+  text-shadow: 0 0 6px var(--color-neon-green);
+}
+
+.analytics-trend.down {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 6px var(--color-neon-red);
+}
+
+.analytics-trend.neutral {
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Chart Containers
+------------------------------------------------------------- */
+.analytics-chart {
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 14px rgba(112, 255, 234, 0.25);
+}
+
+.analytics-chart h4 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+/* Chart Canvas */
+.analytics-chart canvas {
+  width: 100%;
+  height: 260px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Traffic Sources
+------------------------------------------------------------- */
+.analytics-traffic {
+  margin-top: 20px;
+}
+
+.analytics-traffic h4 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+.traffic-list {
+  margin-top: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.traffic-item {
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-light);
+  transition: all 0.25s ease;
+}
+
+.traffic-item:hover {
+  background-color: rgba(112, 255, 234, 0.15);
+}
+
+/* -------------------------------------------------------------
+   🔹 Conversion Funnel
+------------------------------------------------------------- */
+.analytics-funnel {
+  margin-top: 20px;
+}
+
+.analytics-funnel h4 {
+  margin-top: 0;
+  color: var(--color-neon-green);
+  text-shadow: 0 0 6px var(--color-neon-green);
+}
+
+.funnel-step {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-light);
+  transition: all 0.25s ease;
+}
+
+.funnel-step:hover {
+  background-color: rgba(0, 255, 128, 0.15);
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-chart canvas {
+    height: 200px;
+  }
+}

@@ -9,13 +9,14 @@ import { t } from "./lang.js";
 import {
   collection,
   getDocs,
+  getDoc,
   updateDoc,
   doc,
   serverTimestamp,
   addDoc
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-const { db } = initFirebase();
+const { auth, db } = initFirebase();
 
 // -------------------------------------------------------------
 // 🔹 Zugriff: Admin, Manager, Support
@@ -76,13 +77,12 @@ async function loadInventory() {
 }
 
 // -------------------------------------------------------------
-// 🔹 Bestand anpassen
+// 🔹 Bestand anpassen (Button → Modal öffnen)
 // -------------------------------------------------------------
 function attachAdjustHandler() {
   document.querySelectorAll(".adjustBtn").forEach(btn => {
     btn.addEventListener("click", () => {
-      const id = btn.dataset.id;
-      openAdjustModal(id);
+      openAdjustModal(btn.dataset.id);
     });
   });
 }
@@ -103,6 +103,7 @@ function openAdjustModal(productId) {
 // -------------------------------------------------------------
 document.getElementById("closeAdjustModal")?.addEventListener("click", () => {
   document.getElementById("adjustModal").classList.remove("open");
+  adjustForm.reset();
 });
 
 // -------------------------------------------------------------
@@ -121,22 +122,22 @@ adjustForm?.addEventListener("submit", async e => {
   }
 
   try {
+    // 🔥 Optimiert: Nur EIN Produkt abrufen statt alle
     const productRef = doc(db, "products", id);
-    const productSnap = await getDocs(collection(db, "products"));
+    const productSnap = await getDoc(productRef);
 
-    let currentStock = 0;
+    if (!productSnap.exists()) {
+      showFeedback(t("errors.fail"), "error");
+      return;
+    }
 
-    productSnap.forEach(docSnap => {
-      if (docSnap.id === id) {
-        currentStock = docSnap.data().stock ?? 0;
-      }
-    });
-
+    const currentStock = productSnap.data().stock ?? 0;
     const newStock = currentStock + amount;
 
+    // Bestand aktualisieren
     await updateDoc(productRef, { stock: newStock });
 
-    // Optional: Bewegungslog
+    // Bewegungslog speichern
     await addDoc(collection(db, "inventoryLogs"), {
       productId: id,
       change: amount,
@@ -144,6 +145,10 @@ adjustForm?.addEventListener("submit", async e => {
       newStock,
       createdAt: serverTimestamp()
     });
+
+    // Optional: Audit Log
+    // const adminId = auth.currentUser?.uid || "system";
+    // await addAuditLog(adminId, "adjust_stock", `ProductID: ${id}, Change: ${amount}`);
 
     showFeedback(t("inventory.updated"), "success");
 
@@ -165,5 +170,4 @@ loadInventory();
 // -------------------------------------------------------------
 // 🔹 Logout
 // -------------------------------------------------------------
-const logoutBtn = document.querySelector(".logout-btn");
-if (logoutBtn) logoutBtn.addEventListener("click", logout);
+document.querySelector(".logout-btn")?.addEventListener("click", logout);

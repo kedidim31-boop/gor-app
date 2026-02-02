@@ -2,14 +2,18 @@
 /* Ergänzt theme.css mit spezifischen Features */
 
 /* -------------------------------------------------------------
-   🔹 Body
+   🔹 Body (Fix: KEIN eigener Hintergrund!)
 ------------------------------------------------------------- */
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: var(--color-bg-main);
   color: var(--color-text-light);
   margin: 0;
   padding: 0;
+
+  /* ❌ Entfernt:
+     background-color: var(--color-bg-main);
+     → überschreibt globalen Neon-Background
+  */
 }
 
 /* -------------------------------------------------------------

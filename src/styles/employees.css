@@ -1,40 +1,45 @@
 /* Mitarbeiter Seite – Cyberpunk Neon Look */
 /* Ergänzt theme.css mit spezifischen Features */
 
-/* Karten */
+/* -------------------------------------------------------------
+   🔹 Karten
+------------------------------------------------------------- */
 .card {
   background: var(--color-bg-panel);
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
   margin-bottom: 1.5rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-  transform: scale(1.03);
+  transform: translateY(-3px);
   box-shadow: 0 0 20px var(--color-neon-yellow),
-              0 0 40px rgba(255, 211, 0, 0.6);
+              0 0 40px rgba(255, 211, 0, 0.55);
 }
 
 .card h2 {
   margin-top: 0;
   color: var(--color-neon-yellow);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   margin-bottom: 1rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
 }
-/* Formular für Mitarbeiterverwaltung */
+
+/* -------------------------------------------------------------
+   🔹 Formular für Mitarbeiterverwaltung
+------------------------------------------------------------- */
 #employeeForm {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.4rem;
 }
 
-/* Zeilen mit mehreren Feldern */
 .form-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 .form-field {
@@ -46,39 +51,47 @@
 .icon-input {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .icon-input i {
   color: var(--color-neon-turquoise);
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
+/* Inputs & Selects */
 #employeeForm input,
 #employeeForm select {
   flex: 1;
   background-color: var(--color-bg-panel);
   border: 2px solid var(--color-neon-yellow);
   border-radius: 8px;
-  padding: 10px;
+  padding: 10px 12px;
   color: var(--color-neon-yellow);
   font-weight: bold;
   outline: none;
   transition: all 0.2s ease;
 }
 
+#employeeForm input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
 #employeeForm input:focus,
 #employeeForm select:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.7);
+              0 0 24px rgba(112, 255, 234, 0.55);
 }
-/* Dropdown für Rollen */
+
+/* -------------------------------------------------------------
+   🔹 Rollen-Dropdown
+------------------------------------------------------------- */
 .roleSelect {
   background-color: var(--color-bg-panel);
   border: 2px solid var(--color-neon-yellow);
   border-radius: 6px;
-  padding: 6px;
+  padding: 8px;
   color: var(--color-neon-yellow);
   font-weight: bold;
   cursor: pointer;
@@ -89,27 +102,12 @@
 .roleSelect:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.7);
-}
-/* Dropdown für Rollen */
-.roleSelect {
-  background-color: var(--color-bg-panel);
-  border: 2px solid var(--color-neon-yellow);
-  border-radius: 6px;
-  padding: 6px;
-  color: var(--color-neon-yellow);
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease;
+              0 0 20px rgba(112, 255, 234, 0.55);
 }
 
-.roleSelect:hover,
-.roleSelect:focus {
-  border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.7);
-}
-/* Tabelle für Mitarbeiterübersicht */
+/* -------------------------------------------------------------
+   🔹 Tabelle für Mitarbeiterübersicht
+------------------------------------------------------------- */
 #employeeTable {
   width: 100%;
   border-collapse: collapse;
@@ -120,7 +118,7 @@
 #employeeTable th,
 #employeeTable td {
   text-align: center;
-  padding: 10px;
+  padding: 12px;
   border-bottom: 1px solid #333;
   color: var(--color-text-light);
   word-wrap: break-word;
@@ -132,46 +130,58 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
+/* Alternierende Zeilen */
+#employeeTable tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
 #employeeTable tr:hover {
   background-color: #2a2a40;
   transition: background 0.2s ease;
 }
-/* Buttons in Tabelle */
-#employeeTable .actionBtn {
+
+/* -------------------------------------------------------------
+   🔹 Buttons in Tabelle
+------------------------------------------------------------- */
+#employeeTable .actionBtn,
+#employeeTable .deleteBtn {
   background-color: transparent;
-  border: 1px solid var(--color-neon-turquoise);
-  color: var(--color-neon-turquoise);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-weight: bold;
+}
+
+/* Action */
+#employeeTable .actionBtn {
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
 }
 
 #employeeTable .actionBtn:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.6);
+              0 0 24px rgba(112, 255, 234, 0.55);
 }
 
-/* Delete Button */
+/* Delete */
 #employeeTable .deleteBtn {
-  background-color: transparent;
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
 #employeeTable .deleteBtn:hover {
   background-color: var(--color-neon-red);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.6);
+              0 0 24px rgba(255, 77, 77, 0.55);
 }
-/* Feedback Banner – globales System */
+
+/* -------------------------------------------------------------
+   🔹 Feedback Banner
+------------------------------------------------------------- */
 #feedbackContainer {
   position: fixed;
   top: 80px;
@@ -193,19 +203,19 @@
 .feedback.success {
   background-color: var(--color-feedback-success);
   box-shadow: 0 0 12px var(--color-feedback-success),
-              0 0 24px rgba(0, 255, 128, 0.6);
+              0 0 24px rgba(0, 255, 128, 0.55);
 }
 
 .feedback.error {
   background-color: var(--color-feedback-error);
   box-shadow: 0 0 12px var(--color-feedback-error),
-              0 0 24px rgba(255, 77, 77, 0.6);
+              0 0 24px rgba(255, 77, 77, 0.55);
 }
 
 .feedback.warning {
   background-color: var(--color-feedback-warning);
   box-shadow: 0 0 12px var(--color-feedback-warning),
-              0 0 24px rgba(255, 211, 0, 0.6);
+              0 0 24px rgba(255, 211, 0, 0.55);
 }
 
 @keyframes fadeInOut {
@@ -214,7 +224,10 @@
   90% { opacity: 1; }
   100% { opacity: 0; transform: translateY(-10px); }
 }
-/* Responsive Anpassung */
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassungen
+------------------------------------------------------------- */
 @media (max-width: 992px) {
   .form-row {
     grid-template-columns: 1fr 1fr;
@@ -235,7 +248,7 @@
   }
 
   #employeeForm {
-    gap: 0.8rem;
+    gap: 1rem;
   }
 
   #employeeForm input,

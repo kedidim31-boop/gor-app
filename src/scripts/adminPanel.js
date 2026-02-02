@@ -1,10 +1,11 @@
 // src/scripts/adminPanel.js – zentrale Logik für Admin Panel (modulare Firebase SDK)
 
 import { enforceRole } from "./roleGuard.js";
-import { createUser } from "./adminUser.js"; // nutzt Firebase Auth + Firestore
+import { createUser } from "./adminUser.js"; 
 import { logout } from "./auth.js";
 import { initFirebase } from "./firebaseSetup.js";
-import { showFeedback } from "./feedback.js"; // globales Feedback-System
+import { showFeedback } from "./feedback.js";
+import { logActivity } from "./activityHandler.js";
 import {
   collection,
   getDocs,
@@ -14,7 +15,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 export function initAdminPanel() {
-  const { db } = initFirebase();
+  const { auth, db } = initFirebase();
 
   // Zugriff nur für Admins
   enforceRole(["admin"], "login.html");
@@ -24,6 +25,7 @@ export function initAdminPanel() {
   if (form) {
     form.addEventListener("submit", async e => {
       e.preventDefault();
+
       const email = document.getElementById("newEmail").value.trim();
       const password = document.getElementById("newPassword").value.trim();
       const role = document.getElementById("newRole").value;
@@ -34,10 +36,17 @@ export function initAdminPanel() {
       }
 
       try {
-        await createUser(email, password, role); // legt User in Auth + Firestore an
-        await loadEmployees();
+        const currentUser = auth.currentUser;
+        const currentUserId = currentUser ? currentUser.uid : "system";
+
+        await createUser(email, password, role);
+        await loadEmployees(db);
         form.reset();
         showFeedback("✅ Benutzer erfolgreich erstellt!", "success");
+
+        // Aktivität loggen
+        await logActivity(currentUserId, "create_user", `User: ${email}, Rolle: ${role}`);
+
       } catch (err) {
         console.error("❌ Fehler beim Erstellen:", err);
         showFeedback("Fehler beim Erstellen des Benutzers.", "error");
@@ -45,82 +54,99 @@ export function initAdminPanel() {
     });
   }
 
-  // Mitarbeiter laden
-  async function loadEmployees() {
-    const tableBody = document.querySelector("#adminEmployeeTable tbody");
-    if (!tableBody) return;
+  // Initial laden
+  loadEmployees(db);
 
-    tableBody.innerHTML = "";
+  // Logout Button
+  const logoutBtn = document.querySelector(".logout-btn");
+  if (logoutBtn) logoutBtn.addEventListener("click", logout);
+}
 
-    const snapshot = await getDocs(collection(db, "employees"));
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      const row = document.createElement("tr");
+// Mitarbeiter / Benutzer im Admin Panel laden
+async function loadEmployees(db) {
+  const tableBody = document.querySelector("#adminEmployeeTable tbody");
+  if (!tableBody || !db) return;
 
-      row.innerHTML = `
-        <td>${data.name || "-"}</td>
-        <td>${data.email || "-"}</td>
-        <td>
-          <select data-id="${docSnap.id}" class="roleSelect">
-            <option value="mitarbeiter" ${data.role === "mitarbeiter" ? "selected" : ""}>Mitarbeiter</option>
-            <option value="admin" ${data.role === "admin" ? "selected" : ""}>Admin</option>
-            <option value="gast" ${data.role === "gast" ? "selected" : ""}>Gast</option>
-          </select>
-        </td>
-        <td>
-          <button class="deleteBtn" data-id="${docSnap.id}">
-            <i class="fa-solid fa-trash"></i> Löschen
-          </button>
-        </td>
-      `;
-      tableBody.appendChild(row);
+  tableBody.innerHTML = "";
+
+  const snapshot = await getDocs(collection(db, "employees"));
+
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${data.name || "-"}</td>
+      <td>${data.email || "-"}</td>
+      <td>
+        <select data-id="${docSnap.id}" class="roleSelect">
+          <option value="employee" ${data.role === "employee" ? "selected" : ""}>Employee</option>
+          <option value="admin" ${data.role === "admin" ? "selected" : ""}>Admin</option>
+          <option value="guest" ${data.role === "guest" ? "selected" : ""}>Guest</option>
+        </select>
+      </td>
+      <td>
+        <button class="deleteBtn actionBtn" data-id="${docSnap.id}">
+          <i class="fa-solid fa-trash"></i> Löschen
+        </button>
+      </td>
+    `;
+
+    tableBody.appendChild(row);
+  });
+
+  // Rollenänderung
+  document.querySelectorAll(".roleSelect").forEach(select => {
+    select.addEventListener("change", async e => {
+      const id = e.target.dataset.id;
+      const newRole = e.target.value;
+
+      try {
+        await updateDoc(doc(db, "employees", id), { role: newRole });
+        showFeedback(`✅ Rolle geändert zu: ${newRole}`, "success");
+
+        // Aktivität loggen
+        const { auth } = initFirebase();
+        const adminId = auth.currentUser?.uid || "system";
+        await logActivity(adminId, "change_role", `UserID: ${id}, neue Rolle: ${newRole}`);
+
+      } catch (err) {
+        console.error("❌ Fehler beim Rollenwechsel:", err);
+        showFeedback("Fehler beim Rollenwechsel.", "error");
+      }
     });
+  });
 
-    // Rollenänderung
-    document.querySelectorAll(".roleSelect").forEach(select => {
-      select.addEventListener("change", async e => {
-        const id = e.target.dataset.id;
-        const newRole = e.target.value;
-        try {
-          await updateDoc(doc(db, "employees", id), { role: newRole });
-          showFeedback(`✅ Rolle geändert zu: ${newRole}`, "success");
-        } catch (err) {
-          console.error("❌ Fehler beim Rollenwechsel:", err);
-          showFeedback("Fehler beim Rollenwechsel.", "error");
-        }
-      });
-    });
+  // Löschen mit Bestätigungs‑Banner
+  document.querySelectorAll(".deleteBtn").forEach(btn => {
+    btn.addEventListener("click", async e => {
+      const id = e.currentTarget.dataset.id;
 
-    // Löschen mit Bestätigungs‑Banner
-    document.querySelectorAll(".deleteBtn").forEach(btn => {
-      btn.addEventListener("click", async e => {
-        const id = e.target.dataset.id;
+      showFeedback("⚠️ Löschbestätigung erforderlich – erneut klicken zum Bestätigen!", "warning");
 
-        // Gelbes Bestätigungs‑Banner statt confirm()
-        showFeedback("⚠️ Löschbestätigung erforderlich – erneut klicken zum Bestätigen!", "warning");
-
-        btn.addEventListener("click", async () => {
+      btn.addEventListener(
+        "click",
+        async () => {
           try {
             await deleteDoc(doc(db, "employees", id));
             showFeedback("✅ Mitarbeiter gelöscht", "success");
-            await loadEmployees();
+
+            // Aktivität loggen
+            const { auth } = initFirebase();
+            const adminId = auth.currentUser?.uid || "system";
+            await logActivity(adminId, "delete_user", `UserID: ${id}`);
+
+            await loadEmployees(db);
+
           } catch (err) {
             console.error("❌ Fehler beim Löschen:", err);
             showFeedback("Fehler beim Löschen des Mitarbeiters.", "error");
           }
-        }, { once: true });
-      });
+        },
+        { once: true }
+      );
     });
-  }
-
-  // Initial laden
-  loadEmployees();
-
-  // Logout Button
-  const logoutBtn = document.querySelector(".logout-btn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", logout);
-  }
+  });
 }
 
 // Admin Panel direkt initialisieren

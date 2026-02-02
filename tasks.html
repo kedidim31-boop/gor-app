@@ -4,24 +4,33 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Aufgaben</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- Globale Theme -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/tasks.css">
+
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-  <!-- Branding Header -->
+  <!-- ============================================================
+       🔹 BRANDING HEADER
+  ============================================================ -->
   <header class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-list-check"></i> Aufgabenverwaltung</div>
+      <div class="subtitle">
+        <i class="fa-solid fa-list-check"></i> Aufgabenverwaltung
+      </div>
     </div>
   </header>
 
-  <!-- Navigation -->
+  <!-- ============================================================
+       🔹 TOP NAVIGATION
+  ============================================================ -->
   <nav class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
@@ -30,24 +39,38 @@
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <!-- Logout Button -->
-    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+
+    <button class="btn btn-red logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
   </nav>
 
-  <!-- Hauptinhalt -->
+  <!-- Feedback Container -->
+  <div id="feedbackContainer"></div>
+
+  <!-- ============================================================
+       🔹 MAIN CONTENT
+  ============================================================ -->
   <main>
-    <!-- Aufgabenformular -->
+
+    <!-- ========================================================
+         🔹 AUFGABE ERSTELLEN
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-plus-circle"></i> Neue Aufgabe erstellen</h2>
+
       <form id="taskForm" class="form-grid">
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-heading"></i>
           <input type="text" id="taskTitle" placeholder="Titel" required>
         </label>
-        <label class="form-field icon-input">
+
+        <label class="form-field icon-input full-width">
           <i class="fa-solid fa-align-left"></i>
           <textarea id="taskDescription" placeholder="Beschreibung"></textarea>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-bars-progress"></i>
           <select id="taskStatus" required>
@@ -56,15 +79,20 @@
             <option value="abgeschlossen">Abgeschlossen</option>
           </select>
         </label>
+
         <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Aufgabe speichern
         </button>
+
       </form>
     </div>
 
-    <!-- Aufgabenübersicht -->
+    <!-- ========================================================
+         🔹 AUFGABENÜBERSICHT
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-table"></i> Aufgabenübersicht</h2>
+
       <table id="taskTable">
         <thead>
           <tr>
@@ -74,14 +102,19 @@
             <th>Aktionen</th>
           </tr>
         </thead>
+
         <tbody>
           <!-- Aufgaben werden hier dynamisch geladen -->
         </tbody>
       </table>
     </div>
+
   </main>
 
-  <!-- Firebase Logik ausgelagert -->
+  <!-- ============================================================
+       🔹 TASK LOGIK
+  ============================================================ -->
   <script type="module" src="src/scripts/tasks.js"></script>
+
 </body>
 </html>

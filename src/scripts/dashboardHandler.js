@@ -1,19 +1,30 @@
-// dashboardHandler.js – globales Modul für Dashboard-Logik im Gaming of Republic Admin System
-// Ergänzt mit konsistentem Neon-Theme, Logging und Error-Handling
+// src/scripts/dashboardHandler.js – globales Dashboard-Modul (modulare Firebase SDK)
 
 import { initFirebase } from "./firebaseSetup.js";
+import { showFeedback } from "./feedback.js";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit as fsLimit
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// Dashboard-Kennzahlen laden
+const { db } = initFirebase();
+
+// 🔹 Dashboard-Kennzahlen laden (Produkte, Mitarbeiter, Aufgaben, Zeit)
 export async function loadDashboardStats() {
-  const { db } = initFirebase();
-  if (!db) return {};
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert.");
+    return {};
+  }
 
   try {
     const [productsSnap, employeesSnap, tasksSnap, timeSnap] = await Promise.all([
-      db.collection("products").get(),
-      db.collection("employees").get(),
-      db.collection("tasks").get(),
-      db.collection("timeEntries").get()
+      getDocs(collection(db, "products")),
+      getDocs(collection(db, "employees")),
+      getDocs(collection(db, "tasks")),
+      getDocs(collection(db, "timeEntries"))
     ]);
 
     const stats = {
@@ -23,56 +34,43 @@ export async function loadDashboardStats() {
       timeEntries: timeSnap.size
     };
 
-    console.log("✅ Dashboard-Kennzahlen erfolgreich geladen:", stats);
-    notifySuccess("Dashboard-Kennzahlen erfolgreich geladen");
+    console.log("📊 Dashboard-Kennzahlen geladen:", stats);
     return stats;
+
   } catch (error) {
     console.error("❌ Fehler beim Laden der Dashboard-Kennzahlen:", error);
-    notifyError("Fehler beim Laden der Dashboard-Kennzahlen – bitte erneut versuchen.");
+    showFeedback("Fehler beim Laden der Dashboard-Kennzahlen.", "error");
     return {};
   }
 }
 
-// Letzte Aktivitäten abrufen
+// 🔹 Letzte Aktivitäten abrufen
 export async function loadRecentActivities(limit = 5) {
-  const { db } = initFirebase();
-  if (!db) return [];
-
-  try {
-    const snapshot = await db.collection("activities")
-      .orderBy("timestamp", "desc")
-      .limit(limit)
-      .get();
-
-    const activities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log(`✅ ${activities.length} letzte Aktivität(en) geladen`);
-    return activities;
-  } catch (error) {
-    console.error("❌ Fehler beim Laden der Aktivitäten:", error);
-    notifyError("Fehler beim Laden der Aktivitäten – bitte erneut versuchen.");
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert.");
     return [];
   }
-}
 
-// Hilfsfunktionen für UI-Feedback (aus notificationHandler.js)
-function notifySuccess(message) {
-  const box = document.createElement("div");
-  box.className = "notification success";
-  box.innerText = message;
-  document.body.appendChild(box);
-  setTimeout(() => box.remove(), 3000);
-}
+  try {
+    const q = query(
+      collection(db, "activities"),
+      orderBy("timestamp", "desc"),
+      fsLimit(limit)
+    );
 
-function notifyError(message) {
-  const box = document.createElement("div");
-  box.className = "notification error";
-  box.innerText = message;
-  document.body.appendChild(box);
-  setTimeout(() => box.remove(), 4000);
+    const snapshot = await getDocs(q);
 
-  const card = document.querySelector(".card");
-  if (card) {
-    card.classList.add("shake");
-    setTimeout(() => card.classList.remove("shake"), 600);
+    const activities = snapshot.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
+    }));
+
+    console.log(`📄 ${activities.length} letzte Aktivität(en) geladen`);
+    return activities;
+
+  } catch (error) {
+    console.error("❌ Fehler beim Laden der Aktivitäten:", error);
+    showFeedback("Fehler beim Laden der Aktivitäten.", "error");
+    return [];
   }
 }

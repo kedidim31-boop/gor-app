@@ -1,4 +1,7 @@
-// src/scripts/adminPanel.js – FINAL VERSION (Audit + Filter + Badges + Disable User)
+// ======================================================================
+// 🔥 ADMIN PANEL – Teil 1
+// Setup, Init, User Creation, Employee Loader, Role UI, Status Badges
+// ======================================================================
 
 import { enforceRole } from "./roleGuard.js";
 import { createUser } from "./adminUser.js";
@@ -23,6 +26,7 @@ import {
 export function initAdminPanel() {
   const { auth, db } = initFirebase();
 
+  // Zugriff nur für Admin + Manager
   enforceRole(["admin", "manager"], "login.html");
 
   // Benutzer anlegen
@@ -66,10 +70,8 @@ export function initAdminPanel() {
   // Logout
   document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
-  // Mitarbeiter-Suche
+  // Live‑Filter
   document.getElementById("employeeSearch")?.addEventListener("input", filterEmployees);
-
-  // Audit-Suche
   document.getElementById("auditSearch")?.addEventListener("input", filterAudit);
 
   // Audit Refresh
@@ -77,7 +79,7 @@ export function initAdminPanel() {
 }
 
 // -------------------------------------------------------------
-// 🔹 Mitarbeiter / Benutzer laden
+// 🔹 Mitarbeiter laden
 // -------------------------------------------------------------
 async function loadEmployees(db) {
   const tableBody = document.querySelector("#adminEmployeeTable tbody");
@@ -92,6 +94,11 @@ async function loadEmployees(db) {
     const id = docSnap.id;
 
     const row = document.createElement("tr");
+
+    const statusBadge = data.disabled
+      ? `<span class="role-badge role-guest">${t("employees.disabled") || "Deaktiviert"}</span>`
+      : `<span class="role-badge role-employee">${t("employees.active") || "Aktiv"}</span>`;
+
     row.innerHTML = `
       <td>${data.name || "-"}</td>
       <td>${data.email || id}</td>
@@ -103,23 +110,16 @@ async function loadEmployees(db) {
         </select>
       </td>
 
-      <!-- ⭐ NEU: Status -->
-      <td>
-        ${data.disabled 
-          ? `<span class="role-badge role-guest">Deaktiviert</span>`
-          : `<span class="role-badge role-employee">Aktiv</span>`
-        }
-      </td>
+      <td>${statusBadge}</td>
 
       <td>
         <button class="deleteBtn actionBtn" data-id="${id}">
           <i class="fa-solid fa-trash"></i> ${t("employees.delete")}
         </button>
 
-        <!-- ⭐ NEU: Deaktivieren / Aktivieren -->
         <button class="disableBtn actionBtn" data-id="${id}">
           <i class="fa-solid fa-user-slash"></i>
-          ${data.disabled ? "Aktivieren" : "Deaktivieren"}
+          ${data.disabled ? t("employees.enable") : t("employees.disable")}
         </button>
       </td>
     `;
@@ -129,11 +129,11 @@ async function loadEmployees(db) {
 
   attachRoleChangeHandler(db);
   attachDeleteHandler(db);
-  attachDisableHandler(db); // ⭐ NEU
+  attachDisableHandler(db);
 }
 
 // -------------------------------------------------------------
-// 🔹 Rollen-Auswahl dynamisch generieren
+// 🔹 Rollen-Auswahl generieren
 // -------------------------------------------------------------
 function roleOptions(currentRole) {
   const roles = ["employee", "support", "manager", "admin", "guest"];
@@ -145,9 +145,13 @@ function roleOptions(currentRole) {
     })
     .join("");
 }
+// ======================================================================
+// 🔥 ADMIN PANEL – Teil 2
+// Role Change, Disable System, Delete System, Audit Log, Filters
+// ======================================================================
 
 // -------------------------------------------------------------
-// 🔹 Rollenänderung
+// 🔹 Rollen ändern
 // -------------------------------------------------------------
 function attachRoleChangeHandler(db) {
   document.querySelectorAll(".roleSelect").forEach(select => {
@@ -158,12 +162,12 @@ function attachRoleChangeHandler(db) {
       try {
         await updateDoc(doc(db, "employees", id), { role: newRole });
 
-        showFeedback(`${t("admin.changeRole")}: ${newRole}`, "success");
-
         const { auth } = initFirebase();
         const adminEmail = auth.currentUser?.email || "system";
 
         await addAuditLog(adminEmail, "change_role", `User: ${id}, new role: ${newRole}`);
+
+        showFeedback(`${t("admin.changeRole")}: ${newRole}`, "success");
 
         await loadEmployees(db);
         await loadAuditLog();
@@ -177,7 +181,7 @@ function attachRoleChangeHandler(db) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Benutzer deaktivieren / aktivieren ⭐ NEU
+// 🔹 Benutzer deaktivieren / aktivieren
 // -------------------------------------------------------------
 function attachDisableHandler(db) {
   document.querySelectorAll(".disableBtn").forEach(btn => {
@@ -187,8 +191,7 @@ function attachDisableHandler(db) {
       try {
         const userRef = doc(db, "employees", id);
 
-        // Status umschalten
-        const newStatus = btn.innerText.includes("Deaktivieren");
+        const newStatus = btn.innerText.includes(t("employees.disable"));
 
         await updateDoc(userRef, { disabled: newStatus });
 
@@ -202,7 +205,7 @@ function attachDisableHandler(db) {
         );
 
         showFeedback(
-          newStatus ? "Benutzer deaktiviert" : "Benutzer aktiviert",
+          newStatus ? t("employees.disabled") : t("employees.enabled"),
           newStatus ? "warning" : "success"
         );
 
@@ -217,7 +220,7 @@ function attachDisableHandler(db) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Löschen mit Bestätigung
+// 🔹 Benutzer löschen
 // -------------------------------------------------------------
 function attachDeleteHandler(db) {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
@@ -254,13 +257,12 @@ function attachDeleteHandler(db) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Mitarbeiter-Suche (Live-Filter)
+// 🔹 Mitarbeiter-Suche
 // -------------------------------------------------------------
 function filterEmployees(e) {
   const term = e.target.value.toLowerCase();
   document.querySelectorAll("#adminEmployeeTable tbody tr").forEach(row => {
-    const text = row.innerText.toLowerCase();
-    row.style.display = text.includes(term) ? "" : "none";
+    row.style.display = row.innerText.toLowerCase().includes(term) ? "" : "none";
   });
 }
 
@@ -277,7 +279,6 @@ async function loadAuditLog() {
 
   logs.forEach(log => {
     const row = document.createElement("tr");
-
     const time = log.timestamp?.toDate().toLocaleString("de-CH") || "-";
 
     row.innerHTML = `
@@ -297,12 +298,11 @@ async function loadAuditLog() {
 function filterAudit(e) {
   const term = e.target.value.toLowerCase();
   document.querySelectorAll("#auditTable tbody tr").forEach(row => {
-    const text = row.innerText.toLowerCase();
-    row.style.display = text.includes(term) ? "" : "none";
+    row.style.display = row.innerText.toLowerCase().includes(term) ? "" : "none";
   });
 }
 
 // -------------------------------------------------------------
-// 🔹 Admin Panel direkt initialisieren
+// 🔹 Admin Panel starten
 // -------------------------------------------------------------
 initAdminPanel();

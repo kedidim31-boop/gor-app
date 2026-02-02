@@ -1,7 +1,9 @@
-/* Index Seite – Grundlayout im Neon-Stil */
-/* Ergänzt globale theme.css mit spezifischen Features */
+/* Index Seite – Cyberpunk Neon Dashboard */
+/* Ergänzt theme.css mit spezifischen Features */
 
-/* Body & Grundfarben */
+/* -------------------------------------------------------------
+   🔹 Body & Grundfarben
+------------------------------------------------------------- */
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background-color: var(--color-bg-dark);
@@ -10,13 +12,16 @@ body {
   padding: 0;
 }
 
-/* Branding Header */
+/* -------------------------------------------------------------
+   🔹 Branding Header
+------------------------------------------------------------- */
 .branding-header {
   display: flex;
   align-items: center;
   padding: 1rem;
   background: linear-gradient(90deg, #111, #222);
   border-bottom: 2px solid var(--color-neon-yellow);
+  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
 }
 
 .branding-header img {
@@ -25,17 +30,21 @@ body {
 }
 
 .branding-text .subtitle {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: bold;
   color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* Navigation */
+/* -------------------------------------------------------------
+   🔹 Navigation
+------------------------------------------------------------- */
 .top-nav {
   display: flex;
   align-items: center;
   background: var(--color-bg-panel);
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .top-nav a,
@@ -44,19 +53,21 @@ body {
   text-decoration: none;
   margin-right: 1rem;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: background 0.3s;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  font-weight: 500;
 }
 
 .top-nav a.active {
   background: var(--color-neon-yellow);
-  color: var(--color-bg-dark);
+  color: #000;
   font-weight: bold;
+  box-shadow: 0 0 10px var(--color-neon-yellow);
 }
 
 .top-nav a:hover,
 .top-nav button:hover {
-  background: #333;
+  background: rgba(255, 255, 255, 0.08);
   cursor: pointer;
 }
 
@@ -67,7 +78,9 @@ body {
   font-size: 1rem;
 }
 
-/* Dashboard Layout */
+/* -------------------------------------------------------------
+   🔹 Dashboard Layout
+------------------------------------------------------------- */
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -75,28 +88,31 @@ body {
   margin: 1.5rem;
 }
 
-/* Karten */
+/* -------------------------------------------------------------
+   🔹 Karten (Overview)
+------------------------------------------------------------- */
 .card {
   background: var(--color-bg-panel);
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: translateY(-4px);
   box-shadow: 0 0 20px var(--color-neon-turquoise),
-              0 0 40px rgba(112, 255, 234, 0.6);
+              0 0 40px rgba(112, 255, 234, 0.55);
 }
 
 .card h2,
 .card h3 {
   margin-top: 0;
   color: var(--color-neon-yellow);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   margin-bottom: 1rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
 .card p {
@@ -104,52 +120,58 @@ body {
   margin-top: 0.5rem;
 }
 
-/* Statistiken */
+/* -------------------------------------------------------------
+   🔹 Statistiken
+------------------------------------------------------------- */
 .stat {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: bold;
   margin: 0.5rem 0;
+  letter-spacing: 1px;
 }
 
-/* Farben für einzelne Werte */
+/* Neon-Farben für KPIs */
 #overviewProducts {
   color: var(--color-neon-yellow);
-  text-shadow: 0 0 8px var(--color-neon-yellow);
+  text-shadow: 0 0 10px var(--color-neon-yellow);
 }
 
 #overviewTasks {
   color: var(--color-neon-turquoise);
-  text-shadow: 0 0 8px var(--color-neon-turquoise);
+  text-shadow: 0 0 10px var(--color-neon-turquoise);
 }
 
 #overviewEmployees {
   color: var(--color-neon-green);
-  text-shadow: 0 0 8px var(--color-neon-green);
+  text-shadow: 0 0 10px var(--color-neon-green);
 }
 
 #overviewTime {
   color: var(--color-neon-red);
-  text-shadow: 0 0 8px var(--color-neon-red);
+  text-shadow: 0 0 10px var(--color-neon-red);
 }
 
-/* Quick-Links Karten */
+/* -------------------------------------------------------------
+   🔹 Quick-Links Karten
+------------------------------------------------------------- */
 .quick-links .card {
   background: var(--color-bg-panel);
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .quick-links .card:hover {
-  transform: scale(1.03);
+  transform: translateY(-3px);
   box-shadow: 0 0 18px var(--color-neon-yellow),
-              0 0 36px rgba(255, 211, 0, 0.5);
+              0 0 36px rgba(255, 211, 0, 0.55);
 }
 
 .quick-links h3 {
   color: var(--color-neon-turquoise);
   margin-bottom: 0.5rem;
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
 }
 
 .quick-links a.btn {
@@ -159,10 +181,12 @@ body {
   border-radius: 6px;
   font-weight: bold;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
-/* Button Farben */
+/* -------------------------------------------------------------
+   🔹 Button Farben
+------------------------------------------------------------- */
 .btn-turquoise {
   background-color: transparent;
   border: 1px solid var(--color-neon-turquoise);
@@ -173,7 +197,7 @@ body {
   background-color: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.6);
+              0 0 24px rgba(112, 255, 234, 0.55);
 }
 
 .btn-green {
@@ -186,7 +210,7 @@ body {
   background-color: var(--color-neon-green);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-green),
-              0 0 24px rgba(0, 255, 128, 0.6);
+              0 0 24px rgba(0, 255, 128, 0.55);
 }
 
 .btn-yellow {
@@ -199,7 +223,7 @@ body {
   background-color: var(--color-neon-yellow);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-yellow),
-              0 0 24px rgba(255, 211, 0, 0.6);
+              0 0 24px rgba(255, 211, 0, 0.55);
 }
 
 .btn-red {
@@ -212,15 +236,18 @@ body {
   background-color: var(--color-neon-red);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.6);
+              0 0 24px rgba(255, 77, 77, 0.55);
 }
 
-/* Responsive Anpassung */
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassungen
+------------------------------------------------------------- */
 @media (max-width: 768px) {
   .dashboard {
     grid-template-columns: 1fr;
     margin: 1rem;
   }
+
   .card {
     padding: 1rem;
   }

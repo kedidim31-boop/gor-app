@@ -3,8 +3,10 @@
 import { initFirebase } from "./firebaseSetup.js";
 import { getAuth, signInWithEmailAndPassword } 
   from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } 
-  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+import { 
+  getFirestore, doc, getDoc, collection, query, where, getDocs 
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 import { showFeedback } from "./feedback.js";
 import { t } from "./lang.js";
@@ -12,9 +14,6 @@ import { t } from "./lang.js";
 document.addEventListener("DOMContentLoaded", () => {
   console.log("🚀 Login.js geladen – DOM bereit.");
 
-  // -------------------------------------------------------------
-  // 🔹 DOM Elemente
-  // -------------------------------------------------------------
   const splash = document.querySelector(".splash-screen");
   const loginCard = document.querySelector(".login-card");
   const skipBtn = document.querySelector(".skip-btn");
@@ -25,18 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const togglePassword = document.getElementById("togglePassword");
   const spinner = document.getElementById("spinner");
 
-  // -------------------------------------------------------------
-  // 🔹 Firebase Setup
-  // -------------------------------------------------------------
   const { app } = initFirebase();
   const auth = getAuth(app);
   const db = getFirestore(app);
 
   console.log("🔥 Firebase initialisiert:", app);
 
-  // -------------------------------------------------------------
-  // 🔹 Splash automatisch ausblenden
-  // -------------------------------------------------------------
   setTimeout(() => hideSplash(), 3000);
 
   function hideSplash() {
@@ -58,21 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   }
 
-  // Skip Button
   skipBtn?.addEventListener("click", hideSplash);
 
-  // -------------------------------------------------------------
-  // 🔹 Passwort sichtbar/unsichtbar toggeln
-  // -------------------------------------------------------------
   togglePassword?.addEventListener("click", () => {
     const type = passwordInput.type === "password" ? "text" : "password";
     passwordInput.type = type;
     togglePassword.classList.toggle("fa-eye-slash");
   });
 
-  // -------------------------------------------------------------
-  // 🔹 Login Formular
-  // -------------------------------------------------------------
   loginForm?.addEventListener("submit", async e => {
     e.preventDefault();
     console.log("📨 Login-Formular abgeschickt.");
@@ -95,47 +81,39 @@ document.addEventListener("DOMContentLoaded", () => {
     errorMessage.classList.add("hidden");
 
     try {
-      // -------------------------------------------------------------
-      // 🔹 Firebase Login
-      // -------------------------------------------------------------
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       // -------------------------------------------------------------
-      // 🔹 Rolle aus Firestore abrufen
+      // 🔹 Firestore: User per E-Mail suchen (statt per UID)
       // -------------------------------------------------------------
-      const userDocRef = doc(db, "employees", user.uid);
-      const userDocSnap = await getDoc(userDocRef);
+      const q = query(
+        collection(db, "employees"),
+        where("email", "==", user.email)
+      );
+
+      const querySnapshot = await getDocs(q);
 
       spinner.style.display = "none";
 
-      if (!userDocSnap.exists()) {
+      if (querySnapshot.empty) {
         showFeedback(t("errors.load"), "error");
-        console.error("❌ Firestore: Kein Dokument für diesen User.");
+        console.error("❌ Firestore: Kein Dokument für diesen User (E-Mail nicht gefunden).");
         return;
       }
 
-      const userData = userDocSnap.data();
+      const userData = querySnapshot.docs[0].data();
       const role = userData.role || "guest";
 
       console.log("🔍 Rolle erkannt:", role);
 
-      // -------------------------------------------------------------
-      // 🔹 Login erfolgreich
-      // -------------------------------------------------------------
       loginCard.classList.add("success");
       showFeedback(`${t("auth.in")} (${role})`, "success");
 
       setTimeout(() => {
         loginCard.classList.add("fade-out-success");
 
-        // -------------------------------------------------------------
-        // 🔹 Weiterleitung nach Rolle
-        // -------------------------------------------------------------
-        if (role === "admin") {
-          window.location.href = "adminPanel.html";
-        } 
-        else if (role === "manager") {
+        if (role === "admin" || role === "manager") {
           window.location.href = "adminPanel.html";
         }
         else if (role === "support") {

@@ -3,9 +3,8 @@
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
-import { showFeedback } from "./feedback.js";
 import { t } from "./lang.js";
-import { openInventoryModal } from "./inventoryModal.js"; // 🔥 NEU
+import { openInventoryModal } from "./inventoryModal.js"; // Modal-Logik ausgelagert
 
 import {
   collection,
@@ -37,7 +36,7 @@ function formatCH(num) {
 // -------------------------------------------------------------
 // 🔹 Lagerbestand laden
 // -------------------------------------------------------------
-async function loadInventory() {
+export async function loadInventory() {
   if (!tableBody) return;
 
   tableBody.innerHTML = "";
@@ -77,7 +76,7 @@ async function loadInventory() {
 function attachAdjustHandler() {
   document.querySelectorAll(".adjustBtn").forEach(btn => {
     btn.addEventListener("click", () => {
-      openInventoryModal(btn.dataset.id); // 🔥 NEU
+      openInventoryModal(btn.dataset.id);
     });
   });
 }
@@ -86,7 +85,14 @@ function attachAdjustHandler() {
 // 🔹 Realtime Reload nach Modal-Speicherung
 // -------------------------------------------------------------
 document.addEventListener("inventoryUpdated", () => {
-  loadInventory(); // 🔥 Modal sendet Event → Tabelle aktualisieren
+  loadInventory();
+});
+
+// -------------------------------------------------------------
+// 🔹 Wenn inventorySearch.js neu rendert → Buttons neu aktivieren
+// -------------------------------------------------------------
+document.addEventListener("inventorySearchRendered", () => {
+  attachAdjustHandler();
 });
 
 // -------------------------------------------------------------

@@ -1,93 +1,102 @@
-// auditHandler.js – globales Modul für Audit-Logs im Gaming of Republic Admin System
-// Ergänzt mit konsistentem Neon-Theme, Logging und Error-Handling
+// src/scripts/auditHandler.js – globales Modul für Audit-Logs (modulare Firebase SDK)
 
 import { initFirebase } from "./firebaseSetup.js";
+import { showFeedback } from "./feedback.js";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  limit as fsLimit,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// Neue Audit-Log-Eintragung hinzufügen
+const { db } = initFirebase();
+
+// 🔹 Neues Audit-Log hinzufügen
 export async function addAuditLog(userId, action, details = "") {
-  const { db } = initFirebase();
-  if (!db) return;
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert – Audit-Log kann nicht gespeichert werden.");
+    return null;
+  }
 
   try {
     const entry = {
-      userId,
+      userId: userId || "unknown",
       action,
       details,
-      timestamp: new Date().toISOString()
+      timestamp: serverTimestamp()
     };
 
-    const docRef = await db.collection("auditLogs").add(entry);
-    console.log(`✅ Audit-Log hinzugefügt: ${action} (ID: ${docRef.id})`);
-    notifySuccess("Audit-Log erfolgreich hinzugefügt");
+    const docRef = await addDoc(collection(db, "auditLogs"), entry);
+
+    console.log(`✅ Audit-Log gespeichert: ${action} (ID: ${docRef.id})`);
+    // Optional: showFeedback("Audit-Log gespeichert", "success");
+
     return docRef.id;
+
   } catch (error) {
-    console.error("❌ Fehler beim Hinzufügen eines Audit-Logs:", error);
-    notifyError("Fehler beim Hinzufügen – bitte erneut versuchen.");
+    console.error("❌ Fehler beim Speichern des Audit-Logs:", error);
+    showFeedback("Fehler beim Speichern des Audit-Logs.", "error");
+    return null;
   }
 }
 
-// Alle Audit-Logs abrufen
+// 🔹 Alle Audit-Logs abrufen
 export async function getAuditLogs(limit = 20) {
-  const { db } = initFirebase();
   if (!db) return [];
 
   try {
-    const snapshot = await db.collection("auditLogs")
-      .orderBy("timestamp", "desc")
-      .limit(limit)
-      .get();
+    const q = query(
+      collection(db, "auditLogs"),
+      orderBy("timestamp", "desc"),
+      fsLimit(limit)
+    );
 
-    const logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log(`✅ ${logs.length} Audit-Log(s) geladen`);
+    const snapshot = await getDocs(q);
+
+    const logs = snapshot.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
+    }));
+
+    console.log(`📄 ${logs.length} Audit-Logs geladen`);
     return logs;
+
   } catch (error) {
-    console.error("❌ Fehler beim Abrufen der Audit-Logs:", error);
-    notifyError("Fehler beim Laden der Audit-Logs – bitte erneut versuchen.");
+    console.error("❌ Fehler beim Laden der Audit-Logs:", error);
+    showFeedback("Fehler beim Laden der Audit-Logs.", "error");
     return [];
   }
 }
 
-// Audit-Logs nach Benutzer abrufen
+// 🔹 Audit-Logs eines bestimmten Benutzers abrufen
 export async function getAuditLogsByUser(userId, limit = 10) {
-  const { db } = initFirebase();
   if (!db) return [];
 
   try {
-    const snapshot = await db.collection("auditLogs")
-      .where("userId", "==", userId)
-      .orderBy("timestamp", "desc")
-      .limit(limit)
-      .get();
+    const q = query(
+      collection(db, "auditLogs"),
+      where("userId", "==", userId),
+      orderBy("timestamp", "desc"),
+      fsLimit(limit)
+    );
 
-    const logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log(`✅ ${logs.length} Audit-Log(s) für Benutzer '${userId}' geladen`);
+    const snapshot = await getDocs(q);
+
+    const logs = snapshot.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
+    }));
+
+    console.log(`📄 ${logs.length} Audit-Logs für User '${userId}' geladen`);
     return logs;
+
   } catch (error) {
-    console.error(`❌ Fehler beim Abrufen der Audit-Logs für Benutzer '${userId}':`, error);
-    notifyError("Fehler beim Laden der Benutzer-Audit-Logs – bitte erneut versuchen.");
+    console.error(`❌ Fehler beim Laden der Audit-Logs für User '${userId}':`, error);
+    showFeedback("Fehler beim Laden der Benutzer-Audit-Logs.", "error");
     return [];
-  }
-}
-
-// Hilfsfunktionen für UI-Feedback (aus notificationHandler.js)
-function notifySuccess(message) {
-  const box = document.createElement("div");
-  box.className = "notification success";
-  box.innerText = message;
-  document.body.appendChild(box);
-  setTimeout(() => box.remove(), 3000);
-}
-
-function notifyError(message) {
-  const box = document.createElement("div");
-  box.className = "notification error";
-  box.innerText = message;
-  document.body.appendChild(box);
-  setTimeout(() => box.remove(), 4000);
-
-  const card = document.querySelector(".card");
-  if (card) {
-    card.classList.add("shake");
-    setTimeout(() => card.classList.remove("shake"), 600);
   }
 }

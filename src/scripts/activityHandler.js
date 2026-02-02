@@ -1,93 +1,105 @@
-// activityHandler.js – globales Modul für Aktivitäten-Logging im Gaming of Republic Admin System
-// Ergänzt mit konsistentem Neon-Theme, Logging und Error-Handling
+// src/scripts/activityHandler.js – globales Modul für Aktivitäten-Logging
+// Nutzt modularen Firestore + globales Neon-Feedback-System
 
 import { initFirebase } from "./firebaseSetup.js";
+import { showFeedback } from "./feedback.js";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  limit as fsLimit,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// Neue Aktivität protokollieren
+const { db } = initFirebase();
+
+// 🔹 Neue Aktivität protokollieren
 export async function logActivity(userId, action, details = "") {
-  const { db } = initFirebase();
-  if (!db) return;
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert – Aktivität kann nicht protokolliert werden.");
+    return null;
+  }
 
   try {
     const entry = {
-      userId,
+      userId: userId || "unknown",
       action,
       details,
-      timestamp: new Date().toISOString()
+      timestamp: serverTimestamp()
     };
 
-    const docRef = await db.collection("activities").add(entry);
+    const docRef = await addDoc(collection(db, "activities"), entry);
     console.log(`✅ Aktivität protokolliert: ${action} (ID: ${docRef.id})`);
-    notifySuccess("Aktivität erfolgreich protokolliert");
+
+    // Optional: Nur bei bestimmten Aktionen Feedback anzeigen
+    // showFeedback("Aktivität erfolgreich protokolliert.", "success");
+
     return docRef.id;
   } catch (error) {
     console.error("❌ Fehler beim Protokollieren der Aktivität:", error);
-    notifyError("Fehler beim Protokollieren – bitte erneut versuchen.");
+    showFeedback("Fehler beim Protokollieren der Aktivität.", "error");
+    return null;
   }
 }
 
-// Letzte Aktivitäten abrufen
+// 🔹 Letzte Aktivitäten abrufen
 export async function getRecentActivities(limit = 10) {
-  const { db } = initFirebase();
-  if (!db) return [];
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert – Aktivitäten können nicht geladen werden.");
+    return [];
+  }
 
   try {
-    const snapshot = await db.collection("activities")
-      .orderBy("timestamp", "desc")
-      .limit(limit)
-      .get();
+    const q = query(
+      collection(db, "activities"),
+      orderBy("timestamp", "desc"),
+      fsLimit(limit)
+    );
 
-    const activities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const snapshot = await getDocs(q);
+    const activities = snapshot.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
+    }));
+
     console.log(`✅ ${activities.length} Aktivität(en) geladen`);
     return activities;
   } catch (error) {
     console.error("❌ Fehler beim Laden der Aktivitäten:", error);
-    notifyError("Fehler beim Laden der Aktivitäten – bitte erneut versuchen.");
+    showFeedback("Fehler beim Laden der Aktivitäten.", "error");
     return [];
   }
 }
 
-// Aktivitäten eines bestimmten Benutzers abrufen
+// 🔹 Aktivitäten eines bestimmten Benutzers abrufen
 export async function getUserActivities(userId, limit = 10) {
-  const { db } = initFirebase();
-  if (!db) return [];
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert – Benutzeraktivitäten können nicht geladen werden.");
+    return [];
+  }
 
   try {
-    const snapshot = await db.collection("activities")
-      .where("userId", "==", userId)
-      .orderBy("timestamp", "desc")
-      .limit(limit)
-      .get();
+    const q = query(
+      collection(db, "activities"),
+      where("userId", "==", userId),
+      orderBy("timestamp", "desc"),
+      fsLimit(limit)
+    );
 
-    const activities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const snapshot = await getDocs(q);
+    const activities = snapshot.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
+    }));
+
     console.log(`✅ ${activities.length} Aktivität(en) für Benutzer '${userId}' geladen`);
     return activities;
   } catch (error) {
     console.error(`❌ Fehler beim Laden der Aktivitäten für Benutzer '${userId}':`, error);
-    notifyError("Fehler beim Laden der Benutzeraktivitäten – bitte erneut versuchen.");
+    showFeedback("Fehler beim Laden der Benutzeraktivitäten.", "error");
     return [];
-  }
-}
-
-// Hilfsfunktionen für UI-Feedback (aus notificationHandler.js)
-function notifySuccess(message) {
-  const box = document.createElement("div");
-  box.className = "notification success";
-  box.innerText = message;
-  document.body.appendChild(box);
-  setTimeout(() => box.remove(), 3000);
-}
-
-function notifyError(message) {
-  const box = document.createElement("div");
-  box.className = "notification error";
-  box.innerText = message;
-  document.body.appendChild(box);
-  setTimeout(() => box.remove(), 4000);
-
-  const card = document.querySelector(".card");
-  if (card) {
-    card.classList.add("shake");
-    setTimeout(() => card.classList.remove("shake"), 600);
   }
 }

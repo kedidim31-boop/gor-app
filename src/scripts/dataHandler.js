@@ -2,6 +2,8 @@
 
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
+import { t } from "./lang.js";
+
 import {
   collection,
   addDoc,
@@ -14,28 +16,40 @@ import {
 
 const { db } = initFirebase();
 
+// -------------------------------------------------------------
 // 🔹 Dokument hinzufügen
+// -------------------------------------------------------------
 export async function addData(collectionName, data) {
-  if (!db) return null;
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert.");
+    return null;
+  }
 
   try {
     const docRef = await addDoc(collection(db, collectionName), data);
-    console.log(`📄 Dokument hinzugefügt in '${collectionName}' (ID: ${docRef.id})`);
+
+    console.log(`📘 Dokument hinzugefügt in '${collectionName}' (ID: ${docRef.id})`);
     return docRef.id;
 
   } catch (error) {
     console.error("❌ Fehler beim Hinzufügen von Daten:", error);
-    showFeedback("Fehler beim Speichern der Daten.", "error");
+    showFeedback(t("errors.fail"), "error");
     return null;
   }
 }
 
+// -------------------------------------------------------------
 // 🔹 Alle Dokumente abrufen
+// -------------------------------------------------------------
 export async function getData(collectionName) {
-  if (!db) return [];
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert.");
+    return [];
+  }
 
   try {
     const snapshot = await getDocs(collection(db, collectionName));
+
     const results = snapshot.docs.map(docSnap => ({
       id: docSnap.id,
       ...docSnap.data()
@@ -46,14 +60,19 @@ export async function getData(collectionName) {
 
   } catch (error) {
     console.error("❌ Fehler beim Abrufen der Daten:", error);
-    showFeedback("Fehler beim Laden der Daten.", "error");
+    showFeedback(t("errors.load"), "error");
     return [];
   }
 }
 
+// -------------------------------------------------------------
 // 🔹 Einzelnes Dokument abrufen
+// -------------------------------------------------------------
 export async function getDataById(collectionName, id) {
-  if (!db) return null;
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert.");
+    return null;
+  }
 
   try {
     const docRef = doc(db, collectionName, id);
@@ -64,44 +83,56 @@ export async function getDataById(collectionName, id) {
       return null;
     }
 
-    console.log(`📄 Dokument '${id}' aus '${collectionName}' geladen`);
+    console.log(`📘 Dokument '${id}' aus '${collectionName}' geladen`);
     return { id: snapshot.id, ...snapshot.data() };
 
   } catch (error) {
     console.error("❌ Fehler beim Abrufen des Dokuments:", error);
-    showFeedback("Fehler beim Laden des Dokuments.", "error");
+    showFeedback(t("errors.load"), "error");
     return null;
   }
 }
 
+// -------------------------------------------------------------
 // 🔹 Dokument aktualisieren
+// -------------------------------------------------------------
 export async function updateData(collectionName, id, newData) {
-  if (!db) return false;
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert.");
+    return false;
+  }
 
   try {
     await updateDoc(doc(db, collectionName, id), newData);
-    console.log(`📄 Dokument '${id}' in '${collectionName}' aktualisiert`);
+
+    console.log(`📘 Dokument '${id}' in '${collectionName}' aktualisiert`);
     return true;
 
   } catch (error) {
     console.error("❌ Fehler beim Aktualisieren:", error);
-    showFeedback("Fehler beim Aktualisieren der Daten.", "error");
+    showFeedback(t("errors.fail"), "error");
     return false;
   }
 }
 
+// -------------------------------------------------------------
 // 🔹 Dokument löschen
+// -------------------------------------------------------------
 export async function deleteData(collectionName, id) {
-  if (!db) return false;
+  if (!db) {
+    console.error("❌ Firestore nicht initialisiert.");
+    return false;
+  }
 
   try {
     await deleteDoc(doc(db, collectionName, id));
+
     console.log(`🗑️ Dokument '${id}' aus '${collectionName}' gelöscht`);
     return true;
 
   } catch (error) {
     console.error("❌ Fehler beim Löschen:", error);
-    showFeedback("Fehler beim Löschen der Daten.", "error");
+    showFeedback(t("errors.fail"), "error");
     return false;
   }
 }

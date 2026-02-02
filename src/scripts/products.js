@@ -1,22 +1,39 @@
-// src/scripts/products.js – Logik für Produktverwaltung
+// src/scripts/products.js – Logik für Produktverwaltung (mehrsprachig + optimiert)
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
-import { collection, addDoc, getDocs, deleteDoc, doc } 
-  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { showFeedback } from "./feedback.js";
+import { t } from "./lang.js";
+
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 const { db } = initFirebase();
 
-// Zugriff für Admins & Mitarbeiter
-enforceRole(["admin", "mitarbeiter"], "login.html");
+// -------------------------------------------------------------
+// 🔹 Zugriff für Admin, Manager, Support
+// -------------------------------------------------------------
+enforceRole(["admin", "manager", "support"], "login.html");
 
+// -------------------------------------------------------------
+// 🔹 DOM Elemente
+// -------------------------------------------------------------
 const form = document.getElementById("createProductForm");
 const tableBody = document.querySelector("#productTable tbody");
 
-// Produkt hinzufügen
-form.addEventListener("submit", async e => {
+// -------------------------------------------------------------
+// 🔹 Produkt hinzufügen
+// -------------------------------------------------------------
+form?.addEventListener("submit", async e => {
   e.preventDefault();
+
   const product = {
     name: document.getElementById("productName").value.trim(),
     description: document.getElementById("productDescription").value.trim() || "",
@@ -26,11 +43,12 @@ form.addEventListener("submit", async e => {
     sku: document.getElementById("productSKU").value.trim(),
     ean: document.getElementById("productEAN").value.trim(),
     stock: parseInt(document.getElementById("productStock").value) || 0,
-    price: parseFloat(document.getElementById("productPrice").value) || 0
+    price: parseFloat(document.getElementById("productPrice").value) || 0,
+    createdAt: serverTimestamp()
   };
 
   if (!product.name || !product.type || !product.vendor) {
-    alert("⚠️ Bitte alle Pflichtfelder ausfüllen!");
+    showFeedback(t("errors.fail"), "error");
     return;
   }
 
@@ -38,19 +56,26 @@ form.addEventListener("submit", async e => {
     await addDoc(collection(db, "products"), product);
     form.reset();
     loadProducts();
-    alert("✅ Produkt erfolgreich gespeichert!");
+    showFeedback(t("feedback.ok"), "success");
+
   } catch (err) {
     console.error("❌ Fehler beim Speichern:", err);
-    alert("Fehler beim Speichern des Produkts.");
+    showFeedback(t("errors.fail"), "error");
   }
 });
 
-// Produkte laden
+// -------------------------------------------------------------
+// 🔹 Produkte laden
+// -------------------------------------------------------------
 async function loadProducts() {
+  if (!tableBody) return;
+
   tableBody.innerHTML = "";
   const snapshot = await getDocs(collection(db, "products"));
+
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
+
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${data.name || "-"}</td>
@@ -62,87 +87,104 @@ async function loadProducts() {
       <td>${data.ean || "-"}</td>
       <td>${data.stock ?? 0}</td>
       <td><i class="fa-solid fa-money-bill-wave"></i> ${Number(data.price || 0).toFixed(2)} CHF</td>
+
       <td>
         <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">
-          <i class="fa-solid fa-trash"></i> Löschen
+          <i class="fa-solid fa-trash"></i> ${t("products.delete")}
         </button>
       </td>
     `;
+
     tableBody.appendChild(row);
   });
 
-  // Löschen
+  attachDeleteHandler();
+}
+
+// -------------------------------------------------------------
+// 🔹 Löschen mit Bestätigungs-Banner
+// -------------------------------------------------------------
+function attachDeleteHandler() {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.addEventListener("click", async e => {
-      const id = e.target.closest("button").dataset.id;
-      if (confirm("Soll dieses Produkt wirklich gelöscht werden?")) {
-        try {
-          await deleteDoc(doc(db, "products", id));
-          alert("✅ Produkt gelöscht");
-          loadProducts();
-        } catch (err) {
-          console.error("❌ Fehler beim Löschen:", err);
-          alert("Fehler beim Löschen des Produkts.");
-        }
-      }
+      const id = e.currentTarget.dataset.id;
+
+      showFeedback(t("admin.confirm"), "warning");
+
+      btn.addEventListener(
+        "click",
+        async () => {
+          try {
+            await deleteDoc(doc(db, "products", id));
+            showFeedback(t("products.delete"), "success");
+            loadProducts();
+
+          } catch (err) {
+            console.error("❌ Fehler beim Löschen:", err);
+            showFeedback(t("errors.fail"), "error");
+          }
+        },
+        { once: true }
+      );
     });
   });
 }
 
-// Initial laden
+// -------------------------------------------------------------
+// 🔹 Initial laden
+// -------------------------------------------------------------
 loadProducts();
 
-// Logout
+// -------------------------------------------------------------
+// 🔹 Logout
+// -------------------------------------------------------------
 const logoutBtn = document.querySelector(".logout-btn");
 if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
-// Shopify-kompatibler CSV-Export
+// -------------------------------------------------------------
+// 🔹 Shopify-kompatibler CSV-Export
+// -------------------------------------------------------------
 const exportBtn = document.getElementById("exportBtn");
+
 if (exportBtn) {
   exportBtn.addEventListener("click", async () => {
-    const snapshot = await getDocs(collection(db, "products"));
-    let csvContent = "data:text/csv;charset=utf-8,";
+    try {
+      const snapshot = await getDocs(collection(db, "products"));
 
-    // Shopify Kopfzeile erweitert um Stock
-    csvContent += "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
+      let csv = "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
 
-    snapshot.forEach(docSnap => {
-      const p = docSnap.data();
-      const handle = (p.name || "").toLowerCase().replace(/\s+/g, "-");
-      const title = p.name || "";
-      const body = p.description || "";
-      const vendor = p.vendor || "";
-      const type = p.type || "";
-      const tags = p.collections || "";
-      const published = "TRUE";
-      const sku = p.sku || "";
-      const barcode = p.ean || "";
-      const stock = p.stock ?? 0;
-      const price = p.price || 0;
+      snapshot.forEach(docSnap => {
+        const p = docSnap.data();
 
-      const row = [
-        handle,
-        `"${title}"`,
-        `"${body}"`,
-        `"${vendor}"`,
-        `"${type}"`,
-        `"${tags}"`,
-        published,
-        sku,
-        barcode,
-        stock,
-        price
-      ].join(",");
+        const handle = (p.name || "").toLowerCase().replace(/\s+/g, "-");
+        const row = [
+          handle,
+          `"${p.name || ""}"`,
+          `"${p.description || ""}"`,
+          `"${p.vendor || ""}"`,
+          `"${p.type || ""}"`,
+          `"${p.collections || ""}"`,
+          "TRUE",
+          p.sku || "",
+          p.ean || "",
+          p.stock ?? 0,
+          p.price || 0
+        ].join(",");
 
-      csvContent += row + "\n";
-    });
+        csv += row + "\n";
+      });
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "shopify_products.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "shopify_products.csv";
+      link.click();
+
+      showFeedback(t("feedback.ok"), "success");
+
+    } catch (err) {
+      console.error("❌ Fehler beim CSV-Export:", err);
+      showFeedback(t("errors.fail"), "error");
+    }
   });
 }

@@ -1,3 +1,233 @@
+/* Admin Panel – Cyberpunk Neon Look 2.0 */
+/* Modernisiert für Glass-Blur, Neon-Glow und konsistente UI */
+
+/* -------------------------------------------------------------
+   🔹 Karten (Panels)
+------------------------------------------------------------- */
+.card {
+  margin: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: rgba(20, 20, 40, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 25px var(--color-neon-yellow),
+              0 0 50px rgba(255, 211, 0, 0.55);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: var(--color-neon-yellow);
+  font-size: 1.35rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 8px var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Benutzeranlage Formular
+------------------------------------------------------------- */
+#createUserForm.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+
+#createUserForm label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  color: var(--color-neon-yellow);
+}
+
+#createUserForm i {
+  margin-bottom: 0.3rem;
+  color: var(--color-neon-turquoise);
+}
+
+#createUserForm input,
+#createUserForm select {
+  background: rgba(15, 15, 30, 0.8);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--color-neon-yellow);
+  font-weight: bold;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+#createUserForm input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+#createUserForm input:focus,
+#createUserForm select:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.55);
+}
+
+#createUserForm select:hover {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.55);
+}
+
+/* -------------------------------------------------------------
+   🔹 Mitarbeiter-Suchfeld
+------------------------------------------------------------- */
+.employee-search {
+  margin-bottom: 1rem;
+}
+
+.employee-search input {
+  width: 100%;
+  background: rgba(15, 15, 30, 0.8);
+  border: 2px solid var(--color-neon-green);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--color-neon-green);
+  font-weight: bold;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.employee-search input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.employee-search input:focus {
+  border-color: var(--color-neon-yellow);
+  box-shadow: 0 0 14px var(--color-neon-yellow),
+              0 0 28px rgba(255, 211, 0, 0.55);
+}
+
+/* -------------------------------------------------------------
+   🔹 Mitarbeiter-Tabelle
+------------------------------------------------------------- */
+#adminEmployeeTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  table-layout: fixed;
+  background: rgba(20, 20, 40, 0.6);
+  backdrop-filter: blur(6px);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#adminEmployeeTable th,
+#adminEmployeeTable td {
+  text-align: center;
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--color-text-light);
+  word-wrap: break-word;
+}
+
+#adminEmployeeTable th {
+  background: rgba(30, 30, 50, 0.9);
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+  font-size: 0.95rem;
+}
+
+/* Alternierende Zeilen */
+#adminEmployeeTable tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+#adminEmployeeTable tr:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  transition: background 0.2s ease;
+}
+
+/* -------------------------------------------------------------
+   🔹 Rollen-Badges (sichtbare Labels)
+------------------------------------------------------------- */
+.role-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  display: inline-block;
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+
+.role-admin {
+  background: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 10px var(--color-neon-red);
+}
+
+.role-manager {
+  background: var(--color-neon-purple);
+  color: #000;
+  box-shadow: 0 0 10px var(--color-neon-purple);
+}
+
+.role-support {
+  background: var(--color-neon-yellow);
+  color: #000;
+  box-shadow: 0 0 10px var(--color-neon-yellow);
+}
+
+.role-employee {
+  background: var(--color-neon-green);
+  color: #000;
+  box-shadow: 0 0 10px var(--color-neon-green);
+}
+
+.role-guest {
+  background: #888;
+  color: #000;
+  box-shadow: 0 0 10px #888;
+}
+
+/* -------------------------------------------------------------
+   🔹 Buttons in Tabelle
+------------------------------------------------------------- */
+#adminEmployeeTable .actionBtn,
+#adminEmployeeTable .deleteBtn {
+  background-color: transparent;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: bold;
+}
+
+#adminEmployeeTable .actionBtn {
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+}
+
+#adminEmployeeTable .actionBtn:hover {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 14px var(--color-neon-turquoise),
+              0 0 28px rgba(112, 255, 234, 0.55);
+}
+
+#adminEmployeeTable .deleteBtn {
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+#adminEmployeeTable .deleteBtn:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 14px var(--color-neon-red),
+              0 0 28px rgba(255, 77, 77, 0.55);
+}
+
 /* -------------------------------------------------------------
    🔹 Audit Log Tabelle – Neon Turquoise Style
 ------------------------------------------------------------- */
@@ -30,7 +260,6 @@
   font-weight: bold;
 }
 
-/* Alternierende Zeilen */
 #auditTable tr:nth-child(even) {
   background-color: rgba(112, 255, 234, 0.03);
 }
@@ -90,5 +319,31 @@
   .audit-controls {
     flex-direction: column;
     align-items: stretch;
+  }
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassungen
+------------------------------------------------------------- */
+@media (max-width: 992px) {
+  #createUserForm.form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  #adminEmployeeTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  #createUserForm.form-grid {
+    gap: 1rem;
+  }
+
+  #createUserForm input,
+  #createUserForm select {
+    padding: 8px;
   }
 }

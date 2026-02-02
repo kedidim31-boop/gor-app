@@ -60,6 +60,7 @@
        🔹 MAIN CONTENT
   ============================================================ -->
   <main class="support-page">
+
     <!-- ========================================================
          🔹 Ticket erstellen
     ======================================================== -->
@@ -106,6 +107,43 @@
     </section>
 
     <!-- ========================================================
+         🔹 Support Dashboard – KPIs & SLA
+    ======================================================== -->
+    <section class="card glass-panel">
+      <h2>
+        <i class="fa-solid fa-gauge-high"></i>
+        <span data-i18n="support.dashboard">Support Dashboard</span>
+      </h2>
+
+      <div class="support-kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label" data-i18n="support.kpiOpen">Offene Tickets</div>
+          <div class="kpi-value" id="kpiOpen">0</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label" data-i18n="support.kpiInProgress">In Bearbeitung</div>
+          <div class="kpi-value" id="kpiInProgress">0</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label" data-i18n="support.kpiClosed24h">Geschlossen (24h)</div>
+          <div class="kpi-value" id="kpiClosed24h">0</div>
+        </div>
+
+        <div class="kpi-card kpi-warning">
+          <div class="kpi-label" data-i18n="support.kpiOverSla">Über SLA</div>
+          <div class="kpi-value" id="kpiOverSla">0</div>
+        </div>
+      </div>
+
+      <div class="sla-legend">
+        <span data-i18n="support.slaLow">SLA Low: 72h</span>
+        <span data-i18n="support.slaMedium">SLA Medium: 48h</span>
+        <span data-i18n="support.slaHigh">SLA High: 24h</span>
+      </div>
+    </section>
+    <!-- ========================================================
          🔹 Ticket Übersicht
     ======================================================== -->
     <section class="card glass-panel">
@@ -145,14 +183,17 @@
     </section>
 
     <!-- ========================================================
-         🔹 Kommentar Modal
+         🔹 Kommentar Modal (inkl. Kommentar‑Anzeige)
     ======================================================== -->
     <div id="commentModal" class="modal" aria-hidden="true">
       <div class="modal-content glass-panel" role="dialog" aria-modal="true">
         <h3>
           <i class="fa-solid fa-comment"></i>
-          <span data-i18n="support.addComment">Kommentar hinzufügen</span>
+          <span data-i18n="support.addComment">Kommentar & Verlauf</span>
         </h3>
+
+        <!-- Chat‑Bubbles / Kommentar‑Verlauf -->
+        <div id="ticketMessages"></div>
 
         <form id="commentForm">
           <input type="hidden" id="commentTicketId">
@@ -177,6 +218,7 @@
     </div>
 
   </main>
+
   <!-- ============================================================
        🔹 ROLE GUARD (Fallback)
   ============================================================ -->

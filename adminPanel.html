@@ -18,12 +18,13 @@
   <!-- ============================================================
        🔹 BRANDING HEADER
   ============================================================ -->
-  <header class="branding-header">
+  <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
       <div class="subtitle">
-        <i class="fa-solid fa-user-shield"></i> Admin Panel
+        <i class="fa-solid fa-user-shield"></i>
+        <span data-i18n="nav.admin">Admin Panel</span>
       </div>
     </div>
   </header>
@@ -31,18 +32,18 @@
   <!-- ============================================================
        🔹 TOP NAVIGATION
   ============================================================ -->
-  <nav class="top-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
-    <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
-    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
-    <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
-    <a href="adminPanel.html" class="active"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+  <nav class="top-nav glass-panel">
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.dashboard">Übersicht & Dashboard</span></a>
+    <a href="products.html"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
+    <a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a>
+    <a href="adminPanel.html" class="active"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
 
-    <!-- Logout -->
     <button class="btn btn-red logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i> Logout
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span data-i18n="auth.out">Logout</span>
     </button>
   </nav>
 
@@ -57,52 +58,56 @@
     <!-- ========================================================
          🔹 Benutzer anlegen
     ======================================================== -->
-    <div class="card">
-      <h2><i class="fa-solid fa-user-plus"></i> Neuen Benutzer anlegen</h2>
+    <section class="card glass-panel">
+      <h2><i class="fa-solid fa-user-plus"></i> <span data-i18n="admin.createUser">Neuen Benutzer anlegen</span></h2>
 
       <form id="createUserForm" class="form-grid">
 
         <label>
-          <i class="fa-solid fa-envelope"></i> E-Mail
-          <input type="email" id="newEmail" required>
+          <i class="fa-solid fa-envelope"></i>
+          <span data-i18n="auth.email">E-Mail</span>
+          <input type="email" id="newEmail" required placeholder="name@example.com">
         </label>
 
         <label>
-          <i class="fa-solid fa-lock"></i> Passwort
-          <input type="password" id="newPassword" required>
+          <i class="fa-solid fa-lock"></i>
+          <span data-i18n="auth.password">Passwort</span>
+          <input type="password" id="newPassword" required placeholder="••••••••">
         </label>
 
         <label>
-          <i class="fa-solid fa-user-tag"></i> Rolle
+          <i class="fa-solid fa-user-tag"></i>
+          <span data-i18n="roles.role">Rolle</span>
           <select id="newRole" required>
-            <option value="employee">Mitarbeiter</option>
-            <option value="support">Support</option>
-            <option value="manager">Manager</option>
-            <option value="admin">Admin</option>
-            <option value="guest">Gast</option>
+            <option value="employee" data-i18n="roles.employee">Mitarbeiter</option>
+            <option value="support" data-i18n="roles.support">Support</option>
+            <option value="manager" data-i18n="roles.manager">Manager</option>
+            <option value="admin" data-i18n="roles.admin">Admin</option>
+            <option value="guest" data-i18n="roles.guest">Gast</option>
           </select>
         </label>
 
         <button type="submit" class="btn btn-yellow">
-          <i class="fa-solid fa-save"></i> Benutzer erstellen
+          <i class="fa-solid fa-save"></i>
+          <span data-i18n="admin.createUser">Benutzer erstellen</span>
         </button>
 
       </form>
-    </div>
+    </section>
 
     <!-- ========================================================
          🔹 Mitarbeiterverwaltung
     ======================================================== -->
-    <div class="card">
-      <h2><i class="fa-solid fa-users-gear"></i> Mitarbeiterverwaltung</h2>
+    <section class="card glass-panel">
+      <h2><i class="fa-solid fa-users-gear"></i> <span data-i18n="employees.manage">Mitarbeiterverwaltung</span></h2>
 
       <table id="adminEmployeeTable">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>E-Mail</th>
-            <th>Rolle</th>
-            <th>Aktionen</th>
+            <th data-i18n="employees.name">Name</th>
+            <th data-i18n="employees.email">E-Mail</th>
+            <th data-i18n="roles.role">Rolle</th>
+            <th data-i18n="employees.actions">Aktionen</th>
           </tr>
         </thead>
 
@@ -110,7 +115,7 @@
           <!-- Dynamisch geladen -->
         </tbody>
       </table>
-    </div>
+    </section>
 
   </main>
 

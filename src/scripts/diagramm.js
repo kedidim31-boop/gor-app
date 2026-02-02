@@ -1,7 +1,8 @@
-// diagramm.js – zentrales Modul für Chart.js Diagramme
-// Ergänzt mit konsistentem Neon-Theme, Error-Handling und globalen Optionen
+// src/scripts/diagramm.js – zentrales Modul für Chart.js Diagramme (Neon-Theme + Error-Handling)
 
-// Globale Chart.js Defaults für Neon-Look
+import { showFeedback } from "./feedback.js";
+
+// 🔹 Chart.js Global Defaults (Neon Theme)
 Chart.defaults.color = "#e0e0e0";
 Chart.defaults.font.family = "Segoe UI, sans-serif";
 Chart.defaults.plugins.legend.labels.color = "#FFD300";
@@ -9,24 +10,39 @@ Chart.defaults.plugins.tooltip.backgroundColor = "#141432";
 Chart.defaults.plugins.tooltip.titleColor = "#FFD300";
 Chart.defaults.plugins.tooltip.bodyColor = "#70ffea";
 
-// Hilfsfunktion für Canvas-Validierung
+// 🔹 Chart-Instanzen speichern, um Memory-Leaks zu verhindern
+const chartInstances = {};
+
+// 🔹 Canvas prüfen + Context holen
 function getCanvasContext(ctxId) {
   const canvas = document.getElementById(ctxId);
+
   if (!canvas) {
-    console.error(`❌ Canvas mit ID '${ctxId}' nicht gefunden`);
-    notifyError(`Canvas mit ID '${ctxId}' nicht gefunden`);
+    console.error(`❌ Canvas '${ctxId}' nicht gefunden`);
+    showFeedback(`Canvas '${ctxId}' nicht gefunden`, "error");
     return null;
   }
+
   return canvas.getContext("2d");
 }
 
-// Donut-Diagramm
+// 🔹 Existierende Charts zerstören (wichtig!)
+function destroyExistingChart(ctxId) {
+  if (chartInstances[ctxId]) {
+    chartInstances[ctxId].destroy();
+    delete chartInstances[ctxId];
+  }
+}
+
+// 🔹 Donut-Diagramm
 export function renderDonutChart(ctxId, label, value, color) {
   const ctx = getCanvasContext(ctxId);
   if (!ctx) return;
 
+  destroyExistingChart(ctxId);
+
   try {
-    new Chart(ctx, {
+    chartInstances[ctxId] = new Chart(ctx, {
       type: "doughnut",
       data: {
         labels: [label],
@@ -42,20 +58,24 @@ export function renderDonutChart(ctxId, label, value, color) {
         plugins: { legend: { display: false } }
       }
     });
-    console.log(`✅ Donut-Diagramm '${ctxId}' erfolgreich gerendert`);
+
+    console.log(`🍩 Donut-Diagramm '${ctxId}' gerendert`);
+
   } catch (error) {
-    console.error("❌ Fehler beim Rendern des Donut-Diagramms:", error);
-    notifyError("Fehler beim Rendern des Donut-Diagramms");
+    console.error("❌ Fehler beim Donut-Diagramm:", error);
+    showFeedback("Fehler beim Rendern des Donut-Diagramms", "error");
   }
 }
 
-// Balkendiagramm
+// 🔹 Balkendiagramm
 export function renderBarChart(ctxId, labels, values, colors) {
   const ctx = getCanvasContext(ctxId);
   if (!ctx) return;
 
+  destroyExistingChart(ctxId);
+
   try {
-    new Chart(ctx, {
+    chartInstances[ctxId] = new Chart(ctx, {
       type: "bar",
       data: {
         labels,
@@ -74,20 +94,24 @@ export function renderBarChart(ctxId, labels, values, colors) {
         }
       }
     });
-    console.log(`✅ Balkendiagramm '${ctxId}' erfolgreich gerendert`);
+
+    console.log(`📊 Balkendiagramm '${ctxId}' gerendert`);
+
   } catch (error) {
-    console.error("❌ Fehler beim Rendern des Balkendiagramms:", error);
-    notifyError("Fehler beim Rendern des Balkendiagramms");
+    console.error("❌ Fehler beim Balkendiagramm:", error);
+    showFeedback("Fehler beim Rendern des Balkendiagramms", "error");
   }
 }
 
-// Liniendiagramm
+// 🔹 Liniendiagramm
 export function renderLineChart(ctxId, labels, values, color) {
   const ctx = getCanvasContext(ctxId);
   if (!ctx) return;
 
+  destroyExistingChart(ctxId);
+
   try {
-    new Chart(ctx, {
+    chartInstances[ctxId] = new Chart(ctx, {
       type: "line",
       data: {
         labels,
@@ -110,24 +134,11 @@ export function renderLineChart(ctxId, labels, values, color) {
         }
       }
     });
-    console.log(`✅ Liniendiagramm '${ctxId}' erfolgreich gerendert`);
+
+    console.log(`📈 Liniendiagramm '${ctxId}' gerendert`);
+
   } catch (error) {
-    console.error("❌ Fehler beim Rendern des Liniendiagramms:", error);
-    notifyError("Fehler beim Rendern des Liniendiagramms");
-  }
-}
-
-// Hilfsfunktionen für UI-Feedback (aus notificationHandler.js)
-function notifyError(message) {
-  const box = document.createElement("div");
-  box.className = "notification error";
-  box.innerText = message;
-  document.body.appendChild(box);
-  setTimeout(() => box.remove(), 4000);
-
-  const card = document.querySelector(".card");
-  if (card) {
-    card.classList.add("shake");
-    setTimeout(() => card.classList.remove("shake"), 600);
+    console.error("❌ Fehler beim Liniendiagramm:", error);
+    showFeedback("Fehler beim Rendern des Liniendiagramms", "error");
   }
 }

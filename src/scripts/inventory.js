@@ -5,18 +5,14 @@ import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
 import { showFeedback } from "./feedback.js";
 import { t } from "./lang.js";
+import { openInventoryModal } from "./inventoryModal.js"; // 🔥 NEU
 
 import {
   collection,
-  getDocs,
-  getDoc,
-  updateDoc,
-  doc,
-  serverTimestamp,
-  addDoc
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-const { auth, db } = initFirebase();
+const { db } = initFirebase();
 
 // -------------------------------------------------------------
 // 🔹 Zugriff: Admin, Manager, Support
@@ -27,7 +23,6 @@ enforceRole(["admin", "manager", "support"], "login.html");
 // 🔹 DOM Elemente
 // -------------------------------------------------------------
 const tableBody = document.querySelector("#inventoryTable tbody");
-const adjustForm = document.getElementById("adjustStockForm");
 
 // -------------------------------------------------------------
 // 🔹 Schweizer Zahlenformat
@@ -82,84 +77,16 @@ async function loadInventory() {
 function attachAdjustHandler() {
   document.querySelectorAll(".adjustBtn").forEach(btn => {
     btn.addEventListener("click", () => {
-      openAdjustModal(btn.dataset.id);
+      openInventoryModal(btn.dataset.id); // 🔥 NEU
     });
   });
 }
 
 // -------------------------------------------------------------
-// 🔹 Modal öffnen
+// 🔹 Realtime Reload nach Modal-Speicherung
 // -------------------------------------------------------------
-function openAdjustModal(productId) {
-  const modal = document.getElementById("adjustModal");
-  const idField = document.getElementById("adjustProductId");
-
-  idField.value = productId;
-  modal.classList.add("open");
-}
-
-// -------------------------------------------------------------
-// 🔹 Modal schließen
-// -------------------------------------------------------------
-document.getElementById("closeAdjustModal")?.addEventListener("click", () => {
-  document.getElementById("adjustModal").classList.remove("open");
-  adjustForm.reset();
-});
-
-// -------------------------------------------------------------
-// 🔹 Bestand speichern
-// -------------------------------------------------------------
-adjustForm?.addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const id = document.getElementById("adjustProductId").value;
-  const amount = parseInt(document.getElementById("adjustAmount").value);
-  const reason = document.getElementById("adjustReason").value.trim();
-
-  if (!amount) {
-    showFeedback(t("errors.fail"), "error");
-    return;
-  }
-
-  try {
-    // 🔥 Optimiert: Nur EIN Produkt abrufen statt alle
-    const productRef = doc(db, "products", id);
-    const productSnap = await getDoc(productRef);
-
-    if (!productSnap.exists()) {
-      showFeedback(t("errors.fail"), "error");
-      return;
-    }
-
-    const currentStock = productSnap.data().stock ?? 0;
-    const newStock = currentStock + amount;
-
-    // Bestand aktualisieren
-    await updateDoc(productRef, { stock: newStock });
-
-    // Bewegungslog speichern
-    await addDoc(collection(db, "inventoryLogs"), {
-      productId: id,
-      change: amount,
-      reason,
-      newStock,
-      createdAt: serverTimestamp()
-    });
-
-    // Optional: Audit Log
-    // const adminId = auth.currentUser?.uid || "system";
-    // await addAuditLog(adminId, "adjust_stock", `ProductID: ${id}, Change: ${amount}`);
-
-    showFeedback(t("inventory.updated"), "success");
-
-    document.getElementById("adjustModal").classList.remove("open");
-    adjustForm.reset();
-    loadInventory();
-
-  } catch (err) {
-    console.error("❌ Fehler beim Anpassen des Bestands:", err);
-    showFeedback(t("errors.fail"), "error");
-  }
+document.addEventListener("inventoryUpdated", () => {
+  loadInventory(); // 🔥 Modal sendet Event → Tabelle aktualisieren
 });
 
 // -------------------------------------------------------------

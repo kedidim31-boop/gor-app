@@ -1,0 +1,203 @@
+/* Product SEO – Cyberpunk Neon Look */
+/* Ergänzt theme.css + productDetails.css */
+
+/* -------------------------------------------------------------
+   🔹 SEO Panel
+------------------------------------------------------------- */
+.product-seo-panel {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(112, 255, 234, 0.25);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 0 18px rgba(112, 255, 234, 0.25);
+}
+
+.product-seo-panel h3 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 SEO Grid
+------------------------------------------------------------- */
+.product-seo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 16px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Input Fields
+------------------------------------------------------------- */
+.product-seo-panel input,
+.product-seo-panel textarea {
+  width: 100%;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--color-text-light);
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
+}
+
+.product-seo-panel input:hover,
+.product-seo-panel textarea:hover {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 10px var(--color-neon-turquoise);
+}
+
+.product-seo-panel input:focus,
+.product-seo-panel textarea:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow:
+    0 0 14px var(--color-neon-turquoise),
+    0 0 28px rgba(112, 255, 234, 0.55);
+  outline: none;
+}
+
+.product-seo-panel textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* -------------------------------------------------------------
+   🔹 URL Handle
+------------------------------------------------------------- */
+.seo-url {
+  font-size: 0.9rem;
+  color: var(--color-neon-yellow);
+  margin-top: 6px;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+  word-break: break-all;
+}
+
+/* -------------------------------------------------------------
+   🔹 SEO Snippet Preview (Google Style)
+------------------------------------------------------------- */
+.seo-preview-box {
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
+}
+
+.seo-preview-title {
+  color: var(--color-neon-green);
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-shadow: 0 0 6px var(--color-neon-green);
+}
+
+.seo-preview-url {
+  color: var(--color-neon-turquoise);
+  font-size: 0.9rem;
+  margin-top: 4px;
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+.seo-preview-description {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  margin-top: 6px;
+  opacity: 0.85;
+}
+
+/* -------------------------------------------------------------
+   🔹 Keyword Tags
+------------------------------------------------------------- */
+.seo-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.seo-keyword-tag {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: rgba(112, 255, 234, 0.15);
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.seo-keyword-tag i {
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.seo-keyword-tag i:hover {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 8px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 SEO Actions
+------------------------------------------------------------- */
+.seo-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.seo-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Save */
+.seo-btn.save {
+  background-color: var(--color-neon-green);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-green);
+}
+
+.seo-btn.save:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 18px var(--color-neon-green),
+    0 0 36px rgba(0, 255, 128, 0.7);
+}
+
+/* Reset */
+.seo-btn.reset {
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+.seo-btn.reset:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 18px var(--color-neon-red),
+    0 0 36px rgba(255, 77, 77, 0.7);
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .product-seo-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -2,15 +2,16 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Gaming of Republic – Support & Tickets</title>
+  <title>Gaming of Republic – Support</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Globale Styles -->
+  <!-- Styles -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/support.css">
 
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -20,10 +21,16 @@
   ============================================================ -->
   <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
+
     <div class="divider"></div>
+
     <div class="branding-text">
       <div class="subtitle">
-        <i class="fa-solid fa-headset"></i> Support & Tickets
+        <i class="fa-solid fa-headset"></i>
+        <span data-i18n="support.title">Support Center</span>
+      </div>
+      <div class="subline" data-i18n="support.subtitle">
+        Tickets, Prioritäten & Kommunikation
       </div>
     </div>
   </header>
@@ -33,133 +40,121 @@
   ============================================================ -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht</a>
     <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="support.html" class="active"><i class="fa-solid fa-headset"></i> Support</a>
-    <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
 
     <button class="btn btn-red logout-btn">
       <i class="fa-solid fa-right-from-bracket"></i> Logout
     </button>
   </nav>
 
-  <!-- Feedback Container -->
+  <!-- Feedback -->
   <div id="feedbackContainer"></div>
 
   <!-- ============================================================
        🔹 MAIN CONTENT
   ============================================================ -->
-  <main>
+  <main class="support-page">
 
     <!-- ========================================================
-         🔹 TICKET ERSTELLEN (Alle Rollen)
+         🔹 Ticket erstellen
     ======================================================== -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-plus-circle"></i> Neues Support‑Ticket erstellen</h2>
+      <h2><i class="fa-solid fa-plus"></i> Neues Ticket</h2>
 
       <form id="ticketForm" class="form-grid">
 
-        <label class="form-field icon-input full-width">
-          <i class="fa-solid fa-heading"></i>
-          <input type="text" id="ticketTitle" placeholder="Titel" required>
+        <label>
+          <i class="fa-solid fa-heading"></i> Titel
+          <input type="text" id="ticketTitle" required placeholder="Kurzer Titel">
         </label>
 
-        <label class="form-field icon-input full-width">
-          <i class="fa-solid fa-align-left"></i>
-          <textarea id="ticketDescription" placeholder="Beschreibung" required></textarea>
-        </label>
-
-        <label class="form-field icon-input">
-          <i class="fa-solid fa-flag"></i>
-          <select id="ticketPriority" required>
+        <label>
+          <i class="fa-solid fa-flag"></i> Priorität
+          <select id="ticketPriority">
             <option value="low">Niedrig</option>
             <option value="medium">Mittel</option>
             <option value="high">Hoch</option>
           </select>
         </label>
 
+        <label class="full-width">
+          <i class="fa-solid fa-message"></i> Nachricht
+          <textarea id="ticketMessage" rows="3" required placeholder="Beschreibe das Problem…"></textarea>
+        </label>
+
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-paper-plane"></i> Ticket absenden
+          <i class="fa-solid fa-paper-plane"></i> Ticket erstellen
         </button>
 
       </form>
     </section>
 
     <!-- ========================================================
-         🔹 TICKET ÜBERSICHT
-         Rollen-Logik:
-         - Admin, Manager, Support → alle Tickets
-         - Employee → nur eigene Tickets
+         🔹 Ticket Übersicht
     ======================================================== -->
     <section class="card glass-panel">
-      <h2><i class="erstelle fa-solid fa-ticket"></i> Ticketübersicht</h2>
+      <h2><i class="fa-solid fa-ticket"></i> Tickets</h2>
 
-      <div class="ticket-controls">
-        <input type="text" id="ticketSearch" placeholder="Suche nach Titel / Status / Priorität …">
-        <button id="refreshTickets" class="btn btn-turquoise">
-          <i class="fa-solid fa-rotate"></i> Aktualisieren
-        </button>
+      <div class="support-filters">
+        <input type="text" id="ticketSearch" placeholder="Suche nach Titel / Nachricht …">
+        <select id="ticketStatusFilter">
+          <option value="all">Alle</option>
+          <option value="open">Offen</option>
+          <option value="inProgress">In Bearbeitung</option>
+          <option value="closed">Geschlossen</option>
+        </select>
       </div>
 
-      <table id="ticketTable">
+      <table id="supportTable">
         <thead>
           <tr>
             <th>Titel</th>
-            <th>Beschreibung</th>
-            <th>Status</th>
+            <th>Nachricht</th>
             <th>Priorität</th>
-            <th>Erstellt von</th>
-            <th>Aktionen</th>
+            <th>Status</th>
+            <th>Kommentar</th>
+            <th>Löschen</th>
           </tr>
         </thead>
-
         <tbody>
-          <!-- Dynamisch geladen -->
+          <!-- Dynamisch -->
         </tbody>
       </table>
     </section>
 
     <!-- ========================================================
-         🔹 TICKET DETAILS (Kommentare)
-         Wird dynamisch eingeblendet
+         🔹 Kommentar Modal
     ======================================================== -->
-    <section id="ticketDetails" class="card glass-panel hidden">
-      <h2><i class="fa-solid fa-comment-dots"></i> Ticket‑Details</h2>
+    <div id="commentModal" class="modal">
+      <div class="modal-content glass-panel">
+        <h3><i class="fa-solid fa-comment"></i> Kommentar hinzufügen</h3>
 
-      <div id="ticketInfo"></div>
+        <form id="commentForm">
+          <input type="hidden" id="commentTicketId">
 
-      <div id="ticketMessages"></div>
+          <textarea id="commentText" rows="4" placeholder="Kommentar schreiben…"></textarea>
 
-      <form id="messageForm" class="form-grid">
-        <label class="form-field icon-input full-width">
-          <i class="fa-solid fa-comment"></i>
-          <textarea id="messageText" placeholder="Antwort hinzufügen …" required></textarea>
-        </label>
+          <div class="modal-actions">
+            <button type="button" id="closeCommentModal" class="btn btn-red">
+              <i class="fa-solid fa-xmark"></i> Abbrechen
+            </button>
 
-        <button type="submit" class="btn btn-green full-width">
-          <i class="fa-solid fa-paper-plane"></i> Senden
-        </button>
-      </form>
-    </section>
+            <button type="submit" class="btn btn-green">
+              <i class="fa-solid fa-check"></i> Speichern
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
   </main>
 
-  <!-- ============================================================
-       🔹 ROLE GUARD
-       Support, Manager, Admin → Vollzugriff
-       Employee → eingeschränkt (nur eigene Tickets)
-  ============================================================ -->
-  <script type="module">
-    import { enforceRole } from "./src/scripts/roleGuard.js";
-    enforceRole(["employee", "support", "manager", "admin"], "index.html");
-  </script>
-
-  <!-- ============================================================
-       🔹 SUPPORT LOGIK
-  ============================================================ -->
+  <!-- Scripts -->
   <script type="module" src="src/scripts/support.js"></script>
 
 </body>

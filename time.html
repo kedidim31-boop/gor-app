@@ -4,24 +4,33 @@
   <meta charset="UTF-8">
   <title>Gaming of Republic – Zeiterfassung</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- Globale Theme -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/time.css">
+
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-  <!-- Branding Header -->
+  <!-- ============================================================
+       🔹 BRANDING HEADER
+  ============================================================ -->
   <header class="branding-header">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
-      <div class="subtitle"><i class="fa-solid fa-clock"></i> Zeiterfassung</div>
+      <div class="subtitle">
+        <i class="fa-solid fa-clock"></i> Zeiterfassung
+      </div>
     </div>
   </header>
 
-  <!-- Navigation -->
+  <!-- ============================================================
+       🔹 TOP NAVIGATION
+  ============================================================ -->
   <nav class="top-nav">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
@@ -30,49 +39,71 @@
     <a href="time.html" class="active"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
     <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
-    <!-- Logout Button -->
-    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+
+    <button class="btn btn-red logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
   </nav>
 
-  <!-- Hauptinhalt -->
+  <!-- Feedback Container -->
+  <div id="feedbackContainer"></div>
+
+  <!-- ============================================================
+       🔹 MAIN CONTENT
+  ============================================================ -->
   <main>
-    <!-- Zeiterfassung Formular -->
+
+    <!-- ========================================================
+         🔹 ZEITERFASSUNG ERSTELLEN
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-plus-circle"></i> Neue Zeiterfassung hinzufügen</h2>
+
       <form id="timeForm" class="form-grid">
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-user"></i>
           <input type="text" id="employeeName" placeholder="Mitarbeitername" required>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-calendar-day"></i>
           <input type="date" id="workDate" required>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-clock"></i>
           <input type="time" id="startTime" required>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-clock"></i>
           <input type="time" id="endTime" required>
         </label>
+
         <label class="form-field icon-input">
           <i class="fa-solid fa-hourglass-half"></i>
           <input type="number" id="hoursWorked" step="0.1" readonly placeholder="Berechnete Stunden">
         </label>
+
         <label class="form-field full-width icon-input">
           <i class="fa-solid fa-align-left"></i>
           <textarea id="workDescription" placeholder="Beschreibung"></textarea>
         </label>
+
         <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> Zeiterfassung speichern
         </button>
+
       </form>
     </div>
 
-    <!-- Zeiterfassungsübersicht -->
+    <!-- ========================================================
+         🔹 ZEITERFASSUNGSÜBERSICHT
+    ======================================================== -->
     <div class="card">
       <h2><i class="fa-solid fa-table"></i> Zeiterfassungsübersicht</h2>
+
       <table id="timeTable">
         <thead>
           <tr>
@@ -85,14 +116,19 @@
             <th>Aktionen</th>
           </tr>
         </thead>
+
         <tbody>
           <!-- Einträge werden hier dynamisch geladen -->
         </tbody>
       </table>
     </div>
+
   </main>
 
-  <!-- Firebase Logik ausgelagert -->
+  <!-- ============================================================
+       🔹 TIME LOGIK
+  ============================================================ -->
   <script type="module" src="src/scripts/time.js"></script>
+
 </body>
 </html>

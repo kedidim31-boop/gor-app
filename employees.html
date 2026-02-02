@@ -18,7 +18,7 @@
   <!-- ============================================================
        🔹 BRANDING HEADER
   ============================================================ -->
-  <header class="branding-header">
+  <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo">
     <div class="divider"></div>
     <div class="branding-text">
@@ -31,7 +31,7 @@
   <!-- ============================================================
        🔹 TOP NAVIGATION
   ============================================================ -->
-  <nav class="top-nav">
+  <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
     <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
@@ -56,7 +56,7 @@
     <!-- ========================================================
          🔹 MITARBEITER ANLEGEN
     ======================================================== -->
-    <div class="card">
+    <section class="card glass-panel">
       <h2><i class="fa-solid fa-user-plus"></i> Neuen Mitarbeiter hinzufügen</h2>
 
       <form id="employeeForm" class="form-grid">
@@ -113,6 +113,8 @@
             <i class="fa-solid fa-user-tag"></i>
             <select id="employeeRole" required>
               <option value="employee">Mitarbeiter</option>
+              <option value="support">Support</option>
+              <option value="manager">Manager</option>
               <option value="admin">Admin</option>
               <option value="guest">Gast</option>
             </select>
@@ -124,12 +126,12 @@
         </button>
 
       </form>
-    </div>
+    </section>
 
     <!-- ========================================================
          🔹 MITARBEITERÜBERSICHT
     ======================================================== -->
-    <div class="card">
+    <section class="card glass-panel">
       <h2><i class="fa-solid fa-users"></i> Mitarbeiterübersicht</h2>
 
       <table id="employeeTable">
@@ -144,6 +146,7 @@
             <th>Geburtstag</th>
             <th>Telefon</th>
             <th>Rolle</th>
+            <th>Status</th> <!-- ⭐ NEU -->
             <th>Aktionen</th>
           </tr>
         </thead>
@@ -152,7 +155,7 @@
           <!-- Dynamisch geladen -->
         </tbody>
       </table>
-    </div>
+    </section>
 
   </main>
 
@@ -161,7 +164,7 @@
   ============================================================ -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
-    enforceRole(["employee"], "index.html");
+    enforceRole(["employee", "support", "manager", "admin"], "index.html");
   </script>
 
   <!-- ============================================================

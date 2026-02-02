@@ -1,139 +1,95 @@
-/* Analysis Seite – Cyberpunk Neon Dashboard */
-/* Ergänzt theme.css mit spezifischen Features */
+/* =============================================================
+   🔥 ANALYSIS – CYBERPUNK NEON DASHBOARD (Teil 1)
+   Layout, KPI‑Cards, Grid‑System, Header, Navigation
+============================================================= */
 
 /* -------------------------------------------------------------
-   🔹 Body (Fix: KEIN eigener Hintergrund!)
+   🔹 Main Layout
 ------------------------------------------------------------- */
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  color: var(--color-text-light);
-  margin: 0;
-  padding: 0;
-
-  /* ❌ Entfernt:
-     background-color: var(--color-bg-main);
-     → überschreibt globalen Neon-Background
-  */
+main {
+  margin: 1.5rem;
 }
 
-/* -------------------------------------------------------------
-   🔹 Branding Header
-------------------------------------------------------------- */
-.branding-header {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  background: linear-gradient(90deg, #111, #222);
-  border-bottom: 2px solid var(--color-neon-yellow);
-  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
-}
-
-.branding-header img {
-  height: 50px;
-  margin-right: 1rem;
-}
-
-.branding-text .subtitle {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--color-neon-yellow);
-  text-shadow: 0 0 6px var(--color-neon-yellow);
-}
-
-/* -------------------------------------------------------------
-   🔹 Navigation
-------------------------------------------------------------- */
-.top-nav {
-  display: flex;
-  align-items: center;
-  background: var(--color-bg-panel);
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.top-nav a,
-.top-nav button {
-  color: var(--color-text-light);
-  text-decoration: none;
-  margin-right: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  transition: all 0.25s ease;
-  font-weight: 500;
-}
-
-.top-nav a.active {
-  background: var(--color-neon-yellow);
-  color: #000;
-  font-weight: bold;
-  box-shadow: 0 0 10px var(--color-neon-yellow);
-}
-
-.top-nav a:hover,
-.top-nav button:hover {
-  background: rgba(255, 255, 255, 0.08);
-  cursor: pointer;
-}
-
-.logout-btn {
-  background: transparent;
-  border: none;
-  color: var(--color-text-light);
-  font-size: 1rem;
-}
-
-/* -------------------------------------------------------------
-   🔹 Dashboard Layout
-------------------------------------------------------------- */
+/* Dashboard Grid */
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
-  margin: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 /* -------------------------------------------------------------
-   🔹 Karten (KPIs)
+   🔹 KPI Cards – Neon Look
 ------------------------------------------------------------- */
-.card {
+.stat-card {
   background: var(--color-bg-panel);
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
+  padding: 1.6rem;
+  border-radius: 12px;
   text-align: center;
+  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.card:hover {
+/* Neon Glow Line */
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  width: 70%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-neon-yellow),
+    var(--color-neon-turquoise),
+    transparent
+  );
+  opacity: 0.7;
+}
+
+/* Hover Effekt */
+.stat-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 0 20px var(--color-neon-yellow),
               0 0 40px rgba(255, 211, 0, 0.55);
 }
 
-.card h2 {
+/* Titel */
+.stat-card h2 {
   margin-top: 0;
-  color: var(--color-neon-yellow);
   font-size: 1.25rem;
-  margin-bottom: 1rem;
+  color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
 }
 
-.card p {
-  color: #ccc;
-  margin-top: 0.5rem;
+.stat-card h2 i {
+  color: var(--color-neon-turquoise);
 }
 
-/* -------------------------------------------------------------
-   🔹 Statistiken (Zahlen)
-------------------------------------------------------------- */
-.stat {
-  font-size: 2.2rem;
-  font-weight: bold;
-  margin: 0.5rem 0;
+/* Zahl */
+.stat-card .stat {
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin: 0.4rem 0;
   letter-spacing: 1px;
 }
 
-/* Neon-Farben für KPIs */
+/* Beschreibung */
+.stat-card p {
+  color: var(--color-text-muted);
+  margin-top: 0.4rem;
+}
+
+/* -------------------------------------------------------------
+   🔹 KPI Farben
+------------------------------------------------------------- */
 #employeeCount {
   color: var(--color-neon-green);
   text-shadow: 0 0 10px var(--color-neon-green);
@@ -160,38 +116,154 @@ body {
 }
 
 /* -------------------------------------------------------------
-   🔹 Charts
+   🔹 Placeholder Cards (Future Modules)
 ------------------------------------------------------------- */
-.chart-card {
-  background: var(--color-bg-panel);
+.placeholder-card {
+  background: linear-gradient(
+      135deg,
+      rgba(255, 211, 0, 0.05),
+      rgba(112, 255, 234, 0.05)
+    ),
+    var(--color-bg-panel);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(112, 255, 234, 0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 12px;
+  text-align: center;
 }
 
+.placeholder-card h2 {
+  font-size: 1.1rem;
+  color: var(--color-neon-yellow);
+}
+
+.placeholder-card p {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+/* =============================================================
+   🔥 ANALYSIS – CYBERPUNK NEON DASHBOARD (Teil 2)
+   Charts, Neon‑Cards, Legend, Responsive
+============================================================= */
+
+/* -------------------------------------------------------------
+   🔹 Chart Cards
+------------------------------------------------------------- */
+.chart-card {
+  background: radial-gradient(circle at top, rgba(112,255,234,0.12), transparent),
+              var(--color-bg-panel);
+  padding: 1.6rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(112, 255, 234, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Neon Glow Line */
+.chart-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-neon-turquoise),
+    var(--color-neon-yellow),
+    transparent
+  );
+  opacity: 0.7;
+}
+
+/* Hover Effekt */
 .chart-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 0 20px var(--color-neon-turquoise),
               0 0 40px rgba(112, 255, 234, 0.55);
 }
 
-canvas {
+/* Titel */
+.chart-card h2 {
+  margin-top: 0;
+  font-size: 1.15rem;
+  color: var(--color-neon-turquoise);
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.chart-card h2 i {
+  color: var(--color-neon-yellow);
+}
+
+/* Canvas */
+.chart-card canvas {
+  margin-top: 1rem;
   max-width: 100%;
-  height: auto;
+  height: 260px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Chart Legend (optional)
+------------------------------------------------------------- */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.chart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.chart-legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }
 
 /* -------------------------------------------------------------
    🔹 Responsive Anpassungen
 ------------------------------------------------------------- */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
+  main {
+    margin: 1rem;
+  }
+
+  .dashboard {
+    gap: 1rem;
+  }
+
+  .chart-card canvas {
+    height: 220px;
+  }
+}
+
+@media (max-width: 600px) {
   .dashboard {
     grid-template-columns: 1fr;
-    margin: 1rem;
   }
 
   .card,
   .chart-card {
-    padding: 1rem;
+    padding: 1.2rem;
+  }
+
+  .stat-card .stat {
+    font-size: 2rem;
+  }
+
+  .chart-card canvas {
+    height: 200px;
   }
 }

@@ -1,20 +1,22 @@
-/* Admin Panel Seite – Cyberpunk Neon Look */
-/* Ergänzt globale theme.css mit spezifischen Features */
+/* Admin Panel – Cyberpunk Neon Look */
+/* Ergänzt theme.css mit spezifischen Features */
 
-/* Karten im Admin Panel */
+/* -------------------------------------------------------------
+   🔹 Karten
+------------------------------------------------------------- */
 .card {
   margin: 1.5rem;
   padding: 1.5rem;
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--color-bg-panel);
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-  transform: scale(1.03);
+  transform: translateY(-3px);
   box-shadow: 0 0 20px var(--color-neon-yellow),
-              0 0 40px rgba(255, 211, 0, 0.6);
+              0 0 40px rgba(255, 211, 0, 0.55);
 }
 
 .card h2 {
@@ -22,13 +24,16 @@
   color: var(--color-neon-yellow);
   font-size: 1.3rem;
   margin-bottom: 1rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* Formular für Benutzeranlage */
+/* -------------------------------------------------------------
+   🔹 Benutzeranlage Formular
+------------------------------------------------------------- */
 #createUserForm.form-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
 }
 
 #createUserForm label {
@@ -48,45 +53,51 @@
   background-color: var(--color-bg-panel);
   border: 2px solid var(--color-neon-yellow);
   border-radius: 8px;
-  padding: 10px;
+  padding: 10px 12px;
   color: var(--color-neon-yellow);
   font-weight: bold;
   outline: none;
   transition: all 0.2s ease;
 }
 
+#createUserForm input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
 #createUserForm input:focus,
 #createUserForm select:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.7);
+              0 0 24px rgba(112, 255, 234, 0.55);
 }
 
-/* Dropdown für Rollen */
 #createUserForm select {
   cursor: pointer;
 }
 
-#createUserForm select:hover,
-#createUserForm select:focus {
+#createUserForm select:hover {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.7);
+              0 0 20px rgba(112, 255, 234, 0.55);
 }
 
-/* Tabelle für Mitarbeiterverwaltung */
+/* -------------------------------------------------------------
+   🔹 Mitarbeiter-Tabelle
+------------------------------------------------------------- */
 #adminEmployeeTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1.5rem;
+  table-layout: fixed;
 }
 
 #adminEmployeeTable th,
 #adminEmployeeTable td {
   text-align: center;
-  padding: 10px;
+  padding: 12px;
   border-bottom: 1px solid #333;
   color: var(--color-text-light);
+  word-wrap: break-word;
 }
 
 #adminEmployeeTable th {
@@ -95,47 +106,58 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-#adminEmployeeTable tr:hover {
-  background-color: #2a2a40;
+/* Alternierende Zeilen */
+#adminEmployeeTable tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* Buttons in Tabelle */
-#adminEmployeeTable .actionBtn {
+#adminEmployeeTable tr:hover {
+  background-color: #2a2a40;
+  transition: background 0.2s ease;
+}
+
+/* -------------------------------------------------------------
+   🔹 Buttons in Tabelle
+------------------------------------------------------------- */
+#adminEmployeeTable .actionBtn,
+#adminEmployeeTable .deleteBtn {
   background-color: transparent;
-  border: 1px solid var(--color-neon-turquoise);
-  color: var(--color-neon-turquoise);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-weight: bold;
+}
+
+/* Action */
+#adminEmployeeTable .actionBtn {
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
 }
 
 #adminEmployeeTable .actionBtn:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.6);
+              0 0 24px rgba(112, 255, 234, 0.55);
 }
 
-/* Delete Button */
+/* Delete */
 #adminEmployeeTable .deleteBtn {
-  background-color: transparent;
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
 #adminEmployeeTable .deleteBtn:hover {
   background-color: var(--color-neon-red);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.6);
+              0 0 24px rgba(255, 77, 77, 0.55);
 }
 
-/* Feedback Banner – globales System */
+/* -------------------------------------------------------------
+   🔹 Feedback Banner
+------------------------------------------------------------- */
 #feedbackContainer {
   position: fixed;
   top: 80px;
@@ -157,19 +179,19 @@
 .feedback.success {
   background-color: var(--color-feedback-success);
   box-shadow: 0 0 12px var(--color-feedback-success),
-              0 0 24px rgba(0, 255, 128, 0.6);
+              0 0 24px rgba(0, 255, 128, 0.55);
 }
 
 .feedback.error {
   background-color: var(--color-feedback-error);
   box-shadow: 0 0 12px var(--color-feedback-error),
-              0 0 24px rgba(255, 77, 77, 0.6);
+              0 0 24px rgba(255, 77, 77, 0.55);
 }
 
 .feedback.warning {
   background-color: var(--color-feedback-warning);
   box-shadow: 0 0 12px var(--color-feedback-warning),
-              0 0 24px rgba(255, 211, 0, 0.6);
+              0 0 24px rgba(255, 211, 0, 0.55);
 }
 
 @keyframes fadeInOut {
@@ -179,7 +201,15 @@
   100% { opacity: 0; transform: translateY(-10px); }
 }
 
-/* Responsive Anpassung */
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassungen
+------------------------------------------------------------- */
+@media (max-width: 992px) {
+  #createUserForm.form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   #adminEmployeeTable {
     display: block;
@@ -188,175 +218,7 @@
   }
 
   #createUserForm.form-grid {
-    gap: 0.8rem;
-  }
-
-  #createUserForm input,
-  #createUserForm select {
-    padding: 8px;
-  }
-}
-/* Formular für Benutzeranlage */
-#createUserForm.form-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-#createUserForm label {
-  display: flex;
-  flex-direction: column;
-  font-weight: bold;
-  color: var(--color-neon-yellow);
-}
-
-#createUserForm i {
-  margin-bottom: 0.3rem;
-  color: var(--color-neon-turquoise);
-}
-
-#createUserForm input,
-#createUserForm select {
-  background-color: var(--color-bg-panel);
-  border: 2px solid var(--color-neon-yellow);
-  border-radius: 8px;
-  padding: 10px;
-  color: var(--color-neon-yellow);
-  font-weight: bold;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-#createUserForm input:focus,
-#createUserForm select:focus {
-  border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.7);
-}
-
-/* Dropdown für Rollen */
-#createUserForm select {
-  cursor: pointer;
-}
-
-#createUserForm select:hover,
-#createUserForm select:focus {
-  border-color: var(--color-neon-turquoise);
-  box-shadow: 0 0 10px var(--color-neon-turquoise),
-              0 0 20px rgba(112, 255, 234, 0.7);
-}
-/* Tabelle für Mitarbeiterverwaltung */
-#adminEmployeeTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1.5rem;
-}
-
-#adminEmployeeTable th,
-#adminEmployeeTable td {
-  text-align: center;
-  padding: 10px;
-  border-bottom: 1px solid #333;
-  color: var(--color-text-light);
-}
-
-#adminEmployeeTable th {
-  background-color: var(--color-bg-panel);
-  color: var(--color-neon-yellow);
-  text-shadow: 0 0 6px var(--color-neon-yellow);
-}
-
-#adminEmployeeTable tr:hover {
-  background-color: #2a2a40;
-}
-/* Buttons in Tabelle */
-#adminEmployeeTable .actionBtn {
-  background-color: transparent;
-  border: 1px solid var(--color-neon-turquoise);
-  color: var(--color-neon-turquoise);
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-#adminEmployeeTable .actionBtn:hover {
-  background-color: var(--color-neon-turquoise);
-  color: #000;
-  box-shadow: 0 0 12px var(--color-neon-turquoise),
-              0 0 24px rgba(112, 255, 234, 0.6);
-}
-
-/* Delete Button */
-#adminEmployeeTable .deleteBtn {
-  background-color: transparent;
-  border: 1px solid var(--color-neon-red);
-  color: var(--color-neon-red);
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-#adminEmployeeTable .deleteBtn:hover {
-  background-color: var(--color-neon-red);
-  color: #000;
-  box-shadow: 0 0 12px var(--color-neon-red),
-              0 0 24px rgba(255, 77, 77, 0.6);
-}
-/* Feedback Banner – globales System */
-#feedbackContainer {
-  position: fixed;
-  top: 80px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.feedback {
-  padding: 12px 18px;
-  border-radius: 6px;
-  font-weight: bold;
-  color: #000;
-  animation: fadeInOut 4s forwards;
-}
-
-.feedback.success {
-  background-color: var(--color-feedback-success);
-  box-shadow: 0 0 12px var(--color-feedback-success),
-              0 0 24px rgba(0, 255, 128, 0.6);
-}
-
-.feedback.error {
-  background-color: var(--color-feedback-error);
-  box-shadow: 0 0 12px var(--color-feedback-error),
-              0 0 24px rgba(255, 77, 77, 0.6);
-}
-
-.feedback.warning {
-  background-color: var(--color-feedback-warning);
-  box-shadow: 0 0 12px var(--color-feedback-warning),
-              0 0 24px rgba(255, 211, 0, 0.6);
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(-10px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-10px); }
-}
-/* Responsive Anpassung */
-@media (max-width: 768px) {
-  #adminEmployeeTable {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  #createUserForm.form-grid {
-    gap: 0.8rem;
+    gap: 1rem;
   }
 
   #createUserForm input,

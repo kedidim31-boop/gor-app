@@ -1,5 +1,5 @@
 // ======================================================================
-// 🔥 ADMIN PANEL – FINAL (Teil 1)
+// 🔥 ADMIN PANEL – FINAL VERSION (Teil 1)
 // Setup, Init, User Creation, Employee Loader, Role UI, Status Badges
 // ======================================================================
 
@@ -8,7 +8,7 @@ import { createUser } from "./adminUser.js";
 import { logout } from "./auth.js";
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
-import { addAuditLog } from "./auditHandler.js";
+import { addAuditLog } from "./activityHandler.js";
 import { getRecentActivities } from "./activityHandler.js";
 import { t } from "./lang.js";
 
@@ -20,17 +20,15 @@ import {
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// 🔹 Firebase einmal initialisieren (für alle Funktionen)
+// 🔹 Firebase einmal initialisieren
 const { auth, db } = initFirebase();
 
 // -------------------------------------------------------------
 // 🔹 Admin Panel initialisieren
 // -------------------------------------------------------------
 export function initAdminPanel() {
-  // Zugriff nur für Admin + Manager
   enforceRole(["admin", "manager"], "login.html");
 
-  // Benutzer anlegen
   const form = document.getElementById("createUserForm");
   if (form) {
     form.addEventListener("submit", async e => {
@@ -61,7 +59,7 @@ export function initAdminPanel() {
         console.error("❌ Fehler beim Erstellen:", err);
 
         if (err.code === "auth/email-already-in-use") {
-          showFeedback(t("admin.emailInUse") || "E-Mail wird bereits verwendet.", "error");
+          showFeedback(t("admin.emailInUse"), "error");
         } else {
           showFeedback(t("errors.fail"), "error");
         }
@@ -69,18 +67,13 @@ export function initAdminPanel() {
     });
   }
 
-  // Initial laden
   loadEmployees();
   loadAuditLog();
 
-  // Logout
   document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
-  // Live‑Filter
   document.getElementById("employeeSearch")?.addEventListener("input", filterEmployees);
   document.getElementById("auditSearch")?.addEventListener("input", filterAudit);
-
-  // Audit Refresh
   document.getElementById("refreshAudit")?.addEventListener("click", loadAuditLog);
 }
 
@@ -97,13 +90,13 @@ async function loadEmployees() {
 
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
-    const id = docSnap.id; // = E-Mail laut Rules
+    const id = docSnap.id;
 
     const statusBadge = data.disabled
-      ? `<span class="role-badge role-guest">${t("employees.disabled") || "Deaktiviert"}</span>`
-      : `<span class="role-badge role-employee">${t("employees.active") || "Aktiv"}</span>`;
+      ? `<span class="role-badge role-guest">${t("employees.disabled")}</span>`
+      : `<span class="role-badge role-employee">${t("employees.enabled")}</span>`;
 
-    row = document.createElement("tr");
+    const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${data.name || "-"}</td>
@@ -152,17 +145,17 @@ function roleOptions(currentRole) {
     .join("");
 }
 // ======================================================================
-// 🔥 ADMIN PANEL – FINAL (Teil 2)
+// 🔥 ADMIN PANEL – FINAL VERSION (Teil 2)
 // Role Change, Disable System, Delete System, Audit Log, Filters
 // ======================================================================
 
 // -------------------------------------------------------------
-// 🔹 Rollen ändern (employees – Admin/Manager laut Rules)
+// 🔹 Rollen ändern
 // -------------------------------------------------------------
 function attachRoleChangeHandler() {
   document.querySelectorAll(".roleSelect").forEach(select => {
     select.addEventListener("change", async e => {
-      const id = e.target.dataset.id; // E-Mail
+      const id = e.target.dataset.id;
       const newRole = e.target.value;
 
       try {
@@ -187,24 +180,21 @@ function attachRoleChangeHandler() {
 
 // -------------------------------------------------------------
 // 🔹 Benutzer deaktivieren / aktivieren
-//    -> employees + users synchron halten (disabled Flag)
 // -------------------------------------------------------------
 function attachDisableHandler() {
   document.querySelectorAll(".disableBtn").forEach(btn => {
     btn.addEventListener("click", async () => {
-      const id = btn.dataset.id; // E-Mail = DocID in employees + users
+      const id = btn.dataset.id;
 
       try {
         const newStatus = btn.innerText.includes(t("employees.disable"));
 
-        // employees (gemäss Rules: Admin/Manager dürfen write)
         await updateDoc(doc(db, "employees", id), { disabled: newStatus });
 
-        // users (gemäss Rules: Admin/Manager dürfen write)
         try {
           await updateDoc(doc(db, "users", id), { disabled: newStatus });
         } catch (innerErr) {
-          console.warn("⚠️ Konnte users-Dokument nicht updaten (evtl. nicht vorhanden):", innerErr);
+          console.warn("⚠️ users-Dokument nicht vorhanden:", innerErr);
         }
 
         const adminEmail = auth.currentUser?.email || "system";
@@ -232,12 +222,11 @@ function attachDisableHandler() {
 
 // -------------------------------------------------------------
 // 🔹 Benutzer löschen
-//    -> employees + users löschen (Admin/Manager laut Rules)
 // -------------------------------------------------------------
 function attachDeleteHandler() {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.addEventListener("click", () => {
-      const id = btn.dataset.id; // E-Mail
+      const id = btn.dataset.id;
 
       showFeedback(t("admin.confirm"), "warning");
 
@@ -245,14 +234,12 @@ function attachDeleteHandler() {
         "click",
         async () => {
           try {
-            // employees löschen
             await deleteDoc(doc(db, "employees", id));
 
-            // users löschen (falls vorhanden)
             try {
               await deleteDoc(doc(db, "users", id));
             } catch (innerErr) {
-              console.warn("⚠️ Konnte users-Dokument nicht löschen (evtl. nicht vorhanden):", innerErr);
+              console.warn("⚠️ users-Dokument nicht vorhanden:", innerErr);
             }
 
             const adminEmail = auth.currentUser?.email || "system";
@@ -286,7 +273,7 @@ function filterEmployees(e) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Audit Log laden (activities – laut Rules)
+// 🔹 Audit Log laden
 // -------------------------------------------------------------
 async function loadAuditLog() {
   const table = document.querySelector("#auditTable tbody");

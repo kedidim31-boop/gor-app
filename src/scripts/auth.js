@@ -4,8 +4,11 @@ import { initFirebase } from "./firebaseSetup.js";
 import { signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 import { showFeedback } from "./feedback.js";
 import { logActivity } from "./activityHandler.js";
+import { t } from "./lang.js";
 
+// -------------------------------------------------------------
 // 🔹 Logout-Funktion
+// -------------------------------------------------------------
 export async function logout() {
   const { auth } = initFirebase();
 
@@ -14,13 +17,13 @@ export async function logout() {
     const userId = user ? user.uid : "unknown";
 
     await signOut(auth);
-    console.log("✅ Logout erfolgreich");
+    console.log("📘 Logout erfolgreich");
 
-    // Aktivität loggen (optional, aber sinnvoll)
-    await logActivity(userId, "logout", "User hat sich ausgeloggt");
+    // Aktivität loggen
+    await logActivity(userId, "logout", "User logged out");
 
-    // Neon-Feedback
-    showFeedback("Du wurdest erfolgreich ausgeloggt.", "success");
+    // Mehrsprachiges Neon-Feedback
+    showFeedback(t("auth.out"), "success");
 
     // Kurze Verzögerung für Animation
     setTimeout(() => {
@@ -29,11 +32,13 @@ export async function logout() {
 
   } catch (error) {
     console.error("❌ Fehler beim Logout:", error);
-    showFeedback("Fehler beim Logout – bitte erneut versuchen.", "error");
+    showFeedback(t("errors.fail"), "error");
   }
 }
 
+// -------------------------------------------------------------
 // 🔧 Globaler Logout-Button (einmalig registrieren)
+// -------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
   const logoutButton = document.querySelector(".logout-btn");
 

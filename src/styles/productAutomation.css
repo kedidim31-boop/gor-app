@@ -1,0 +1,247 @@
+/* Product Automation – Cyberpunk Neon Look */
+/* Ergänzt theme.css + productDetails.css */
+
+/* -------------------------------------------------------------
+   🔹 Automation Panel
+------------------------------------------------------------- */
+.product-automation-panel {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(112, 255, 234, 0.25);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 0 18px rgba(112, 255, 234, 0.25);
+}
+
+.product-automation-panel h3 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Add Rule Button
+------------------------------------------------------------- */
+.add-rule-btn {
+  margin-top: 14px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background-color: var(--color-neon-yellow);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 12px var(--color-neon-yellow);
+}
+
+.add-rule-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow),
+              0 0 36px rgba(255, 211, 0, 0.7);
+}
+
+/* -------------------------------------------------------------
+   🔹 Automation Rules List
+------------------------------------------------------------- */
+.automation-rules-list {
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* -------------------------------------------------------------
+   🔹 Automation Rule Card
+------------------------------------------------------------- */
+.automation-rule {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.25s ease;
+  border-left: 4px solid transparent;
+}
+
+.automation-rule:hover {
+  background-color: rgba(112, 255, 234, 0.15);
+}
+
+/* Rule Header */
+.rule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rule-title {
+  font-weight: bold;
+  color: var(--color-neon-yellow);
+  font-size: 1.1rem;
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+}
+
+.rule-status {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.rule-status.active {
+  background-color: rgba(0, 255, 128, 0.15);
+  border: 1px solid var(--color-neon-green);
+  color: var(--color-neon-green);
+}
+
+.rule-status.paused {
+  background-color: rgba(255, 211, 0, 0.15);
+  border: 1px solid var(--color-neon-yellow);
+  color: var(--color-neon-yellow);
+}
+
+.rule-status.error {
+  background-color: rgba(255, 77, 77, 0.15);
+  border: 1px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Rule Sections (Trigger, Conditions, Actions)
+------------------------------------------------------------- */
+.rule-section {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rule-section h4 {
+  margin-top: 0;
+  color: var(--color-neon-turquoise);
+  font-size: 1rem;
+  text-shadow: 0 0 6px var(--color-neon-turquoise);
+}
+
+/* Rule Items */
+.rule-item {
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(112, 255, 234, 0.1);
+  border: 1px solid rgba(112, 255, 234, 0.25);
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rule-item strong {
+  color: var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Rule Actions (Edit, Pause, Delete)
+------------------------------------------------------------- */
+.rule-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.rule-action-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Edit */
+.rule-action-btn.edit {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-turquoise);
+}
+
+.rule-action-btn.edit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-turquoise);
+}
+
+/* Pause */
+.rule-action-btn.pause {
+  background-color: var(--color-neon-yellow);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-yellow);
+}
+
+.rule-action-btn.pause:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow);
+}
+
+/* Delete */
+.rule-action-btn.delete {
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+}
+
+.rule-action-btn.delete:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Automation Logs
+------------------------------------------------------------- */
+.automation-logs {
+  margin-top: 20px;
+}
+
+.automation-log {
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 10px;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+}
+
+.automation-log:hover {
+  background-color: rgba(112, 255, 234, 0.15);
+}
+
+.automation-log.success {
+  border-left: 4px solid var(--color-neon-green);
+}
+
+.automation-log.warning {
+  border-left: 4px solid var(--color-neon-yellow);
+}
+
+.automation-log.error {
+  border-left: 4px solid var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .rule-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .rule-actions {
+    flex-wrap: wrap;
+  }
+}

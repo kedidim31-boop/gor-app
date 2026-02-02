@@ -1,0 +1,180 @@
+/* Product Filters – Cyberpunk Neon Look */
+/* Ergänzt theme.css + products.css */
+
+/* -------------------------------------------------------------
+   🔹 Filter Panel (Glas + Neon)
+------------------------------------------------------------- */
+.product-filter-panel {
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 211, 0, 0.25);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 14px rgba(255, 211, 0, 0.25);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Filter Chips
+------------------------------------------------------------- */
+.filter-chip {
+  padding: 8px 14px;
+  border-radius: 8px;
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.filter-chip:hover {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 14px var(--color-neon-turquoise);
+  transform: translateY(-2px);
+}
+
+/* Aktiver Filter */
+.filter-chip.active {
+  background-color: var(--color-neon-turquoise);
+  color: #000;
+  box-shadow: 0 0 18px var(--color-neon-turquoise);
+}
+
+/* -------------------------------------------------------------
+   🔹 Dropdown Filter
+------------------------------------------------------------- */
+.filter-select {
+  background-color: var(--color-bg-panel);
+  border: 2px solid var(--color-neon-yellow);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: var(--color-text-light);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-width: 180px;
+}
+
+.filter-select:hover,
+.filter-select:focus {
+  border-color: var(--color-neon-turquoise);
+  box-shadow: 0 0 12px var(--color-neon-turquoise),
+              0 0 24px rgba(112, 255, 234, 0.55);
+  outline: none;
+}
+
+/* -------------------------------------------------------------
+   🔹 Range Slider (Preis / Bestand)
+------------------------------------------------------------- */
+.filter-range {
+  width: 200px;
+  appearance: none;
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-neon-yellow);
+  box-shadow: 0 0 12px var(--color-neon-yellow);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 18px var(--color-neon-yellow);
+}
+
+/* -------------------------------------------------------------
+   🔹 Aktive Filter Tags
+------------------------------------------------------------- */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.filter-tag {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: rgba(112, 255, 234, 0.15);
+  border: 1px solid var(--color-neon-turquoise);
+  color: var(--color-neon-turquoise);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.filter-tag i {
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-tag i:hover {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 8px var(--color-neon-red);
+}
+
+/* -------------------------------------------------------------
+   🔹 Reset Button
+------------------------------------------------------------- */
+.filter-reset-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 2px solid var(--color-neon-red);
+  color: var(--color-neon-red);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-reset-btn:hover {
+  background-color: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 18px var(--color-neon-red),
+              0 0 36px rgba(255, 77, 77, 0.7);
+  transform: translateY(-2px);
+}
+
+/* -------------------------------------------------------------
+   🔹 Filter Result Counter
+------------------------------------------------------------- */
+.filter-result-count {
+  font-size: 0.9rem;
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 6px var(--color-neon-yellow);
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+/* -------------------------------------------------------------
+   🔹 Responsive Anpassung
+------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .product-filter-panel {
+    flex-direction: column;
+  }
+
+  .filter-select,
+  .filter-range {
+    width: 100%;
+  }
+}

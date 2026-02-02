@@ -1,4 +1,4 @@
-// src/scripts/adminUser.js – Admin-Modul zum Erstellen neuer Benutzer (Auth + Firestore)
+// src/scripts/adminUser.js – Professionelle Version (Admin bleibt eingeloggt)
 
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
@@ -12,7 +12,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 import {
-  createUserWithEmailAndPassword
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 // -------------------------------------------------------------
@@ -38,19 +40,27 @@ export async function createUser(email, password, role = "employee") {
 
   try {
     // -------------------------------------------------------------
-    // 1️⃣ Benutzer in Firebase Auth anlegen
+    // 1️⃣ Zweiten Auth-Client erzeugen (damit Admin eingeloggt bleibt)
     // -------------------------------------------------------------
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const newUser = userCredential.user;
+    const tempAuth = getAuth();
+    tempAuth.persistence = "none"; // kein Login speichern
 
     // -------------------------------------------------------------
-    // 2️⃣ Benutzer in Firestore speichern
-    //    🔥 Dokument-ID = E-Mail (statt UID)
+    // 2️⃣ Benutzer in Firebase Auth anlegen (Admin bleibt eingeloggt)
+    // -------------------------------------------------------------
+    const userCredential = await createUserWithEmailAndPassword(tempAuth, email, password);
+    const newUser = userCredential.user;
+
+    // Sofort wieder ausloggen, damit Admin eingeloggt bleibt
+    await signOut(tempAuth);
+
+    // -------------------------------------------------------------
+    // 3️⃣ Benutzer in Firestore speichern
     // -------------------------------------------------------------
     await setDoc(doc(db, "employees", email), {
       email,
       role,
-      uid: newUser.uid,        // optional: UID trotzdem speichern
+      uid: newUser.uid,
       name: "",
       address: "",
       zip: "",
@@ -62,12 +72,12 @@ export async function createUser(email, password, role = "employee") {
     });
 
     // -------------------------------------------------------------
-    // 3️⃣ Erfolgsmeldung
+    // 4️⃣ Erfolgsmeldung
     // -------------------------------------------------------------
     showFeedback(`${t("admin.createUser")}: ${email}`, "success");
 
     // -------------------------------------------------------------
-    // 4️⃣ Aktivität loggen
+    // 5️⃣ Aktivität loggen
     // -------------------------------------------------------------
     await logActivity(
       currentUser.email,
@@ -75,7 +85,7 @@ export async function createUser(email, password, role = "employee") {
       `User: ${email}, Role: ${role}`
     );
 
-    return email; // 🔥 Dokument-ID zurückgeben
+    return email;
 
   } catch (error) {
     console.error("❌ Fehler beim Erstellen des Benutzers:", error);

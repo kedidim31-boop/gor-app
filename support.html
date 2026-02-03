@@ -16,14 +16,13 @@
 
 <body>
 
-  <!-- ============================================================
-       🔹 BRANDING HEADER
-  ============================================================ -->
+  <!-- 🔹 FEEDBACK BANNER -->
+  <div id="feedbackContainer" aria-live="polite"></div>
+
+  <!-- 🔹 BRANDING HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo">
-
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
     <div class="divider"></div>
-
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-headset"></i>
@@ -35,51 +34,31 @@
     </div>
   </header>
 
-  <!-- ============================================================
-       🔹 TOP NAVIGATION
-  ============================================================ -->
+  <!-- 🔹 TOP NAVIGATION -->
   <nav class="top-nav glass-panel">
-    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.home">Home</span></a>
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
     <a href="products.html"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a>
     <a href="support.html" class="active"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
-
-    <button class="btn btn-red logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      <span data-i18n="nav.logout">Logout</span>
-    </button>
+    <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
+    <button class="btn btn-red logout-btn"><i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="nav.logout">Logout</span></button>
   </nav>
 
-  <!-- Feedback -->
-  <div id="feedbackContainer"></div>
-
-  <!-- ============================================================
-       🔹 MAIN CONTENT
-  ============================================================ -->
+  <!-- 🔹 MAIN CONTENT -->
   <main class="support-page">
 
-    <!-- ========================================================
-         🔹 Ticket erstellen
-    ======================================================== -->
+    <!-- Ticket erstellen -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-plus"></i>
-        <span data-i18n="support.newTicket">Neues Ticket</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-plus"></i> <span data-i18n="support.newTicket">Neues Ticket</span></h2>
       <form id="ticketForm" class="form-grid">
-
         <label>
           <i class="fa-solid fa-heading"></i>
           <span data-i18n="support.titleLabel">Titel</span>
-          <input type="text" id="ticketTitle" required
-                 placeholder="Kurzer Titel"
-                 data-i18n-placeholder="support.titlePlaceholder">
+          <input type="text" id="ticketTitle" required data-i18n-placeholder="support.titlePlaceholder">
         </label>
-
         <label>
           <i class="fa-solid fa-flag"></i>
           <span data-i18n="support.priority">Priorität</span>
@@ -89,74 +68,37 @@
             <option value="high" data-i18n="support.high">Hoch</option>
           </select>
         </label>
-
         <label class="full-width">
           <i class="fa-solid fa-message"></i>
           <span data-i18n="support.message">Nachricht</span>
-          <textarea id="ticketMessage" rows="3" required
-                    placeholder="Beschreibe das Problem…"
-                    data-i18n-placeholder="support.messagePlaceholder"></textarea>
+          <textarea id="ticketMessage" rows="3" required data-i18n-placeholder="support.messagePlaceholder"></textarea>
         </label>
-
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-paper-plane"></i>
-          <span data-i18n="support.createTicket">Ticket erstellen</span>
+          <i class="fa-solid fa-paper-plane"></i> <span data-i18n="support.createTicket">Ticket erstellen</span>
         </button>
-
       </form>
     </section>
 
-    <!-- ========================================================
-         🔹 Support Dashboard – KPIs & SLA
-    ======================================================== -->
+    <!-- Support Dashboard -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-gauge-high"></i>
-        <span data-i18n="support.dashboard">Support Dashboard</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-gauge-high"></i> <span data-i18n="support.dashboard">Support Dashboard</span></h2>
       <div class="support-kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-label" data-i18n="support.kpiOpen">Offene Tickets</div>
-          <div class="kpi-value" id="kpiOpen">0</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-label" data-i18n="support.kpiInProgress">In Bearbeitung</div>
-          <div class="kpi-value" id="kpiInProgress">0</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-label" data-i18n="support.kpiClosed24h">Geschlossen (24h)</div>
-          <div class="kpi-value" id="kpiClosed24h">0</div>
-        </div>
-
-        <div class="kpi-card kpi-warning">
-          <div class="kpi-label" data-i18n="support.kpiOverSla">Über SLA</div>
-          <div class="kpi-value" id="kpiOverSla">0</div>
-        </div>
+        <div class="kpi-card"><div class="kpi-label" data-i18n="support.kpiOpen">Offene Tickets</div><div class="kpi-value" id="kpiOpen">0</div></div>
+        <div class="kpi-card"><div class="kpi-label" data-i18n="support.kpiInProgress">In Bearbeitung</div><div class="kpi-value" id="kpiInProgress">0</div></div>
+        <div class="kpi-card"><div class="kpi-label" data-i18n="support.kpiClosed24h">Geschlossen (24h)</div><div class="kpi-value" id="kpiClosed24h">0</div></div>
+        <div class="kpi-card kpi-warning"><div class="kpi-label" data-i18n="support.kpiOverSla">Über SLA</div><div class="kpi-value" id="kpiOverSla">0</div></div>
       </div>
-
       <div class="sla-legend">
         <span data-i18n="support.slaLow">SLA Low: 72h</span>
         <span data-i18n="support.slaMedium">SLA Medium: 48h</span>
         <span data-i18n="support.slaHigh">SLA High: 24h</span>
       </div>
     </section>
-    <!-- ========================================================
-         🔹 Ticket Übersicht
-    ======================================================== -->
+    <!-- Ticket Übersicht -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-ticket"></i>
-        <span data-i18n="support.ticketOverview">Tickets</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-ticket"></i> <span data-i18n="support.ticketOverview">Tickets</span></h2>
       <div class="support-filters">
-        <input type="text" id="ticketSearch"
-               placeholder="Suche nach Titel / Nachricht …"
-               data-i18n-placeholder="support.searchPlaceholder">
-
+        <input type="text" id="ticketSearch" data-i18n-placeholder="support.searchPlaceholder">
         <select id="ticketStatusFilter">
           <option value="all" data-i18n="support.all">Alle</option>
           <option value="open" data-i18n="support.open">Offen</option>
@@ -164,7 +106,6 @@
           <option value="closed" data-i18n="support.closed">Geschlossen</option>
         </select>
       </div>
-
       <table id="supportTable">
         <thead>
           <tr>
@@ -176,41 +117,24 @@
             <th data-i18n="support.delete">Löschen</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- Dynamisch -->
-        </tbody>
+        <tbody><!-- Dynamisch --></tbody>
       </table>
     </section>
 
-    <!-- ========================================================
-         🔹 Kommentar Modal (inkl. Kommentar‑Anzeige)
-    ======================================================== -->
+    <!-- Kommentar Modal -->
     <div id="commentModal" class="modal" aria-hidden="true">
       <div class="modal-content glass-panel" role="dialog" aria-modal="true">
-        <h3>
-          <i class="fa-solid fa-comment"></i>
-          <span data-i18n="support.addComment">Kommentar & Verlauf</span>
-        </h3>
-
-        <!-- Chat‑Bubbles / Kommentar‑Verlauf -->
+        <h3><i class="fa-solid fa-comment"></i> <span data-i18n="support.addComment">Kommentar & Verlauf</span></h3>
         <div id="ticketMessages"></div>
-
         <form id="commentForm">
           <input type="hidden" id="commentTicketId">
-
-          <textarea id="commentText" rows="4"
-                    placeholder="Kommentar schreiben…"
-                    data-i18n-placeholder="support.commentPlaceholder"></textarea>
-
+          <textarea id="commentText" rows="4" data-i18n-placeholder="support.commentPlaceholder"></textarea>
           <div class="modal-actions">
             <button type="button" id="closeCommentModal" class="btn btn-red">
-              <i class="fa-solid fa-xmark"></i>
-              <span data-i18n="support.cancel">Abbrechen</span>
+              <i class="fa-solid fa-xmark"></i> <span data-i18n="support.cancel">Abbrechen</span>
             </button>
-
             <button type="submit" class="btn btn-green">
-              <i class="fa-solid fa-check"></i>
-              <span data-i18n="support.save">Speichern</span>
+              <i class="fa-solid fa-check"></i> <span data-i18n="support.save">Speichern</span>
             </button>
           </div>
         </form>
@@ -219,17 +143,13 @@
 
   </main>
 
-  <!-- ============================================================
-       🔹 ROLE GUARD (Fallback)
-  ============================================================ -->
+  <!-- 🔹 ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
     enforceRole(["admin", "manager", "support"], "index.html");
   </script>
 
-  <!-- ============================================================
-       🔹 SUPPORT LOGIK
-  ============================================================ -->
+  <!-- 🔹 SUPPORT LOGIK -->
   <script type="module" src="src/scripts/support.js"></script>
 
 </body>

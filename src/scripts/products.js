@@ -1,9 +1,13 @@
-// src/scripts/products.js – Logik für Produktverwaltung (mehrsprachig + optimiert)
+// ======================================================================
+// 🔥 PRODUCTS.JS – FINAL VERSION (Teil 1)
+// Produktverwaltung – Gaming of Republic
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
 import { showFeedback } from "./feedback.js";
+import { addAuditLog } from "./auditHandler.js";
 import { t } from "./lang.js";
 
 import {
@@ -39,7 +43,7 @@ function formatPriceCH(value) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Auto-SKU generieren (falls leer)
+// 🔹 Auto-SKU generieren
 // -------------------------------------------------------------
 function generateSKU() {
   return "SKU-" + Math.floor(100000 + Math.random() * 900000);
@@ -73,7 +77,10 @@ form?.addEventListener("submit", async e => {
   }
 
   try {
-    await addDoc(collection(db, "products"), product);
+    const ref = await addDoc(collection(db, "products"), product);
+
+    await addAuditLog(auth.currentUser.email, "product_create", `Produkt: ${ref.id}`);
+
     form.reset();
     loadProducts();
     showFeedback(t("feedback.ok"), "success");
@@ -120,10 +127,9 @@ async function loadProducts() {
 
   attachDeleteHandler();
 }
-
-// -------------------------------------------------------------
+// ======================================================================
 // 🔹 Löschen mit Bestätigungs-Banner
-// -------------------------------------------------------------
+// ======================================================================
 function attachDeleteHandler() {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -136,6 +142,9 @@ function attachDeleteHandler() {
         async () => {
           try {
             await deleteDoc(doc(db, "products", id));
+
+            await addAuditLog(auth.currentUser.email, "product_delete", `Produkt: ${id}`);
+
             showFeedback(t("products.delete"), "success");
             loadProducts();
 
@@ -150,19 +159,19 @@ function attachDeleteHandler() {
   });
 }
 
-// -------------------------------------------------------------
+// ======================================================================
 // 🔹 Initial laden
-// -------------------------------------------------------------
+// ======================================================================
 loadProducts();
 
-// -------------------------------------------------------------
+// ======================================================================
 // 🔹 Logout
-// -------------------------------------------------------------
+// ======================================================================
 document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
-// -------------------------------------------------------------
+// ======================================================================
 // 🔹 Shopify-kompatibler CSV-Export
-// -------------------------------------------------------------
+// ======================================================================
 const exportBtn = document.getElementById("exportBtn");
 
 if (exportBtn) {

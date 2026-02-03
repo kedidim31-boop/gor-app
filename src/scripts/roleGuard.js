@@ -13,9 +13,6 @@ import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
 import { t } from "./lang.js";
 
-// -------------------------------------------------------------
-// 🔹 Rollenprüfung + deaktivierte Benutzer blockieren
-// -------------------------------------------------------------
 export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
   const { auth, db } = initFirebase();
 
@@ -38,11 +35,13 @@ export function enforceRole(requiredRoles = [], redirectPage = "index.html") {
       let userData = snap.exists() ? snap.data() : null;
       let role = userData?.role || claimRole || "guest";
 
-      // ⭐ BOOTSTRAP-FIX:
+      // ⭐ BOOTSTRAP-FIX
       if (!snap.exists() && ["admin", "manager"].includes(claimRole)) {
-        console.info(`Bootstrap-Zugriff erlaubt für ${claimRole} (${user.email})`);
+        role = claimRole; // Rolle aus Claim übernehmen
+        console.info(`Bootstrap-Zugriff erlaubt für ${role} (${user.email})`);
       } else if (!snap.exists()) {
         showFeedback(t("errors.noAccess"), "error");
+        await auth.signOut();
         window.location.href = redirectPage;
         return;
       }

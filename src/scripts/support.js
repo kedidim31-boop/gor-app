@@ -26,10 +26,10 @@ import {
 
 const { auth, db } = initFirebase();
 
-// Zugriff
+// Zugriff nur für Support + Admin + Manager
 enforceRole(["admin", "manager", "support"], "login.html");
 
-// DOM
+// DOM Referenzen
 const ticketForm = document.getElementById("ticketForm");
 const tableBody = document.querySelector("#supportTable tbody");
 
@@ -46,11 +46,7 @@ const kpiClosed24h = document.getElementById("kpiClosed24h");
 const kpiOverSla = document.getElementById("kpiOverSla");
 
 // SLA Konfiguration (in Stunden)
-const SLA_HOURS = {
-  low: 72,
-  medium: 48,
-  high: 24
-};
+const SLA_HOURS = { low: 72, medium: 48, high: 24 };
 
 // User + Rolle
 let currentUser = null;
@@ -104,11 +100,7 @@ ticketForm?.addEventListener("submit", async e => {
 // 🔹 KPIs berechnen
 // ======================================================================
 function updateSupportKpis(tickets) {
-  let open = 0;
-  let inProgress = 0;
-  let closed24h = 0;
-  let overSla = 0;
-
+  let open = 0, inProgress = 0, closed24h = 0, overSla = 0;
   const now = Date.now();
 
   tickets.forEach(t => {
@@ -140,11 +132,7 @@ function updateSupportKpis(tickets) {
 // 🔹 Live Listener + Push Notifications
 // ======================================================================
 function initLiveTicketListener() {
-  const q = query(
-    collection(db, "supportTickets"),
-    orderBy("createdAt", "desc")
-  );
-
+  const q = query(collection(db, "supportTickets"), orderBy("createdAt", "desc"));
   let initial = true;
 
   onSnapshot(q, snapshot => {
@@ -154,7 +142,6 @@ function initLiveTicketListener() {
     snapshot.forEach(docSnap => {
       const data = docSnap.data();
       const id = docSnap.id;
-
       tickets.push(data);
 
       const row = document.createElement("tr");
@@ -164,22 +151,9 @@ function initLiveTicketListener() {
         <td class="ticketTitle clickable" data-id="${id}">${data.title}</td>
         <td>${data.message}</td>
         <td>${renderPriorityBadge(data.priority)}</td>
-
-        <td>
-          ${renderStatusBadge(data.status)}
-          <br>
-          ${renderStatusSelect(id, data.status)}
-        </td>
-
-        <td>
-          <button class="commentBtn btn-blue" data-id="${id}">
-            <i class="fa-solid fa-comment"></i>
-          </button>
-        </td>
-
-        <td>
-          ${renderDeleteButton(id)}
-        </td>
+        <td>${renderStatusBadge(data.status)}<br>${renderStatusSelect(id, data.status)}</td>
+        <td><button class="commentBtn btn-blue" data-id="${id}"><i class="fa-solid fa-comment"></i></button></td>
+        <td>${renderDeleteButton(id)}</td>
       `;
 
       tableBody.appendChild(row);
@@ -202,7 +176,6 @@ function initLiveTicketListener() {
         }
       }
     }
-
     initial = false;
   });
 }
@@ -213,11 +186,9 @@ function initLiveTicketListener() {
 function renderStatusBadge(status) {
   return `<span class="status-badge ${status}">${t(`support.${status}`)}</span>`;
 }
-
 function renderPriorityBadge(priority) {
   return `<span class="priority-badge priority-${priority}">${t(`support.${priority}`)}</span>`;
 }
-
 function renderStatusSelect(id, status) {
   if (currentRole === "support") return "";
   return `
@@ -228,92 +199,10 @@ function renderStatusSelect(id, status) {
     </select>
   `;
 }
-
 function renderDeleteButton(id) {
   if (currentRole === "support") return `<span style="opacity:0.4;">—</span>`;
   return `<button class="deleteBtn btn btn-red" data-id="${id}"><i class="fa-solid fa-trash"></i></button>`;
 }
-// ======================================================================
-// 🔹 Status ändern
-// ======================================================================
-function attachStatusHandler() {
-  document.querySelectorAll(".statusSelect").forEach(select => {
-    select.addEventListener("change", async e => {
-      const id = e.target.dataset.id;
-      const newStatus = e.target.value;
-
-      try {
-        await updateDoc(doc(db, "supportTickets", id), {
-          status: newStatus,
-          updatedAt: serverTimestamp()
-        });
-
-        await addAuditLog(currentUser.email, "support_change_status", `Ticket: ${id}, Status: ${newStatus}`);
-
-        showFeedback(t("feedback.ok"), "success");
-
-      } catch (err) {
-        console.error("❌ Fehler beim Statuswechsel:", err);
-        showFeedback(t("errors.fail"), "error");
-      }
-    });
-  });
-}
-
-// ======================================================================
-// 🔹 Kommentar Modal öffnen + Kommentare laden
-// ======================================================================
-function attachCommentHandler() {
-  document.querySelectorAll(".commentBtn").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.dataset.id;
-      commentTicketId.value = id;
-
-      await loadComments(id);
-      commentModal.classList.add("open");
-    });
-  });
-}
-
-document.getElementById("closeCommentModal")?.addEventListener("click", () => {
-  commentModal.classList.remove("open");
-});
-
-// ESC schließen
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") commentModal.classList.remove("open");
-});
-
-// ======================================================================
-// 🔹 Kommentare laden (Chat‑Bubbles)
-// ======================================================================
-async function loadComments(ticketId) {
-  ticketMessages.innerHTML = "";
-
-  const q = query(
-    collection(db, "supportTickets", ticketId, "comments"),
-    orderBy("createdAt", "asc")
-  );
-
-  const snapshot = await getDocs(q);
-
-  snapshot.forEach(docSnap => {
-    const c = docSnap.data();
-
-    const bubble = document.createElement("div");
-    bubble.classList.add("message-bubble");
-    if (c.author === currentUser.email) bubble.classList.add("self");
-
-    bubble.innerHTML = `
-      <div class="message-author">${c.author}</div>
-      <div class="message-text">${c.text}</div>
-      <div class="message-time">${c.createdAt?.toDate().toLocaleString("de-CH")}</div>
-    `;
-
-    ticketMessages.appendChild(bubble);
-  });
-}
-
 // ======================================================================
 // 🔹 Kommentar speichern
 // ======================================================================

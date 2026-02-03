@@ -1,9 +1,19 @@
-// src/scripts/firebaseSetup.js – zentrale Initialisierung für Firebase Dienste (modulare SDK)
+// ======================================================================
+// 🔥 firebaseSetup.js – FINAL VERSION
+// Zentrale Initialisierung für Firebase Dienste (Singleton + Performance)
+// ======================================================================
 
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
+import { initializeApp, getApps } 
+  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+
+import { getAuth } 
+  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+import { getFirestore } 
+  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+import { getStorage } 
+  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
 // -------------------------------------------------------------
 // 🔹 Interne Singleton-Instanzen
@@ -41,15 +51,16 @@ export function initFirebase() {
         console.log("♻️ Firebase bereits initialisiert – bestehende Instanz verwendet");
       }
 
+      // Dienste nur einmal initialisieren
       firebaseAuth = getAuth(firebaseApp);
       firebaseDB = getFirestore(firebaseApp);
       firebaseStorage = getStorage(firebaseApp);
     }
-
   } catch (error) {
     console.error("❌ Fehler bei Firebase-Initialisierung:", error);
   }
 
+  // Immer dieselben Instanzen zurückgeben
   return {
     app: firebaseApp,
     auth: firebaseAuth,

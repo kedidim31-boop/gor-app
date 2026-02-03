@@ -15,55 +15,50 @@
 
 <body>
 
-  <!-- ============================================================
-       🔹 BRANDING HEADER
-  ============================================================ -->
-  <header class="branding-header">
-    <img src="public/logo.png" alt="Gaming of Republic Logo">
+  <!-- 🔹 FEEDBACK BANNER -->
+  <div id="feedbackContainer" aria-live="polite"></div>
+
+  <!-- 🔹 BRANDING HEADER -->
+  <header class="branding-header glass-panel">
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
     <div class="divider"></div>
     <div class="branding-text">
       <div class="subtitle">
-        <i class="fa-solid fa-clock"></i> Zeiterfassung
+        <i class="fa-solid fa-clock"></i>
+        <span data-i18n="time.title">Zeiterfassung</span>
       </div>
     </div>
   </header>
 
-  <!-- ============================================================
-       🔹 TOP NAVIGATION
-  ============================================================ -->
-  <nav class="top-nav">
-    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
-    <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
-    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
-    <a href="time.html" class="active"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
-    <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+  <!-- 🔹 TOP NAVIGATION -->
+  <nav class="top-nav glass-panel">
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
+    <a href="products.html"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
+    <a href="time.html" class="active"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a>
+    <a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
+    <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
 
     <button class="btn btn-red logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i> Logout
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
 
-  <!-- Feedback Container -->
-  <div id="feedbackContainer"></div>
-
-  <!-- ============================================================
-       🔹 MAIN CONTENT
-  ============================================================ -->
+  <!-- 🔹 MAIN CONTENT -->
   <main>
 
-    <!-- ========================================================
-         🔹 ZEITERFASSUNG ERSTELLEN
-    ======================================================== -->
-    <div class="card">
-      <h2><i class="fa-solid fa-plus-circle"></i> Neue Zeiterfassung hinzufügen</h2>
+    <!-- ZEITERFASSUNG ERSTELLEN -->
+    <section class="card glass-panel">
+      <h2><i class="fa-solid fa-plus-circle"></i> <span data-i18n="time.new">Neue Zeiterfassung hinzufügen</span></h2>
 
       <form id="timeForm" class="form-grid">
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-user"></i>
-          <input type="text" id="employeeName" placeholder="Mitarbeitername" required>
+          <input type="text" id="employeeName" placeholder="Mitarbeitername" data-i18n-placeholder="time.employee" required>
         </label>
 
         <label class="form-field icon-input">
@@ -83,37 +78,35 @@
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-hourglass-half"></i>
-          <input type="number" id="hoursWorked" step="0.1" readonly placeholder="Berechnete Stunden">
+          <input type="number" id="hoursWorked" step="0.1" readonly placeholder="Berechnete Stunden" data-i18n-placeholder="time.hours">
         </label>
 
         <label class="form-field full-width icon-input">
           <i class="fa-solid fa-align-left"></i>
-          <textarea id="workDescription" placeholder="Beschreibung"></textarea>
+          <textarea id="workDescription" placeholder="Beschreibung" data-i18n-placeholder="time.description"></textarea>
         </label>
 
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-save"></i> Zeiterfassung speichern
+          <i class="fa-solid fa-save"></i>
+          <span data-i18n="time.save">Zeiterfassung speichern</span>
         </button>
 
       </form>
-    </div>
-
-    <!-- ========================================================
-         🔹 ZEITERFASSUNGSÜBERSICHT
-    ======================================================== -->
-    <div class="card">
-      <h2><i class="fa-solid fa-table"></i> Zeiterfassungsübersicht</h2>
+    </section>
+    <!-- ZEITERFASSUNGSÜBERSICHT -->
+    <section class="card glass-panel">
+      <h2><i class="fa-solid fa-table"></i> <span data-i18n="time.overview">Zeiterfassungsübersicht</span></h2>
 
       <table id="timeTable">
         <thead>
           <tr>
-            <th>Mitarbeiter</th>
-            <th>Datum</th>
-            <th>Beginn</th>
-            <th>Ende</th>
-            <th>Stunden</th>
-            <th>Beschreibung</th>
-            <th>Aktionen</th>
+            <th data-i18n="time.employee">Mitarbeiter</th>
+            <th data-i18n="time.date">Datum</th>
+            <th data-i18n="time.start">Beginn</th>
+            <th data-i18n="time.end">Ende</th>
+            <th data-i18n="time.hours">Stunden</th>
+            <th data-i18n="time.description">Beschreibung</th>
+            <th data-i18n="time.actions">Aktionen</th>
           </tr>
         </thead>
 
@@ -121,13 +114,17 @@
           <!-- Einträge werden hier dynamisch geladen -->
         </tbody>
       </table>
-    </div>
+    </section>
 
   </main>
 
-  <!-- ============================================================
-       🔹 TIME LOGIK
-  ============================================================ -->
+  <!-- 🔹 ROLE GUARD -->
+  <script type="module">
+    import { enforceRole } from "./src/scripts/roleGuard.js";
+    enforceRole(["employee", "support", "manager", "admin"], "index.html");
+  </script>
+
+  <!-- 🔹 TIME LOGIK -->
   <script type="module" src="src/scripts/time.js"></script>
 
 </body>

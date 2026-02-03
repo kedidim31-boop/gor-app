@@ -15,128 +15,120 @@
 
 <body>
 
-  <!-- ============================================================
-       🔹 BRANDING HEADER
-  ============================================================ -->
+  <!-- 🔹 FEEDBACK BANNER -->
+  <div id="feedbackContainer" aria-live="polite"></div>
+
+  <!-- 🔹 BRANDING HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
     <div class="divider"></div>
     <div class="branding-text">
       <div class="subtitle">
-        <i class="fa-solid fa-box"></i> Produktverwaltung
+        <i class="fa-solid fa-box"></i>
+        <span data-i18n="products.title">Produktverwaltung</span>
       </div>
     </div>
   </header>
 
-  <!-- ============================================================
-       🔹 TOP NAVIGATION
-  ============================================================ -->
+  <!-- 🔹 TOP NAVIGATION -->
   <nav class="top-nav glass-panel">
-    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
-    <a href="products.html" class="active"><i class="fa-solid fa-box"></i> Produkte</a>
-    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
-    <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
-    <a href="adminPanel.html"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
+    <a href="products.html" class="active"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
+    <a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a>
+    <a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
+    <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
 
     <button class="btn btn-red logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i> Logout
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
 
-  <!-- Feedback Container -->
-  <div id="feedbackContainer"></div>
-
-  <!-- ============================================================
-       🔹 MAIN CONTENT
-  ============================================================ -->
+  <!-- 🔹 MAIN CONTENT -->
   <main>
 
-    <!-- ========================================================
-         🔹 PRODUKT ANLEGEN
-         (Admin + Manager + Support)
-    ======================================================== -->
+    <!-- PRODUKT ANLEGEN -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-plus"></i> Neues Produkt hinzufügen</h2>
+      <h2><i class="fa-solid fa-plus"></i> <span data-i18n="products.add">Neues Produkt hinzufügen</span></h2>
 
       <form id="createProductForm" class="form-grid">
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-tag"></i>
-          <input type="text" id="productName" placeholder="Produktname" required>
+          <input type="text" id="productName" placeholder="Produktname" data-i18n-placeholder="products.name" required>
         </label>
 
         <label class="form-field icon-input full-width">
           <i class="fa-solid fa-align-left"></i>
-          <textarea id="productDescription" placeholder="Beschreibung"></textarea>
+          <textarea id="productDescription" placeholder="Beschreibung" data-i18n-placeholder="products.description"></textarea>
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-layer-group"></i>
-          <input type="text" id="productType" placeholder="Typ" required>
+          <input type="text" id="productType" placeholder="Typ" data-i18n-placeholder="products.type" required>
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-industry"></i>
-          <input type="text" id="productVendor" placeholder="Anbieter" required>
+          <input type="text" id="productVendor" placeholder="Anbieter" data-i18n-placeholder="products.vendor" required>
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-folder"></i>
-          <input type="text" id="productCollections" placeholder="Kollektionen">
+          <input type="text" id="productCollections" placeholder="Kollektionen" data-i18n-placeholder="products.collections">
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-barcode"></i>
-          <input type="text" id="productSKU" placeholder="SKU eingeben" required>
+          <input type="text" id="productSKU" placeholder="SKU" data-i18n-placeholder="products.sku">
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-barcode"></i>
-          <input type="text" id="productEAN" placeholder="EAN eingeben">
+          <input type="text" id="productEAN" placeholder="EAN" data-i18n-placeholder="products.ean">
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-boxes-packing"></i>
-          <input type="number" id="productStock" step="1" placeholder="Bestand" required>
+          <input type="number" id="productStock" step="1" placeholder="Bestand" data-i18n-placeholder="products.stock" required>
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-money-bill-wave"></i>
-          <input type="number" id="productPrice" step="0.01" placeholder="Preis (CHF)" required>
+          <input type="number" id="productPrice" step="0.01" placeholder="Preis (CHF)" data-i18n-placeholder="products.price" required>
         </label>
 
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-save"></i> Speichern
+          <i class="fa-solid fa-save"></i> <span data-i18n="products.save">Speichern</span>
         </button>
 
       </form>
     </section>
-
-    <!-- ========================================================
-         🔹 PRODUKTÜBERSICHT
-    ======================================================== -->
+    <!-- PRODUKTÜBERSICHT -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-boxes-stacked"></i> Produktübersicht</h2>
+      <h2><i class="fa-solid fa-boxes-stacked"></i> <span data-i18n="products.overview">Produktübersicht</span></h2>
 
       <button id="exportBtn" class="btn btn-yellow">
-        <i class="fa-solid fa-file-csv"></i> Exportieren für Shopify
+        <i class="fa-solid fa-file-csv"></i>
+        <span data-i18n="products.export">Exportieren für Shopify</span>
       </button>
 
       <table id="productTable">
         <thead>
           <tr>
-            <th>Produktname</th>
-            <th>Beschreibung</th>
-            <th>Typ</th>
-            <th>Anbieter</th>
-            <th>Kollektionen</th>
-            <th>SKU</th>
-            <th>EAN</th>
-            <th><i class="fa-solid fa-boxes-packing"></i> Bestand</th>
-            <th><i class="fa-solid fa-money-bill-wave"></i> Preis (CHF)</th>
-            <th>Aktionen</th>
+            <th data-i18n="products.name">Produktname</th>
+            <th data-i18n="products.description">Beschreibung</th>
+            <th data-i18n="products.type">Typ</th>
+            <th data-i18n="products.vendor">Anbieter</th>
+            <th data-i18n="products.collections">Kollektionen</th>
+            <th data-i18n="products.sku">SKU</th>
+            <th data-i18n="products.ean">EAN</th>
+            <th data-i18n="products.stock">Bestand</th>
+            <th data-i18n="products.price">Preis (CHF)</th>
+            <th data-i18n="products.actions">Aktionen</th>
           </tr>
         </thead>
 
@@ -148,17 +140,13 @@
 
   </main>
 
-  <!-- ============================================================
-       🔹 ROLE GUARD (Alle dürfen lesen, aber nur bestimmte Rollen schreiben)
-  ============================================================ -->
+  <!-- 🔹 ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
     enforceRole(["employee", "support", "manager", "admin"], "index.html");
   </script>
 
-  <!-- ============================================================
-       🔹 PRODUKT LOGIK
-  ============================================================ -->
+  <!-- 🔹 PRODUKT LOGIK -->
   <script type="module" src="src/scripts/products.js"></script>
 
 </body>

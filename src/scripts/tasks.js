@@ -1,9 +1,13 @@
-// src/scripts/tasks.js – Logik für Aufgabenverwaltung (mehrsprachig + optimiert)
+// ======================================================================
+// 🔥 TASKS.JS – FINAL VERSION (Teil 1)
+// Aufgabenverwaltung – Gaming of Republic
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
 import { showFeedback } from "./feedback.js";
+import { addAuditLog } from "./auditHandler.js";
 import { t } from "./lang.js";
 
 import {
@@ -16,7 +20,7 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-const { db } = initFirebase();
+const { auth, db } = initFirebase();
 
 // -------------------------------------------------------------
 // 🔹 Zugriff: Admin, Manager, Support, Employee
@@ -42,12 +46,14 @@ if (taskForm) {
     }
 
     try {
-      await addDoc(collection(db, "tasks"), {
+      const ref = await addDoc(collection(db, "tasks"), {
         title,
         description: description || "",
-        status,
+        status, // open | inProgress | done
         createdAt: serverTimestamp()
       });
+
+      await addAuditLog(auth.currentUser.email, "task_create", `Task: ${ref.id}`);
 
       e.target.reset();
       loadTasks();
@@ -78,9 +84,9 @@ async function loadTasks() {
     row.classList.add(`status-${data.status}`);
 
     const statusIcons = {
-      offen: "<i class='fa-solid fa-clock'></i>",
-      inBearbeitung: "<i class='fa-solid fa-screwdriver-wrench'></i>",
-      abgeschlossen: "<i class='fa-solid fa-check'></i>"
+      open: "<i class='fa-solid fa-clock'></i>",
+      inProgress: "<i class='fa-solid fa-screwdriver-wrench'></i>",
+      done: "<i class='fa-solid fa-check'></i>"
     };
 
     row.innerHTML = `
@@ -93,9 +99,9 @@ async function loadTasks() {
         </span><br>
 
         <select data-id="${docSnap.id}" class="statusSelect">
-          <option value="offen" ${data.status === "offen" ? "selected" : ""}>${t("tasks.offen")}</option>
-          <option value="inBearbeitung" ${data.status === "inBearbeitung" ? "selected" : ""}>${t("tasks.inProgress")}</option>
-          <option value="abgeschlossen" ${data.status === "abgeschlossen" ? "selected" : ""}>${t("tasks.done")}</option>
+          <option value="open" ${data.status === "open" ? "selected" : ""}>${t("tasks.open")}</option>
+          <option value="inProgress" ${data.status === "inProgress" ? "selected" : ""}>${t("tasks.inProgress")}</option>
+          <option value="done" ${data.status === "done" ? "selected" : ""}>${t("tasks.done")}</option>
         </select>
       </td>
 
@@ -112,10 +118,9 @@ async function loadTasks() {
   attachStatusHandler();
   attachDeleteHandler();
 }
-
-// -------------------------------------------------------------
+// ======================================================================
 // 🔹 Status ändern
-// -------------------------------------------------------------
+// ======================================================================
 function attachStatusHandler() {
   document.querySelectorAll(".statusSelect").forEach(select => {
     select.addEventListener("change", async e => {
@@ -125,6 +130,8 @@ function attachStatusHandler() {
       try {
         await updateDoc(doc(db, "tasks", id), { status: newStatus });
 
+        await addAuditLog(auth.currentUser.email, "task_change_status", `Task: ${id}, Status: ${newStatus}`);
+
         const row = e.target.closest("tr");
         row.className = "";
         row.classList.add(`status-${newStatus}`);
@@ -132,9 +139,9 @@ function attachStatusHandler() {
         const badge = row.querySelector(".status-badge");
 
         const statusIcons = {
-          offen: "<i class='fa-solid fa-clock'></i>",
-          inBearbeitung: "<i class='fa-solid fa-screwdriver-wrench'></i>",
-          abgeschlossen: "<i class='fa-solid fa-check'></i>"
+          open: "<i class='fa-solid fa-clock'></i>",
+          inProgress: "<i class='fa-solid fa-screwdriver-wrench'></i>",
+          done: "<i class='fa-solid fa-check'></i>"
         };
 
         badge.innerHTML = `${statusIcons[newStatus] || ""} ${t(`tasks.${newStatus}`)}`;
@@ -150,13 +157,13 @@ function attachStatusHandler() {
   });
 }
 
-// -------------------------------------------------------------
+// ======================================================================
 // 🔹 Löschen mit Bestätigungs-Banner
-// -------------------------------------------------------------
+// ======================================================================
 function attachDeleteHandler() {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
-    btn.addEventListener("click", async e => {
-      const id = e.currentTarget.dataset.id;
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
 
       showFeedback(t("admin.confirm"), "warning");
 
@@ -165,6 +172,9 @@ function attachDeleteHandler() {
         async () => {
           try {
             await deleteDoc(doc(db, "tasks", id));
+
+            await addAuditLog(auth.currentUser.email, "task_delete", `Task: ${id}`);
+
             showFeedback(t("tasks.delete"), "success");
             loadTasks();
 
@@ -179,13 +189,12 @@ function attachDeleteHandler() {
   });
 }
 
-// -------------------------------------------------------------
+// ======================================================================
 // 🔹 Initial laden
-// -------------------------------------------------------------
+// ======================================================================
 loadTasks();
 
-// -------------------------------------------------------------
+// ======================================================================
 // 🔹 Logout
-// -------------------------------------------------------------
-const logoutBtn = document.querySelector(".logout-btn");
-if (logoutBtn) logoutBtn.addEventListener("click", logout);
+// ======================================================================
+document.querySelector(".logout-btn")?.addEventListener("click", logout);

@@ -3,9 +3,6 @@
    Layout, Formular, Inputs, Buttons, Filter, Tabelle
 ============================================================= */
 
-/* -------------------------------------------------------------
-   🔹 Layout
-------------------------------------------------------------- */
 main.support-page {
   margin: 1.5rem;
   display: flex;
@@ -17,9 +14,7 @@ main.support-page {
   margin-bottom: 1.5rem;
 }
 
-/* -------------------------------------------------------------
-   🔹 Formular für Tickets
-------------------------------------------------------------- */
+/* Formular */
 #ticketForm.form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -35,13 +30,11 @@ main.support-page {
   font-size: 0.9rem;
 }
 
-/* Icons */
 #ticketForm label i {
   color: var(--color-neon-yellow);
   margin-right: 6px;
 }
 
-/* Inputs */
 #ticketForm input,
 #ticketForm textarea,
 #ticketForm select {
@@ -96,9 +89,7 @@ main.support-page {
               0 0 36px rgba(255, 211, 0, 0.7);
 }
 
-/* -------------------------------------------------------------
-   🔹 Filterleiste
-------------------------------------------------------------- */
+/* Filterleiste */
 .support-filters {
   display: flex;
   gap: 1rem;
@@ -124,9 +115,7 @@ main.support-page {
               0 0 24px rgba(255, 211, 0, 0.55);
 }
 
-/* -------------------------------------------------------------
-   🔹 Ticket Tabelle
-------------------------------------------------------------- */
+/* Tabelle */
 #supportTable {
   width: 100%;
   border-collapse: collapse;
@@ -149,7 +138,6 @@ main.support-page {
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* Alternierende Zeilen */
 #supportTable tr:nth-child(even) {
   background-color: rgba(255,255,255,0.03);
 }
@@ -163,9 +151,7 @@ main.support-page {
    Status-Badges, Priorität, Select, Buttons, Modal, Chat
 ============================================================= */
 
-/* -------------------------------------------------------------
-   🔹 Status-Badges
-------------------------------------------------------------- */
+/* Status-Badges */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -175,8 +161,6 @@ main.support-page {
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  user-select: none;
   transition: all 0.25s ease;
 }
 
@@ -185,13 +169,11 @@ main.support-page {
   color: var(--color-neon-yellow);
   box-shadow: 0 0 8px rgba(255, 211, 0, 0.55);
 }
-
 .status-badge.inProgress {
   background-color: rgba(0, 255, 255, 0.2);
   color: var(--color-neon-turquoise);
   box-shadow: 0 0 8px rgba(0, 255, 255, 0.55);
 }
-
 .status-badge.closed {
   background-color: rgba(0, 255, 102, 0.2);
   color: var(--color-neon-green);
@@ -203,9 +185,7 @@ main.support-page {
   filter: brightness(1.1);
 }
 
-/* -------------------------------------------------------------
-   🔹 Status Select
-------------------------------------------------------------- */
+/* Status Select */
 .statusSelect {
   margin-top: 6px;
   background: var(--color-bg-panel);
@@ -218,7 +198,6 @@ main.support-page {
   font-size: 0.8rem;
   transition: all 0.2s ease;
 }
-
 .statusSelect:hover,
 .statusSelect:focus {
   border-color: var(--color-neon-turquoise);
@@ -226,9 +205,7 @@ main.support-page {
               0 0 20px rgba(112, 255, 234, 0.55);
 }
 
-/* -------------------------------------------------------------
-   🔹 Priorität-Badges
-------------------------------------------------------------- */
+/* Priorität-Badges */
 .priority-badge {
   padding: 4px 10px;
   border-radius: 6px;
@@ -236,25 +213,20 @@ main.support-page {
   font-size: 0.8rem;
   text-transform: uppercase;
 }
-
 .priority-low {
   background-color: rgba(0, 255, 128, 0.15);
   color: var(--color-neon-green);
 }
-
 .priority-medium {
   background-color: rgba(255, 211, 0, 0.15);
   color: var(--color-neon-yellow);
 }
-
 .priority-high {
   background-color: rgba(255, 77, 77, 0.15);
   color: var(--color-neon-red);
 }
 
-/* -------------------------------------------------------------
-   🔹 Action Buttons
-------------------------------------------------------------- */
+/* Action Buttons */
 .btn-blue {
   background: transparent;
   border: 1px solid var(--color-neon-turquoise);
@@ -264,7 +236,6 @@ main.support-page {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
 .btn-blue:hover {
   background: var(--color-neon-turquoise);
   color: #000;
@@ -272,9 +243,7 @@ main.support-page {
               0 0 24px rgba(112, 255, 234, 0.55);
 }
 
-/* -------------------------------------------------------------
-   🔹 Kommentar Modal
-------------------------------------------------------------- */
+/* Kommentar Modal */
 #commentModal {
   position: fixed;
   inset: 0;
@@ -285,11 +254,9 @@ main.support-page {
   justify-content: center;
   z-index: 9999;
 }
-
 #commentModal.open {
   display: flex;
 }
-
 .modal-content {
   background: var(--color-bg-panel);
   padding: 1.5rem;
@@ -300,13 +267,11 @@ main.support-page {
               0 0 40px rgba(112,255,234,0.35);
   animation: fadeIn 0.3s ease;
 }
-
 .modal-content h3 {
   margin-top: 0;
   color: var(--color-neon-turquoise);
   text-shadow: 0 0 6px var(--color-neon-turquoise);
 }
-
 #commentForm textarea {
   width: 100%;
   min-height: 120px;
@@ -317,14 +282,12 @@ main.support-page {
   color: var(--color-text-light);
   resize: vertical;
 }
-
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1rem;
 }
-
 #closeCommentModal {
   background: var(--color-neon-red);
   color: #000;
@@ -334,21 +297,17 @@ main.support-page {
   cursor: pointer;
   box-shadow: 0 0 12px var(--color-neon-red);
 }
-
 #closeCommentModal:hover {
   filter: brightness(1.1);
 }
 
-/* -------------------------------------------------------------
-   🔹 Chat-Bubbles (Kommentare)
-------------------------------------------------------------- */
+/* Chat-Bubbles */
 #ticketMessages {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
-
 .message-bubble {
   background: rgba(20,20,40,0.6);
   border-left: 4px solid var(--color-neon-turquoise);
@@ -357,7 +316,6 @@ main.support-page {
   box-shadow: 0 0 12px rgba(112,255,234,0.35);
   animation: fadeIn 0.3s ease;
 }
-
 .message-bubble.self {
   border-left: none;
   border-right: 4px solid var(--color-neon-yellow);
@@ -365,18 +323,15 @@ main.support-page {
   background: rgba(40,40,20,0.6);
   box-shadow: 0 0 12px rgba(255,211,0,0.35);
 }
-
 .message-author {
   font-weight: bold;
   color: var(--color-neon-turquoise);
   margin-bottom: 4px;
 }
-
 .message-text {
   color: var(--color-text-light);
   margin-bottom: 6px;
 }
-
 .message-time {
   font-size: 0.75rem;
   color: var(--color-text-muted);
@@ -387,18 +342,19 @@ main.support-page {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive
-------------------------------------------------------------- */
+/* Responsive */
 @media (max-width: 768px) {
   #supportTable {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
   }
-
   .support-filters {
     flex-direction: column;
     align-items: stretch;
+  }
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 3px 8px;
   }
 }

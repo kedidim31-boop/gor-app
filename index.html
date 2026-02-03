@@ -18,17 +18,17 @@
   <!-- ============================================================
        🔹 FEEDBACK BANNER (GLOBAL)
   ============================================================ -->
-  <div id="feedbackContainer"></div>
+  <div id="feedbackContainer" aria-live="polite"></div>
 
   <!-- ============================================================
        🔹 BRANDING HEADER
   ============================================================ -->
   <header class="branding-header">
-    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
     <div class="divider"></div>
     <div class="branding-text">
       <div class="subtitle">
-        <i class="fa-solid fa-house"></i> Startseite
+        <i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Startseite</span>
       </div>
     </div>
   </header>
@@ -39,37 +39,42 @@
   <nav class="top-nav" id="navMenu">
 
     <a href="index.html" class="active">
-      <i class="fa-solid fa-house"></i> Home
+      <i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span>
     </a>
 
     <a href="analysis.html">
-      <i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard
+      <i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht & Dashboard</span>
     </a>
 
     <a href="products.html">
-      <i class="fa-solid fa-box"></i> Produkte
+      <i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span>
     </a>
 
     <a href="tasks.html">
-      <i class="fa-solid fa-list-check"></i> Aufgaben
+      <i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span>
     </a>
 
     <a href="time.html">
-      <i class="fa-solid fa-clock"></i> Zeiterfassung
+      <i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span>
     </a>
 
     <!-- Nur für Mitarbeiter & Admin -->
     <a href="employees.html" class="role-employee role-admin">
-      <i class="fa-solid fa-users"></i> Mitarbeiter
+      <i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span>
+    </a>
+
+    <!-- Nur für Support + Admin -->
+    <a href="support.html" class="role-support role-admin">
+      <i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span>
     </a>
 
     <!-- Nur für Admin -->
     <a href="adminPanel.html" class="role-admin">
-      <i class="fa-solid fa-user-shield"></i> Admin Panel
+      <i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span>
     </a>
 
     <button class="btn btn-red logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i> Logout
+      <i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="nav.logout">Logout</span>
     </button>
 
   </nav>
@@ -82,44 +87,50 @@
     <!-- ========================================================
          🔹 KENNZAHLEN (Dashboard Overview)
     ======================================================== -->
-    <div class="dashboard">
+    <section class="dashboard" aria-label="Dashboard Overview">
 
       <div class="card stat-card">
-        <h2><i class="fa-solid fa-users"></i> Mitarbeiter</h2>
+        <h2><i class="fa-solid fa-users"></i> <span data-i18n="dashboard.totalEmployees">Mitarbeiter</span></h2>
         <div class="stat" id="overviewEmployees">–</div>
         <p>Aktive Teammitglieder</p>
       </div>
 
       <div class="card stat-card">
-        <h2><i class="fa-solid fa-boxes-stacked"></i> Produkte</h2>
+        <h2><i class="fa-solid fa-boxes-stacked"></i> <span data-i18n="dashboard.totalProducts">Produkte</span></h2>
         <div class="stat" id="overviewProducts">–</div>
         <p>Verfügbare Artikel</p>
       </div>
 
       <div class="card stat-card">
-        <h2><i class="fa-solid fa-boxes-packing"></i> Bestand</h2>
+        <h2><i class="fa-solid fa-boxes-packing"></i> <span data-i18n="products.stock">Bestand</span></h2>
         <div class="stat" id="stockTotal">–</div>
         <p>Gesamter Lagerbestand</p>
       </div>
 
       <div class="card stat-card">
-        <h2><i class="fa-solid fa-list-check"></i> Aufgaben</h2>
+        <h2><i class="fa-solid fa-list-check"></i> <span data-i18n="dashboard.totalTasks">Aufgaben</span></h2>
         <div class="stat" id="overviewTasks">–</div>
         <p>Offene To‑Dos</p>
       </div>
 
       <div class="card stat-card">
-        <h2><i class="fa-solid fa-clock"></i> Zeiterfassung</h2>
+        <h2><i class="fa-solid fa-clock"></i> <span data-i18n="dashboard.totalHours">Zeiterfassung</span></h2>
         <div class="stat" id="overviewTime">–</div>
         <p>Gesamte Arbeitszeit</p>
       </div>
 
-    </div>
+      <div class="card stat-card role-support role-admin">
+        <h2><i class="fa-solid fa-headset"></i> <span data-i18n="support.dashboard">Support Tickets</span></h2>
+        <div class="stat" id="overviewSupport">–</div>
+        <p>Offene Supportfälle</p>
+      </div>
+
+    </section>
 
     <!-- ========================================================
          🔹 DIREKTZUGRIFF (Quick Links)
     ======================================================== -->
-    <div class="card quick-links">
+    <section class="card quick-links" aria-label="Quick Links">
       <h2><i class="fa-solid fa-bolt"></i> Direktzugriff</h2>
 
       <div class="dashboard">
@@ -148,6 +159,12 @@
           <a href="employees.html" class="btn btn-turquoise">Mitarbeiterverwaltung öffnen</a>
         </div>
 
+        <div class="card role-support role-admin">
+          <h3><i class="fa-solid fa-headset"></i> Support</h3>
+          <p>Bearbeite Supportfälle und Tickets.</p>
+          <a href="support.html" class="btn btn-purple">Support öffnen</a>
+        </div>
+
         <div class="card role-admin">
           <h3><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
           <p>Verwalte Benutzer und Rollen.</p>
@@ -155,7 +172,7 @@
         </div>
 
       </div>
-    </div>
+    </section>
 
   </main>
 

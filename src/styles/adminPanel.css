@@ -1,9 +1,9 @@
-/* Admin Panel – Cyberpunk Neon Look 2.0 */
-/* Modernisiert für Glass-Blur, Neon-Glow und konsistente UI */
+/* ======================================================================
+   🔥 ADMIN PANEL – FINAL VERSION (Teil 1)
+   Glass-Blur, Neon-Glow, konsistente UI
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Karten (Panels)
-------------------------------------------------------------- */
+/* Karten */
 .card {
   margin: 1.5rem;
   padding: 1.5rem;
@@ -14,13 +14,11 @@
   box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
 .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 0 25px var(--color-neon-yellow),
               0 0 50px rgba(255, 211, 0, 0.55);
 }
-
 .card h2 {
   margin-top: 0;
   color: var(--color-neon-yellow);
@@ -29,27 +27,22 @@
   text-shadow: 0 0 8px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Benutzeranlage Formular
-------------------------------------------------------------- */
+/* Benutzeranlage Formular */
 #createUserForm.form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.2rem;
 }
-
 #createUserForm label {
   display: flex;
   flex-direction: column;
   font-weight: bold;
   color: var(--color-neon-yellow);
 }
-
 #createUserForm i {
   margin-bottom: 0.3rem;
   color: var(--color-neon-turquoise);
 }
-
 #createUserForm input,
 #createUserForm select {
   background: rgba(15, 15, 30, 0.8);
@@ -61,31 +54,25 @@
   outline: none;
   transition: all 0.25s ease;
 }
-
 #createUserForm input::placeholder {
   color: rgba(255, 255, 255, 0.35);
 }
-
 #createUserForm input:focus,
 #createUserForm select:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 14px var(--color-neon-turquoise),
               0 0 28px rgba(112, 255, 234, 0.55);
 }
-
 #createUserForm select:hover {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 12px var(--color-neon-turquoise),
               0 0 24px rgba(112, 255, 234, 0.55);
 }
 
-/* -------------------------------------------------------------
-   🔹 Mitarbeiter-Suchfeld
-------------------------------------------------------------- */
+/* Mitarbeiter-Suchfeld */
 .employee-search {
   margin-bottom: 1rem;
 }
-
 .employee-search input {
   width: 100%;
   background: rgba(15, 15, 30, 0.8);
@@ -97,20 +84,16 @@
   outline: none;
   transition: all 0.25s ease;
 }
-
 .employee-search input::placeholder {
   color: rgba(255, 255, 255, 0.35);
 }
-
 .employee-search input:focus {
   border-color: var(--color-neon-yellow);
   box-shadow: 0 0 14px var(--color-neon-yellow),
               0 0 28px rgba(255, 211, 0, 0.55);
 }
 
-/* -------------------------------------------------------------
-   🔹 Mitarbeiter-Tabelle
-------------------------------------------------------------- */
+/* Mitarbeiter-Tabelle */
 #adminEmployeeTable {
   width: 100%;
   border-collapse: collapse;
@@ -121,7 +104,6 @@
   border-radius: 10px;
   overflow: hidden;
 }
-
 #adminEmployeeTable th,
 #adminEmployeeTable td {
   text-align: center;
@@ -130,27 +112,25 @@
   color: var(--color-text-light);
   word-wrap: break-word;
 }
-
 #adminEmployeeTable th {
   background: rgba(30, 30, 50, 0.9);
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
   font-size: 0.95rem;
 }
-
-/* Alternierende Zeilen */
 #adminEmployeeTable tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.03);
 }
-
 #adminEmployeeTable tr:hover {
   background-color: rgba(255, 255, 255, 0.08);
   transition: background 0.2s ease;
 }
+/* ======================================================================
+   🔥 ADMIN PANEL – FINAL VERSION (Teil 2)
+   Badges, Buttons, Audit Log, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Rollen-Badges (sichtbare Labels)
-------------------------------------------------------------- */
+/* Rollen-Badges */
 .role-badge {
   padding: 4px 10px;
   border-radius: 6px;
@@ -160,77 +140,64 @@
   margin-bottom: 6px;
   text-transform: capitalize;
 }
+.role-admin { background: var(--color-neon-red); color:#000; box-shadow:0 0 10px var(--color-neon-red); }
+.role-manager { background: var(--color-neon-purple); color:#000; box-shadow:0 0 10px var(--color-neon-purple); }
+.role-support { background: var(--color-neon-yellow); color:#000; box-shadow:0 0 10px var(--color-neon-yellow); }
+.role-employee { background: var(--color-neon-green); color:#000; box-shadow:0 0 10px var(--color-neon-green); }
+.role-guest { background:#888; color:#000; box-shadow:0 0 10px #888; }
 
-.role-admin {
-  background: var(--color-neon-red);
-  color: #000;
-  box-shadow: 0 0 10px var(--color-neon-red);
+/* Status-Badges */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.status-active {
+  background: rgba(0,255,128,0.18);
+  color: var(--color-neon-green);
+  box-shadow: 0 0 8px rgba(0,255,128,0.6);
+}
+.status-disabled {
+  background: rgba(255,77,77,0.18);
+  color: var(--color-neon-red);
+  box-shadow: 0 0 8px rgba(255,77,77,0.6);
 }
 
-.role-manager {
-  background: var(--color-neon-purple);
-  color: #000;
-  box-shadow: 0 0 10px var(--color-neon-purple);
-}
-
-.role-support {
-  background: var(--color-neon-yellow);
-  color: #000;
-  box-shadow: 0 0 10px var(--color-neon-yellow);
-}
-
-.role-employee {
-  background: var(--color-neon-green);
-  color: #000;
-  box-shadow: 0 0 10px var(--color-neon-green);
-}
-
-.role-guest {
-  background: #888;
-  color: #000;
-  box-shadow: 0 0 10px #888;
-}
-
-/* -------------------------------------------------------------
-   🔹 Buttons in Tabelle
-------------------------------------------------------------- */
+/* Buttons */
 #adminEmployeeTable .actionBtn,
 #adminEmployeeTable .deleteBtn {
-  background-color: transparent;
+  background: transparent;
   padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.25s ease;
   font-weight: bold;
 }
-
 #adminEmployeeTable .actionBtn {
   border: 1px solid var(--color-neon-turquoise);
   color: var(--color-neon-turquoise);
 }
-
 #adminEmployeeTable .actionBtn:hover {
-  background-color: var(--color-neon-turquoise);
+  background: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 14px var(--color-neon-turquoise),
-              0 0 28px rgba(112, 255, 234, 0.55);
+              0 0 28px rgba(112,255,234,0.55);
 }
-
 #adminEmployeeTable .deleteBtn {
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 #adminEmployeeTable .deleteBtn:hover {
-  background-color: var(--color-neon-red);
+  background: var(--color-neon-red);
   color: #000;
   box-shadow: 0 0 14px var(--color-neon-red),
-              0 0 28px rgba(255, 77, 77, 0.55);
+              0 0 28px rgba(255,77,77,0.6);
 }
 
-/* -------------------------------------------------------------
-   🔹 Audit Log Tabelle – Neon Turquoise Style
-------------------------------------------------------------- */
+/* Audit Log Tabelle */
 #auditTable {
   width: 100%;
   border-collapse: collapse;
@@ -240,38 +207,32 @@
   backdrop-filter: blur(6px);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 18px rgba(112, 255, 234, 0.25);
+  box-shadow: 0 0 18px rgba(112,255,234,0.25);
 }
-
 #auditTable th,
 #auditTable td {
   text-align: left;
   padding: 12px;
-  border-bottom: 1px solid rgba(112, 255, 234, 0.15);
+  border-bottom: 1px solid rgba(112,255,234,0.15);
   color: var(--color-text-light);
   word-wrap: break-word;
   font-size: 0.9rem;
 }
-
 #auditTable th {
-  background: rgba(20, 40, 55, 0.9);
+  background: rgba(20,40,55,0.9);
   color: var(--color-neon-turquoise);
   text-shadow: 0 0 6px var(--color-neon-turquoise);
   font-weight: bold;
 }
-
 #auditTable tr:nth-child(even) {
-  background-color: rgba(112, 255, 234, 0.03);
+  background-color: rgba(112,255,234,0.03);
 }
-
 #auditTable tr:hover {
-  background-color: rgba(112, 255, 234, 0.08);
+  background-color: rgba(112,255,234,0.08);
   transition: background 0.2s ease;
 }
 
-/* -------------------------------------------------------------
-   🔹 Audit Controls (Search + Refresh)
-------------------------------------------------------------- */
+/* Audit Controls */
 .audit-controls {
   display: flex;
   justify-content: space-between;
@@ -279,10 +240,9 @@
   margin-bottom: 1rem;
   gap: 1rem;
 }
-
 .audit-controls input {
   flex: 1;
-  background: rgba(15, 15, 30, 0.8);
+  background: rgba(15,15,30,0.8);
   border: 2px solid var(--color-neon-turquoise);
   border-radius: 8px;
   padding: 10px 12px;
@@ -291,57 +251,44 @@
   outline: none;
   transition: all 0.25s ease;
 }
-
 .audit-controls input::placeholder {
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255,255,255,0.35);
 }
-
 .audit-controls input:focus {
   border-color: var(--color-neon-yellow);
   box-shadow: 0 0 14px var(--color-neon-yellow),
-              0 0 28px rgba(255, 211, 0, 0.55);
+              0 0 28px rgba(255,211,0,0.55);
 }
-
 .audit-controls button {
   white-space: nowrap;
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Audit Table
-------------------------------------------------------------- */
+/* Responsive */
 @media (max-width: 768px) {
   #auditTable {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
   }
-
   .audit-controls {
     flex-direction: column;
     align-items: stretch;
   }
 }
-
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassungen
-------------------------------------------------------------- */
 @media (max-width: 992px) {
   #createUserForm.form-grid {
     grid-template-columns: 1fr;
   }
 }
-
 @media (max-width: 768px) {
   #adminEmployeeTable {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
   }
-
   #createUserForm.form-grid {
     gap: 1rem;
   }
-
   #createUserForm input,
   #createUserForm select {
     padding: 8px;

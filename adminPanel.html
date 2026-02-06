@@ -15,11 +15,12 @@
 
 <body>
 
-  <!-- ============================================================
-       🔹 BRANDING HEADER
-  ============================================================ -->
+  <!-- 🔹 FEEDBACK BANNER -->
+  <div id="feedbackContainer" aria-live="polite"></div>
+
+  <!-- 🔹 BRANDING HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo">
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
     <div class="divider"></div>
     <div class="branding-text">
       <div class="subtitle">
@@ -29,115 +30,101 @@
     </div>
   </header>
 
-  <!-- ============================================================
-       🔹 TOP NAVIGATION
-  ============================================================ -->
+  <!-- 🔹 TOP NAVIGATION -->
   <nav class="top-nav glass-panel">
-    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> Übersicht & Dashboard</a>
-    <a href="products.html"><i class="fa-solid fa-box"></i> Produkte</a>
-    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> Aufgaben</a>
-    <a href="time.html"><i class="fa-solid fa-clock"></i> Zeiterfassung</a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> Mitarbeiter</a>
-    <a href="adminPanel.html" class="active"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
+    <a href="products.html"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
+    <a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a>
+    <a href="adminPanel.html" class="active"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
 
     <button class="btn btn-red logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i> Logout
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
 
-  <!-- Feedback Container -->
-  <div id="feedbackContainer"></div>
-
-  <!-- ============================================================
-       🔹 MAIN CONTENT
-  ============================================================ -->
+  <!-- 🔹 MAIN CONTENT -->
   <main>
 
-    <!-- ========================================================
-         🔹 Benutzer anlegen
-    ======================================================== -->
+    <!-- Benutzer anlegen -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-user-plus"></i> Neuen Benutzer anlegen</h2>
+      <h2><i class="fa-solid fa-user-plus"></i> <span data-i18n="admin.newUser">Neuen Benutzer anlegen</span></h2>
 
       <form id="createUserForm" class="form-grid">
 
-        <label>
-          <i class="fa-solid fa-envelope"></i> E-Mail
-          <input type="email" id="newEmail" required placeholder="name@example.com">
+        <label class="icon-input">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="newEmail" required placeholder="name@example.com" data-i18n-placeholder="admin.email">
         </label>
 
-        <label>
-          <i class="fa-solid fa-lock"></i> Passwort
-          <input type="password" id="newPassword" required placeholder="••••••••">
+        <label class="icon-input">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="newPassword" required placeholder="••••••••" data-i18n-placeholder="admin.password">
         </label>
 
-        <label>
-          <i class="fa-solid fa-user-tag"></i> Rolle
+        <label class="icon-input">
+          <i class="fa-solid fa-user-tag"></i>
           <select id="newRole" required>
-            <option value="employee">Mitarbeiter</option>
-            <option value="support">Support</option>
-            <option value="manager">Manager</option>
-            <option value="admin">Admin</option>
-            <option value="guest">Gast</option>
+            <option value="employee" data-i18n="employees.roleEmployee">Mitarbeiter</option>
+            <option value="support" data-i18n="employees.roleSupport">Support</option>
+            <option value="manager" data-i18n="employees.roleManager">Manager</option>
+            <option value="admin" data-i18n="employees.roleAdmin">Admin</option>
+            <option value="guest" data-i18n="employees.roleGuest">Gast</option>
           </select>
         </label>
 
         <button type="submit" class="btn btn-yellow">
-          <i class="fa-solid fa-save"></i> Benutzer erstellen
+          <i class="fa-solid fa-save"></i> <span data-i18n="admin.createUser">Benutzer erstellen</span>
         </button>
 
       </form>
     </section>
-
-    <!-- ========================================================
-         🔹 Mitarbeiterverwaltung
-    ======================================================== -->
+    <!-- Mitarbeiterverwaltung -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-users-gear"></i> Mitarbeiterverwaltung</h2>
+      <h2><i class="fa-solid fa-users-gear"></i> <span data-i18n="admin.manageEmployees">Mitarbeiterverwaltung</span></h2>
 
-      <!-- 🔍 Suchfeld -->
+      <!-- Suchfeld -->
       <div class="employee-search">
-        <input type="text" id="employeeSearch" placeholder="Suche nach Name / E-Mail / Rolle …">
+        <input type="text" id="employeeSearch" placeholder="Suche nach Name / E-Mail / Rolle …" data-i18n-placeholder="admin.searchEmployees">
       </div>
 
       <table id="adminEmployeeTable">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>E-Mail</th>
-            <th>Rolle</th>
-            <th>Status</th> <!-- ⭐ NEU -->
-            <th>Aktionen</th>
+            <th data-i18n="employees.name">Name</th>
+            <th data-i18n="employees.email">E-Mail</th>
+            <th data-i18n="employees.role">Rolle</th>
+            <th data-i18n="employees.status">Status</th>
+            <th data-i18n="employees.actions">Aktionen</th>
           </tr>
         </thead>
-
         <tbody>
           <!-- Dynamisch geladen -->
         </tbody>
       </table>
     </section>
 
-    <!-- ========================================================
-         🔹 Audit Log Dashboard
-    ======================================================== -->
+    <!-- Audit Log Dashboard -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-clipboard-list"></i> Audit Log</h2>
+      <h2><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="admin.auditLog">Audit Log</span></h2>
 
       <div class="audit-controls">
-        <input type="text" id="auditSearch" placeholder="Suche nach Benutzer / Aktion …">
+        <input type="text" id="auditSearch" placeholder="Suche nach Benutzer / Aktion …" data-i18n-placeholder="admin.searchAudit">
         <button id="refreshAudit" class="btn btn-yellow">
-          <i class="fa-solid fa-rotate"></i> Aktualisieren
+          <i class="fa-solid fa-rotate"></i> <span data-i18n="admin.refresh">Aktualisieren</span>
         </button>
       </div>
 
       <table id="auditTable">
         <thead>
           <tr>
-            <th>Zeit</th>
-            <th>Benutzer</th>
-            <th>Aktion</th>
-            <th>Details</th>
+            <th data-i18n="audit.time">Zeit</th>
+            <th data-i18n="audit.user">Benutzer</th>
+            <th data-i18n="audit.action">Aktion</th>
+            <th data-i18n="audit.details">Details</th>
           </tr>
         </thead>
         <tbody>
@@ -148,17 +135,13 @@
 
   </main>
 
-  <!-- ============================================================
-       🔹 ROLE GUARD
-  ============================================================ -->
+  <!-- Role Guard -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
     enforceRole(["admin", "manager"], "index.html");
   </script>
 
-  <!-- ============================================================
-       🔹 ADMIN PANEL LOGIK
-  ============================================================ -->
+  <!-- Admin Panel Logik -->
   <script type="module" src="src/scripts/adminPanel.js"></script>
 
 </body>

@@ -163,7 +163,6 @@ main.support-page {
   text-transform: uppercase;
   transition: all 0.25s ease;
 }
-
 .status-badge.open {
   background-color: rgba(255, 211, 0, 0.2);
   color: var(--color-neon-yellow);
@@ -178,11 +177,6 @@ main.support-page {
   background-color: rgba(0, 255, 102, 0.2);
   color: var(--color-neon-green);
   box-shadow: 0 0 8px rgba(0, 255, 102, 0.55);
-}
-
-.status-badge:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
 }
 
 /* Status Select */

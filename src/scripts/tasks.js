@@ -175,7 +175,7 @@ function attachDeleteHandler() {
 
             await addAuditLog(auth.currentUser.email, "task_delete", `Task: ${id}`);
 
-            showFeedback(t("tasks.delete"), "success");
+            showFeedback(t("feedback.ok"), "success");
             loadTasks();
 
           } catch (err) {

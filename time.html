@@ -50,6 +50,18 @@
   <!-- 🔹 MAIN CONTENT -->
   <main>
 
+    <!-- TIMER ANZEIGE -->
+    <section class="card glass-panel">
+      <h2><i class="fa-solid fa-stopwatch"></i> <span data-i18n="time.timer">Live Timer</span></h2>
+      <div id="liveTimer">00:00:00</div>
+      <div class="timer-status" data-i18n="time.stopped">Gestoppt</div>
+      <div class="timer-controls">
+        <button id="startTimerBtn"><i class="fa-solid fa-play"></i> <span data-i18n="time.start">Start</span></button>
+        <button id="stopTimerBtn"><i class="fa-solid fa-pause"></i> <span data-i18n="time.stop">Stop</span></button>
+        <button id="resetTimerBtn"><i class="fa-solid fa-rotate-left"></i> <span data-i18n="time.reset">Reset</span></button>
+      </div>
+    </section>
+
     <!-- ZEITERFASSUNG ERSTELLEN -->
     <section class="card glass-panel">
       <h2><i class="fa-solid fa-plus-circle"></i> <span data-i18n="time.new">Neue Zeiterfassung hinzufügen</span></h2>

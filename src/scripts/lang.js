@@ -54,7 +54,10 @@ export const LANG = {
       confirm: "Bist du sicher?",
       emailInUse: "Diese E‑Mail wird bereits verwendet.",
       invalidEmail: "Ungültige E‑Mail-Adresse.",
-      weakPassword: "Passwort ist zu schwach."
+      weakPassword: "Passwort ist zu schwach.",
+      auditLog: "Audit Log",
+      refresh: "Aktualisieren",
+      searchAudit: "Suche im Audit Log…"
     },
 
     dashboard: {
@@ -62,7 +65,8 @@ export const LANG = {
       totalProducts: "Total Produkte",
       totalEmployees: "Total Mitarbeiter",
       totalTasks: "Total Aufgaben",
-      totalHours: "Total Stunden"
+      totalHours: "Total Stunden",
+      totalTickets: "Total Tickets"
     },
 
     employees: {
@@ -78,7 +82,9 @@ export const LANG = {
       enable: "Aktivieren",
       disabled: "Deaktiviert",
       enabled: "Aktiv",
-      active: "Aktiv"
+      active: "Aktiv",
+      role: "Rolle",
+      status: "Status"
     },
 
     products: {
@@ -95,16 +101,24 @@ export const LANG = {
       status: "Status",
       priority: "Priorität",
       due: "Fällig am",
-      updateStatus: "Status ändern"
+      updateStatus: "Status ändern",
+      open: "Offen",
+      inProgress: "In Bearbeitung",
+      done: "Erledigt",
+      delete: "Löschen"
     },
 
     time: {
       hours: "Stunden",
       date: "Datum",
+      start: "Startzeit",
+      end: "Endzeit",
       comment: "Kommentar",
-      add: "Zeit erfassen"
+      add: "Zeit erfassen",
+      running: "Läuft",
+      paused: "Pausiert",
+      stopped: "Gestoppt"
     },
-
     support: {
       newTicket: "Neues Ticket",
       titleLabel: "Titel",
@@ -131,7 +145,6 @@ export const LANG = {
 
       delete: "Löschen",
 
-      // Dashboard KPIs
       dashboard: "Support Dashboard",
       kpiOpen: "Offene Tickets",
       kpiInProgress: "In Bearbeitung",
@@ -155,311 +168,9 @@ export const LANG = {
       warn: "Achtung…",
       err: "Fehler."
     }
-  },
-  // ============================================================
-  // 🇬🇧 English
-  // ============================================================
-  en: {
-    languageName: "English",
-
-    system: {
-      ready: "Alright, let’s go.",
-      saved: "Saved.",
-      error: "Oops… something went wrong.",
-      loading: "Loading…",
-      noData: "No data found."
-    },
-
-    auth: {
-      login: "Sign in",
-      email: "Email",
-      password: "Enter your password",
-      in: "You’re in.",
-      out: "You’re out.",
-      disabled: "Your account is disabled."
-    },
-
-    nav: {
-      dashboard: "Dashboard",
-      employees: "Employees",
-      products: "Products",
-      tasks: "Tasks",
-      time: "Time",
-      support: "Support",
-      admin: "Admin",
-      logout: "Logout"
-    },
-
-    roles: {
-      admin: "Administrator",
-      manager: "Manager",
-      support: "Support",
-      employee: "Employee",
-      guest: "Guest"
-    },
-
-    admin: {
-      createUser: "Create new user",
-      deleteUser: "Delete user",
-      changeRole: "Change role",
-      saved: "All set.",
-      confirm: "Are you sure?",
-      emailInUse: "This email is already in use.",
-      invalidEmail: "Invalid email address.",
-      weakPassword: "Password is too weak."
-    },
-
-    dashboard: {
-      overview: "Overview",
-      totalProducts: "Total products",
-      totalEmployees: "Total employees",
-      totalTasks: "Total tasks",
-      totalHours: "Total hours"
-    },
-
-    employees: {
-      name: "Name",
-      email: "Email",
-      phone: "Phone",
-      address: "Address",
-      birthday: "Birthday",
-      id: "Employee ID",
-      edit: "Edit",
-      delete: "Delete",
-      disable: "Disable",
-      enable: "Enable",
-      disabled: "Disabled",
-      enabled: "Active",
-      active: "Active"
-    },
-
-    products: {
-      name: "Product name",
-      stock: "Stock",
-      price: "Price",
-      category: "Category",
-      updateStock: "Update stock"
-    },
-
-    tasks: {
-      title: "Title",
-      description: "Description",
-      status: "Status",
-      priority: "Priority",
-      due: "Due date",
-      updateStatus: "Update status"
-    },
-
-    time: {
-      hours: "Hours",
-      date: "Date",
-      comment: "Comment",
-      add: "Add time"
-    },
-
-    support: {
-      newTicket: "New ticket",
-      titleLabel: "Title",
-      titlePlaceholder: "Short title",
-      message: "Message",
-      messagePlaceholder: "Describe the issue…",
-      priority: "Priority",
-      low: "Low",
-      medium: "Medium",
-      high: "High",
-      createTicket: "Create ticket",
-
-      ticketOverview: "Tickets",
-      searchPlaceholder: "Search by title / message…",
-
-      open: "Open",
-      inProgress: "In progress",
-      closed: "Closed",
-
-      comment: "Comment",
-      addComment: "Add comment",
-      commentPlaceholder: "Write a comment…",
-      commentAdded: "Comment saved.",
-
-      delete: "Delete",
-
-      dashboard: "Support Dashboard",
-      kpiOpen: "Open tickets",
-      kpiInProgress: "In progress",
-      kpiClosed24h: "Closed (24h)",
-      kpiOverSla: "Over SLA",
-
-      slaLow: "SLA Low: 72h",
-      slaMedium: "SLA Medium: 48h",
-      slaHigh: "SLA High: 24h"
-    },
-
-    errors: {
-      fail: "That didn’t work.",
-      retry: "Try again.",
-      load: "Couldn’t load data.",
-      permissionDenied: "Permission denied."
-    },
-
-    feedback: {
-      ok: "All good.",
-      warn: "Heads up…",
-      err: "Error."
-    }
-  },
-
-  // ============================================================
-  // 🇫🇷 Français (Suisse)
-  // ============================================================
-  fr: {
-    languageName: "Français (Suisse)",
-
-    system: {
-      ready: "C’est parti.",
-      saved: "Enregistré.",
-      error: "Oups… un problème est survenu.",
-      loading: "Chargement…",
-      noData: "Aucune donnée trouvée."
-    },
-
-    auth: {
-      login: "Connexion",
-      email: "E-mail",
-      password: "Entre ton mot de passe",
-      in: "Tu es connecté.",
-      out: "Tu es déconnecté.",
-      disabled: "Ton compte est désactivé."
-    },
-
-    nav: {
-      dashboard: "Tableau de bord",
-      employees: "Employés",
-      products: "Produits",
-      tasks: "Tâches",
-      time: "Temps",
-      support: "Support",
-      admin: "Admin",
-      logout: "Déconnexion"
-    },
-
-    roles: {
-      admin: "Administrateur",
-      manager: "Manager",
-      support: "Support",
-      employee: "Employé",
-      guest: "Invité"
-    },
-
-    admin: {
-      createUser: "Créer un nouvel utilisateur",
-      deleteUser: "Supprimer l’utilisateur",
-      changeRole: "Changer le rôle",
-      saved: "C’est bon.",
-      confirm: "Tu es sûr ?",
-      emailInUse: "Cet e-mail est déjà utilisé.",
-      invalidEmail: "Adresse e-mail invalide.",
-      weakPassword: "Mot de passe trop faible."
-    },
-
-    dashboard: {
-      overview: "Vue d’ensemble",
-      totalProducts: "Total produits",
-      totalEmployees: "Total employés",
-      totalTasks: "Total tâches",
-      totalHours: "Total heures"
-    },
-
-    employees: {
-      name: "Nom",
-      email: "E-mail",
-      phone: "Téléphone",
-      address: "Adresse",
-      birthday: "Anniversaire",
-      id: "No d’employé",
-      edit: "Modifier",
-      delete: "Supprimer",
-      disable: "Désactiver",
-      enable: "Activer",
-      disabled: "Désactivé",
-      enabled: "Actif",
-      active: "Actif"
-    },
-
-    products: {
-      name: "Nom du produit",
-      stock: "Stock",
-      price: "Prix",
-      category: "Catégorie",
-      updateStock: "Mettre à jour le stock"
-    },
-
-    tasks: {
-      title: "Titre",
-      description: "Description",
-      status: "Statut",
-      priority: "Priorité",
-      due: "Échéance",
-      updateStatus: "Modifier le statut"
-    },
-
-    time: {
-      hours: "Heures",
-      date: "Date",
-      comment: "Commentaire",
-      add: "Ajouter du temps"
-    },
-
-    support: {
-      newTicket: "Nouveau ticket",
-      titleLabel: "Titre",
-      titlePlaceholder: "Titre court",
-      message: "Message",
-      messagePlaceholder: "Décris le problème…",
-      priority: "Priorité",
-      low: "Faible",
-      medium: "Moyenne",
-      high: "Haute",
-      createTicket: "Créer un ticket",
-
-      ticketOverview: "Tickets",
-      searchPlaceholder: "Rechercher par titre / message…",
-
-      open: "Ouvert",
-      inProgress: "En cours",
-      closed: "Fermé",
-
-      comment: "Commentaire",
-      addComment: "Ajouter un commentaire",
-      commentPlaceholder: "Écrire un commentaire…",
-      commentAdded: "Commentaire enregistré.",
-
-      delete: "Supprimer",
-
-      dashboard: "Tableau Support",
-      kpiOpen: "Tickets ouverts",
-      kpiInProgress: "En cours",
-      kpiClosed24h: "Fermés (24h)",
-      kpiOverSla: "Hors SLA",
-
-      slaLow: "SLA Faible: 72h",
-      slaMedium: "SLA Moyen: 48h",
-      slaHigh: "SLA Élevé: 24h"
-    },
-
-    errors: {
-      fail: "Ça n’a pas fonctionné.",
-      retry: "Réessaie.",
-      load: "Impossible de charger les données.",
-      permissionDenied: "Permission refusée."
-    },
-
-    feedback: {
-      ok: "Tout bon.",
-      warn: "Attention…",
-      err: "Erreur."
-    }
   }
 };
+
 // ======================================================================
 // 🔥 Sprachsystem 2.0 – stabil, schnell, fehlertolerant
 // ======================================================================

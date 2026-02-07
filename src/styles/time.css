@@ -1,4 +1,68 @@
 /* =============================================================
+   🔥 TIME – CYBERPUNK NEON LOOK (FINAL VERSION – Teil 1)
+   Timer-Anzeige, Status-Badges, Stunden-Badges
+============================================================= */
+
+/* Timer-Anzeige */
+#liveTimer {
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 1rem 0;
+  color: #FFD300;
+  text-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
+}
+
+/* Timer-Status */
+.timer-status {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.timer-running {
+  color: var(--color-neon-green);
+  text-shadow: 0 0 8px var(--color-neon-green);
+}
+.timer-paused {
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 8px var(--color-neon-yellow);
+}
+.timer-stopped {
+  color: var(--color-neon-red);
+  text-shadow: 0 0 8px var(--color-neon-red);
+}
+
+/* Stunden-Badges */
+.hours-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-align: center;
+  min-width: 70px;
+  transition: all 0.25s ease;
+}
+
+.hours-ok {
+  background: rgba(0, 255, 102, 0.2);
+  color: var(--color-neon-green);
+  box-shadow: 0 0 8px rgba(0, 255, 102, 0.55);
+}
+.hours-warning {
+  background: rgba(255, 211, 0, 0.2);
+  color: var(--color-neon-yellow);
+  box-shadow: 0 0 8px rgba(255, 211, 0, 0.55);
+}
+.hours-overtime {
+  background: rgba(255, 77, 77, 0.2);
+  color: var(--color-neon-red);
+  box-shadow: 0 0 8px rgba(255, 77, 77, 0.55);
+}
+/* =============================================================
    🔥 TIME – CYBERPUNK NEON LOOK (FINAL VERSION – Teil 2)
    Tabelle, Buttons, Responsive, Icons
 ============================================================= */
@@ -32,7 +96,49 @@
   transition: background 0.2s ease;
 }
 
-/* Buttons */
+/* Timer Buttons */
+#startTimerBtn,
+#stopTimerBtn,
+#resetTimerBtn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 6px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#startTimerBtn {
+  background: var(--color-neon-green);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-green);
+}
+#startTimerBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-green);
+}
+
+#stopTimerBtn {
+  background: var(--color-neon-yellow);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-yellow);
+}
+#stopTimerBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-yellow);
+}
+
+#resetTimerBtn {
+  background: var(--color-neon-red);
+  color: #000;
+  box-shadow: 0 0 12px var(--color-neon-red);
+}
+#resetTimerBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px var(--color-neon-red);
+}
+
+/* Delete Button */
 .deleteBtn {
   background: transparent;
   border: 1px solid var(--color-neon-red);
@@ -48,11 +154,6 @@
   color: #000;
   box-shadow: 0 0 14px var(--color-neon-red),
               0 0 28px rgba(255,77,77,0.6);
-}
-
-/* Navigation Icon Highlight */
-.top-nav a.active i.fa-clock {
-  color: #fff !important;
 }
 
 /* Responsive */

@@ -58,9 +58,7 @@ auth.onAuthStateChanged(async user => {
   currentRole = await getUserRole(user.uid);
 });
 
-// ======================================================================
 // 🔹 Ticket erstellen
-// ======================================================================
 ticketForm?.addEventListener("submit", async e => {
   e.preventDefault();
 
@@ -86,7 +84,6 @@ ticketForm?.addEventListener("submit", async e => {
     });
 
     await addAuditLog(currentUser.email, "support_create_ticket", `Ticket: ${ref.id}`);
-
     ticketForm.reset();
     showFeedback(t("feedback.ok"), "success");
 
@@ -96,9 +93,7 @@ ticketForm?.addEventListener("submit", async e => {
   }
 });
 
-// ======================================================================
 // 🔹 KPIs berechnen
-// ======================================================================
 function updateSupportKpis(tickets) {
   let open = 0, inProgress = 0, closed24h = 0, overSla = 0;
   const now = Date.now();
@@ -128,9 +123,7 @@ function updateSupportKpis(tickets) {
   kpiOverSla.textContent = overSla;
 }
 
-// ======================================================================
-// 🔹 Live Listener + Push Notifications
-// ======================================================================
+// 🔹 Live Listener
 function initLiveTicketListener() {
   const q = query(collection(db, "supportTickets"), orderBy("createdAt", "desc"));
   let initial = true;
@@ -179,10 +172,11 @@ function initLiveTicketListener() {
     initial = false;
   });
 }
+// ======================================================================
+// 🔥 SUPPORT.JS – FINAL VERSION (Teil 2)
+// Renderer, Kommentare, Status ändern, Löschen, Init
+// ======================================================================
 
-// ======================================================================
-// 🔹 Renderer
-// ======================================================================
 function renderStatusBadge(status) {
   return `<span class="status-badge ${status}">${t(`support.${status}`)}</span>`;
 }
@@ -203,94 +197,117 @@ function renderDeleteButton(id) {
   if (currentRole === "support") return `<span style="opacity:0.4;">—</span>`;
   return `<button class="deleteBtn btn btn-red" data-id="${id}"><i class="fa-solid fa-trash"></i></button>`;
 }
-// ======================================================================
+
+// 🔹 Kommentare laden
+async function loadComments(ticketId) {
+  ticketMessages.innerHTML = "";
+  const snapshot = await getDocs(collection(db, "supportTickets", ticketId, "comments"));
+  snapshot.forEach(docSnap => {
+    const c = docSnap.data();
+    const div = document.createElement("div");
+    div.classList.add("comment-entry");
+    div.innerHTML = `<strong>${c.author}</strong>: ${c.text} <span class="comment-date">${c.createdAt?.toDate().toLocaleString()}</span>`;
+    ticketMessages.appendChild(div);
+  });
+}
+
 // 🔹 Kommentar speichern
-// ======================================================================
 commentForm?.addEventListener("submit", async e => {
   e.preventDefault();
-
   const id = commentTicketId.value;
   const text = commentText.value.trim();
-
   if (!text) {
     showFeedback(t("errors.fail"), "error");
     return;
   }
-
   try {
     await addDoc(collection(db, "supportTickets", id, "comments"), {
       text,
       author: currentUser.email,
       createdAt: serverTimestamp()
     });
-
     await addAuditLog(currentUser.email, "support_add_comment", `Ticket: ${id}`);
-
     commentText.value = "";
     await loadComments(id);
-
   } catch (err) {
     console.error("❌ Fehler beim Kommentar:", err);
     showFeedback(t("errors.fail"), "error");
   }
 });
 
-// ======================================================================
+// 🔹 Status ändern
+function attachStatusHandler() {
+  document.querySelectorAll(".statusSelect").forEach(select => {
+    select.addEventListener("change", async e => {
+      const id = e.target.dataset.id;
+      const newStatus = e.target.value;
+      try {
+        await updateDoc(doc(db, "supportTickets", id), {
+          status: newStatus,
+          updatedAt: serverTimestamp()
+        });
+        await addAuditLog(currentUser.email, "support_change_status", `Ticket: ${id}, Status: ${newStatus}`);
+        showFeedback(t("feedback.ok"), "success");
+      } catch (err) {
+        console.error("❌ Fehler beim Statuswechsel:", err);
+        showFeedback(t("errors.fail"), "error");
+      }
+    });
+  });
+}
+
+// 🔹 Kommentar-Modal öffnen/schließen
+function attachCommentHandler() {
+  document.querySelectorAll(".commentBtn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      commentTicketId.value = id;
+      await loadComments(id);
+      commentModal.classList.add("open");
+    });
+  });
+  document.getElementById("closeCommentModal")?.addEventListener("click", () => {
+    commentModal.classList.remove("open");
+  });
+}
+
 // 🔹 Ticket Detail Ansicht (Titel anklicken)
-// ======================================================================
 function attachDetailHandler() {
   document.querySelectorAll(".ticketTitle").forEach(title => {
     title.addEventListener("click", async () => {
       const id = title.dataset.id;
-
       const snap = await getDoc(doc(db, "supportTickets", id));
       const data = snap.data();
-
       showFeedback(`📄 Ticket geöffnet: ${data.title}`, "success");
-
       commentTicketId.value = id;
       await loadComments(id);
-
       commentModal.classList.add("open");
     });
   });
 }
 
-// ======================================================================
 // 🔹 Ticket löschen
-// ======================================================================
 function attachDeleteHandler() {
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.id;
-
       showFeedback(t("admin.confirm"), "warning");
-
-      const confirmHandler = async () => {
+      btn.addEventListener("click", async () => {
         try {
           await deleteDoc(doc(db, "supportTickets", id));
-
           await addAuditLog(currentUser.email, "support_delete_ticket", `Ticket: ${id}`);
-
           showFeedback(t("support.delete"), "success");
-
         } catch (err) {
           console.error("❌ Fehler beim Löschen:", err);
           showFeedback(t("errors.fail"), "error");
         }
-      };
-
-      btn.addEventListener("click", confirmHandler, { once: true });
+      }, { once: true });
     });
   });
 }
 
-// ======================================================================
 // 🔹 Initial Load (Live)
-// ======================================================================
 initLiveTicketListener();
 
-// ======================================================================
 // 🔹 Logout
-// ======================================================================
 document.querySelector(".logout-btn")?.addEventListener("click", logout);

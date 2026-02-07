@@ -60,34 +60,34 @@
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-id-card"></i>
-            <input type="text" id="employeeNumber" placeholder="Mitarbeiternummer" data-i18n-placeholder="employees.number" readonly>
+            <input type="text" id="empNumber" placeholder="Mitarbeiternummer" data-i18n-placeholder="employees.number" readonly>
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-user"></i>
-            <input type="text" id="employeeName" placeholder="Name" data-i18n-placeholder="employees.name" required>
+            <input type="text" id="empName" placeholder="Name" data-i18n-placeholder="employees.name" required>
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-envelope"></i>
-            <input type="email" id="employeeEmail" placeholder="E-Mail" data-i18n-placeholder="employees.email" required>
+            <input type="email" id="empEmail" placeholder="E-Mail" data-i18n-placeholder="employees.email" required>
           </label>
         </div>
         <!-- Reihe 2 -->
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-location-dot"></i>
-            <input type="text" id="employeeAddress" placeholder="Adresse" data-i18n-placeholder="employees.address" required>
+            <input type="text" id="empAddress" placeholder="Adresse" data-i18n-placeholder="employees.address" required>
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-map-pin"></i>
-            <input type="text" id="employeeZip" placeholder="PLZ" data-i18n-placeholder="employees.zip" required>
+            <input type="text" id="empPLZ" placeholder="PLZ" data-i18n-placeholder="employees.zip" required>
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-city"></i>
-            <input type="text" id="employeeCity" placeholder="Ort" data-i18n-placeholder="employees.city" required>
+            <input type="text" id="empOrt" placeholder="Ort" data-i18n-placeholder="employees.city" required>
           </label>
         </div>
 
@@ -95,17 +95,17 @@
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-cake-candles"></i>
-            <input type="date" id="employeeBirthday" required>
+            <input type="date" id="empBirthday" required>
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-phone"></i>
-            <input type="tel" id="employeePhone" placeholder="Telefonnummer" data-i18n-placeholder="employees.phone" required>
+            <input type="tel" id="empPhone" placeholder="Telefonnummer" data-i18n-placeholder="employees.phone" required>
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-user-tag"></i>
-            <select id="employeeRole" required>
+            <select id="empRole" required>
               <option value="employee" data-i18n="employees.roleEmployee">Mitarbeiter</option>
               <option value="support" data-i18n="employees.roleSupport">Support</option>
               <option value="manager" data-i18n="employees.roleManager">Manager</option>
@@ -162,7 +162,7 @@
   <!-- Mitarbeitermummer automatisch generieren -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const numberField = document.getElementById("employeeNumber");
+      const numberField = document.getElementById("empNumber");
       if (numberField) {
         const randomNumber = Math.floor(100000 + Math.random() * 900000);
         numberField.value = "EMP-" + randomNumber;

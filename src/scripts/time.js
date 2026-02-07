@@ -1,6 +1,6 @@
 // ======================================================================
-// 🔥 TIME.JS – FINAL VERSION (Teil 1)
-// Setup, Timer-State, Auto-Save, Timer-Logik, Stunden-Berechnung
+// 🔥 TIME.JS – FINAL VERSION
+// Zeiterfassung – Gaming of Republic
 // ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
@@ -49,6 +49,9 @@ const DRAFT_KEY = "gor_time_form_draft";
 let timerState = { isRunning: false, startTimestamp: null };
 let timerInterval = null;
 
+// -----------------------------
+// Timer State laden/speichern
+// -----------------------------
 function loadTimerState() {
   try {
     const raw = localStorage.getItem(TIMER_KEY);
@@ -66,6 +69,9 @@ function saveTimerState() {
   localStorage.setItem(TIMER_KEY, JSON.stringify(timerState));
 }
 
+// -----------------------------
+// Form Draft laden/speichern
+// -----------------------------
 function loadFormDraft() {
   try {
     const raw = localStorage.getItem(DRAFT_KEY);
@@ -88,7 +94,9 @@ function saveFormDraft() {
   localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
 }
 
+// -----------------------------
 // Timer Logik
+// -----------------------------
 function updateTimerDisplay() {
   if (!liveTimerEl || !timerState.startTimestamp) return;
   const diffMs = Date.now() - timerState.startTimestamp;

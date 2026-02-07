@@ -9,6 +9,10 @@ main {
 
 .card {
   margin-bottom: 1.5rem;
+  background-color: #191833;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
 }
 
 /* Formular */
@@ -25,7 +29,7 @@ main {
   flex-direction: column;
   position: relative;
   font-size: 0.9rem;
-  color: var(--color-text-muted);
+  color: #FFFFFF;
 }
 
 /* Icons */
@@ -49,11 +53,11 @@ main {
 #taskForm input,
 #taskForm textarea,
 #taskForm select {
-  background-color: var(--color-bg-panel);
+  background-color: #191833;
   border: 2px solid var(--color-neon-yellow);
   border-radius: 10px;
   padding: 12px 14px;
-  color: var(--color-text-light);
+  color: #FFFFFF;
   font-weight: bold;
   outline: none;
   font-size: 0.95rem;
@@ -94,18 +98,18 @@ main {
 #taskForm button {
   padding: 12px 18px;
   border-radius: 10px;
-  background-color: var(--color-neon-yellow);
-  color: #000;
+  background-color: #FFD300;
+  color: #000000;
   font-weight: bold;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 0 12px var(--color-neon-yellow),
+  box-shadow: 0 0 12px #FFD300,
               0 0 24px rgba(255, 211, 0, 0.55);
 }
 
 #taskForm button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 18px var(--color-neon-yellow),
+  box-shadow: 0 0 18px #FFD300,
               0 0 36px rgba(255, 211, 0, 0.7);
 }
 
@@ -120,7 +124,7 @@ main {
 #taskTable th,
 #taskTable td {
   text-align: center;
-  color: var(--color-text-light);
+  color: #FFFFFF;
   padding: 12px;
   border-bottom: 1px solid #333;
   font-size: 0.95rem;
@@ -128,8 +132,8 @@ main {
 }
 
 #taskTable th {
-  color: var(--color-neon-yellow);
-  text-shadow: 0 0 6px var(--color-neon-yellow);
+  color: #FFD300;
+  text-shadow: 0 0 6px #FFD300;
 }
 
 #taskTable tr:nth-child(even) {
@@ -175,21 +179,21 @@ main {
 }
 
 /* Offen */
-.status-badge.open {
+.status-badge.status-open {
   background-color: rgba(255, 211, 0, 0.2);
   color: var(--color-neon-yellow);
   box-shadow: 0 0 8px rgba(255, 211, 0, 0.55);
 }
 
 /* In Bearbeitung */
-.status-badge.inProgress {
+.status-badge.status-inProgress {
   background-color: rgba(0, 255, 255, 0.2);
   color: var(--color-neon-turquoise);
   box-shadow: 0 0 8px rgba(0, 255, 255, 0.55);
 }
 
 /* Abgeschlossen */
-.status-badge.done {
+.status-badge.status-done {
   background-color: rgba(0, 255, 102, 0.2);
   color: var(--color-neon-green);
   box-shadow: 0 0 8px rgba(0, 255, 102, 0.55);
@@ -202,11 +206,11 @@ main {
 
 /* Status Dropdown */
 .statusSelect {
-  background-color: var(--color-bg-panel);
-  border: 2px solid var(--color-neon-yellow);
+  background-color: #191833;
+  border: 2px solid #FFD300;
   border-radius: 8px;
   padding: 8px;
-  color: var(--color-neon-yellow);
+  color: #FFD300;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.25s ease;

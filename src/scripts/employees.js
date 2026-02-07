@@ -20,7 +20,7 @@ import {
 
 const { db } = initFirebase();
 
-// Zugriff
+// Zugriff nur für Admin, Manager, Support
 enforceRole(["admin", "manager", "support"], "login.html");
 
 // DOM Elemente
@@ -48,11 +48,12 @@ employeeForm?.addEventListener("submit", async e => {
 
   const employee = {
     name: document.getElementById("empName").value.trim(),
+    email: document.getElementById("empEmail").value.trim(),
+    phone: document.getElementById("empPhone").value.trim(),
     address: document.getElementById("empAddress").value.trim(),
     plz: document.getElementById("empPLZ").value.trim(),
     ort: document.getElementById("empOrt").value.trim(),
     birthday: document.getElementById("empBirthday").value,
-    phone: document.getElementById("empPhone").value.trim(),
     role: document.getElementById("empRole").value.trim(),
     empNumber: generateEmployeeNumber(),
     createdAt: serverTimestamp()
@@ -92,11 +93,12 @@ async function loadEmployees() {
     row.innerHTML = `
       <td>${data.empNumber || "-"}</td>
       <td>${data.name || "-"}</td>
+      <td>${data.email || "-"}</td>
+      <td>${data.phone || "-"}</td>
       <td>${data.address || "-"}</td>
       <td>${data.plz || "-"}</td>
       <td>${data.ort || "-"}</td>
       <td>${formatDateCH(data.birthday)}</td>
-      <td>${data.phone || "-"}</td>
       <td>${data.role || "-"}</td>
       <td>
         <button class="deleteBtn btn btn-red" data-id="${docSnap.id}">

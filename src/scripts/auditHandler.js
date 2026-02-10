@@ -1,4 +1,7 @@
-// src/scripts/auditHandler.js – globales Modul für Audit-Logs (modulare Firebase SDK)
+// ======================================================================
+// 🔥 AUDIT HANDLER – FINAL VERSION
+// Gaming of Republic – Audit Logging
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
@@ -6,7 +9,8 @@ import { t } from "./lang.js";
 
 import {
   collection,
-  addDoc,
+  doc,
+  setDoc,
   getDocs,
   query,
   where,
@@ -18,7 +22,7 @@ import {
 const { db } = initFirebase();
 
 // -------------------------------------------------------------
-// 🔹 Neues Audit-Log hinzufügen
+// 🔹 Neues Audit-Log hinzufügen (create oder update)
 // -------------------------------------------------------------
 export async function addAuditLog(userId, action, details = "") {
   if (!db) {
@@ -34,18 +38,24 @@ export async function addAuditLog(userId, action, details = "") {
       timestamp: serverTimestamp()
     };
 
-    const docRef = await addDoc(collection(db, "auditLogs"), entry);
+    // Dokument-ID generieren (z. B. Zeit + User)
+    const docId = `${Date.now()}_${userId || "sys"}`;
 
-    console.log(`📘 Audit gespeichert: ${action} (ID: ${docRef.id})`);
-    return docRef.id;
+    await setDoc(doc(db, "activities", docId), entry, { merge: true });
+
+    console.log(`📘 Audit gespeichert: ${action} (ID: ${docId})`);
+    return docId;
 
   } catch (error) {
-    console.error("❌ Fehler beim Speichern des Audit-Logs:", error);
+    if (error.code === "permission-denied") {
+      console.error("🚫 Keine Berechtigung für Audit-Log:", error);
+    } else {
+      console.error("❌ Fehler beim Speichern des Audit-Logs:", error);
+    }
     showFeedback(t("errors.fail"), "error");
     return null;
   }
 }
-
 // -------------------------------------------------------------
 // 🔹 Alle Audit-Logs abrufen
 // -------------------------------------------------------------
@@ -57,7 +67,7 @@ export async function getAuditLogs(limit = 20) {
 
   try {
     const q = query(
-      collection(db, "auditLogs"),
+      collection(db, "activities"),
       orderBy("timestamp", "desc"),
       fsLimit(limit)
     );
@@ -90,7 +100,7 @@ export async function getAuditLogsByUser(userId, limit = 10) {
 
   try {
     const q = query(
-      collection(db, "auditLogs"),
+      collection(db, "activities"),
       where("userId", "==", userId),
       orderBy("timestamp", "desc"),
       fsLimit(limit)

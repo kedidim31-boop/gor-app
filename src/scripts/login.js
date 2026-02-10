@@ -1,11 +1,14 @@
-// src/scripts/login.js – moderner Login-Flow (mehrsprachig + Neon-Feedback + Disabled-Check)
+// ======================================================================
+// 🔥 LOGIN HANDLER – FINAL VERSION
+// Gaming of Republic – moderner Login-Flow
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { getAuth, signInWithEmailAndPassword, signOut } 
   from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 import { 
-  getFirestore, doc, getDoc, collection, query, where, getDocs 
+  getFirestore, collection, query, where, getDocs 
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 import { showFeedback } from "./feedback.js";
@@ -16,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const splash = document.querySelector(".splash-screen");
   const loginCard = document.querySelector(".login-card");
-  const skipBtn = document.querySelector(".skip-btn");
+  const skipBtn = document.getElementById("skipBtn");
   const loginForm = document.getElementById("loginForm");
   const errorMessage = document.getElementById("errorMessage");
   const emailInput = document.getElementById("email");
@@ -39,13 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!splash) return;
 
     splash.classList.add("fade-out");
-
-    const logo = splash.querySelector(".splash-logo");
-    if (logo) {
-      logo.style.animation = "none";
-      logo.classList.add("fade-out");
-    }
-
+    splash.querySelector(".splash-logo")?.classList.add("fade-out");
     skipBtn?.classList.add("fade-out");
 
     setTimeout(() => {
@@ -64,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     passwordInput.type = type;
     togglePassword.classList.toggle("fa-eye-slash");
   });
-
   // -------------------------------------------------------------
   // 🔹 Login-Formular
   // -------------------------------------------------------------
@@ -77,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!email || !password) {
       errorMessage.textContent = t("errors.fail");
-      errorMessage.classList.remove("hidden");
+      errorMessage.classList.add("show");
 
       loginCard.classList.add("shake");
       setTimeout(() => loginCard.classList.remove("shake"), 600);
@@ -87,55 +83,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     spinner.style.display = "block";
-    errorMessage.classList.add("hidden");
+    errorMessage.classList.remove("show");
 
     try {
-      // -------------------------------------------------------------
       // 🔹 Firebase Auth Login
-      // -------------------------------------------------------------
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // -------------------------------------------------------------
       // 🔹 Firestore: User per E-Mail suchen
-      // -------------------------------------------------------------
-      const q = query(
-        collection(db, "employees"),
-        where("email", "==", user.email)
-      );
-
+      const q = query(collection(db, "employees"), where("email", "==", user.email));
       const querySnapshot = await getDocs(q);
       spinner.style.display = "none";
 
       if (querySnapshot.empty) {
         showFeedback(t("errors.load"), "error");
-        console.error("❌ Firestore: Kein Dokument für diesen User (E-Mail nicht gefunden).");
+        console.error("❌ Firestore: Kein Dokument für diesen User.");
         return;
       }
 
       const userData = querySnapshot.docs[0].data();
 
-      // -------------------------------------------------------------
-      // 🔥 Benutzer deaktiviert? → Login blockieren
-      // -------------------------------------------------------------
+      // 🔹 Benutzer deaktiviert?
       if (userData.disabled === true) {
         console.warn("⛔ Benutzer ist deaktiviert:", email);
-
         showFeedback("Dieser Benutzer wurde deaktiviert.", "error");
-
-        await signOut(auth); // wichtig!
+        await signOut(auth);
         return;
       }
 
-      // -------------------------------------------------------------
       // 🔹 Rolle auslesen
-      // -------------------------------------------------------------
       const role = userData.role || "guest";
       console.log("🔍 Rolle erkannt:", role);
 
-      // -------------------------------------------------------------
-      // 🔹 Erfolgsanimation
-      // -------------------------------------------------------------
+      // 🔹 Erfolgsanimation + Redirect
       loginCard.classList.add("success");
       showFeedback(`${t("auth.in")} (${role})`, "success");
 
@@ -144,24 +124,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (role === "admin" || role === "manager") {
           window.location.href = "adminPanel.html";
-        }
-        else if (role === "support") {
+        } else if (role === "support") {
           window.location.href = "support.html";
-        }
-        else if (role === "employee") {
+        } else if (role === "employee") {
           window.location.href = "employees.html";
-        }
-        else {
+        } else {
           window.location.href = "index.html";
         }
-
       }, 1200);
 
     } catch (error) {
       spinner.style.display = "none";
 
       errorMessage.textContent = `${t("errors.fail")}: ${error.message}`;
-      errorMessage.classList.remove("hidden");
+      errorMessage.classList.add("show");
 
       loginCard.classList.add("shake");
       setTimeout(() => loginCard.classList.remove("shake"), 600);

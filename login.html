@@ -15,25 +15,16 @@
 
 <body class="login-page">
 
-  <!-- ============================================================
-       🔹 ANIMIERTER NEON-HINTERGRUND
-  ============================================================ -->
+  <!-- 🔹 Neon-Hintergrund -->
   <div class="neon-bg"></div>
 
-  <!-- ============================================================
-       🔹 SPLASH SCREEN (Intro)
-  ============================================================ -->
+  <!-- 🔹 Splash Screen -->
   <div class="splash-screen" id="splash">
     <img src="./public/logo.png" alt="Gaming of Republic Logo" class="splash-logo">
-
-    <button class="skip-btn" id="skipBtn" aria-label="Intro überspringen">
-      Intro überspringen
-    </button>
+    <button class="skip-btn" id="skipBtn" aria-label="Intro überspringen">Intro überspringen</button>
   </div>
 
-  <!-- ============================================================
-       🔹 LOGIN-BEREICH
-  ============================================================ -->
+  <!-- 🔹 Login-Bereich -->
   <main>
     <div class="login-card" id="loginCard">
 
@@ -53,9 +44,7 @@
           <i class="fa-solid fa-lock"></i>
           <input type="password" id="password" name="password" placeholder=" " required autocomplete="current-password">
           <label for="password">Passwort</label>
-
-          <i class="fa-solid fa-eye toggle-password" id="togglePassword"
-             aria-label="Passwort anzeigen/ausblenden"></i>
+          <i class="fa-solid fa-eye toggle-password" id="togglePassword" aria-label="Passwort anzeigen/ausblenden"></i>
         </div>
 
         <!-- Fehlernachricht -->
@@ -83,14 +72,10 @@
     </div>
   </main>
 
-  <!-- ============================================================
-       🔹 FEEDBACK BANNER
-  ============================================================ -->
+  <!-- 🔹 Feedback Banner -->
   <div id="feedbackContainer"></div>
 
-  <!-- ============================================================
-       🔹 LOGIN LOGIK
-  ============================================================ -->
+  <!-- 🔹 Login Logik -->
   <script type="module" src="src/scripts/login.js"></script>
 
 </body>

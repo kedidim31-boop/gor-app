@@ -111,6 +111,7 @@ main {
   color: var(--color-text-light);
   font-size: 15px;
   transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
 .input-group input:hover {

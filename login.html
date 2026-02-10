@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body>
+<body class="login-page">
 
   <!-- ============================================================
        🔹 ANIMIERTER NEON-HINTERGRUND
@@ -27,7 +27,7 @@
     <img src="./public/logo.png" alt="Gaming of Republic Logo" class="splash-logo">
 
     <button class="skip-btn" id="skipBtn" aria-label="Intro überspringen">
-      Skip Intro
+      Intro überspringen
     </button>
   </div>
 
@@ -35,7 +35,7 @@
        🔹 LOGIN-BEREICH
   ============================================================ -->
   <main>
-    <div class="login-card" id="loginCard">
+    <div class="login-card fade-in" id="loginCard">
 
       <h2><i class="fa-solid fa-user-shield"></i> Login</h2>
 
@@ -59,7 +59,7 @@
         </div>
 
         <!-- Fehlernachricht -->
-        <div class="error-message hidden" id="errorMessage">
+        <div class="error-message" id="errorMessage">
           <i class="fa-solid fa-triangle-exclamation"></i>
           Ungültige Zugangsdaten
         </div>
@@ -71,7 +71,7 @@
         </div>
 
         <!-- Login Button -->
-        <button type="submit" id="loginBtn" class="btn btn-yellow" aria-label="Einloggen">
+        <button type="submit" id="loginBtn" aria-label="Einloggen">
           <i class="fa-solid fa-right-to-bracket"></i> Einloggen
         </button>
 

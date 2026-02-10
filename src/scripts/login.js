@@ -1,5 +1,5 @@
 // ======================================================================
-// 🔥 LOGIN HANDLER – FINAL VERSION
+// 🔥 LOGIN HANDLER – FINAL VERSION (Fix Sichtbarkeit)
 // Gaming of Republic – moderner Login-Flow
 // ======================================================================
 
@@ -47,11 +47,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
       splash.style.display = "none";
-      loginCard?.classList.add("fade-in");
-    }, 1000);
+      loginCard?.classList.add("fade-in");   // Card wird eingeblendet
+    }, 800);
   }
 
   skipBtn?.addEventListener("click", hideSplash);
+
+  // Falls Splash nicht existiert → Card sofort sichtbar
+  if (!splash) {
+    loginCard?.classList.add("fade-in");
+  }
 
   // -------------------------------------------------------------
   // 🔹 Passwort anzeigen/ausblenden
@@ -61,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     passwordInput.type = type;
     togglePassword.classList.toggle("fa-eye-slash");
   });
+
   // -------------------------------------------------------------
   // 🔹 Login-Formular
   // -------------------------------------------------------------

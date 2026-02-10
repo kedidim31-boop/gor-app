@@ -1,7 +1,7 @@
 /* 🔹 Animierter Hintergrund */
 .neon-bg {
   position: fixed;
-  inset: 0; /* statt top/left/width/height */
+  inset: 0;
   background: radial-gradient(circle at center, var(--color-bg-panel), var(--color-bg-dark));
   animation: huePulse 12s infinite alternate;
   z-index: -1;
@@ -23,6 +23,7 @@
   background: var(--color-bg-dark);
   z-index: 1000;
 }
+
 /* 🔹 Login Layout */
 main {
   display: flex;
@@ -44,15 +45,41 @@ main {
   text-align: center;
   box-shadow: 0 0 18px var(--color-neon-yellow),
               0 0 36px rgba(255, 211, 0, 0.55);
-  margin: auto; /* sorgt für Zentrierung */
+  margin: auto;
   opacity: 0;
   transform: translateY(30px);
-  animation: fallbackVisible 2s ease forwards; /* schneller sichtbar */
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
+/* Einblenden */
 .login-card.fade-in {
-  animation: fadeIn 1s ease forwards;
+  opacity: 1;
+  transform: translateY(0);
 }
+
+/* Erfolgs-Fade-Out */
+.login-card.fade-out-success {
+  animation: fadeOutSuccess 0.8s ease forwards;
+}
+
+@keyframes fadeOutSuccess {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.95); }
+}
+
+/* Shake-Animation bei Fehler */
+.login-card.shake {
+  animation: shakeAnim 0.4s ease;
+}
+
+@keyframes shakeAnim {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-6px); }
+  100% { transform: translateX(0); }
+}
+
 /* 🔹 Responsive Fix */
 @media (max-width: 480px) {
   .login-card {

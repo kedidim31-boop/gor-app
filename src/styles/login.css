@@ -50,13 +50,11 @@ main {
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-/* Einblenden */
 .login-card.fade-in {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Erfolgs-Fade-Out */
 .login-card.fade-out-success {
   animation: fadeOutSuccess 0.8s ease forwards;
 }
@@ -66,7 +64,6 @@ main {
   to   { opacity: 0; transform: scale(0.95); }
 }
 
-/* Shake-Animation bei Fehler */
 .login-card.shake {
   animation: shakeAnim 0.4s ease;
 }
@@ -108,7 +105,6 @@ main {
   outline: none;
 }
 
-/* Fehlerhafte Eingabe */
 .input-group input.error {
   border-color: var(--color-neon-red);
   box-shadow: 0 0 14px var(--color-neon-red),

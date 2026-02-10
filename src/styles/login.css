@@ -1,3 +1,8 @@
+/* ======================================================================
+   🔥 LOGIN CSS – FINAL VERSION
+   Gaming of Republic – Neon Look
+====================================================================== */
+
 /* 🔹 Animierter Hintergrund */
 .neon-bg {
   position: fixed;
@@ -24,12 +29,26 @@
   z-index: 1000;
 }
 /* 🔹 Login Layout */
+body.login-page {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-bg-dark);
+  overflow-x: hidden;
+}
+
 main {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  flex: 1;
+  width: 100%;
   padding: 2rem;
+  box-sizing: border-box;
 }
 
 /* 🔹 Login Card */
@@ -39,15 +58,16 @@ main {
   border: 2px solid var(--color-neon-yellow);
   border-radius: 14px;
   padding: 32px;
-  max-width: 400px;
+  max-width: 420px;
   width: 100%;
   text-align: center;
   box-shadow: 0 0 18px var(--color-neon-yellow),
               0 0 36px rgba(255, 211, 0, 0.55);
-  margin: auto;
+  margin: 20px auto;
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  box-sizing: border-box;
 }
 
 .login-card.fade-in {
@@ -111,7 +131,7 @@ main {
               0 0 28px rgba(255, 77, 77, 0.6);
 }
 
-/* Floating Labels */
+/* 🔹 Floating Labels */
 .input-group label {
   position: absolute;
   top: 50%;
@@ -134,7 +154,7 @@ main {
   border-radius: 4px;
 }
 
-/* Icons */
+/* 🔹 Icons */
 .input-group i {
   position: absolute;
   top: 50%;
@@ -264,6 +284,9 @@ main {
   font-weight: 600;
   text-align: center;
   display: none;
+  max-width: 420px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Erfolgs-Feedback */

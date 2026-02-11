@@ -1,5 +1,5 @@
 /* ======================================================================
-   🔥 ADMIN PANEL – FINAL VERSION (Teil 1)
+   🔥 ADMIN PANEL – MODERNIZED FINAL VERSION (Teil 1)
    Glass-Blur, Neon-Glow, konsistente UI
 ====================================================================== */
 
@@ -7,22 +7,22 @@
 .card {
   margin: 1.5rem;
   padding: 1.5rem;
-  border-radius: 12px;
+  border-radius: 14px; /* etwas runder */
   background: rgba(20, 20, 40, 0.75);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px); /* stärkerer Blur */
   border: 1px solid rgba(255, 211, 0, 0.25);
-  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 20px rgba(255, 211, 0, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px) scale(1.02);
   box-shadow: 0 0 25px var(--color-neon-yellow),
               0 0 50px rgba(255, 211, 0, 0.55);
 }
 .card h2 {
   margin-top: 0;
   color: var(--color-neon-yellow);
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   margin-bottom: 1rem;
   text-shadow: 0 0 8px var(--color-neon-yellow);
 }
@@ -47,7 +47,7 @@
 #createUserForm select {
   background: rgba(15, 15, 30, 0.8);
   border: 2px solid var(--color-neon-yellow);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 10px 12px;
   color: var(--color-neon-yellow);
   font-weight: bold;
@@ -77,7 +77,7 @@
   width: 100%;
   background: rgba(15, 15, 30, 0.8);
   border: 2px solid var(--color-neon-green);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 10px 12px;
   color: var(--color-neon-green);
   font-weight: bold;
@@ -92,6 +92,10 @@
   box-shadow: 0 0 14px var(--color-neon-yellow),
               0 0 28px rgba(255, 211, 0, 0.55);
 }
+/* ======================================================================
+   🔥 ADMIN PANEL – MODERNIZED FINAL VERSION (Teil 2)
+   Tabellen, Badges & Buttons
+====================================================================== */
 
 /* Mitarbeiter-Tabelle */
 #adminEmployeeTable {
@@ -99,10 +103,11 @@
   border-collapse: collapse;
   margin-top: 1.5rem;
   table-layout: fixed;
-  background: rgba(20, 20, 40, 0.6);
-  backdrop-filter: blur(6px);
-  border-radius: 10px;
+  background: rgba(20, 20, 40, 0.65);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 0 20px rgba(255, 211, 0, 0.25);
 }
 #adminEmployeeTable th,
 #adminEmployeeTable td {
@@ -116,7 +121,8 @@
   background: rgba(30, 30, 50, 0.9);
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
-  font-size: 0.95rem;
+  font-size: 1rem;
+  font-weight: bold;
 }
 #adminEmployeeTable tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.03);
@@ -125,26 +131,22 @@
   background-color: rgba(255, 255, 255, 0.08);
   transition: background 0.2s ease;
 }
-/* ======================================================================
-   🔥 ADMIN PANEL – FINAL VERSION (Teil 2)
-   Badges, Buttons, Audit Log, Responsive
-====================================================================== */
 
 /* Rollen-Badges */
 .role-badge {
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: bold;
   font-size: 0.85rem;
   display: inline-block;
   margin-bottom: 6px;
   text-transform: capitalize;
 }
-.role-admin { background: var(--color-neon-red); color:#000; box-shadow:0 0 10px var(--color-neon-red); }
-.role-manager { background: var(--color-neon-purple); color:#000; box-shadow:0 0 10px var(--color-neon-purple); }
-.role-support { background: var(--color-neon-yellow); color:#000; box-shadow:0 0 10px var(--color-neon-yellow); }
-.role-employee { background: var(--color-neon-green); color:#000; box-shadow:0 0 10px var(--color-neon-green); }
-.role-guest { background:#888; color:#000; box-shadow:0 0 10px #888; }
+.role-admin    { background: var(--color-neon-red);     color:#000; box-shadow:0 0 10px var(--color-neon-red); }
+.role-manager  { background: var(--color-neon-purple);  color:#000; box-shadow:0 0 10px var(--color-neon-purple); }
+.role-support  { background: var(--color-neon-yellow);  color:#000; box-shadow:0 0 10px var(--color-neon-yellow); }
+.role-employee { background: var(--color-neon-green);   color:#000; box-shadow:0 0 10px var(--color-neon-green); }
+.role-guest    { background:#888;                       color:#000; box-shadow:0 0 10px #888; }
 
 /* Status-Badges */
 .status-badge {
@@ -171,7 +173,7 @@
 #adminEmployeeTable .deleteBtn {
   background: transparent;
   padding: 6px 14px;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.25s ease;
   font-weight: bold;
@@ -196,6 +198,10 @@
   box-shadow: 0 0 14px var(--color-neon-red),
               0 0 28px rgba(255,77,77,0.6);
 }
+/* ======================================================================
+   🔥 ADMIN PANEL – MODERNIZED FINAL VERSION (Teil 3)
+   Audit Log & Responsive
+====================================================================== */
 
 /* Audit Log Tabelle */
 #auditTable {
@@ -204,10 +210,10 @@
   margin-top: 1.5rem;
   table-layout: fixed;
   background: rgba(15, 25, 40, 0.65);
-  backdrop-filter: blur(6px);
-  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 18px rgba(112,255,234,0.25);
+  box-shadow: 0 0 20px rgba(112,255,234,0.25);
 }
 #auditTable th,
 #auditTable td {
@@ -244,7 +250,7 @@
   flex: 1;
   background: rgba(15,15,30,0.8);
   border: 2px solid var(--color-neon-turquoise);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 10px 12px;
   color: var(--color-neon-turquoise);
   font-weight: bold;
@@ -263,8 +269,14 @@
   white-space: nowrap;
 }
 
-/* Responsive */
+/* Responsive Optimierungen */
+@media (max-width: 992px) {
+  #createUserForm.form-grid {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 768px) {
+  #adminEmployeeTable,
   #auditTable {
     display: block;
     overflow-x: auto;
@@ -273,18 +285,6 @@
   .audit-controls {
     flex-direction: column;
     align-items: stretch;
-  }
-}
-@media (max-width: 992px) {
-  #createUserForm.form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-@media (max-width: 768px) {
-  #adminEmployeeTable {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
   }
   #createUserForm.form-grid {
     gap: 1rem;

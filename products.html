@@ -5,23 +5,24 @@
   <title>Gaming of Republic – Produkte</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Globale Theme -->
+  <!-- Global Theme -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/products.css">
 
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
 
-  <!-- 🔹 FEEDBACK BANNER -->
+  <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- 🔹 BRANDING HEADER -->
+  <!-- BRANDING HEADER -->
   <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-    <div class="divider"></div>
+
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-box"></i>
@@ -30,7 +31,7 @@
     </div>
   </header>
 
-  <!-- 🔹 TOP NAVIGATION -->
+  <!-- TOP NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
@@ -47,76 +48,103 @@
     </button>
   </nav>
 
-  <!-- 🔹 MAIN CONTENT -->
+  <!-- MAIN CONTENT -->
   <main>
 
     <!-- PRODUKT ANLEGEN -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-plus"></i> <span data-i18n="products.add">Neues Produkt hinzufügen</span></h2>
+      <h2>
+        <i class="fa-solid fa-plus"></i>
+        <span data-i18n="products.add">Neues Produkt hinzufügen</span>
+      </h2>
 
       <form id="createProductForm" class="form-grid">
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-tag"></i>
-          <input type="text" id="productName" placeholder="Produktname" data-i18n-placeholder="products.name" required>
+          <input type="text" id="productName" required
+                 placeholder="Produktname"
+                 data-i18n-placeholder="products.name">
         </label>
 
         <label class="form-field icon-input full-width">
           <i class="fa-solid fa-align-left"></i>
-          <textarea id="productDescription" placeholder="Beschreibung" data-i18n-placeholder="products.description"></textarea>
+          <textarea id="productDescription"
+                    placeholder="Beschreibung"
+                    data-i18n-placeholder="products.description"></textarea>
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-layer-group"></i>
-          <input type="text" id="productType" placeholder="Typ" data-i18n-placeholder="products.type" required>
+          <input type="text" id="productType" required
+                 placeholder="Typ"
+                 data-i18n-placeholder="products.type">
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-industry"></i>
-          <input type="text" id="productVendor" placeholder="Anbieter" data-i18n-placeholder="products.vendor" required>
+          <input type="text" id="productVendor" required
+                 placeholder="Anbieter"
+                 data-i18n-placeholder="products.vendor">
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-folder"></i>
-          <input type="text" id="productCollections" placeholder="Kollektionen" data-i18n-placeholder="products.collections">
+          <input type="text" id="productCollections"
+                 placeholder="Kollektionen"
+                 data-i18n-placeholder="products.collections">
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-barcode"></i>
-          <input type="text" id="productSKU" placeholder="SKU" data-i18n-placeholder="products.sku">
+          <input type="text" id="productSKU"
+                 placeholder="SKU"
+                 data-i18n-placeholder="products.sku">
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-barcode"></i>
-          <input type="text" id="productEAN" placeholder="EAN" data-i18n-placeholder="products.ean">
+          <input type="text" id="productEAN"
+                 placeholder="EAN"
+                 data-i18n-placeholder="products.ean">
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-boxes-packing"></i>
-          <input type="number" id="productStock" step="1" placeholder="Bestand" data-i18n-placeholder="products.stock" required>
+          <input type="number" id="productStock" required step="1"
+                 placeholder="Bestand"
+                 data-i18n-placeholder="products.stock">
         </label>
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-money-bill-wave"></i>
-          <input type="number" id="productPrice" step="0.01" placeholder="Preis (CHF)" data-i18n-placeholder="products.price" required>
+          <input type="number" id="productPrice" required step="0.01"
+                 placeholder="Preis (CHF)"
+                 data-i18n-placeholder="products.price">
         </label>
 
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-save"></i> <span data-i18n="products.save">Speichern</span>
+          <i class="fa-solid fa-save"></i>
+          <span data-i18n="products.save">Speichern</span>
         </button>
 
       </form>
     </section>
     <!-- PRODUKTÜBERSICHT -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-boxes-stacked"></i> <span data-i18n="products.overview">Produktübersicht</span></h2>
+      <h2>
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <span data-i18n="products.overview">Produktübersicht</span>
+      </h2>
 
+      <!-- EXPORT BUTTON -->
       <button id="exportBtn" class="btn btn-yellow">
         <i class="fa-solid fa-file-csv"></i>
         <span data-i18n="products.export">Exportieren für Shopify</span>
       </button>
 
-      <table id="productTable">
+      <!-- PRODUKT TABELLE -->
+      <table id="productTable" class="neon-table">
         <thead>
           <tr>
             <th data-i18n="products.name">Produktname</th>
@@ -133,20 +161,20 @@
         </thead>
 
         <tbody>
-          <!-- Produkte werden hier dynamisch geladen -->
+          <!-- Produkte werden dynamisch geladen -->
         </tbody>
       </table>
     </section>
 
   </main>
 
-  <!-- 🔹 ROLE GUARD -->
+  <!-- ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
     enforceRole(["employee", "support", "manager", "admin"], "index.html");
   </script>
 
-  <!-- 🔹 PRODUKT LOGIK -->
+  <!-- PRODUKT LOGIK -->
   <script type="module" src="src/scripts/products.js"></script>
 
 </body>

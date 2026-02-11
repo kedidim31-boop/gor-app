@@ -1,9 +1,9 @@
-/* Product Audit – Cyberpunk Neon Look */
-/* Ergänzt theme.css + productDetails.css */
+/* ======================================================================
+   🔥 PRODUCT AUDIT – MODERNIZED FINAL VERSION (Teil 1)
+   Panel, Score, Status
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Audit Panel
-------------------------------------------------------------- */
+/* Audit Panel */
 .product-audit-panel {
   background: rgba(20, 20, 40, 0.65);
   backdrop-filter: blur(12px);
@@ -11,9 +11,8 @@
   border-radius: 16px;
   padding: 24px;
   margin-top: 20px;
-  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 20px rgba(255, 211, 0, 0.25);
 }
-
 .product-audit-panel h3 {
   margin-top: 0;
   color: var(--color-neon-yellow);
@@ -21,9 +20,7 @@
   text-shadow: 0 0 8px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Audit Score Box
-------------------------------------------------------------- */
+/* Audit Score Box */
 .audit-score-box {
   margin-top: 16px;
   padding: 20px;
@@ -31,25 +28,21 @@
   background: rgba(0, 0, 0, 0.25);
   border: 2px solid rgba(112, 255, 234, 0.25);
   text-align: center;
-  box-shadow: 0 0 14px rgba(112, 255, 234, 0.25);
+  box-shadow: 0 0 16px rgba(112, 255, 234, 0.25);
 }
-
 .audit-score {
   font-size: 2.4rem;
   font-weight: bold;
   color: var(--color-neon-green);
   text-shadow: 0 0 12px var(--color-neon-green);
 }
-
 .audit-score-label {
   margin-top: 6px;
   color: var(--color-text-light);
   font-size: 0.95rem;
 }
 
-/* -------------------------------------------------------------
-   🔹 Audit Status Badge
-------------------------------------------------------------- */
+/* Audit Status Badge */
 .audit-status {
   margin-top: 12px;
   display: inline-block;
@@ -58,28 +51,27 @@
   font-weight: bold;
   font-size: 0.9rem;
 }
-
 .audit-status.pass {
   background-color: rgba(0, 255, 128, 0.15);
   border: 1px solid var(--color-neon-green);
   color: var(--color-neon-green);
 }
-
 .audit-status.warning {
   background-color: rgba(255, 211, 0, 0.15);
   border: 1px solid var(--color-neon-yellow);
   color: var(--color-neon-yellow);
 }
-
 .audit-status.fail {
   background-color: rgba(255, 77, 77, 0.15);
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
+/* ======================================================================
+   🔥 PRODUCT AUDIT – MODERNIZED FINAL VERSION (Teil 2)
+   Sections, Checks, Suggestions, Logs, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Audit Sections (SEO, Media, Pricing, Variants, Compliance)
-------------------------------------------------------------- */
+/* Audit Sections */
 .audit-section {
   margin-top: 20px;
   padding: 18px;
@@ -87,7 +79,6 @@
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
-
 .audit-section h4 {
   margin-top: 0;
   color: var(--color-neon-turquoise);
@@ -95,9 +86,7 @@
   text-shadow: 0 0 6px var(--color-neon-turquoise);
 }
 
-/* -------------------------------------------------------------
-   🔹 Audit Check Item
-------------------------------------------------------------- */
+/* Audit Check Item */
 .audit-check {
   margin-top: 12px;
   padding: 12px;
@@ -109,40 +98,32 @@
   align-items: center;
   transition: all 0.25s ease;
 }
-
 .audit-check:hover {
   background-color: rgba(112, 255, 234, 0.2);
 }
-
 .audit-check-label {
   color: var(--color-text-light);
   font-size: 0.95rem;
   font-weight: bold;
 }
-
 /* Check Icons */
 .audit-check.pass i {
   color: var(--color-neon-green);
   text-shadow: 0 0 8px var(--color-neon-green);
 }
-
 .audit-check.warning i {
   color: var(--color-neon-yellow);
   text-shadow: 0 0 8px var(--color-neon-yellow);
 }
-
 .audit-check.fail i {
   color: var(--color-neon-red);
   text-shadow: 0 0 8px var(--color-neon-red);
 }
 
-/* -------------------------------------------------------------
-   🔹 Audit Suggestions
-------------------------------------------------------------- */
+/* Audit Suggestions */
 .audit-suggestions {
   margin-top: 20px;
 }
-
 .audit-suggestion {
   padding: 12px 16px;
   background: rgba(0, 0, 0, 0.25);
@@ -153,23 +134,18 @@
   font-size: 0.9rem;
   transition: all 0.25s ease;
 }
-
 .audit-suggestion:hover {
   background-color: rgba(255, 211, 0, 0.15);
 }
-
 .audit-suggestion i {
   color: var(--color-neon-yellow);
   margin-right: 8px;
 }
 
-/* -------------------------------------------------------------
-   🔹 Audit Logs
-------------------------------------------------------------- */
+/* Audit Logs */
 .audit-logs {
   margin-top: 20px;
 }
-
 .audit-log {
   padding: 12px 16px;
   background: rgba(0, 0, 0, 0.25);
@@ -180,26 +156,20 @@
   font-size: 0.9rem;
   transition: all 0.25s ease;
 }
-
 .audit-log:hover {
   background-color: rgba(112, 255, 234, 0.15);
 }
-
 .audit-log.pass {
   border-left: 4px solid var(--color-neon-green);
 }
-
 .audit-log.warning {
   border-left: 4px solid var(--color-neon-yellow);
 }
-
 .audit-log.fail {
   border-left: 4px solid var(--color-neon-red);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive Anpassung */
 @media (max-width: 600px) {
   .audit-check {
     flex-direction: column;

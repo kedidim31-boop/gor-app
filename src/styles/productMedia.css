@@ -1,9 +1,9 @@
-/* Product Media – Cyberpunk Neon Look */
-/* Ergänzt theme.css + productImages.css */
+/* ======================================================================
+   🔥 PRODUCT MEDIA – MODERNIZED FINAL VERSION (Teil 1)
+   Panel, Upload Area & Button
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Medien Panel
-------------------------------------------------------------- */
+/* Medien Panel */
 .product-media-panel {
   background: rgba(20, 20, 40, 0.65);
   backdrop-filter: blur(12px);
@@ -11,9 +11,8 @@
   border-radius: 16px;
   padding: 24px;
   margin-top: 20px;
-  box-shadow: 0 0 18px rgba(112, 255, 234, 0.25);
+  box-shadow: 0 0 20px rgba(112, 255, 234, 0.25);
 }
-
 .product-media-panel h3 {
   margin-top: 0;
   color: var(--color-neon-turquoise);
@@ -21,9 +20,7 @@
   text-shadow: 0 0 8px var(--color-neon-turquoise);
 }
 
-/* -------------------------------------------------------------
-   🔹 Upload Bereich
-------------------------------------------------------------- */
+/* Upload Bereich */
 .media-upload-area {
   border: 2px dashed var(--color-neon-turquoise);
   border-radius: 12px;
@@ -34,16 +31,14 @@
   color: var(--color-text-light);
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 0 12px rgba(112, 255, 234, 0.25);
+  box-shadow: 0 0 14px rgba(112, 255, 234, 0.25);
 }
-
 .media-upload-area:hover {
   border-color: var(--color-neon-yellow);
-  box-shadow: 0 0 18px var(--color-neon-yellow),
-              0 0 36px rgba(255, 211, 0, 0.55);
-  transform: translateY(-2px);
+  box-shadow: 0 0 20px var(--color-neon-yellow),
+              0 0 40px rgba(255, 211, 0, 0.55);
+  transform: translateY(-2px) scale(1.02);
 }
-
 .media-upload-area i {
   font-size: 2rem;
   color: var(--color-neon-turquoise);
@@ -62,16 +57,17 @@
   transition: all 0.25s ease;
   box-shadow: 0 0 12px var(--color-neon-yellow);
 }
-
 .media-upload-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 18px var(--color-neon-yellow),
               0 0 36px rgba(255, 211, 0, 0.7);
 }
+/* ======================================================================
+   🔥 PRODUCT MEDIA – MODERNIZED FINAL VERSION (Teil 2)
+   Grid, Cards, Previews, Files, Delete Button, Sort Handle, Info, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Medien Grid (Bilder, Videos, Dateien)
-------------------------------------------------------------- */
+/* Media Grid */
 .media-grid {
   margin-top: 20px;
   display: grid;
@@ -79,25 +75,22 @@
   gap: 18px;
 }
 
-/* Medienkarte */
+/* Media Card */
 .media-card {
   position: relative;
   background: var(--color-bg-panel);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 14px rgba(255, 211, 0, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
 .media-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-3px) scale(1.02);
   box-shadow: 0 0 20px var(--color-neon-turquoise),
               0 0 40px rgba(112, 255, 234, 0.55);
 }
 
-/* -------------------------------------------------------------
-   🔹 Bild / Video Vorschau
-------------------------------------------------------------- */
+/* Bild / Video Vorschau */
 .media-card img,
 .media-card video {
   width: 100%;
@@ -107,24 +100,19 @@
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-/* -------------------------------------------------------------
-   🔹 Dokumente (PDF, ZIP, etc.)
-------------------------------------------------------------- */
+/* Dokumente */
 .media-file {
   padding: 20px;
   text-align: center;
   color: var(--color-text-light);
 }
-
 .media-file i {
   font-size: 2rem;
   color: var(--color-neon-yellow);
   margin-bottom: 8px;
 }
 
-/* -------------------------------------------------------------
-   🔹 Delete Button
-------------------------------------------------------------- */
+/* Delete Button */
 .media-delete-btn {
   position: absolute;
   top: 8px;
@@ -137,19 +125,16 @@
   cursor: pointer;
   border: 1px solid var(--color-neon-red);
   transition: all 0.25s ease;
-  box-shadow: 0 0 10px var(--color-neon-red);
+  box-shadow: 0 0 12px var(--color-neon-red);
 }
-
 .media-delete-btn:hover {
   background-color: var(--color-neon-red);
-  box-shadow: 0 0 16px var(--color-neon-red),
-              0 0 32px rgba(255, 77, 77, 0.7);
+  box-shadow: 0 0 18px var(--color-neon-red),
+              0 0 36px rgba(255, 77, 77, 0.7);
   transform: scale(1.05);
 }
 
-/* -------------------------------------------------------------
-   🔹 Sortier-Handle (Drag & Drop)
-------------------------------------------------------------- */
+/* Sortier-Handle */
 .media-sort-handle {
   position: absolute;
   bottom: 8px;
@@ -162,16 +147,13 @@
   cursor: grab;
   transition: all 0.25s ease;
 }
-
 .media-sort-handle:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 14px var(--color-neon-turquoise);
 }
 
-/* -------------------------------------------------------------
-   🔹 Medien Titel / Beschreibung
-------------------------------------------------------------- */
+/* Medien Info */
 .media-info {
   padding: 10px;
   text-align: center;
@@ -181,14 +163,11 @@
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive */
 @media (max-width: 600px) {
   .media-grid {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
-
   .media-card img,
   .media-card video {
     height: 120px;

@@ -1,9 +1,9 @@
-/* Inventory Modal – Cyberpunk Neon Look */
-/* Ergänzt theme.css + inventory.css */
+/* ======================================================================
+   🔥 INVENTORY MODAL – MODERNIZED FINAL VERSION (Teil 1)
+   Overlay, Container, Header
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Modal Overlay
-------------------------------------------------------------- */
+/* Modal Overlay */
 .inventory-modal-overlay {
   position: fixed;
   top: 0;
@@ -11,7 +11,7 @@
   width: 100%;
   height: 100%;
   background: rgba(5, 5, 15, 0.75);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px); /* stärkerer Blur */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,49 +19,43 @@
   opacity: 0;
   animation: overlayFadeIn 0.35s ease forwards;
 }
-
 @keyframes overlayFadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-/* -------------------------------------------------------------
-   🔹 Modal Container
-------------------------------------------------------------- */
+/* Modal Container */
 .inventory-modal {
   width: 100%;
-  max-width: 420px;
-  background: rgba(20, 20, 40, 0.75);
+  max-width: 440px; /* leicht größer */
+  background: rgba(20, 20, 40, 0.8);
   backdrop-filter: blur(14px);
   border: 2px solid var(--color-neon-turquoise);
   border-radius: 14px;
-  padding: 26px;
+  padding: 28px;
   box-shadow: 
-    0 0 20px var(--color-neon-turquoise),
-    0 0 40px rgba(112, 255, 234, 0.55);
+    0 0 22px var(--color-neon-turquoise),
+    0 0 44px rgba(112, 255, 234, 0.55);
   transform: translateY(20px);
   opacity: 0;
   animation: modalFadeIn 0.45s ease forwards;
 }
-
 @keyframes modalFadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* -------------------------------------------------------------
-   🔹 Modal Header
-------------------------------------------------------------- */
+/* Modal Header */
 .inventory-modal h3 {
   margin-top: 0;
   text-align: center;
   color: var(--color-neon-yellow);
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   margin-bottom: 1.2rem;
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* Optional Close Icon */
+/* Close Icon */
 .modal-close {
   position: absolute;
   top: 14px;
@@ -71,16 +65,17 @@
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 .modal-close:hover {
   transform: scale(1.15);
   color: #fff;
   text-shadow: 0 0 12px var(--color-neon-red);
 }
+/* ======================================================================
+   🔥 INVENTORY MODAL – MODERNIZED FINAL VERSION (Teil 2)
+   Inputs, Feedback, Buttons, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Input Fields
-------------------------------------------------------------- */
+/* Input Fields */
 .inventory-modal input {
   width: 100%;
   background-color: var(--color-bg-panel);
@@ -93,12 +88,10 @@
   transition: all 0.25s ease;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
 }
-
 .inventory-modal input:hover {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
-
 .inventory-modal input:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 
@@ -107,9 +100,7 @@
   outline: none;
 }
 
-/* -------------------------------------------------------------
-   🔹 Feedback (Error / Success)
-------------------------------------------------------------- */
+/* Feedback (Error / Success) */
 .modal-feedback {
   display: none;
   padding: 10px 14px;
@@ -118,14 +109,12 @@
   margin-bottom: 12px;
   text-align: center;
 }
-
 .modal-feedback.error {
   display: block;
   background-color: var(--color-neon-red);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-red);
 }
-
 .modal-feedback.success {
   display: block;
   background-color: var(--color-neon-green);
@@ -133,9 +122,7 @@
   box-shadow: 0 0 12px var(--color-neon-green);
 }
 
-/* -------------------------------------------------------------
-   🔹 Modal Buttons
-------------------------------------------------------------- */
+/* Modal Buttons */
 .modal-btn {
   width: 100%;
   padding: 12px;
@@ -145,28 +132,24 @@
   transition: all 0.25s ease;
   margin-top: 10px;
 }
-
 /* Confirm */
 .modal-btn.confirm {
   background-color: var(--color-neon-green);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-green);
 }
-
 .modal-btn.confirm:hover {
   transform: translateY(-2px);
   box-shadow: 
     0 0 18px var(--color-neon-green),
     0 0 36px rgba(0, 255, 128, 0.7);
 }
-
 /* Cancel */
 .modal-btn.cancel {
   background-color: transparent;
   border: 2px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 .modal-btn.cancel:hover {
   background-color: var(--color-neon-red);
   color: #000;
@@ -176,27 +159,21 @@
     0 0 36px rgba(255, 77, 77, 0.7);
 }
 
-/* -------------------------------------------------------------
-   🔹 Fade-Out Animation (optional)
-------------------------------------------------------------- */
+/* Fade-Out Animation */
 .inventory-modal.fade-out {
   animation: modalFadeOut 0.35s ease forwards;
 }
-
 @keyframes modalFadeOut {
   from { opacity: 1; transform: scale(1); }
   to   { opacity: 0; transform: scale(0.95); }
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive Anpassung */
 @media (max-width: 480px) {
   .inventory-modal {
-    max-width: 90%;
+    max-width: 92%;
     padding: 20px;
   }
-
   .modal-close {
     top: 10px;
     right: 12px;

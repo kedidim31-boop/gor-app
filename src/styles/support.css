@@ -1,20 +1,20 @@
-/* =============================================================
-   🔥 SUPPORT – CYBERPUNK NEON LOOK (FINAL VERSION – Teil 1)
-   Layout, Formular, Inputs, Buttons, Filter, Tabelle
-============================================================= */
+/* ======================================================================
+   🔥 SUPPORT – MODERNIZED FINAL VERSION (Teil 1)
+   Layout, Form, Inputs, Buttons, Filters, Table
+====================================================================== */
 
+/* Layout */
 main.support-page {
   margin: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
-
 .card {
   margin-bottom: 1.5rem;
 }
 
-/* Formular */
+/* Support Form Grid */
 #ticketForm.form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -22,6 +22,7 @@ main.support-page {
   margin-top: 10px;
 }
 
+/* Labels */
 #ticketForm label {
   display: flex;
   flex-direction: column;
@@ -29,12 +30,12 @@ main.support-page {
   color: var(--color-text-muted);
   font-size: 0.9rem;
 }
-
 #ticketForm label i {
   color: var(--color-neon-yellow);
   margin-right: 6px;
 }
 
+/* Inputs */
 #ticketForm input,
 #ticketForm textarea,
 #ticketForm select {
@@ -48,22 +49,20 @@ main.support-page {
   transition: all 0.25s ease;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
 }
-
 #ticketForm input:hover,
 #ticketForm textarea:hover,
 #ticketForm select:hover {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
-
 #ticketForm input:focus,
 #ticketForm textarea:focus,
 #ticketForm select:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 14px var(--color-neon-turquoise),
               0 0 28px rgba(112, 255, 234, 0.55);
+  outline: none;
 }
-
 #ticketForm textarea {
   min-height: 100px;
   resize: vertical;
@@ -82,20 +81,18 @@ main.support-page {
   box-shadow: 0 0 12px var(--color-neon-yellow),
               0 0 24px rgba(255, 211, 0, 0.55);
 }
-
 #ticketForm button:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 18px var(--color-neon-yellow),
               0 0 36px rgba(255, 211, 0, 0.7);
 }
 
-/* Filterleiste */
+/* Filter Bar */
 .support-filters {
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
 }
-
 .support-filters input,
 .support-filters select {
   background: var(--color-bg-panel);
@@ -107,7 +104,6 @@ main.support-page {
   outline: none;
   transition: all 0.2s ease;
 }
-
 .support-filters input:focus,
 .support-filters select:focus {
   border-color: var(--color-neon-yellow);
@@ -115,14 +111,13 @@ main.support-page {
               0 0 24px rgba(255, 211, 0, 0.55);
 }
 
-/* Tabelle */
+/* Support Table */
 #supportTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   table-layout: fixed;
 }
-
 #supportTable th,
 #supportTable td {
   text-align: center;
@@ -132,26 +127,23 @@ main.support-page {
   font-size: 0.95rem;
   word-wrap: break-word;
 }
-
 #supportTable th {
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
-
 #supportTable tr:nth-child(even) {
-  background-color: rgba(255,255,255,0.03);
+  background-color: rgba(255, 255, 255, 0.03);
 }
-
 #supportTable tr:hover td {
   background-color: #2a2a40;
   transition: background 0.2s ease;
 }
-/* =============================================================
-   🔥 SUPPORT – CYBERPUNK NEON LOOK (FINAL VERSION – Teil 2)
-   Status-Badges, Priorität, Select, Buttons, Modal, Chat
-============================================================= */
+/* ======================================================================
+   🔥 SUPPORT – MODERNIZED FINAL VERSION (Teil 2)
+   Status Badges, Priority, Buttons, Modal, Chat, Responsive
+====================================================================== */
 
-/* Status-Badges */
+/* Status Badges */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -199,7 +191,7 @@ main.support-page {
               0 0 20px rgba(112, 255, 234, 0.55);
 }
 
-/* Priorität-Badges */
+/* Priority Badges */
 .priority-badge {
   padding: 4px 10px;
   border-radius: 6px;
@@ -237,11 +229,11 @@ main.support-page {
               0 0 24px rgba(112, 255, 234, 0.55);
 }
 
-/* Kommentar Modal */
+/* Comment Modal */
 #commentModal {
   position: fixed;
   inset: 0;
-  background: rgba(5,5,15,0.75);
+  background: rgba(5, 5, 15, 0.75);
   backdrop-filter: blur(6px);
   display: none;
   align-items: center;
@@ -258,7 +250,7 @@ main.support-page {
   width: 90%;
   max-width: 480px;
   box-shadow: 0 0 20px var(--color-neon-turquoise),
-              0 0 40px rgba(112,255,234,0.35);
+              0 0 40px rgba(112, 255, 234, 0.35);
   animation: fadeIn 0.3s ease;
 }
 .modal-content h3 {
@@ -295,7 +287,7 @@ main.support-page {
   filter: brightness(1.1);
 }
 
-/* Chat-Bubbles */
+/* Chat Bubbles */
 #ticketMessages {
   margin-top: 1rem;
   display: flex;
@@ -303,19 +295,19 @@ main.support-page {
   gap: 14px;
 }
 .message-bubble {
-  background: rgba(20,20,40,0.6);
+  background: rgba(20, 20, 40, 0.6);
   border-left: 4px solid var(--color-neon-turquoise);
   padding: 12px 16px;
   border-radius: 10px;
-  box-shadow: 0 0 12px rgba(112,255,234,0.35);
+  box-shadow: 0 0 12px rgba(112, 255, 234, 0.35);
   animation: fadeIn 0.3s ease;
 }
 .message-bubble.self {
   border-left: none;
   border-right: 4px solid var(--color-neon-yellow);
   align-self: flex-end;
-  background: rgba(40,40,20,0.6);
-  box-shadow: 0 0 12px rgba(255,211,0,0.35);
+  background: rgba(40, 40, 20, 0.6);
+  box-shadow: 0 0 12px rgba(255, 211, 0, 0.35);
 }
 .message-author {
   font-weight: bold;
@@ -331,9 +323,10 @@ main.support-page {
   color: var(--color-text-muted);
 }
 
+/* Fade-in Animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Responsive */

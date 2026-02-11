@@ -1,9 +1,9 @@
-/* Product Variants – Cyberpunk Neon Look */
-/* Ergänzt theme.css + products.css */
+/* ======================================================================
+   🔥 PRODUCT VARIANTS – MODERNIZED FINAL VERSION (Teil 1)
+   Panel, Grid, Chips
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Varianten Panel
-------------------------------------------------------------- */
+/* Varianten Panel */
 .variant-panel {
   background: rgba(20, 20, 40, 0.65);
   backdrop-filter: blur(12px);
@@ -11,12 +11,10 @@
   border-radius: 14px;
   padding: 20px;
   margin-top: 20px;
-  box-shadow: 0 0 14px rgba(112, 255, 234, 0.25);
+  box-shadow: 0 0 20px rgba(112, 255, 234, 0.25);
 }
 
-/* -------------------------------------------------------------
-   🔹 Varianten Grid
-------------------------------------------------------------- */
+/* Varianten Grid */
 .variant-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -24,9 +22,7 @@
   margin-top: 10px;
 }
 
-/* -------------------------------------------------------------
-   🔹 Varianten Chips (Farben, Größen, Typen)
-------------------------------------------------------------- */
+/* Varianten Chips */
 .variant-chip {
   padding: 8px 14px;
   border-radius: 8px;
@@ -39,30 +35,29 @@
   text-align: center;
   user-select: none;
 }
-
 .variant-chip:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 14px var(--color-neon-turquoise);
   transform: translateY(-2px);
 }
-
 .variant-chip.active {
   background-color: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 18px var(--color-neon-turquoise);
 }
+/* ======================================================================
+   🔥 PRODUCT VARIANTS – MODERNIZED FINAL VERSION (Teil 2)
+   Table, Buttons, Modal, Inputs, Actions, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Varianten Tabelle
-------------------------------------------------------------- */
+/* Varianten Tabelle */
 #variantTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   table-layout: fixed;
 }
-
 #variantTable th,
 #variantTable td {
   text-align: center;
@@ -72,26 +67,21 @@
   font-size: 0.95rem;
   word-wrap: break-word;
 }
-
 #variantTable th {
   background-color: var(--color-bg-panel);
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
-
 /* Alternierende Zeilen */
 #variantTable tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.03);
 }
-
 #variantTable tr:hover {
   background-color: #2a2a40;
   transition: background 0.2s ease;
 }
 
-/* -------------------------------------------------------------
-   🔹 Add Variant Button
-------------------------------------------------------------- */
+/* Add Variant Button */
 .add-variant-btn {
   margin-top: 14px;
   padding: 10px 18px;
@@ -103,16 +93,13 @@
   transition: all 0.25s ease;
   box-shadow: 0 0 12px var(--color-neon-yellow);
 }
-
 .add-variant-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 18px var(--color-neon-yellow),
               0 0 36px rgba(255, 211, 0, 0.7);
 }
 
-/* -------------------------------------------------------------
-   🔹 Delete Variant Button
-------------------------------------------------------------- */
+/* Delete Variant Button */
 .delete-variant-btn {
   background-color: transparent;
   border: 1px solid var(--color-neon-red);
@@ -123,7 +110,6 @@
   transition: all 0.25s ease;
   font-weight: bold;
 }
-
 .delete-variant-btn:hover {
   background-color: var(--color-neon-red);
   color: #000;
@@ -131,9 +117,7 @@
               0 0 28px rgba(255, 77, 77, 0.6);
 }
 
-/* -------------------------------------------------------------
-   🔹 Varianten Modal
-------------------------------------------------------------- */
+/* Varianten Modal */
 .variant-modal {
   width: 100%;
   max-width: 480px;
@@ -142,19 +126,17 @@
   border: 2px solid var(--color-neon-turquoise);
   border-radius: 14px;
   padding: 26px;
-  box-shadow: 
+  box-shadow:
     0 0 20px var(--color-neon-turquoise),
     0 0 40px rgba(112, 255, 234, 0.55);
   transform: translateY(20px);
   opacity: 0;
   animation: variantModalFadeIn 0.45s ease forwards;
 }
-
 @keyframes variantModalFadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 .variant-modal h3 {
   margin-top: 0;
   text-align: center;
@@ -164,9 +146,7 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Modal Inputs
-------------------------------------------------------------- */
+/* Modal Inputs */
 .variant-modal input,
 .variant-modal select {
   width: 100%;
@@ -180,19 +160,16 @@
   transition: all 0.25s ease;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
 }
-
 .variant-modal input:focus,
 .variant-modal select:focus {
   border-color: var(--color-neon-turquoise);
-  box-shadow: 
+  box-shadow:
     0 0 14px var(--color-neon-turquoise),
     0 0 28px rgba(112, 255, 234, 0.55);
   outline: none;
 }
 
-/* -------------------------------------------------------------
-   🔹 Modal Buttons
-------------------------------------------------------------- */
+/* Modal Buttons */
 .variant-modal-btn {
   width: 100%;
   padding: 12px;
@@ -202,40 +179,34 @@
   transition: all 0.25s ease;
   margin-top: 10px;
 }
-
 /* Confirm */
 .variant-modal-btn.confirm {
   background-color: var(--color-neon-green);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-green);
 }
-
 .variant-modal-btn.confirm:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 0 18px var(--color-neon-green),
     0 0 36px rgba(0, 255, 128, 0.7);
 }
-
 /* Cancel */
 .variant-modal-btn.cancel {
   background-color: transparent;
   border: 2px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 .variant-modal-btn.cancel:hover {
   background-color: var(--color-neon-red);
   color: #000;
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 0 18px var(--color-neon-red),
     0 0 36px rgba(255, 77, 77, 0.7);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive */
 @media (max-width: 600px) {
   .variant-grid {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));

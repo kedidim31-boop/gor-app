@@ -1,9 +1,9 @@
-/* Inventory Search – Cyberpunk Neon Look */
-/* Ergänzt theme.css + inventory.css */
+/* ======================================================================
+   🔥 INVENTORY SEARCH – MODERNIZED FINAL VERSION (Teil 1)
+   Suchfeld, Filter Panel
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Suchfeld Container
-------------------------------------------------------------- */
+/* Suchfeld Container */
 .inventory-search-container {
   margin: 20px 0;
   display: flex;
@@ -11,14 +11,11 @@
   gap: 14px;
 }
 
-/* -------------------------------------------------------------
-   🔹 Suchfeld (Input + Icon)
-------------------------------------------------------------- */
+/* Suchfeld (Input + Icon) */
 .inventory-search {
   position: relative;
   width: 100%;
 }
-
 .inventory-search i {
   position: absolute;
   top: 50%;
@@ -28,7 +25,6 @@
   font-size: 1rem;
   pointer-events: none;
 }
-
 .inventory-search input {
   width: 100%;
   padding: 12px 14px 12px 42px;
@@ -41,12 +37,10 @@
   transition: all 0.25s ease;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
 }
-
 .inventory-search input:hover {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
-
 .inventory-search input:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 
@@ -55,15 +49,12 @@
   outline: none;
 }
 
-/* -------------------------------------------------------------
-   🔹 Filter Panel
-------------------------------------------------------------- */
+/* Filter Panel */
 .inventory-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
 }
-
 .inventory-filter {
   background-color: var(--color-bg-panel);
   border: 2px solid var(--color-neon-turquoise);
@@ -74,23 +65,23 @@
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 .inventory-filter:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 14px var(--color-neon-turquoise);
 }
-
 /* Aktiver Filter */
 .inventory-filter.active {
   background-color: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 18px var(--color-neon-turquoise);
 }
+/* ======================================================================
+   🔥 INVENTORY SEARCH – MODERNIZED FINAL VERSION (Teil 2)
+   Reset Button, Result Counter, Treffer Highlighting, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Reset Button
-------------------------------------------------------------- */
+/* Reset Button */
 .inventory-reset-btn {
   padding: 8px 16px;
   border-radius: 8px;
@@ -101,17 +92,15 @@
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 .inventory-reset-btn:hover {
   background-color: var(--color-neon-red);
   color: #000;
   box-shadow: 0 0 18px var(--color-neon-red),
               0 0 36px rgba(255, 77, 77, 0.7);
+  transform: translateY(-2px);
 }
 
-/* -------------------------------------------------------------
-   🔹 Result Counter
-------------------------------------------------------------- */
+/* Result Counter */
 .inventory-result-count {
   font-size: 0.9rem;
   color: var(--color-neon-yellow);
@@ -119,9 +108,7 @@
   font-weight: bold;
 }
 
-/* -------------------------------------------------------------
-   🔹 Treffer Highlighting
-------------------------------------------------------------- */
+/* Treffer Highlighting */
 .search-highlight {
   background-color: rgba(255, 211, 0, 0.25);
   color: var(--color-neon-yellow);
@@ -130,9 +117,7 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Keine Treffer
-------------------------------------------------------------- */
+/* Keine Treffer */
 .inventory-no-results {
   margin-top: 20px;
   padding: 14px;
@@ -145,14 +130,11 @@
   box-shadow: 0 0 12px var(--color-neon-red);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive Anpassung */
 @media (max-width: 768px) {
   .inventory-filters {
     flex-direction: column;
   }
-
   .inventory-filter {
     text-align: center;
   }

@@ -1,9 +1,9 @@
-/* Product Relations – Cyberpunk Neon Look */
-/* Ergänzt theme.css + productDetails.css */
+/* ======================================================================
+   🔥 PRODUCT RELATIONS – MODERNIZED FINAL VERSION (Teil 1)
+   Panel, Grid, Box
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Relations Panel
-------------------------------------------------------------- */
+/* Relations Panel */
 .product-relations-panel {
   background: rgba(20, 20, 40, 0.65);
   backdrop-filter: blur(12px);
@@ -11,9 +11,8 @@
   border-radius: 16px;
   padding: 24px;
   margin-top: 20px;
-  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 20px rgba(255, 211, 0, 0.25);
 }
-
 .product-relations-panel h3 {
   margin-top: 0;
   color: var(--color-neon-yellow);
@@ -21,9 +20,7 @@
   text-shadow: 0 0 8px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Relations Grid
-------------------------------------------------------------- */
+/* Relations Grid */
 .product-relations-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -31,38 +28,35 @@
   margin-top: 16px;
 }
 
-/* -------------------------------------------------------------
-   🔹 Relation Box
-------------------------------------------------------------- */
+/* Relation Box */
 .relation-box {
   background: var(--color-bg-panel);
   padding: 18px;
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(112, 255, 234, 0.25);
+  box-shadow: 0 0 14px rgba(112, 255, 234, 0.25);
   transition: all 0.25s ease;
 }
-
 .relation-box:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 18px var(--color-neon-turquoise),
-              0 0 36px rgba(112, 255, 234, 0.55);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 20px var(--color-neon-turquoise),
+              0 0 40px rgba(112, 255, 234, 0.55);
 }
-
 .relation-box h4 {
   margin-top: 0;
   color: var(--color-neon-turquoise);
   font-size: 1.1rem;
   text-shadow: 0 0 6px var(--color-neon-turquoise);
 }
+/* ======================================================================
+   🔥 PRODUCT RELATIONS – MODERNIZED FINAL VERSION (Teil 2)
+   Search Field, Tags, List, Thumbnail, Actions, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Search Field for Relations
-------------------------------------------------------------- */
+/* Search Field */
 .relation-search {
   position: relative;
   margin-top: 10px;
 }
-
 .relation-search i {
   position: absolute;
   top: 50%;
@@ -71,7 +65,6 @@
   color: var(--color-neon-yellow);
   pointer-events: none;
 }
-
 .relation-search input {
   width: 100%;
   padding: 10px 14px 10px 40px;
@@ -82,7 +75,6 @@
   font-weight: bold;
   transition: all 0.25s ease;
 }
-
 .relation-search input:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 14px var(--color-neon-turquoise),
@@ -90,16 +82,13 @@
   outline: none;
 }
 
-/* -------------------------------------------------------------
-   🔹 Relation Tags (Selected Items)
-------------------------------------------------------------- */
+/* Relation Tags */
 .relation-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 12px;
 }
-
 .relation-tag {
   padding: 6px 12px;
   border-radius: 8px;
@@ -113,20 +102,16 @@
   gap: 6px;
   transition: all 0.25s ease;
 }
-
 .relation-tag i {
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 .relation-tag i:hover {
   color: var(--color-neon-red);
   text-shadow: 0 0 8px var(--color-neon-red);
 }
 
-/* -------------------------------------------------------------
-   🔹 Relation List (Search Results)
-------------------------------------------------------------- */
+/* Relation List */
 .relation-list {
   margin-top: 12px;
   max-height: 220px;
@@ -135,22 +120,18 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.25);
 }
-
 .relation-item {
   padding: 10px 14px;
   cursor: pointer;
   color: var(--color-text-light);
   transition: all 0.25s ease;
 }
-
 .relation-item:hover {
   background-color: rgba(112, 255, 234, 0.15);
   color: var(--color-neon-turquoise);
 }
 
-/* -------------------------------------------------------------
-   🔹 Relation Item Thumbnail
-------------------------------------------------------------- */
+/* Relation Item Thumbnail */
 .relation-item-thumb {
   width: 36px;
   height: 36px;
@@ -160,15 +141,12 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* -------------------------------------------------------------
-   🔹 Relation Actions
-------------------------------------------------------------- */
+/* Relation Actions */
 .relation-actions {
   margin-top: 20px;
   display: flex;
   gap: 12px;
 }
-
 .relation-btn {
   padding: 10px 16px;
   border-radius: 8px;
@@ -176,40 +154,32 @@
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 /* Save */
 .relation-btn.save {
   background-color: var(--color-neon-green);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-green);
 }
-
 .relation-btn.save:hover {
   transform: translateY(-2px);
-  box-shadow:
-    0 0 18px var(--color-neon-green),
-    0 0 36px rgba(0, 255, 128, 0.7);
+  box-shadow: 0 0 18px var(--color-neon-green),
+              0 0 36px rgba(0, 255, 128, 0.7);
 }
-
 /* Reset */
 .relation-btn.reset {
   background-color: transparent;
   border: 2px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 .relation-btn.reset:hover {
   background-color: var(--color-neon-red);
   color: #000;
   transform: translateY(-2px);
-  box-shadow:
-    0 0 18px var(--color-neon-red),
-    0 0 36px rgba(255, 77, 77, 0.7);
+  box-shadow: 0 0 18px var(--color-neon-red),
+              0 0 36px rgba(255, 77, 77, 0.7);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive */
 @media (max-width: 600px) {
   .product-relations-grid {
     grid-template-columns: 1fr;

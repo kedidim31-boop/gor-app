@@ -1,9 +1,9 @@
-/* Product Bundles – Cyberpunk Neon Look */
-/* Ergänzt theme.css + productDetails.css */
+/* ======================================================================
+   🔥 PRODUCT BUNDLES – MODERNIZED FINAL VERSION (Teil 1)
+   Panel, Grid, Search
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Bundle Panel
-------------------------------------------------------------- */
+/* Bundle Panel */
 .product-bundles-panel {
   background: rgba(20, 20, 40, 0.65);
   backdrop-filter: blur(12px);
@@ -11,9 +11,8 @@
   border-radius: 16px;
   padding: 24px;
   margin-top: 20px;
-  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 20px rgba(255, 211, 0, 0.25);
 }
-
 .product-bundles-panel h3 {
   margin-top: 0;
   color: var(--color-neon-yellow);
@@ -21,32 +20,26 @@
   text-shadow: 0 0 8px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Bundle Builder Grid
-------------------------------------------------------------- */
+/* Bundle Builder Grid */
 .bundle-builder-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 24px;
   margin-top: 20px;
 }
-
 @media (max-width: 900px) {
   .bundle-builder-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* -------------------------------------------------------------
-   🔹 Left Side: Product Search + Add
-------------------------------------------------------------- */
+/* Left Side: Product Search + Add */
 .bundle-search-box {
   background: var(--color-bg-panel);
   padding: 18px;
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(112, 255, 234, 0.25);
+  box-shadow: 0 0 14px rgba(112, 255, 234, 0.25);
 }
-
 .bundle-search-box h4 {
   margin-top: 0;
   color: var(--color-neon-turquoise);
@@ -58,7 +51,6 @@
   position: relative;
   margin-top: 10px;
 }
-
 .bundle-search i {
   position: absolute;
   top: 50%;
@@ -66,7 +58,6 @@
   transform: translateY(-50%);
   color: var(--color-neon-yellow);
 }
-
 .bundle-search input {
   width: 100%;
   padding: 10px 14px 10px 40px;
@@ -77,7 +68,6 @@
   font-weight: bold;
   transition: all 0.25s ease;
 }
-
 .bundle-search input:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 14px var(--color-neon-turquoise),
@@ -94,7 +84,6 @@
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
-
 .bundle-result-item {
   padding: 10px 14px;
   cursor: pointer;
@@ -104,12 +93,10 @@
   gap: 10px;
   transition: all 0.25s ease;
 }
-
 .bundle-result-item:hover {
   background-color: rgba(112, 255, 234, 0.15);
   color: var(--color-neon-turquoise);
 }
-
 .bundle-result-thumb {
   width: 40px;
   height: 40px;
@@ -117,17 +104,18 @@
   object-fit: cover;
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
+/* ======================================================================
+   🔥 PRODUCT BUNDLES – MODERNIZED FINAL VERSION (Teil 2)
+   Items, Summary, Actions
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Right Side: Bundle Items
-------------------------------------------------------------- */
+/* Bundle Items Box */
 .bundle-items-box {
   background: var(--color-bg-panel);
   padding: 18px;
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 14px rgba(255, 211, 0, 0.25);
 }
-
 .bundle-items-box h4 {
   margin-top: 0;
   color: var(--color-neon-yellow);
@@ -141,7 +129,6 @@
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
-
 .bundle-item {
   padding: 12px 16px;
   background: rgba(0, 0, 0, 0.25);
@@ -151,7 +138,6 @@
   justify-content: space-between;
   transition: all 0.25s ease;
 }
-
 .bundle-item:hover {
   background-color: rgba(112, 255, 234, 0.15);
 }
@@ -162,7 +148,6 @@
   align-items: center;
   gap: 12px;
 }
-
 .bundle-item-thumb {
   width: 46px;
   height: 46px;
@@ -183,7 +168,6 @@
   text-align: center;
   transition: all 0.25s ease;
 }
-
 .bundle-item-qty:focus {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 14px var(--color-neon-turquoise);
@@ -201,7 +185,6 @@
   transition: all 0.25s ease;
   font-weight: bold;
 }
-
 .bundle-item-delete:hover {
   background-color: var(--color-neon-red);
   color: #000;
@@ -209,9 +192,7 @@
               0 0 28px rgba(255, 77, 77, 0.6);
 }
 
-/* -------------------------------------------------------------
-   🔹 Bundle Summary
-------------------------------------------------------------- */
+/* Bundle Summary */
 .bundle-summary {
   margin-top: 20px;
   padding: 16px;
@@ -219,27 +200,22 @@
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
-
 .bundle-summary h4 {
   margin-top: 0;
   color: var(--color-neon-green);
   text-shadow: 0 0 6px var(--color-neon-green);
 }
-
 .bundle-summary p {
   color: var(--color-text-light);
   margin-top: 6px;
 }
 
-/* -------------------------------------------------------------
-   🔹 Bundle Actions
-------------------------------------------------------------- */
+/* Bundle Actions */
 .bundle-actions {
   margin-top: 20px;
   display: flex;
   gap: 12px;
 }
-
 .bundle-btn {
   padding: 10px 16px;
   border-radius: 8px;
@@ -247,28 +223,24 @@
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 /* Save */
 .bundle-btn.save {
   background-color: var(--color-neon-green);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-green);
 }
-
 .bundle-btn.save:hover {
   transform: translateY(-2px);
   box-shadow:
     0 0 18px var(--color-neon-green),
     0 0 36px rgba(0, 255, 128, 0.7);
 }
-
 /* Reset */
 .bundle-btn.reset {
   background-color: transparent;
   border: 2px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 .bundle-btn.reset:hover {
   background-color: var(--color-neon-red);
   color: #000;

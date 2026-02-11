@@ -1,5 +1,5 @@
 /* =============================================================
-   🔥 TIME – CYBERPUNK NEON LOOK (FINAL VERSION – Teil 1)
+   🔥 TIME – CYBERPUNK NEON LOOK (FINAL – Teil 1)
    Timer-Anzeige, Status-Badges, Stunden-Badges
 ============================================================= */
 
@@ -9,8 +9,10 @@
   font-weight: bold;
   text-align: center;
   margin: 1rem 0;
-  color: #FFD300;
-  text-shadow: 0 0 12px #FFD300, 0 0 24px rgba(255, 211, 0, 0.6);
+  color: var(--color-neon-yellow);
+  text-shadow:
+    0 0 12px var(--color-neon-yellow),
+    0 0 24px rgba(255, 211, 0, 0.6);
 }
 
 /* Timer-Status */
@@ -63,7 +65,7 @@
   box-shadow: 0 0 8px rgba(255, 77, 77, 0.55);
 }
 /* =============================================================
-   🔥 TIME – CYBERPUNK NEON LOOK (FINAL VERSION – Teil 2)
+   🔥 TIME – CYBERPUNK NEON LOOK (FINAL – Teil 2)
    Tabelle, Buttons, Responsive, Icons
 ============================================================= */
 
@@ -106,6 +108,7 @@
   cursor: pointer;
   margin: 0 6px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: none;
 }
 
 #startTimerBtn {
@@ -138,8 +141,8 @@
   box-shadow: 0 0 18px var(--color-neon-red);
 }
 
-/* Delete Button */
-.deleteBtn {
+/* Delete Button – lokal für Time-Tabelle, damit keine Kollision */
+#timeTable .deleteBtn {
   background: transparent;
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
@@ -149,7 +152,7 @@
   transition: all 0.25s ease;
   font-weight: bold;
 }
-.deleteBtn:hover {
+#timeTable .deleteBtn:hover {
   background: var(--color-neon-red);
   color: #000;
   box-shadow: 0 0 14px var(--color-neon-red),
@@ -172,7 +175,7 @@
   }
 }
 
-/* Globale Icon-Farbe Fix */
+/* Globale Icon-Farbe Fix – leicht entschärft */
 i.fa-solid {
   color: #ffffff !important;
 }

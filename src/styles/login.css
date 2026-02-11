@@ -1,20 +1,35 @@
 /* ======================================================================
-   🔥 LOGIN CSS – FINAL VERSION
+   🔥 LOGIN CSS – MODERNIZED FINAL VERSION
    Gaming of Republic – Neon Look
 ====================================================================== */
 
-/* 🔹 Animierter Hintergrund */
+/* 🔹 Body & Grundlayout */
+body.login-page {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center; /* modernes Centering */
+  background: var(--color-bg-dark);
+  font-family: 'Inter', 'Segoe UI', sans-serif; /* moderne Typo */
+  overflow-x: hidden;
+}
+
+/* 🔹 Hintergrund mit Glow-Animation */
 .neon-bg {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, var(--color-bg-panel), var(--color-bg-dark));
-  animation: huePulse 12s infinite alternate;
+  background: radial-gradient(circle at center,
+              var(--color-bg-panel),
+              var(--color-bg-dark));
+  animation: huePulse 16s infinite alternate ease-in-out;
   z-index: -1;
 }
 
 @keyframes huePulse {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
+  0%   { filter: hue-rotate(0deg) brightness(1); }
+  50%  { filter: hue-rotate(180deg) brightness(1.1); }
+  100% { filter: hue-rotate(360deg) brightness(1); }
 }
 
 /* 🔹 Splash Screen */
@@ -27,42 +42,36 @@
   width: 100%;
   background: var(--color-bg-dark);
   z-index: 1000;
-}
-/* 🔹 Login Layout */
-body.login-page {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: var(--color-bg-dark);
-  overflow-x: hidden;
+  animation: fadeInSplash 1.2s ease forwards;
 }
 
+@keyframes fadeInSplash {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+/* 🔹 Login Layout */
 main {
   display: flex;
   justify-content: center;
   align-items: center;
   flex: 1;
   width: 100%;
-  padding: 2rem;
+  padding: clamp(1rem, 4vw, 2rem); /* responsive padding */
   box-sizing: border-box;
 }
 
 /* 🔹 Login Card */
 .login-card {
   background: rgba(20, 20, 50, 0.75);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px); /* stärkerer Blur für modernen Glass-Effekt */
   border: 2px solid var(--color-neon-yellow);
-  border-radius: 14px;
-  padding: 32px;
+  border-radius: 16px; /* etwas runder */
+  padding: clamp(24px, 5vw, 32px); /* responsive Padding */
   max-width: 420px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 0 18px var(--color-neon-yellow),
-              0 0 36px rgba(255, 211, 0, 0.55);
+  box-shadow: 0 0 20px var(--color-neon-yellow),
+              0 0 40px rgba(255, 211, 0, 0.55);
   margin: 20px auto;
   opacity: 0;
   transform: translateY(30px);
@@ -220,7 +229,7 @@ main {
   margin-top: 10px;
   padding: 12px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   background-color: var(--color-neon-turquoise);
   color: #000;
   font-weight: bold;
@@ -232,9 +241,13 @@ main {
 }
 
 #loginBtn:hover {
-  transform: scale(1.06);
+  transform: translateY(-2px) scale(1.05);
   box-shadow: 0 0 18px var(--color-neon-turquoise),
               0 0 36px rgba(112, 255, 234, 0.8);
+}
+
+#loginBtn:active {
+  transform: scale(0.96);
 }
 
 /* 🔹 Skip Button */
@@ -242,7 +255,7 @@ main {
   margin-top: 20px;
   padding: 10px 18px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: var(--color-neon-yellow);
   color: #000;
   font-weight: bold;

@@ -3,9 +3,7 @@
    Layout, KPI‑Cards, Grid‑System, Header, Navigation
 ============================================================= */
 
-/* -------------------------------------------------------------
-   🔹 Main Layout
-------------------------------------------------------------- */
+/* Main Layout */
 main {
   margin: 1.5rem;
 }
@@ -18,15 +16,13 @@ main {
   margin-bottom: 2rem;
 }
 
-/* -------------------------------------------------------------
-   🔹 KPI Cards – Neon Look
-------------------------------------------------------------- */
+/* KPI Cards */
 .stat-card {
   background: var(--color-bg-panel);
   padding: 1.6rem;
-  border-radius: 12px;
+  border-radius: 14px; /* etwas runder */
   text-align: center;
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
@@ -52,15 +48,15 @@ main {
 
 /* Hover Effekt */
 .stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 20px var(--color-neon-yellow),
-              0 0 40px rgba(255, 211, 0, 0.55);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 0 22px var(--color-neon-yellow),
+              0 0 44px rgba(255, 211, 0, 0.55);
 }
 
 /* Titel */
 .stat-card h2 {
   margin-top: 0;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
   display: flex;
@@ -75,7 +71,7 @@ main {
 
 /* Zahl */
 .stat-card .stat {
-  font-size: 2.4rem;
+  font-size: 2.5rem;
   font-weight: 800;
   margin: 0.4rem 0;
   letter-spacing: 1px;
@@ -87,37 +83,14 @@ main {
   margin-top: 0.4rem;
 }
 
-/* -------------------------------------------------------------
-   🔹 KPI Farben
-------------------------------------------------------------- */
-#employeeCount {
-  color: var(--color-neon-green);
-  text-shadow: 0 0 10px var(--color-neon-green);
-}
+/* KPI Farben */
+#employeeCount { color: var(--color-neon-green);   text-shadow: 0 0 10px var(--color-neon-green); }
+#productCount  { color: var(--color-neon-yellow);  text-shadow: 0 0 10px var(--color-neon-yellow); }
+#stockTotal    { color: var(--color-neon-purple);  text-shadow: 0 0 10px var(--color-neon-purple); }
+#taskCount     { color: var(--color-neon-turquoise); text-shadow: 0 0 10px var(--color-neon-turquoise); }
+#timeTotal     { color: var(--color-neon-red);     text-shadow: 0 0 10px var(--color-neon-red); }
 
-#productCount {
-  color: var(--color-neon-yellow);
-  text-shadow: 0 0 10px var(--color-neon-yellow);
-}
-
-#stockTotal {
-  color: var(--color-neon-purple);
-  text-shadow: 0 0 10px var(--color-neon-purple);
-}
-
-#taskCount {
-  color: var(--color-neon-turquoise);
-  text-shadow: 0 0 10px var(--color-neon-turquoise);
-}
-
-#timeTotal {
-  color: var(--color-neon-red);
-  text-shadow: 0 0 10px var(--color-neon-red);
-}
-
-/* -------------------------------------------------------------
-   🔹 Placeholder Cards (Future Modules)
-------------------------------------------------------------- */
+/* Placeholder Cards */
 .placeholder-card {
   background: linear-gradient(
       135deg,
@@ -145,15 +118,13 @@ main {
    Charts, Neon‑Cards, Legend, Responsive
 ============================================================= */
 
-/* -------------------------------------------------------------
-   🔹 Chart Cards
-------------------------------------------------------------- */
+/* Chart Cards */
 .chart-card {
   background: radial-gradient(circle at top, rgba(112,255,234,0.12), transparent),
               var(--color-bg-panel);
   padding: 1.6rem;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(112, 255, 234, 0.25);
+  border-radius: 14px; /* etwas runder */
+  box-shadow: 0 0 18px rgba(112, 255, 234, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
@@ -179,15 +150,15 @@ main {
 
 /* Hover Effekt */
 .chart-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 20px var(--color-neon-turquoise),
-              0 0 40px rgba(112, 255, 234, 0.55);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 0 22px var(--color-neon-turquoise),
+              0 0 44px rgba(112, 255, 234, 0.55);
 }
 
 /* Titel */
 .chart-card h2 {
   margin-top: 0;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: var(--color-neon-turquoise);
   text-shadow: 0 0 6px var(--color-neon-turquoise);
   display: flex;
@@ -206,9 +177,7 @@ main {
   height: 260px;
 }
 
-/* -------------------------------------------------------------
-   🔹 Chart Legend (optional)
-------------------------------------------------------------- */
+/* Chart Legend */
 .chart-legend {
   display: flex;
   flex-wrap: wrap;
@@ -232,9 +201,7 @@ main {
   border-radius: 50%;
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassungen
-------------------------------------------------------------- */
+/* Responsive Anpassungen */
 @media (max-width: 992px) {
   main {
     margin: 1rem;
@@ -254,7 +221,7 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .card,
+  .stat-card,
   .chart-card {
     padding: 1.2rem;
   }

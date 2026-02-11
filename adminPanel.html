@@ -5,23 +5,24 @@
   <title>Gaming of Republic – Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Globale Styles -->
+  <!-- Global Styles -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/adminPanel.css">
 
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
 
-  <!-- 🔹 FEEDBACK BANNER -->
+  <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- 🔹 BRANDING HEADER -->
+  <!-- BRANDING HEADER -->
   <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-    <div class="divider"></div>
+
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-user-shield"></i>
@@ -30,7 +31,7 @@
     </div>
   </header>
 
-  <!-- 🔹 TOP NAVIGATION -->
+  <!-- TOP NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
@@ -46,10 +47,10 @@
     </button>
   </nav>
 
-  <!-- 🔹 MAIN CONTENT -->
+  <!-- MAIN CONTENT -->
   <main>
 
-    <!-- Benutzer anlegen -->
+    <!-- CREATE USER -->
     <section class="card glass-panel">
       <h2><i class="fa-solid fa-user-plus"></i> <span data-i18n="admin.newUser">Neuen Benutzer anlegen</span></h2>
 
@@ -57,12 +58,16 @@
 
         <label class="icon-input">
           <i class="fa-solid fa-envelope"></i>
-          <input type="email" id="newEmail" required placeholder="name@example.com" data-i18n-placeholder="admin.email">
+          <input type="email" id="newEmail" required
+                 placeholder="name@example.com"
+                 data-i18n-placeholder="admin.email">
         </label>
 
         <label class="icon-input">
           <i class="fa-solid fa-lock"></i>
-          <input type="password" id="newPassword" required placeholder="••••••••" data-i18n-placeholder="admin.password">
+          <input type="password" id="newPassword" required
+                 placeholder="••••••••"
+                 data-i18n-placeholder="admin.password">
         </label>
 
         <label class="icon-input">
@@ -76,22 +81,29 @@
           </select>
         </label>
 
-        <button type="submit" class="btn btn-yellow">
-          <i class="fa-solid fa-save"></i> <span data-i18n="admin.createUser">Benutzer erstellen</span>
+        <button type="submit" class="btn btn-yellow full-width">
+          <i class="fa-solid fa-save"></i>
+          <span data-i18n="admin.createUser">Benutzer erstellen</span>
         </button>
 
       </form>
     </section>
-    <!-- Mitarbeiterverwaltung -->
+    <!-- MITARBEITERVERWALTUNG -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-users-gear"></i> <span data-i18n="admin.manageEmployees">Mitarbeiterverwaltung</span></h2>
+      <h2>
+        <i class="fa-solid fa-users-gear"></i>
+        <span data-i18n="admin.manageEmployees">Mitarbeiterverwaltung</span>
+      </h2>
 
       <!-- Suchfeld -->
       <div class="employee-search">
-        <input type="text" id="employeeSearch" placeholder="Suche nach Name / E-Mail / Rolle …" data-i18n-placeholder="admin.searchEmployees">
+        <input type="text"
+               id="employeeSearch"
+               placeholder="Suche nach Name / E-Mail / Rolle …"
+               data-i18n-placeholder="admin.searchEmployees">
       </div>
 
-      <table id="adminEmployeeTable">
+      <table id="adminEmployeeTable" class="neon-table">
         <thead>
           <tr>
             <th data-i18n="employees.name">Name</th>
@@ -107,18 +119,26 @@
       </table>
     </section>
 
-    <!-- Audit Log Dashboard -->
+    <!-- AUDIT LOG -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="admin.auditLog">Audit Log</span></h2>
+      <h2>
+        <i class="fa-solid fa-clipboard-list"></i>
+        <span data-i18n="admin.auditLog">Audit Log</span>
+      </h2>
 
-      <div class="audit-controls">
-        <input type="text" id="auditSearch" placeholder="Suche nach Benutzer / Aktion …" data-i18n-placeholder="admin.searchAudit">
+      <div class="audit-controls flex-between">
+        <input type="text"
+               id="auditSearch"
+               placeholder="Suche nach Benutzer / Aktion …"
+               data-i18n-placeholder="admin.searchAudit">
+
         <button id="refreshAudit" class="btn btn-yellow">
-          <i class="fa-solid fa-rotate"></i> <span data-i18n="admin.refresh">Aktualisieren</span>
+          <i class="fa-solid fa-rotate"></i>
+          <span data-i18n="admin.refresh">Aktualisieren</span>
         </button>
       </div>
 
-      <table id="auditTable">
+      <table id="auditTable" class="neon-table">
         <thead>
           <tr>
             <th data-i18n="audit.time">Zeit</th>
@@ -135,13 +155,13 @@
 
   </main>
 
-  <!-- Role Guard -->
+  <!-- ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
     enforceRole(["admin", "manager"], "index.html");
   </script>
 
-  <!-- Admin Panel Logik -->
+  <!-- ADMIN PANEL LOGIK -->
   <script type="module" src="src/scripts/adminPanel.js"></script>
 
 </body>

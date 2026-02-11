@@ -1,9 +1,9 @@
-/* Product Bulk Edit – Cyberpunk Neon Look */
-/* Ergänzt theme.css + products.css */
+/* ======================================================================
+   🔥 PRODUCT BULK EDIT – MODERNIZED FINAL VERSION (Teil 1)
+   Checkbox, Action Panel, Buttons
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Checkbox Styling (Neon)
-------------------------------------------------------------- */
+/* Checkbox Styling */
 .bulk-checkbox {
   width: 18px;
   height: 18px;
@@ -11,14 +11,11 @@
   accent-color: var(--color-neon-turquoise);
   filter: drop-shadow(0 0 6px var(--color-neon-turquoise));
 }
-
 .bulk-checkbox:checked {
   filter: drop-shadow(0 0 10px var(--color-neon-turquoise));
 }
 
-/* -------------------------------------------------------------
-   🔹 Bulk Action Panel (fixiert oben)
-------------------------------------------------------------- */
+/* Bulk Action Panel */
 .bulk-action-panel {
   position: sticky;
   top: 0;
@@ -30,9 +27,8 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  box-shadow: 0 0 12px rgba(255, 211, 0, 0.35);
+  box-shadow: 0 0 14px rgba(255, 211, 0, 0.35);
 }
-
 .bulk-action-panel h3 {
   margin: 0;
   color: var(--color-neon-yellow);
@@ -40,9 +36,7 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Bulk Action Buttons
-------------------------------------------------------------- */
+/* Bulk Action Buttons */
 .bulk-btn {
   padding: 8px 16px;
   border-radius: 8px;
@@ -50,27 +44,23 @@
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 /* Update Button */
 .bulk-btn.update {
   background-color: var(--color-neon-turquoise);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-turquoise);
 }
-
 .bulk-btn.update:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 18px var(--color-neon-turquoise),
               0 0 36px rgba(112, 255, 234, 0.7);
 }
-
 /* Delete Button */
 .bulk-btn.delete {
   background-color: transparent;
   border: 2px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 .bulk-btn.delete:hover {
   background-color: var(--color-neon-red);
   color: #000;
@@ -78,10 +68,12 @@
   box-shadow: 0 0 18px var(--color-neon-red),
               0 0 36px rgba(255, 77, 77, 0.7);
 }
+/* ======================================================================
+   🔥 PRODUCT BULK EDIT – MODERNIZED FINAL VERSION (Teil 2)
+   Modal, Preview Grid, Buttons, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Bulk Edit Modal
-------------------------------------------------------------- */
+/* Bulk Edit Modal */
 .bulk-edit-modal {
   width: 100%;
   max-width: 480px;
@@ -97,12 +89,10 @@
   opacity: 0;
   animation: bulkModalFadeIn 0.45s ease forwards;
 }
-
 @keyframes bulkModalFadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 .bulk-edit-modal h3 {
   margin-top: 0;
   text-align: center;
@@ -112,9 +102,7 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Modal Inputs
-------------------------------------------------------------- */
+/* Modal Inputs */
 .bulk-edit-modal input,
 .bulk-edit-modal select,
 .bulk-edit-modal textarea {
@@ -129,7 +117,6 @@
   transition: all 0.25s ease;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
 }
-
 .bulk-edit-modal input:focus,
 .bulk-edit-modal select:focus,
 .bulk-edit-modal textarea:focus {
@@ -140,16 +127,13 @@
   outline: none;
 }
 
-/* -------------------------------------------------------------
-   🔹 Bulk Preview Grid
-------------------------------------------------------------- */
+/* Bulk Preview Grid */
 .bulk-preview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 14px;
   margin-top: 10px;
 }
-
 .bulk-preview-item {
   background: var(--color-bg-panel);
   border-radius: 10px;
@@ -159,16 +143,13 @@
   box-shadow: 0 0 10px rgba(255, 211, 0, 0.25);
   transition: all 0.25s ease;
 }
-
 .bulk-preview-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 16px var(--color-neon-yellow),
               0 0 32px rgba(255, 211, 0, 0.55);
 }
 
-/* -------------------------------------------------------------
-   🔹 Modal Buttons
-------------------------------------------------------------- */
+/* Modal Buttons */
 .bulk-modal-btn {
   width: 100%;
   padding: 12px;
@@ -178,28 +159,24 @@
   transition: all 0.25s ease;
   margin-top: 10px;
 }
-
 /* Confirm */
 .bulk-modal-btn.confirm {
   background-color: var(--color-neon-green);
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-green);
 }
-
 .bulk-modal-btn.confirm:hover {
   transform: translateY(-2px);
   box-shadow: 
     0 0 18px var(--color-neon-green),
     0 0 36px rgba(0, 255, 128, 0.7);
 }
-
 /* Cancel */
 .bulk-modal-btn.cancel {
   background-color: transparent;
   border: 2px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 .bulk-modal-btn.cancel:hover {
   background-color: var(--color-neon-red);
   color: #000;
@@ -209,15 +186,12 @@
     0 0 36px rgba(255, 77, 77, 0.7);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive Anpassung */
 @media (max-width: 600px) {
   .bulk-action-panel {
     flex-direction: column;
     align-items: stretch;
   }
-
   .bulk-preview-grid {
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   }

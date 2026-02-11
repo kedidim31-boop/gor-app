@@ -1,6 +1,6 @@
 /* ======================================================================
-   🔥 EMPLOYEES – FINAL VERSION (Teil 1)
-   Layout, Cards, Formular, Filter, Tabelle
+   🔥 EMPLOYEES – MODERNIZED FINAL VERSION (Teil 1)
+   Layout, Cards, Formular, Filter
 ====================================================================== */
 
 .employee-page {
@@ -9,23 +9,24 @@
   gap: 1.5rem;
 }
 
+/* Karten */
 .card {
   background: var(--color-bg-panel);
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
+  border-radius: 12px; /* etwas runder */
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
   margin-bottom: 1.5rem;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 20px var(--color-neon-yellow),
-              0 0 40px rgba(255, 211, 0, 0.55);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 0 22px var(--color-neon-yellow),
+              0 0 44px rgba(255, 211, 0, 0.55);
 }
 .card h2 {
   margin-top: 0;
   color: var(--color-neon-yellow);
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   margin-bottom: 1rem;
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
@@ -42,13 +43,13 @@
 .employee-filters select {
   background-color: var(--color-bg-panel);
   border: 2px solid var(--color-neon-turquoise);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 8px 12px;
   color: var(--color-text-light);
   font-size: 0.9rem;
   min-width: 180px;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 .employee-filters input::placeholder {
   color: rgba(255, 255, 255, 0.35);
@@ -100,7 +101,7 @@
   color: var(--color-neon-yellow);
   font-weight: bold;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   font-size: 0.9rem;
 }
 #employeeForm input::placeholder {
@@ -123,13 +124,17 @@
   cursor: pointer;
   box-shadow: 0 0 12px var(--color-neon-yellow),
               0 0 24px rgba(255, 211, 0, 0.55);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 #employeeForm button[type="submit"]:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 18px var(--color-neon-yellow),
               0 0 36px rgba(255, 211, 0, 0.7);
 }
+/* ======================================================================
+   🔥 EMPLOYEES – MODERNIZED FINAL VERSION (Teil 2)
+   Tabelle, Badges, Buttons, Feedback
+====================================================================== */
 
 /* Tabelle */
 #employeeTable {
@@ -137,6 +142,9 @@
   border-collapse: collapse;
   margin-top: 1.5rem;
   table-layout: fixed;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
 }
 #employeeTable th,
 #employeeTable td {
@@ -151,6 +159,7 @@
   background-color: var(--color-bg-panel);
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
+  font-weight: bold;
 }
 #employeeTable tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.03);
@@ -163,10 +172,6 @@
   text-align: left;
   white-space: normal;
 }
-/* ======================================================================
-   🔥 EMPLOYEES – FINAL VERSION (Teil 2)
-   Badges, Buttons, Feedback, Responsive
-====================================================================== */
 
 /* Rollen-Badges */
 .role-badge {
@@ -240,7 +245,7 @@
   font-weight: 600;
   cursor: pointer;
   font-size: 0.8rem;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 .roleSelect:hover,
 .roleSelect:focus {
@@ -256,7 +261,7 @@
   padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   font-weight: bold;
   font-size: 0.8rem;
   display: inline-flex;

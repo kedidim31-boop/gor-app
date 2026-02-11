@@ -5,66 +5,92 @@
   <title>Gaming of Republic – Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Globale Theme Datei -->
+  <!-- Global Theme -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/login.css">
 
-  <!-- Icon Library -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body class="login-page">
 
-  <!-- 🔹 Neon-Hintergrund -->
+  <!-- NEON BACKGROUND -->
   <div class="neon-bg"></div>
 
-  <!-- 🔹 Splash Screen -->
+  <!-- SPLASH SCREEN -->
   <div class="splash-screen" id="splash">
     <img src="./public/logo.png" alt="Gaming of Republic Logo" class="splash-logo">
-    <button class="skip-btn" id="skipBtn" aria-label="Intro überspringen">Intro überspringen</button>
+
+    <button class="skip-btn" id="skipBtn" aria-label="Intro überspringen">
+      <i class="fa-solid fa-forward"></i>
+      <span data-i18n="login.skip">Intro überspringen</span>
+    </button>
   </div>
 
-  <!-- 🔹 Login-Bereich -->
+  <!-- LOGIN AREA -->
   <main>
-    <div class="login-card" id="loginCard">
+    <div class="login-card glass-panel" id="loginCard">
 
-      <h2><i class="fa-solid fa-user-shield"></i> Login</h2>
+      <h2>
+        <i class="fa-solid fa-user-shield"></i>
+        <span data-i18n="login.title">Login</span>
+      </h2>
 
       <form id="loginForm" novalidate>
-
-        <!-- E-Mail -->
+        <!-- E‑MAIL -->
         <div class="input-group">
           <i class="fa-solid fa-envelope"></i>
-          <input type="email" id="email" name="email" placeholder=" " required autocomplete="username">
-          <label for="email">E-Mail</label>
+          <input type="email"
+                 id="email"
+                 name="email"
+                 placeholder=" "
+                 required
+                 autocomplete="username"
+                 data-i18n-placeholder="login.email">
+          <label for="email" data-i18n="login.email">E‑Mail</label>
         </div>
 
-        <!-- Passwort -->
+        <!-- PASSWORT -->
         <div class="input-group">
           <i class="fa-solid fa-lock"></i>
-          <input type="password" id="password" name="password" placeholder=" " required autocomplete="current-password">
-          <label for="password">Passwort</label>
-          <i class="fa-solid fa-eye toggle-password" id="togglePassword" aria-label="Passwort anzeigen/ausblenden"></i>
+          <input type="password"
+                 id="password"
+                 name="password"
+                 placeholder=" "
+                 required
+                 autocomplete="current-password"
+                 data-i18n-placeholder="login.password">
+          <label for="password" data-i18n="login.password">Passwort</label>
+
+          <i class="fa-solid fa-eye toggle-password"
+             id="togglePassword"
+             aria-label="Passwort anzeigen/ausblenden"></i>
         </div>
 
-        <!-- Fehlernachricht -->
+        <!-- FEHLERMELDUNG -->
         <div class="error-message" id="errorMessage">
           <i class="fa-solid fa-triangle-exclamation"></i>
-          Ungültige Zugangsdaten
+          <span data-i18n="login.invalid">Ungültige Zugangsdaten</span>
         </div>
 
-        <!-- Hinweis -->
+        <!-- HINWEIS -->
         <div class="hint">
           <i class="fa-solid fa-circle-info"></i>
-          Bitte melde dich mit deinen Daten an.
+          <span data-i18n="login.hint">Bitte melde dich mit deinen Daten an.</span>
         </div>
 
-        <!-- Login Button -->
-        <button type="submit" id="loginBtn" aria-label="Einloggen">
-          <i class="fa-solid fa-right-to-bracket"></i> Einloggen
+        <!-- LOGIN BUTTON -->
+        <button type="submit"
+                id="loginBtn"
+                class="btn btn-yellow full-width"
+                aria-label="Einloggen">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span data-i18n="login.submit">Einloggen</span>
         </button>
 
-        <!-- Spinner -->
+        <!-- SPINNER -->
         <div class="spinner" id="spinner"></div>
 
       </form>
@@ -72,10 +98,10 @@
     </div>
   </main>
 
-  <!-- 🔹 Feedback Banner -->
-  <div id="feedbackContainer"></div>
+  <!-- FEEDBACK BANNER -->
+  <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- 🔹 Login Logik -->
+  <!-- LOGIN LOGIK -->
   <script type="module" src="src/scripts/login.js"></script>
 
 </body>

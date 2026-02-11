@@ -1,29 +1,24 @@
-/* =============================================================
-   🔥 PRODUCTS – CYBERPUNK NEON LOOK
-   Gaming of Republic – 2026
-   Komplett neu & optimiert
-============================================================= */
+/* ======================================================================
+   🔥 PRODUCTS – MODERNIZED FINAL VERSION (Teil 1)
+   Layout, Product Form, Export Button
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Layout & Cards (spezifisch für Produkte)
-------------------------------------------------------------- */
+/* Layout */
 main {
   margin: 1.5rem;
 }
-
 .card {
   margin-bottom: 1.5rem;
 }
 
-/* -------------------------------------------------------------
-   🔹 Produkt-Formular
-------------------------------------------------------------- */
+/* Product Form Grid */
 #createProductForm {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 18px;
 }
 
+/* Form Field */
 #createProductForm .form-field {
   display: flex;
   flex-direction: column;
@@ -32,17 +27,17 @@ main {
   font-weight: 500;
 }
 
+/* Icon Input */
 #createProductForm .icon-input {
   display: flex;
   flex-direction: column;
 }
-
 #createProductForm .icon-input i {
   margin-bottom: 4px;
   color: var(--color-neon-yellow);
 }
 
-/* Full-width Felder (z. B. Beschreibung) */
+/* Full-width Fields */
 #createProductForm .full-width {
   grid-column: 1 / -1;
 }
@@ -60,19 +55,16 @@ main {
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
   transition: all 0.25s ease;
 }
-
 #createProductForm input::placeholder,
 #createProductForm textarea::placeholder {
-  color: rgba(255,255,255,0.35);
+  color: rgba(255, 255, 255, 0.35);
 }
-
 #createProductForm input:hover,
 #createProductForm textarea:hover,
 #createProductForm select:hover {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
-
 #createProductForm input:focus,
 #createProductForm textarea:focus,
 #createProductForm select:focus {
@@ -81,7 +73,6 @@ main {
               0 0 28px rgba(112, 255, 234, 0.55);
   outline: none;
 }
-
 #createProductForm textarea {
   min-height: 90px;
   resize: vertical;
@@ -100,16 +91,13 @@ main {
   box-shadow: 0 0 12px var(--color-neon-yellow),
               0 0 24px rgba(255, 211, 0, 0.55);
 }
-
 #createProductForm button:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 18px var(--color-neon-yellow),
               0 0 36px rgba(255, 211, 0, 0.7);
 }
 
-/* -------------------------------------------------------------
-   🔹 Export Button
-------------------------------------------------------------- */
+/* Export Button */
 #exportBtn {
   margin: 12px 0;
   padding: 10px 18px;
@@ -122,7 +110,6 @@ main {
   transition: all 0.25s ease;
   box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
-
 #exportBtn:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
@@ -130,17 +117,18 @@ main {
   box-shadow: 0 0 20px var(--color-neon-turquoise),
               0 0 40px rgba(112, 255, 234, 0.7);
 }
+/* ======================================================================
+   🔥 PRODUCTS – MODERNIZED FINAL VERSION (Teil 2)
+   Product Table, Stock Badges, Action Buttons, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Produkt-Tabelle
-------------------------------------------------------------- */
+/* Product Table */
 #productTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   table-layout: fixed;
 }
-
 #productTable th,
 #productTable td {
   text-align: center;
@@ -151,31 +139,31 @@ main {
   word-wrap: break-word;
 }
 
+/* Table Header Styling */
 #productTable th {
   background-color: var(--color-bg-panel);
   font-weight: bold;
-  text-shadow: 0 0 6px rgba(255,255,255,0.15);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
 }
 
-/* Alternierende Zeilen */
+/* Alternating Rows */
 #productTable tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* Hover Effekt */
+/* Hover Effect */
 #productTable tr:hover {
   background-color: #2a2a40;
   transition: background 0.2s ease;
 }
 
-/* Spalten-Farbcode */
+/* Column Color Coding */
 #productTable th:nth-child(6),
 #productTable th:nth-child(7),
 #productTable th:nth-child(10) {
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
-
 #productTable th:nth-child(1),
 #productTable th:nth-child(2),
 #productTable th:nth-child(3),
@@ -184,26 +172,20 @@ main {
   color: var(--color-neon-turquoise);
   text-shadow: 0 0 6px var(--color-neon-turquoise);
 }
-
 #productTable th:nth-child(8) {
   color: var(--color-neon-purple);
   text-shadow: 0 0 6px var(--color-neon-purple);
 }
-
 #productTable th:nth-child(9) {
   color: var(--color-neon-green);
   text-shadow: 0 0 6px var(--color-neon-green);
 }
-
 #productTable td:nth-child(9) i {
   color: var(--color-neon-green);
   margin-right: 6px;
 }
-/* -------------------------------------------------------------
-   🔹 Lager-Badges (OK / Low / Out-of-Stock)
-   nutzt dein globales Neon-System
-------------------------------------------------------------- */
 
+/* Stock Badges */
 .stock-badge {
   display: inline-flex;
   align-items: center;
@@ -220,41 +202,35 @@ main {
   transition: all 0.25s ease;
 }
 
-/* Genug Bestand */
+/* Stock Levels */
 .stock-ok {
   background-color: var(--color-neon-green);
   box-shadow: 0 0 10px var(--color-neon-green),
               0 0 20px rgba(0, 255, 128, 0.55);
 }
-
-/* Niedriger Bestand */
 .stock-low {
   background-color: var(--color-neon-yellow);
   box-shadow: 0 0 10px var(--color-neon-yellow),
               0 0 20px rgba(255, 211, 0, 0.55);
 }
-
-/* Kein Bestand */
 .stock-out {
   background-color: var(--color-neon-red);
   box-shadow: 0 0 10px var(--color-neon-red),
               0 0 20px rgba(255, 77, 77, 0.55);
 }
 
-/* Hover-Effekt */
+/* Hover Effect */
 .stock-badge:hover {
   transform: translateY(-2px);
   filter: brightness(1.1);
 }
 
-/* Zentrierung in Tabelle */
+/* Center Badge in Table */
 #productTable td .stock-badge {
   margin: 0 auto;
 }
 
-/* -------------------------------------------------------------
-   🔹 Buttons in Tabelle
-------------------------------------------------------------- */
+/* Action Buttons */
 #productTable .actionBtn,
 #productTable .deleteBtn {
   background-color: transparent;
@@ -265,12 +241,11 @@ main {
   font-weight: bold;
 }
 
-/* Delete */
+/* Delete Button */
 #productTable .deleteBtn {
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 #productTable .deleteBtn:hover {
   background-color: var(--color-neon-red);
   color: #000;
@@ -278,12 +253,11 @@ main {
               0 0 28px rgba(255, 77, 77, 0.6);
 }
 
-/* Optional: weitere Action-Buttons (z. B. Edit) */
+/* Action Button (Edit, etc.) */
 #productTable .actionBtn {
   border: 1px solid var(--color-neon-turquoise);
   color: var(--color-neon-turquoise);
 }
-
 #productTable .actionBtn:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
@@ -291,16 +265,13 @@ main {
               0 0 28px rgba(112, 255, 234, 0.6);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive */
 @media (max-width: 768px) {
   #productTable {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
   }
-
   #createProductForm {
     grid-template-columns: 1fr;
   }

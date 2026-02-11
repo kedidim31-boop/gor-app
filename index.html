@@ -5,170 +5,199 @@
   <title>Gaming of Republic – Startseite</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Globale Styles -->
+  <!-- Global Styles -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/index.css">
 
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
 
-  <!-- ============================================================
-       🔹 FEEDBACK BANNER (GLOBAL)
-  ============================================================ -->
+  <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- ============================================================
-       🔹 BRANDING HEADER
-  ============================================================ -->
-  <header class="branding-header">
+  <!-- BRANDING HEADER -->
+  <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-    <div class="divider"></div>
+
     <div class="branding-text">
       <div class="subtitle">
-        <i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Startseite</span>
+        <i class="fa-solid fa-house"></i>
+        <span data-i18n="nav.dashboard">Startseite</span>
       </div>
     </div>
   </header>
 
-  <!-- ============================================================
-       🔹 TOP NAVIGATION (rollenbasiert durch index.js)
-  ============================================================ -->
-  <nav class="top-nav" id="navMenu">
+  <!-- TOP NAVIGATION -->
+  <nav class="top-nav glass-panel" id="navMenu">
 
     <a href="index.html" class="active">
-      <i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span>
+      <i class="fa-solid fa-house"></i>
+      <span data-i18n="nav.dashboard">Home</span>
     </a>
 
     <a href="analysis.html">
-      <i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht & Dashboard</span>
+      <i class="fa-solid fa-chart-line"></i>
+      <span data-i18n="nav.analysis">Übersicht & Dashboard</span>
     </a>
 
     <a href="products.html">
-      <i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span>
+      <i class="fa-solid fa-box"></i>
+      <span data-i18n="nav.products">Produkte</span>
     </a>
 
     <a href="tasks.html">
-      <i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span>
+      <i class="fa-solid fa-list-check"></i>
+      <span data-i18n="nav.tasks">Aufgaben</span>
     </a>
 
     <a href="time.html">
-      <i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span>
+      <i class="fa-solid fa-clock"></i>
+      <span data-i18n="nav.time">Zeiterfassung</span>
     </a>
 
-    <!-- Nur für Mitarbeiter & Admin -->
+    <!-- Rollenbasiert -->
     <a href="employees.html" class="role-employee role-admin">
-      <i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span>
+      <i class="fa-solid fa-users"></i>
+      <span data-i18n="nav.employees">Mitarbeiter</span>
     </a>
 
-    <!-- Nur für Support + Admin -->
     <a href="support.html" class="role-support role-admin">
-      <i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span>
+      <i class="fa-solid fa-headset"></i>
+      <span data-i18n="nav.support">Support</span>
     </a>
 
-    <!-- Nur für Admin -->
     <a href="adminPanel.html" class="role-admin">
-      <i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span>
+      <i class="fa-solid fa-user-shield"></i>
+      <span data-i18n="nav.admin">Admin Panel</span>
     </a>
 
     <button class="btn btn-red logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="nav.logout">Logout</span>
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span data-i18n="nav.logout">Logout</span>
     </button>
 
   </nav>
 
-  <!-- ============================================================
-       🔹 MAIN CONTENT
-  ============================================================ -->
+  <!-- MAIN CONTENT -->
   <main>
-
-    <!-- ========================================================
-         🔹 KENNZAHLEN (Dashboard Overview)
-    ======================================================== -->
+    <!-- DASHBOARD OVERVIEW -->
     <section class="dashboard" aria-label="Dashboard Overview">
 
-      <div class="card stat-card">
-        <h2><i class="fa-solid fa-users"></i> <span data-i18n="dashboard.totalEmployees">Mitarbeiter</span></h2>
+      <div class="card stat-card glass-panel">
+        <h2>
+          <i class="fa-solid fa-users"></i>
+          <span data-i18n="dashboard.totalEmployees">Mitarbeiter</span>
+        </h2>
         <div class="stat" id="overviewEmployees">–</div>
-        <p>Aktive Teammitglieder</p>
+        <p data-i18n="dashboard.employeesDesc">Aktive Teammitglieder</p>
       </div>
 
-      <div class="card stat-card">
-        <h2><i class="fa-solid fa-boxes-stacked"></i> <span data-i18n="dashboard.totalProducts">Produkte</span></h2>
+      <div class="card stat-card glass-panel">
+        <h2>
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span data-i18n="dashboard.totalProducts">Produkte</span>
+        </h2>
         <div class="stat" id="overviewProducts">–</div>
-        <p>Verfügbare Artikel</p>
+        <p data-i18n="dashboard.productsDesc">Verfügbare Artikel</p>
       </div>
 
-      <div class="card stat-card">
-        <h2><i class="fa-solid fa-boxes-packing"></i> <span data-i18n="products.stock">Bestand</span></h2>
+      <div class="card stat-card glass-panel">
+        <h2>
+          <i class="fa-solid fa-boxes-packing"></i>
+          <span data-i18n="products.stock">Bestand</span>
+        </h2>
         <div class="stat" id="stockTotal">–</div>
-        <p>Gesamter Lagerbestand</p>
+        <p data-i18n="dashboard.stockDesc">Gesamter Lagerbestand</p>
       </div>
 
-      <div class="card stat-card">
-        <h2><i class="fa-solid fa-list-check"></i> <span data-i18n="dashboard.totalTasks">Aufgaben</span></h2>
+      <div class="card stat-card glass-panel">
+        <h2>
+          <i class="fa-solid fa-list-check"></i>
+          <span data-i18n="dashboard.totalTasks">Aufgaben</span>
+        </h2>
         <div class="stat" id="overviewTasks">–</div>
-        <p>Offene To‑Dos</p>
+        <p data-i18n="dashboard.tasksDesc">Offene To‑Dos</p>
       </div>
 
-      <div class="card stat-card">
-        <h2><i class="fa-solid fa-clock"></i> <span data-i18n="dashboard.totalHours">Zeiterfassung</span></h2>
+      <div class="card stat-card glass-panel">
+        <h2>
+          <i class="fa-solid fa-clock"></i>
+          <span data-i18n="dashboard.totalHours">Zeiterfassung</span>
+        </h2>
         <div class="stat" id="overviewTime">–</div>
-        <p>Gesamte Arbeitszeit</p>
+        <p data-i18n="dashboard.timeDesc">Gesamte Arbeitszeit</p>
       </div>
 
-      <div class="card stat-card role-support role-admin">
-        <h2><i class="fa-solid fa-headset"></i> <span data-i18n="support.dashboard">Support Tickets</span></h2>
+      <div class="card stat-card glass-panel role-support role-admin">
+        <h2>
+          <i class="fa-solid fa-headset"></i>
+          <span data-i18n="support.dashboard">Support Tickets</span>
+        </h2>
         <div class="stat" id="overviewSupport">–</div>
-        <p>Offene Supportfälle</p>
+        <p data-i18n="support.openTickets">Offene Supportfälle</p>
       </div>
 
     </section>
 
-    <!-- ========================================================
-         🔹 DIREKTZUGRIFF (Quick Links)
-    ======================================================== -->
-    <section class="card quick-links" aria-label="Quick Links">
-      <h2><i class="fa-solid fa-bolt"></i> Direktzugriff</h2>
+    <!-- QUICK LINKS -->
+    <section class="card quick-links glass-panel" aria-label="Quick Links">
+      <h2>
+        <i class="fa-solid fa-bolt"></i>
+        <span data-i18n="dashboard.quickLinks">Direktzugriff</span>
+      </h2>
 
       <div class="dashboard">
 
-        <div class="card">
+        <div class="card glass-panel">
           <h3><i class="fa-solid fa-box"></i> Produkte</h3>
-          <p>Verwalte deine Artikel und Bestände.</p>
-          <a href="products.html" class="btn btn-turquoise">Produktverwaltung öffnen</a>
+          <p data-i18n="dashboard.quickProducts">Verwalte deine Artikel und Bestände.</p>
+          <a href="products.html" class="btn btn-turquoise">
+            <span data-i18n="dashboard.openProducts">Produktverwaltung öffnen</span>
+          </a>
         </div>
 
-        <div class="card">
+        <div class="card glass-panel">
           <h3><i class="fa-solid fa-list-check"></i> Aufgaben</h3>
-          <p>Organisiere deine To‑Dos und Teamaufgaben.</p>
-          <a href="tasks.html" class="btn btn-green">Aufgabenmanagement öffnen</a>
+          <p data-i18n="dashboard.quickTasks">Organisiere deine To‑Dos und Teamaufgaben.</p>
+          <a href="tasks.html" class="btn btn-green">
+            <span data-i18n="dashboard.openTasks">Aufgabenmanagement öffnen</span>
+          </a>
         </div>
 
-        <div class="card">
+        <div class="card glass-panel">
           <h3><i class="fa-solid fa-clock"></i> Zeiterfassung</h3>
-          <p>Behalte deine Arbeitszeit im Blick.</p>
-          <a href="time.html" class="btn btn-yellow">Zeiterfassung öffnen</a>
+          <p data-i18n="dashboard.quickTime">Behalte deine Arbeitszeit im Blick.</p>
+          <a href="time.html" class="btn btn-yellow">
+            <span data-i18n="dashboard.openTime">Zeiterfassung öffnen</span>
+          </a>
         </div>
 
-        <div class="card role-employee role-admin">
+        <div class="card glass-panel role-employee role-admin">
           <h3><i class="fa-solid fa-users"></i> Mitarbeiter</h3>
-          <p>Pflege und verwalte deine Teamdaten.</p>
-          <a href="employees.html" class="btn btn-turquoise">Mitarbeiterverwaltung öffnen</a>
+          <p data-i18n="dashboard.quickEmployees">Pflege und verwalte deine Teamdaten.</p>
+          <a href="employees.html" class="btn btn-turquoise">
+            <span data-i18n="dashboard.openEmployees">Mitarbeiterverwaltung öffnen</span>
+          </a>
         </div>
 
-        <div class="card role-support role-admin">
+        <div class="card glass-panel role-support role-admin">
           <h3><i class="fa-solid fa-headset"></i> Support</h3>
-          <p>Bearbeite Supportfälle und Tickets.</p>
-          <a href="support.html" class="btn btn-purple">Support öffnen</a>
+          <p data-i18n="dashboard.quickSupport">Bearbeite Supportfälle und Tickets.</p>
+          <a href="support.html" class="btn btn-purple">
+            <span data-i18n="dashboard.openSupport">Support öffnen</span>
+          </a>
         </div>
 
-        <div class="card role-admin">
+        <div class="card glass-panel role-admin">
           <h3><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
-          <p>Verwalte Benutzer und Rollen.</p>
-          <a href="adminPanel.html" class="btn btn-red">Admin Panel öffnen</a>
+          <p data-i18n="dashboard.quickAdmin">Verwalte Benutzer und Rollen.</p>
+          <a href="adminPanel.html" class="btn btn-red">
+            <span data-i18n="dashboard.openAdmin">Admin Panel öffnen</span>
+          </a>
         </div>
 
       </div>
@@ -176,9 +205,7 @@
 
   </main>
 
-  <!-- ============================================================
-       🔹 INDEX LOGIK
-  ============================================================ -->
+  <!-- INDEX LOGIK -->
   <script type="module" src="src/scripts/index.js"></script>
 
 </body>

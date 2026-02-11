@@ -1,12 +1,14 @@
-/* =============================================================
-   🔥 TASKS – CYBERPUNK NEON LOOK (Teil 1)
-   Formular, Inputs, Buttons, Tabelle
-============================================================= */
+/* ======================================================================
+   🔥 TASKS – MODERNIZED FINAL VERSION (Teil 1)
+   Layout, Form, Inputs, Buttons, Table
+====================================================================== */
 
+/* Layout */
 main {
   margin: 1.5rem;
 }
 
+/* Card */
 .card {
   margin-bottom: 1.5rem;
   background-color: #191833;
@@ -15,7 +17,7 @@ main {
   box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
 }
 
-/* Formular */
+/* Form Grid */
 #taskForm.form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -24,6 +26,7 @@ main {
   align-items: start;
 }
 
+/* Form Field */
 #taskForm .form-field {
   display: flex;
   flex-direction: column;
@@ -42,7 +45,6 @@ main {
   font-size: 1rem;
   pointer-events: none;
 }
-
 #taskForm .icon-input input,
 #taskForm .icon-input select,
 #taskForm .icon-input textarea {
@@ -64,19 +66,16 @@ main {
   transition: all 0.25s ease;
   box-shadow: inset 0 0 6px rgba(255, 211, 0, 0.25);
 }
-
 #taskForm input::placeholder,
 #taskForm textarea::placeholder {
   color: rgba(255,255,255,0.35);
 }
-
 #taskForm input:hover,
 #taskForm textarea:hover,
 #taskForm select:hover {
   border-color: var(--color-neon-turquoise);
   box-shadow: 0 0 10px var(--color-neon-turquoise);
 }
-
 #taskForm input:focus,
 #taskForm textarea:focus,
 #taskForm select:focus {
@@ -84,11 +83,9 @@ main {
   box-shadow: 0 0 14px var(--color-neon-turquoise),
               0 0 28px rgba(112, 255, 234, 0.55);
 }
-
 #taskForm .full-width {
   grid-column: 1 / -1;
 }
-
 #taskForm textarea {
   min-height: 90px;
   resize: vertical;
@@ -106,21 +103,19 @@ main {
   box-shadow: 0 0 12px #FFD300,
               0 0 24px rgba(255, 211, 0, 0.55);
 }
-
 #taskForm button:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 18px #FFD300,
               0 0 36px rgba(255, 211, 0, 0.7);
 }
 
-/* Tabelle */
+/* Table */
 #taskTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   table-layout: fixed;
 }
-
 #taskTable th,
 #taskTable td {
   text-align: center;
@@ -130,26 +125,23 @@ main {
   font-size: 0.95rem;
   word-wrap: break-word;
 }
-
 #taskTable th {
   color: #FFD300;
   text-shadow: 0 0 6px #FFD300;
 }
-
 #taskTable tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.03);
 }
-
 #taskTable tr:hover {
   background-color: #2a2a40;
   transition: background 0.2s ease;
 }
-/* =============================================================
-   🔥 TASKS – CYBERPUNK NEON LOOK (Teil 2)
-   Status-Badges, Zeilenfarben, Dropdown, Delete Button
-============================================================= */
+/* ======================================================================
+   🔥 TASKS – MODERNIZED FINAL VERSION (Teil 2)
+   Status Badges, Row Colors, Dropdown, Delete Button, Responsive
+====================================================================== */
 
-/* Zeilenfarben nach Status */
+/* Row Colors by Status */
 .status-open {
   background-color: rgba(255, 211, 0, 0.06);
 }
@@ -160,7 +152,7 @@ main {
   background-color: rgba(0, 255, 102, 0.06);
 }
 
-/* Status-Badges */
+/* Status Badges */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -173,26 +165,25 @@ main {
   min-width: 110px;
   transition: all 0.25s ease;
 }
-
 .status-badge i {
   font-size: 0.9rem;
 }
 
-/* Offen */
+/* Open */
 .status-badge.status-open {
   background-color: rgba(255, 211, 0, 0.2);
   color: var(--color-neon-yellow);
   box-shadow: 0 0 8px rgba(255, 211, 0, 0.55);
 }
 
-/* In Bearbeitung */
+/* In Progress */
 .status-badge.status-inProgress {
   background-color: rgba(0, 255, 255, 0.2);
   color: var(--color-neon-turquoise);
   box-shadow: 0 0 8px rgba(0, 255, 255, 0.55);
 }
 
-/* Abgeschlossen */
+/* Done */
 .status-badge.status-done {
   background-color: rgba(0, 255, 102, 0.2);
   color: var(--color-neon-green);
@@ -215,7 +206,6 @@ main {
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 .statusSelect:hover,
 .statusSelect:focus {
   border-color: var(--color-neon-turquoise);
@@ -234,7 +224,6 @@ main {
   transition: all 0.25s ease;
   font-weight: bold;
 }
-
 #taskTable .deleteBtn:hover {
   background-color: var(--color-neon-red);
   color: #000;

@@ -1,44 +1,38 @@
-/* Index Seite – Cyberpunk Neon Dashboard */
-/* Ergänzt theme.css mit spezifischen Features */
+/* ======================================================================
+   🔥 INDEX – MODERNIZED FINAL VERSION (Teil 1)
+   Body, Header, Navigation
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Body & Grundfarben
-------------------------------------------------------------- */
+/* Body */
 body {
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif; /* modernere Typo */
   background-color: var(--color-bg-dark);
   color: var(--color-text-light);
   margin: 0;
   padding: 0;
 }
 
-/* -------------------------------------------------------------
-   🔹 Branding Header
-------------------------------------------------------------- */
+/* Branding Header */
 .branding-header {
   display: flex;
   align-items: center;
   padding: 1rem;
   background: linear-gradient(90deg, #111, #222);
   border-bottom: 2px solid var(--color-neon-yellow);
-  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 14px rgba(255, 211, 0, 0.25);
 }
-
 .branding-header img {
-  height: 50px;
+  height: 52px;
   margin-right: 1rem;
 }
-
 .branding-text .subtitle {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: bold;
   color: var(--color-neon-yellow);
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Navigation
-------------------------------------------------------------- */
+/* Navigation */
 .top-nav {
   display: flex;
   align-items: center;
@@ -46,41 +40,39 @@ body {
   padding: 0.6rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
-
 .top-nav a,
 .top-nav button {
   color: var(--color-text-light);
   text-decoration: none;
   margin-right: 1rem;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   transition: all 0.25s ease;
   font-weight: 500;
 }
-
 .top-nav a.active {
   background: var(--color-neon-yellow);
   color: #000;
   font-weight: bold;
-  box-shadow: 0 0 10px var(--color-neon-yellow);
+  box-shadow: 0 0 12px var(--color-neon-yellow);
 }
-
 .top-nav a:hover,
 .top-nav button:hover {
   background: rgba(255, 255, 255, 0.08);
   cursor: pointer;
 }
-
 .logout-btn {
   background: transparent;
   border: none;
   color: var(--color-text-light);
   font-size: 1rem;
 }
+/* ======================================================================
+   🔥 INDEX – MODERNIZED FINAL VERSION (Teil 2)
+   Dashboard, Karten, Statistiken
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Dashboard Layout
-------------------------------------------------------------- */
+/* Dashboard Layout */
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -88,43 +80,36 @@ body {
   margin: 1.5rem;
 }
 
-/* -------------------------------------------------------------
-   🔹 Karten (Overview)
-------------------------------------------------------------- */
+/* Karten (Overview) */
 .card {
   background: var(--color-bg-panel);
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(255, 211, 0, 0.25);
+  border-radius: 12px; /* etwas runder */
+  box-shadow: 0 0 18px rgba(255, 211, 0, 0.25);
   text-align: center;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 20px var(--color-neon-turquoise),
-              0 0 40px rgba(112, 255, 234, 0.55);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 0 22px var(--color-neon-turquoise),
+              0 0 44px rgba(112, 255, 234, 0.55);
 }
-
 .card h2,
 .card h3 {
   margin-top: 0;
   color: var(--color-neon-yellow);
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   margin-bottom: 1rem;
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
-
 .card p {
   color: var(--color-text-muted);
   margin-top: 0.5rem;
 }
 
-/* -------------------------------------------------------------
-   🔹 Statistiken
-------------------------------------------------------------- */
+/* Statistiken */
 .stat {
-  font-size: 2.2rem;
+  font-size: 2.3rem;
   font-weight: bold;
   margin: 0.5rem 0;
   letter-spacing: 1px;
@@ -135,64 +120,57 @@ body {
   color: var(--color-neon-yellow);
   text-shadow: 0 0 10px var(--color-neon-yellow);
 }
-
 #overviewTasks {
   color: var(--color-neon-turquoise);
   text-shadow: 0 0 10px var(--color-neon-turquoise);
 }
-
 #overviewEmployees {
   color: var(--color-neon-green);
   text-shadow: 0 0 10px var(--color-neon-green);
 }
-
 #overviewTime {
   color: var(--color-neon-red);
   text-shadow: 0 0 10px var(--color-neon-red);
 }
+/* ======================================================================
+   🔥 INDEX – MODERNIZED FINAL VERSION (Teil 3)
+   Quick‑Links, Buttons, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Quick-Links Karten
-------------------------------------------------------------- */
+/* Quick-Links Karten */
 .quick-links .card {
   background: var(--color-bg-panel);
   padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
+  border-radius: 12px; /* etwas runder */
+  box-shadow: 0 0 14px rgba(255, 211, 0, 0.25);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
 .quick-links .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 18px var(--color-neon-yellow),
-              0 0 36px rgba(255, 211, 0, 0.55);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 0 20px var(--color-neon-yellow),
+              0 0 40px rgba(255, 211, 0, 0.55);
 }
-
 .quick-links h3 {
   color: var(--color-neon-turquoise);
   margin-bottom: 0.5rem;
   text-shadow: 0 0 6px var(--color-neon-turquoise);
 }
-
 .quick-links a.btn {
   display: inline-block;
   margin-top: 0.5rem;
   padding: 8px 14px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: bold;
   text-decoration: none;
   transition: all 0.25s ease;
 }
 
-/* -------------------------------------------------------------
-   🔹 Button Farben
-------------------------------------------------------------- */
+/* Button Farben */
 .btn-turquoise {
   background-color: transparent;
   border: 1px solid var(--color-neon-turquoise);
   color: var(--color-neon-turquoise);
 }
-
 .btn-turquoise:hover {
   background-color: var(--color-neon-turquoise);
   color: #000;
@@ -205,7 +183,6 @@ body {
   border: 1px solid var(--color-neon-green);
   color: var(--color-neon-green);
 }
-
 .btn-green:hover {
   background-color: var(--color-neon-green);
   color: #000;
@@ -218,7 +195,6 @@ body {
   border: 1px solid var(--color-neon-yellow);
   color: var(--color-neon-yellow);
 }
-
 .btn-yellow:hover {
   background-color: var(--color-neon-yellow);
   color: #000;
@@ -231,7 +207,6 @@ body {
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 .btn-red:hover {
   background-color: var(--color-neon-red);
   color: #000;
@@ -239,15 +214,12 @@ body {
               0 0 24px rgba(255, 77, 77, 0.55);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassungen
-------------------------------------------------------------- */
+/* Responsive */
 @media (max-width: 768px) {
   .dashboard {
     grid-template-columns: 1fr;
     margin: 1rem;
   }
-
   .card {
     padding: 1rem;
   }

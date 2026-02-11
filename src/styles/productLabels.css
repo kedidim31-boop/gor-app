@@ -1,9 +1,9 @@
-/* Product Labels – Cyberpunk Neon Look */
-/* Ergänzt theme.css + productDetails.css */
+/* ======================================================================
+   🔥 PRODUCT LABELS – MODERNIZED FINAL VERSION (Teil 1)
+   Panel, Add Button, Grid
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Labels Panel
-------------------------------------------------------------- */
+/* Labels Panel */
 .product-labels-panel {
   background: rgba(20, 20, 40, 0.65);
   backdrop-filter: blur(12px);
@@ -11,9 +11,8 @@
   border-radius: 16px;
   padding: 24px;
   margin-top: 20px;
-  box-shadow: 0 0 18px rgba(112, 255, 234, 0.25);
+  box-shadow: 0 0 20px rgba(112, 255, 234, 0.25);
 }
-
 .product-labels-panel h3 {
   margin-top: 0;
   color: var(--color-neon-turquoise);
@@ -21,9 +20,7 @@
   text-shadow: 0 0 8px var(--color-neon-turquoise);
 }
 
-/* -------------------------------------------------------------
-   🔹 Label Add Button
-------------------------------------------------------------- */
+/* Add Label Button */
 .add-label-btn {
   margin-top: 14px;
   padding: 10px 18px;
@@ -35,41 +32,38 @@
   transition: all 0.25s ease;
   box-shadow: 0 0 12px var(--color-neon-yellow);
 }
-
 .add-label-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
   box-shadow: 0 0 18px var(--color-neon-yellow),
               0 0 36px rgba(255, 211, 0, 0.7);
 }
 
-/* -------------------------------------------------------------
-   🔹 Labels Grid
-------------------------------------------------------------- */
+/* Labels Grid */
 .product-labels-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 18px;
   margin-top: 20px;
 }
+/* ======================================================================
+   🔥 PRODUCT LABELS – MODERNIZED FINAL VERSION (Teil 2)
+   Cards, Badges, Tags, Editor, Delete Button, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Label Card
-------------------------------------------------------------- */
+/* Label Card */
 .label-card {
   background: var(--color-bg-panel);
   padding: 18px;
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 14px rgba(255, 211, 0, 0.25);
   transition: all 0.25s ease;
   position: relative;
 }
-
 .label-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 18px var(--color-neon-turquoise),
-              0 0 36px rgba(112, 255, 234, 0.55);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 20px var(--color-neon-turquoise),
+              0 0 40px rgba(112, 255, 234, 0.55);
 }
-
 .label-card h4 {
   margin-top: 0;
   color: var(--color-neon-yellow);
@@ -77,9 +71,7 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Label Badge (Preview)
-------------------------------------------------------------- */
+/* Label Badge (Preview) */
 .label-badge {
   display: inline-flex;
   align-items: center;
@@ -91,52 +83,39 @@
   margin-top: 10px;
   transition: all 0.25s ease;
 }
-
-/* Default Neon Badge */
 .label-badge.default {
   background-color: rgba(112, 255, 234, 0.15);
   border: 1px solid var(--color-neon-turquoise);
   color: var(--color-neon-turquoise);
 }
-
-/* Bestseller */
 .label-badge.bestseller {
   background-color: rgba(255, 211, 0, 0.15);
   border: 1px solid var(--color-neon-yellow);
   color: var(--color-neon-yellow);
 }
-
-/* Sale */
 .label-badge.sale {
   background-color: rgba(255, 77, 77, 0.15);
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
-/* New */
 .label-badge.new {
   background-color: rgba(0, 255, 128, 0.15);
   border: 1px solid var(--color-neon-green);
   color: var(--color-neon-green);
 }
-
-/* Limited */
 .label-badge.limited {
   background-color: rgba(255, 128, 0, 0.15);
   border: 1px solid #ff8000;
   color: #ff8000;
 }
 
-/* -------------------------------------------------------------
-   🔹 Label Tags (Custom Labels)
-------------------------------------------------------------- */
+/* Label Tags */
 .label-tags {
   margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
-
 .label-tag {
   padding: 6px 12px;
   border-radius: 8px;
@@ -150,24 +129,19 @@
   gap: 6px;
   transition: all 0.25s ease;
 }
-
 .label-tag i {
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 .label-tag i:hover {
   color: var(--color-neon-red);
   text-shadow: 0 0 8px var(--color-neon-red);
 }
 
-/* -------------------------------------------------------------
-   🔹 Label Editor (Name, Color, Icon)
-------------------------------------------------------------- */
+/* Label Editor */
 .label-editor {
   margin-top: 14px;
 }
-
 .label-editor input,
 .label-editor select {
   width: 100%;
@@ -180,7 +154,6 @@
   margin-bottom: 10px;
   transition: all 0.25s ease;
 }
-
 .label-editor input:focus,
 .label-editor select:focus {
   border-color: var(--color-neon-turquoise);
@@ -188,9 +161,7 @@
   outline: none;
 }
 
-/* -------------------------------------------------------------
-   🔹 Delete Label Button
-------------------------------------------------------------- */
+/* Delete Label Button */
 .label-delete-btn {
   position: absolute;
   top: 10px;
@@ -204,7 +175,6 @@
   transition: all 0.25s ease;
   font-weight: bold;
 }
-
 .label-delete-btn:hover {
   background-color: var(--color-neon-red);
   color: #000;
@@ -212,9 +182,7 @@
               0 0 28px rgba(255, 77, 77, 0.6);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive */
 @media (max-width: 600px) {
   .product-labels-grid {
     grid-template-columns: 1fr;

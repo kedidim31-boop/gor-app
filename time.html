@@ -5,23 +5,24 @@
   <title>Gaming of Republic – Zeiterfassung</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Globale Theme -->
+  <!-- Global Theme -->
   <link rel="stylesheet" href="src/styles/theme.css">
   <link rel="stylesheet" href="src/styles/time.css">
 
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
 
-  <!-- 🔹 FEEDBACK BANNER -->
+  <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- 🔹 BRANDING HEADER -->
+  <!-- BRANDING HEADER -->
   <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-    <div class="divider"></div>
+
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-clock"></i>
@@ -30,7 +31,7 @@
     </div>
   </header>
 
-  <!-- 🔹 TOP NAVIGATION -->
+  <!-- TOP NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
@@ -47,30 +48,55 @@
     </button>
   </nav>
 
-  <!-- 🔹 MAIN CONTENT -->
+  <!-- MAIN CONTENT -->
   <main>
 
-    <!-- TIMER ANZEIGE -->
+    <!-- LIVE TIMER -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-stopwatch"></i> <span data-i18n="time.timer">Live Timer</span></h2>
-      <div id="liveTimer">00:00:00</div>
-      <div class="timer-status" data-i18n="time.stopped">Gestoppt</div>
+      <h2>
+        <i class="fa-solid fa-stopwatch"></i>
+        <span data-i18n="time.timer">Live Timer</span>
+      </h2>
+
+      <div id="liveTimer" class="timer-display">00:00:00</div>
+
+      <div class="timer-status" id="timerStatus" data-i18n="time.stopped">
+        Gestoppt
+      </div>
+
       <div class="timer-controls">
-        <button id="startTimerBtn"><i class="fa-solid fa-play"></i> <span data-i18n="time.start">Start</span></button>
-        <button id="stopTimerBtn"><i class="fa-solid fa-pause"></i> <span data-i18n="time.stop">Stop</span></button>
-        <button id="resetTimerBtn"><i class="fa-solid fa-rotate-left"></i> <span data-i18n="time.reset">Reset</span></button>
+        <button id="startTimerBtn" class="btn btn-green">
+          <i class="fa-solid fa-play"></i>
+          <span data-i18n="time.start">Start</span>
+        </button>
+
+        <button id="stopTimerBtn" class="btn btn-yellow">
+          <i class="fa-solid fa-pause"></i>
+          <span data-i18n="time.stop">Stop</span>
+        </button>
+
+        <button id="resetTimerBtn" class="btn btn-red">
+          <i class="fa-solid fa-rotate-left"></i>
+          <span data-i18n="time.reset">Reset</span>
+        </button>
       </div>
     </section>
-
     <!-- ZEITERFASSUNG ERSTELLEN -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-plus-circle"></i> <span data-i18n="time.new">Neue Zeiterfassung hinzufügen</span></h2>
+      <h2>
+        <i class="fa-solid fa-plus-circle"></i>
+        <span data-i18n="time.new">Neue Zeiterfassung hinzufügen</span>
+      </h2>
 
       <form id="timeForm" class="form-grid">
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-user"></i>
-          <input type="text" id="employeeName" placeholder="Mitarbeitername" data-i18n-placeholder="time.employee" required>
+          <input type="text"
+                 id="employeeName"
+                 required
+                 placeholder="Mitarbeitername"
+                 data-i18n-placeholder="time.employee">
         </label>
 
         <label class="form-field icon-input">
@@ -90,12 +116,19 @@
 
         <label class="form-field icon-input">
           <i class="fa-solid fa-hourglass-half"></i>
-          <input type="number" id="hoursWorked" step="0.1" readonly placeholder="Berechnete Stunden" data-i18n-placeholder="time.hours">
+          <input type="number"
+                 id="hoursWorked"
+                 step="0.1"
+                 readonly
+                 placeholder="Berechnete Stunden"
+                 data-i18n-placeholder="time.hours">
         </label>
 
-        <label class="form-field full-width icon-input">
+        <label class="form-field icon-input full-width">
           <i class="fa-solid fa-align-left"></i>
-          <textarea id="workDescription" placeholder="Beschreibung" data-i18n-placeholder="time.description"></textarea>
+          <textarea id="workDescription"
+                    placeholder="Beschreibung"
+                    data-i18n-placeholder="time.description"></textarea>
         </label>
 
         <button type="submit" class="btn btn-yellow full-width">
@@ -105,11 +138,15 @@
 
       </form>
     </section>
+
     <!-- ZEITERFASSUNGSÜBERSICHT -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-table"></i> <span data-i18n="time.overview">Zeiterfassungsübersicht</span></h2>
+      <h2>
+        <i class="fa-solid fa-table"></i>
+        <span data-i18n="time.overview">Zeiterfassungsübersicht</span>
+      </h2>
 
-      <table id="timeTable">
+      <table id="timeTable" class="neon-table">
         <thead>
           <tr>
             <th data-i18n="time.employee">Mitarbeiter</th>
@@ -123,20 +160,20 @@
         </thead>
 
         <tbody>
-          <!-- Einträge werden hier dynamisch geladen -->
+          <!-- Dynamisch geladen -->
         </tbody>
       </table>
     </section>
 
   </main>
 
-  <!-- 🔹 ROLE GUARD -->
+  <!-- ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
     enforceRole(["employee", "support", "manager", "admin"], "index.html");
   </script>
 
-  <!-- 🔹 TIME LOGIK -->
+  <!-- TIME LOGIK -->
   <script type="module" src="src/scripts/time.js"></script>
 
 </body>

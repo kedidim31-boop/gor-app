@@ -1,14 +1,13 @@
-/* =============================================================
-   🔥 GLOBAL THEME – CYBERPUNK NEON SYSTEM
-   Gaming of Republic – 2026
-   Komplett neu geschrieben & optimiert
-============================================================= */
+/* ======================================================================
+   🔥 GLOBAL THEME – CYBERPUNK NEON SYSTEM (Teil 1)
+   Root, Body, Branding, Navigation, Cards, Buttons
+====================================================================== */
 
 /* -------------------------------------------------------------
    🔹 Farbvariablen & Glow-Intensitäten
 ------------------------------------------------------------- */
 :root {
-  /* Hintergrund */
+  /* Background */
   --color-bg-dark: #0d0d1a;
   --color-bg-panel: #1a1a2e;
 
@@ -16,7 +15,7 @@
   --color-text-light: #f0f0f0;
   --color-text-muted: #bfbfbf;
 
-  /* Neon */
+  /* Neon Palette */
   --color-neon-yellow: #FFD300;
   --color-neon-turquoise: #70ffea;
   --color-neon-green: #00ff88;
@@ -28,10 +27,14 @@
   --color-feedback-error: var(--color-neon-red);
   --color-feedback-warning: var(--color-neon-yellow);
 
-  /* Glow */
+  /* Glow Levels */
   --glow-soft: 0 0 10px;
   --glow-medium: 0 0 18px;
   --glow-strong: 0 0 36px;
+
+  /* Layout */
+  --radius: 12px;
+  --transition: 0.25s ease;
 }
 
 /* -------------------------------------------------------------
@@ -43,6 +46,7 @@ body {
   color: var(--color-text-light);
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 /* =============================================================
@@ -56,12 +60,10 @@ body {
   border-bottom: 2px solid var(--color-neon-yellow);
   box-shadow: var(--glow-soft) rgba(255, 211, 0, 0.4);
 }
-
 .branding-header img {
   height: 50px;
   margin-right: 1rem;
 }
-
 .branding-text .subtitle {
   font-size: 1.25rem;
   font-weight: bold;
@@ -79,7 +81,6 @@ body {
   padding: 0.6rem 1rem;
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-
 .top-nav a,
 .top-nav button {
   color: var(--color-text-light);
@@ -87,23 +88,20 @@ body {
   margin-right: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 6px;
-  transition: all 0.25s ease;
+  transition: var(--transition);
   font-weight: 500;
 }
-
 .top-nav a.active {
   background: var(--color-neon-yellow);
   color: #000;
   font-weight: bold;
   box-shadow: var(--glow-soft) var(--color-neon-yellow);
 }
-
 .top-nav a:hover,
 .top-nav button:hover {
   background: rgba(255,255,255,0.08);
   cursor: pointer;
 }
-
 .logout-btn {
   background: transparent;
   border: none;
@@ -124,14 +122,12 @@ body {
   border-top: 1px solid #333;
   z-index: 999;
 }
-
 .bottom-nav a {
   color: var(--color-text-light);
   text-decoration: none;
   font-size: 14px;
   text-align: center;
 }
-
 .bottom-nav a.active {
   color: var(--color-neon-yellow);
   font-weight: bold;
@@ -145,17 +141,15 @@ body {
   background: var(--color-bg-panel);
   margin: 1.5rem;
   padding: 1.5rem;
-  border-radius: 10px;
+  border-radius: var(--radius);
   box-shadow: var(--glow-soft) rgba(255, 211, 0, 0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: var(--transition);
 }
-
 .card:hover {
   transform: translateY(-3px);
   box-shadow: var(--glow-medium) var(--color-neon-yellow),
               var(--glow-strong) rgba(255, 211, 0, 0.55);
 }
-
 .card h2 {
   margin-top: 0;
   color: var(--color-neon-yellow);
@@ -168,7 +162,7 @@ body {
 .glass-panel {
   background: rgba(20,20,40,0.6);
   backdrop-filter: blur(12px);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 1rem;
 }
 
@@ -181,7 +175,7 @@ body {
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: var(--transition);
   border: none;
 }
 
@@ -224,6 +218,10 @@ body {
   transform: translateY(-2px);
   box-shadow: var(--glow-medium) var(--color-neon-red);
 }
+/* ======================================================================
+   🔥 GLOBAL THEME – CYBERPUNK NEON SYSTEM (Teil 2)
+   Feedback, Badges, Utilities, Upgrades
+====================================================================== */
 
 /* =============================================================
    🔥 FEEDBACK SYSTEM
@@ -244,6 +242,7 @@ body {
   font-weight: bold;
   color: #000;
   animation: fadeInOut 4s forwards;
+  backdrop-filter: blur(6px);
 }
 
 .feedback.success {
@@ -262,14 +261,14 @@ body {
 }
 
 @keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(-10px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; }
+  0%   { opacity: 0; transform: translateY(-10px); }
+  10%  { opacity: 1; transform: translateY(0); }
+  90%  { opacity: 1; }
   100% { opacity: 0; transform: translateY(-10px); }
 }
 
 /* =============================================================
-   🔥 GLOBAL BADGES (NEU + OPTIMIERT)
+   🔥 GLOBAL BADGES – OPTIMIZED
 ============================================================= */
 .badge {
   display: inline-flex;
@@ -285,11 +284,11 @@ body {
   min-width: 90px;
   text-align: center;
   user-select: none;
-  transition: all 0.25s ease;
+  transition: var(--transition);
   box-shadow: var(--glow-soft) rgba(255,255,255,0.15);
 }
 
-/* Active */
+/* Green / Active */
 .badge-active,
 .badge-green {
   background-color: var(--color-neon-green);
@@ -297,7 +296,7 @@ body {
               var(--glow-strong) rgba(0, 255, 128, 0.55);
 }
 
-/* Disabled */
+/* Red / Disabled */
 .badge-disabled,
 .badge-red {
   background-color: var(--color-neon-red);
@@ -306,7 +305,7 @@ body {
   opacity: 0.85;
 }
 
-/* Warning */
+/* Yellow / Warning */
 .badge-warning,
 .badge-yellow {
   background-color: var(--color-neon-yellow);
@@ -314,7 +313,7 @@ body {
               var(--glow-strong) rgba(255, 211, 0, 0.55);
 }
 
-/* Info */
+/* Turquoise / Info */
 .badge-info,
 .badge-turquoise {
   background-color: var(--color-neon-turquoise);
@@ -334,7 +333,16 @@ table td .badge {
 /* =============================================================
    🔥 UTILITY CLASSES
 ============================================================= */
-.glow-yellow { text-shadow: var(--glow-soft) var(--color-neon-yellow); }
-.glow-red { text-shadow: var(--glow-soft) var(--color-neon-red); }
-.glow-green { text-shadow: var(--glow-soft) var(--color-neon-green); }
+.glow-yellow    { text-shadow: var(--glow-soft) var(--color-neon-yellow); }
+.glow-red       { text-shadow: var(--glow-soft) var(--color-neon-red); }
+.glow-green     { text-shadow: var(--glow-soft) var(--color-neon-green); }
 .glow-turquoise { text-shadow: var(--glow-soft) var(--color-neon-turquoise); }
+
+/* Extra Utilities */
+.flex           { display: flex; }
+.flex-center    { display: flex; justify-content: center; align-items: center; }
+.flex-between   { display: flex; justify-content: space-between; align-items: center; }
+.text-center    { text-align: center; }
+.mt-1           { margin-top: 0.5rem; }
+.mt-2           { margin-top: 1rem; }
+.mt-3           { margin-top: 1.5rem; }

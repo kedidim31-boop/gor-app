@@ -1,9 +1,9 @@
-/* Product Workflow – Cyberpunk Neon Look */
-/* Ergänzt theme.css + productDetails.css */
+/* ======================================================================
+   🔥 PRODUCT WORKFLOW – MODERNIZED FINAL VERSION (Teil 1)
+   Panel, Progress Bar, Steps Grid
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Workflow Panel
-------------------------------------------------------------- */
+/* Workflow Panel */
 .product-workflow-panel {
   background: rgba(20, 20, 40, 0.65);
   backdrop-filter: blur(12px);
@@ -11,9 +11,8 @@
   border-radius: 16px;
   padding: 24px;
   margin-top: 20px;
-  box-shadow: 0 0 18px rgba(112, 255, 234, 0.25);
+  box-shadow: 0 0 20px rgba(112, 255, 234, 0.25);
 }
-
 .product-workflow-panel h3 {
   margin-top: 0;
   color: var(--color-neon-turquoise);
@@ -21,9 +20,7 @@
   text-shadow: 0 0 8px var(--color-neon-turquoise);
 }
 
-/* -------------------------------------------------------------
-   🔹 Workflow Progress Bar
-------------------------------------------------------------- */
+/* Workflow Progress Bar */
 .workflow-progress {
   margin-top: 20px;
   height: 14px;
@@ -32,7 +29,6 @@
   overflow: hidden;
   position: relative;
 }
-
 .workflow-progress-fill {
   height: 100%;
   background: var(--color-neon-green);
@@ -40,34 +36,32 @@
   transition: width 0.4s ease;
 }
 
-/* -------------------------------------------------------------
-   🔹 Workflow Steps Grid
-------------------------------------------------------------- */
+/* Workflow Steps Grid */
 .workflow-steps-grid {
   margin-top: 24px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
 }
+/* ======================================================================
+   🔥 PRODUCT WORKFLOW – MODERNIZED FINAL VERSION (Teil 2)
+   Step Cards, Status, Assigned User, Tags, Actions, Logs, Responsive
+====================================================================== */
 
-/* -------------------------------------------------------------
-   🔹 Workflow Step Card
-------------------------------------------------------------- */
+/* Workflow Step Card */
 .workflow-step {
   background: var(--color-bg-panel);
   padding: 18px;
   border-radius: 14px;
-  box-shadow: 0 0 12px rgba(255, 211, 0, 0.25);
+  box-shadow: 0 0 14px rgba(255, 211, 0, 0.25);
   transition: all 0.25s ease;
   position: relative;
 }
-
 .workflow-step:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 18px var(--color-neon-yellow),
-              0 0 36px rgba(255, 211, 0, 0.55);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 20px var(--color-neon-yellow),
+              0 0 40px rgba(255, 211, 0, 0.55);
 }
-
 .workflow-step h4 {
   margin-top: 0;
   color: var(--color-neon-yellow);
@@ -75,9 +69,7 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Workflow Step Status
-------------------------------------------------------------- */
+/* Workflow Step Status */
 .workflow-status {
   margin-top: 10px;
   display: inline-block;
@@ -86,35 +78,29 @@
   font-weight: bold;
   font-size: 0.85rem;
 }
-
 .workflow-status.todo {
   background-color: rgba(255, 77, 77, 0.15);
   border: 1px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 .workflow-status.progress {
   background-color: rgba(112, 255, 234, 0.15);
   border: 1px solid var(--color-neon-turquoise);
   color: var(--color-neon-turquoise);
 }
-
 .workflow-status.done {
   background-color: rgba(0, 255, 128, 0.15);
   border: 1px solid var(--color-neon-green);
   color: var(--color-neon-green);
 }
 
-/* -------------------------------------------------------------
-   🔹 Workflow Assigned User
-------------------------------------------------------------- */
+/* Assigned User */
 .workflow-assigned {
   margin-top: 12px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
 .workflow-avatar {
   width: 40px;
   height: 40px;
@@ -130,15 +116,12 @@
   text-transform: uppercase;
   box-shadow: 0 0 12px rgba(112, 255, 234, 0.25);
 }
-
 .workflow-user-name {
   color: var(--color-text-light);
   font-weight: bold;
 }
 
-/* -------------------------------------------------------------
-   🔹 Workflow Deadline
-------------------------------------------------------------- */
+/* Deadline */
 .workflow-deadline {
   margin-top: 10px;
   color: var(--color-neon-yellow);
@@ -147,16 +130,13 @@
   text-shadow: 0 0 6px var(--color-neon-yellow);
 }
 
-/* -------------------------------------------------------------
-   🔹 Workflow Tags
-------------------------------------------------------------- */
+/* Workflow Tags */
 .workflow-tags {
   margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
-
 .workflow-tag {
   padding: 6px 12px;
   border-radius: 8px;
@@ -169,26 +149,21 @@
   align-items: center;
   gap: 6px;
 }
-
 .workflow-tag i {
   cursor: pointer;
   transition: all 0.25s ease;
 }
-
 .workflow-tag i:hover {
   color: var(--color-neon-red);
   text-shadow: 0 0 8px var(--color-neon-red);
 }
 
-/* -------------------------------------------------------------
-   🔹 Workflow Actions
-------------------------------------------------------------- */
+/* Workflow Actions */
 .workflow-actions {
   margin-top: 16px;
   display: flex;
   gap: 10px;
 }
-
 .workflow-btn {
   padding: 8px 14px;
   border-radius: 8px;
@@ -203,7 +178,6 @@
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-green);
 }
-
 .workflow-btn.next:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 18px var(--color-neon-green);
@@ -215,7 +189,6 @@
   color: #000;
   box-shadow: 0 0 12px var(--color-neon-yellow);
 }
-
 .workflow-btn.back:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 18px var(--color-neon-yellow);
@@ -227,7 +200,6 @@
   border: 2px solid var(--color-neon-red);
   color: var(--color-neon-red);
 }
-
 .workflow-btn.delete:hover {
   background-color: var(--color-neon-red);
   color: #000;
@@ -235,13 +207,10 @@
   box-shadow: 0 0 18px var(--color-neon-red);
 }
 
-/* -------------------------------------------------------------
-   🔹 Workflow Logs
-------------------------------------------------------------- */
+/* Workflow Logs */
 .workflow-logs {
   margin-top: 24px;
 }
-
 .workflow-log {
   padding: 12px 16px;
   background: rgba(0, 0, 0, 0.25);
@@ -252,31 +221,24 @@
   font-size: 0.9rem;
   transition: all 0.25s ease;
 }
-
 .workflow-log:hover {
   background-color: rgba(112, 255, 234, 0.15);
 }
-
 .workflow-log.next {
   border-left: 4px solid var(--color-neon-green);
 }
-
 .workflow-log.back {
   border-left: 4px solid var(--color-neon-yellow);
 }
-
 .workflow-log.error {
   border-left: 4px solid var(--color-neon-red);
 }
 
-/* -------------------------------------------------------------
-   🔹 Responsive Anpassung
-------------------------------------------------------------- */
+/* Responsive */
 @media (max-width: 600px) {
   .workflow-steps-grid {
     grid-template-columns: 1fr;
   }
-
   .workflow-actions {
     flex-direction: column;
   }

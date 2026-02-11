@@ -10,18 +10,19 @@
   <link rel="stylesheet" href="src/styles/employees.css">
 
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
 
-  <!-- 🔹 FEEDBACK BANNER -->
+  <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- 🔹 BRANDING HEADER -->
+  <!-- BRANDING HEADER -->
   <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-    <div class="divider"></div>
+
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-users"></i>
@@ -30,7 +31,7 @@
     </div>
   </header>
 
-  <!-- 🔹 TOP NAVIGATION -->
+  <!-- TOP NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
@@ -47,12 +48,15 @@
     </button>
   </nav>
 
-  <!-- 🔹 MAIN CONTENT -->
+  <!-- MAIN CONTENT -->
   <main class="employee-page">
 
-    <!-- Mitarbeiter anlegen -->
+    <!-- MITARBEITER ANLEGEN -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-user-plus"></i> <span data-i18n="employees.new">Neuen Mitarbeiter hinzufügen</span></h2>
+      <h2>
+        <i class="fa-solid fa-user-plus"></i>
+        <span data-i18n="employees.new">Neuen Mitarbeiter hinzufügen</span>
+      </h2>
 
       <form id="employeeForm">
 
@@ -60,34 +64,47 @@
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-id-card"></i>
-            <input type="text" id="empNumber" placeholder="Mitarbeiternummer" data-i18n-placeholder="employees.number" readonly>
+            <input type="text" id="empNumber" readonly
+                   placeholder="Mitarbeiternummer"
+                   data-i18n-placeholder="employees.number">
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-user"></i>
-            <input type="text" id="empName" placeholder="Name" data-i18n-placeholder="employees.name" required>
+            <input type="text" id="empName" required
+                   placeholder="Name"
+                   data-i18n-placeholder="employees.name">
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-envelope"></i>
-            <input type="email" id="empEmail" placeholder="E-Mail" data-i18n-placeholder="employees.email" required>
+            <input type="email" id="empEmail" required
+                   placeholder="E-Mail"
+                   data-i18n-placeholder="employees.email">
           </label>
         </div>
+
         <!-- Reihe 2 -->
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-location-dot"></i>
-            <input type="text" id="empAddress" placeholder="Adresse" data-i18n-placeholder="employees.address" required>
+            <input type="text" id="empAddress" required
+                   placeholder="Adresse"
+                   data-i18n-placeholder="employees.address">
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-map-pin"></i>
-            <input type="text" id="empPLZ" placeholder="PLZ" data-i18n-placeholder="employees.zip" required>
+            <input type="text" id="empPLZ" required
+                   placeholder="PLZ"
+                   data-i18n-placeholder="employees.zip">
           </label>
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-city"></i>
-            <input type="text" id="empOrt" placeholder="Ort" data-i18n-placeholder="employees.city" required>
+            <input type="text" id="empOrt" required
+                   placeholder="Ort"
+                   data-i18n-placeholder="employees.city">
           </label>
         </div>
 
@@ -100,7 +117,9 @@
 
           <label class="form-field icon-input">
             <i class="fa-solid fa-phone"></i>
-            <input type="tel" id="empPhone" placeholder="Telefonnummer" data-i18n-placeholder="employees.phone" required>
+            <input type="tel" id="empPhone" required
+                   placeholder="Telefonnummer"
+                   data-i18n-placeholder="employees.phone">
           </label>
 
           <label class="form-field icon-input">
@@ -116,17 +135,20 @@
         </div>
 
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-save"></i> <span data-i18n="employees.save">Mitarbeiter speichern</span>
+          <i class="fa-solid fa-save"></i>
+          <span data-i18n="employees.save">Mitarbeiter speichern</span>
         </button>
 
       </form>
     </section>
-
-    <!-- Mitarbeiterübersicht -->
+    <!-- MITARBEITERÜBERSICHT -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-users"></i> <span data-i18n="employees.overview">Mitarbeiterübersicht</span></h2>
+      <h2>
+        <i class="fa-solid fa-users"></i>
+        <span data-i18n="employees.overview">Mitarbeiterübersicht</span>
+      </h2>
 
-      <table id="employeeTable">
+      <table id="employeeTable" class="neon-table">
         <thead>
           <tr>
             <th data-i18n="employees.number">Nummer</th>
@@ -150,16 +172,16 @@
 
   </main>
 
-  <!-- Role Guard -->
+  <!-- ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
     enforceRole(["support", "manager", "admin"], "index.html");
   </script>
 
-  <!-- Employee Logik -->
+  <!-- EMPLOYEE LOGIK -->
   <script type="module" src="src/scripts/employees.js"></script>
 
-  <!-- Mitarbeitermummer automatisch generieren -->
+  <!-- AUTOMATISCHE MITARBEITERNUMMER -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const numberField = document.getElementById("empNumber");

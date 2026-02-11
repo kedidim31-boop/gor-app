@@ -1,11 +1,16 @@
-/* Logout Button – Cyberpunk Neon Look (Optimiert) */
+/* ======================================================================
+   🔥 LOGOUT – MODERNIZED FINAL VERSION (Teil 1)
+   Basis, Hover, Active
+====================================================================== */
+
+/* Logout Button */
 .logout-btn {
   position: fixed;
   top: 20px;
   right: 20px;
   padding: 10px 18px;
   border: 2px solid var(--color-neon-red);
-  border-radius: 10px;
+  border-radius: 12px; /* etwas runder */
   background: rgba(20, 20, 50, 0.55);
   color: var(--color-neon-red);
   font-weight: bold;
@@ -20,8 +25,8 @@
     transform 0.25s ease,
     opacity 0.25s ease;
   box-shadow:
-    0 0 10px rgba(255, 77, 77, 0.35),
-    0 0 20px rgba(255, 77, 77, 0.25);
+    0 0 12px rgba(255, 77, 77, 0.35),
+    0 0 24px rgba(255, 77, 77, 0.25);
 }
 
 /* Hover – stärkerer Glow + leichtes Floating */
@@ -30,18 +35,22 @@
   color: #000;
   transform: translateY(-2px);
   box-shadow:
-    0 0 14px var(--color-neon-red),
-    0 0 28px rgba(255, 77, 77, 0.6),
-    0 0 40px rgba(255, 77, 77, 0.35);
+    0 0 16px var(--color-neon-red),
+    0 0 32px rgba(255, 77, 77, 0.6),
+    0 0 44px rgba(255, 77, 77, 0.35);
 }
 
 /* Active – sanfter, nicht zu stark */
 .logout-btn:active {
   transform: translateY(0) scale(0.97);
   box-shadow:
-    0 0 10px var(--color-neon-red),
-    0 0 20px rgba(255, 77, 77, 0.5);
+    0 0 12px var(--color-neon-red),
+    0 0 24px rgba(255, 77, 77, 0.5);
 }
+/* ======================================================================
+   🔥 LOGOUT – MODERNIZED FINAL VERSION (Teil 2)
+   Animation, Fade-In, Responsive
+====================================================================== */
 
 /* Optional: Fade-In beim Laden */
 .logout-btn.fade-in {
@@ -49,19 +58,18 @@
   transform: translateY(-6px);
   animation: logoutFadeIn 0.6s ease forwards;
 }
-
 @keyframes logoutFadeIn {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile Optimierung */
+/* Responsive Optimierung */
 @media (max-width: 600px) {
   .logout-btn {
     top: 14px;
     right: 14px;
     padding: 8px 14px;
     font-size: 13px;
-    border-radius: 8px;
+    border-radius: 10px;
   }
 }

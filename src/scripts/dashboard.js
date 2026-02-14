@@ -1,9 +1,11 @@
-// src/scripts/dashboard.js – Haupt-Dashboard (mehrsprachig + optimiert)
+// ======================================================================
+// 🔥 DASHBOARD – Sprachfähige Finalversion mit Live-KPIs & Listen
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
-import { t } from "./lang.js";
+import { t, updateTranslations } from "./lang.js";
 import { showFeedback } from "./feedback.js";
 
 import {
@@ -14,96 +16,71 @@ import {
   limit
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// -------------------------------------------------------------
-// 🔹 Firebase initialisieren
-// -------------------------------------------------------------
 const { auth, db } = initFirebase();
 
-// Zugriff für Admin, Manager, Support, Employee
+// -------------------------------------------------------------
+// 🔐 Zugriff & Sprache
+// -------------------------------------------------------------
 enforceRole(["admin", "manager", "support", "employee"], "login.html");
-
-// Logout
+updateTranslations();
 document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
 // -------------------------------------------------------------
-// 🔹 DOM Elemente (KPI Cards)
+// 🔹 DOM Elemente
 // -------------------------------------------------------------
-const elProducts = document.getElementById("kpiProducts");
-const elEmployees = document.getElementById("kpiEmployees");
-const elTasks = document.getElementById("kpiTasks");
-const elHours = document.getElementById("kpiHours");
-const elSupport = document.getElementById("kpiSupport");
+const elProducts   = document.getElementById("kpiProducts");
+const elEmployees  = document.getElementById("kpiEmployees");
+const elTasks      = document.getElementById("kpiTasks");
+const elHours      = document.getElementById("kpiHours");
+const elSupport    = document.getElementById("kpiSupport");
 
-// -------------------------------------------------------------
-// 🔹 DOM Elemente (Listen)
-// -------------------------------------------------------------
-const listAudit = document.getElementById("listAudit");
-const listSupport = document.getElementById("listSupport");
+const listAudit     = document.getElementById("listAudit");
+const listSupport   = document.getElementById("listSupport");
 const listInventory = document.getElementById("listInventory");
 
 // -------------------------------------------------------------
-// 🔹 KPI Variablen
-// -------------------------------------------------------------
-let productCount = 0;
-let employeeCount = 0;
-let taskCount = 0;
-let totalHours = 0;
-let openTickets = 0;
-
-// -------------------------------------------------------------
-// 🔹 Produkte
+// 📊 KPI: Produkte
 // -------------------------------------------------------------
 onSnapshot(collection(db, "products"), snap => {
-  productCount = snap.size;
-  if (elProducts) elProducts.textContent = productCount;
+  if (elProducts) elProducts.textContent = snap.size;
 });
 
-// -------------------------------------------------------------
-// 🔹 Mitarbeiter
-// -------------------------------------------------------------
+// 📊 KPI: Mitarbeiter
 onSnapshot(collection(db, "employees"), snap => {
-  employeeCount = snap.size;
-  if (elEmployees) elEmployees.textContent = employeeCount;
+  if (elEmployees) elEmployees.textContent = snap.size;
 });
 
-// -------------------------------------------------------------
-// 🔹 Aufgaben
-// -------------------------------------------------------------
+// 📊 KPI: Aufgaben
 onSnapshot(collection(db, "tasks"), snap => {
-  taskCount = snap.size;
-  if (elTasks) elTasks.textContent = taskCount;
+  if (elTasks) elTasks.textContent = snap.size;
 });
 
-// -------------------------------------------------------------
-// 🔹 Zeiterfassung
-// -------------------------------------------------------------
+// 📊 KPI: Zeiterfassung
 onSnapshot(collection(db, "timeEntries"), snap => {
-  totalHours = 0;
-
-  snap.forEach(docSnap => {
-    const entry = docSnap.data();
-    totalHours += Number(entry.hours || 0);
-  });
-
-  if (elHours) elHours.textContent = totalHours.toFixed(1) + "h";
+  let total = 0;
+  snap.forEach(doc => total += Number(doc.data().hours || 0));
+  if (elHours) elHours.textContent = `${total.toFixed(1)}h`;
 });
 
-// -------------------------------------------------------------
-// 🔹 Support Tickets
-// -------------------------------------------------------------
+// 📊 KPI: Offene Support-Tickets
 onSnapshot(collection(db, "supportTickets"), snap => {
-  openTickets = 0;
-
-  snap.forEach(docSnap => {
-    const t = docSnap.data();
-    if (t.status !== "closed") openTickets++;
+  let open = 0;
+  snap.forEach(doc => {
+    const status = doc.data().status;
+    if (status !== "closed") open++;
   });
-
-  if (elSupport) elSupport.textContent = openTickets;
+  if (elSupport) elSupport.textContent = open;
 });
 
 // -------------------------------------------------------------
-// 🔹 Letzte Audit Logs
+// 🧾 Schweizer Datumsformat
+// -------------------------------------------------------------
+function formatDate(ts) {
+  if (!ts?.toDate) return "-";
+  return ts.toDate().toLocaleString("de-CH");
+}
+// -------------------------------------------------------------
+// 📋 Letzte Audit Logs
 // -------------------------------------------------------------
 if (listAudit) {
   const qAudit = query(
@@ -133,7 +110,7 @@ if (listAudit) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Letzte Support Tickets
+// 🆘 Letzte Support Tickets
 // -------------------------------------------------------------
 if (listSupport) {
   const qSupport = query(
@@ -153,7 +130,7 @@ if (listSupport) {
 
       item.innerHTML = `
         <div class="item-title">${tData.title}</div>
-        <div class="item-details">${tData.priority || "-"}</div>
+        <div class="item-details">${t(`support.${tData.priority}`) || "-"}</div>
         <div class="item-time">${formatDate(tData.createdAt)}</div>
       `;
 
@@ -163,7 +140,7 @@ if (listSupport) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Letzte Lagerbewegungen
+// 📦 Letzte Lagerbewegungen
 // -------------------------------------------------------------
 if (listInventory) {
   const qInv = query(
@@ -194,13 +171,4 @@ if (listInventory) {
       listInventory.appendChild(item);
     });
   });
-}
-
-// -------------------------------------------------------------
-// 🔹 Schweizer Datumsformat
-// -------------------------------------------------------------
-function formatDate(ts) {
-  if (!ts) return "-";
-  const date = ts.toDate();
-  return date.toLocaleString("de-CH");
 }

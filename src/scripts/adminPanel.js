@@ -1,6 +1,5 @@
 // ======================================================================
-// 🔥 ADMIN PANEL – FINAL VERSION (Teil 1)
-// Setup, Init, User Creation, Employee Loader, Role UI, Status Badges
+// 🔥 ADMIN PANEL – Sprachfähige Finalversion mit Modal
 // ======================================================================
 
 import { enforceRole } from "./roleGuard.js";
@@ -8,9 +7,8 @@ import { createUser } from "./adminUser.js";
 import { logout } from "./auth.js";
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
-import { addAuditLog } from "./activityHandler.js";
-import { getRecentActivities } from "./activityHandler.js";
-import { t } from "./lang.js";
+import { addAuditLog, getRecentActivities } from "./activityHandler.js";
+import { t, updateTranslations } from "./lang.js";
 
 import {
   collection,
@@ -20,7 +18,6 @@ import {
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// 🔹 Firebase einmal initialisieren
 const { auth, db } = initFirebase();
 
 // -------------------------------------------------------------
@@ -28,6 +25,7 @@ const { auth, db } = initFirebase();
 // -------------------------------------------------------------
 export function initAdminPanel() {
   enforceRole(["admin", "manager"], "login.html");
+  updateTranslations();
 
   const form = document.getElementById("createUserForm");
   if (form) {
@@ -45,24 +43,20 @@ export function initAdminPanel() {
 
       try {
         const adminEmail = auth.currentUser?.email || "system";
-
         await createUser(email, password, role);
         await addAuditLog(adminEmail, "create_user", `User: ${email}, Role: ${role}`);
-
         form.reset();
         showFeedback(t("admin.saved"), "success");
-
         await loadEmployees();
         await loadAuditLog();
-
       } catch (err) {
         console.error("❌ Fehler beim Erstellen:", err);
-
-        if (err.code === "auth/email-already-in-use") {
-          showFeedback(t("admin.emailInUse"), "error");
-        } else {
-          showFeedback(t("errors.fail"), "error");
-        }
+        showFeedback(
+          err.code === "auth/email-already-in-use"
+            ? t("admin.emailInUse")
+            : t("errors.fail"),
+          "error"
+        );
       }
     });
   }
@@ -71,21 +65,18 @@ export function initAdminPanel() {
   loadAuditLog();
 
   document.querySelector(".logout-btn")?.addEventListener("click", logout);
-
   document.getElementById("employeeSearch")?.addEventListener("input", filterEmployees);
   document.getElementById("auditSearch")?.addEventListener("input", filterAudit);
   document.getElementById("refreshAudit")?.addEventListener("click", loadAuditLog);
 }
-
 // -------------------------------------------------------------
-// 🔹 Mitarbeiter laden (employees – DocID = E-Mail)
+// 🔹 Mitarbeiter laden
 // -------------------------------------------------------------
 async function loadEmployees() {
   const tableBody = document.querySelector("#adminEmployeeTable tbody");
   if (!tableBody) return;
 
   tableBody.innerHTML = "";
-
   const snapshot = await getDocs(collection(db, "employees"));
 
   snapshot.forEach(docSnap => {
@@ -97,32 +88,26 @@ async function loadEmployees() {
       : `<span class="role-badge role-employee">${t("employees.enabled")}</span>`;
 
     const row = document.createElement("tr");
-
     row.innerHTML = `
       <td>${data.name || "-"}</td>
       <td>${data.email || id}</td>
-
       <td>
         <div class="role-badge role-${data.role}">${t(`roles.${data.role}`)}</div>
         <select data-id="${id}" class="roleSelect">
           ${roleOptions(data.role)}
         </select>
       </td>
-
       <td>${statusBadge}</td>
-
       <td>
         <button class="deleteBtn actionBtn" data-id="${id}">
           <i class="fa-solid fa-trash"></i> ${t("employees.delete")}
         </button>
-
         <button class="disableBtn actionBtn" data-id="${id}">
           <i class="fa-solid fa-user-slash"></i>
           ${data.disabled ? t("employees.enable") : t("employees.disable")}
         </button>
       </td>
     `;
-
     tableBody.appendChild(row);
   });
 
@@ -136,7 +121,6 @@ async function loadEmployees() {
 // -------------------------------------------------------------
 function roleOptions(currentRole) {
   const roles = ["employee", "support", "manager", "admin", "guest"];
-
   return roles
     .map(role => {
       const selected = role === currentRole ? "selected" : "";
@@ -144,10 +128,6 @@ function roleOptions(currentRole) {
     })
     .join("");
 }
-// ======================================================================
-// 🔥 ADMIN PANEL – FINAL VERSION (Teil 2)
-// Role Change, Disable System, Delete System, Audit Log, Filters
-// ======================================================================
 
 // -------------------------------------------------------------
 // 🔹 Rollen ändern
@@ -160,16 +140,11 @@ function attachRoleChangeHandler() {
 
       try {
         await updateDoc(doc(db, "employees", id), { role: newRole });
-
         const adminEmail = auth.currentUser?.email || "system";
-
         await addAuditLog(adminEmail, "change_role", `User: ${id}, new role: ${newRole}`);
-
         showFeedback(`${t("admin.changeRole")}: ${newRole}`, "success");
-
         await loadEmployees();
         await loadAuditLog();
-
       } catch (err) {
         console.error("❌ Fehler beim Rollenwechsel:", err);
         showFeedback(t("errors.fail"), "error");
@@ -185,33 +160,26 @@ function attachDisableHandler() {
   document.querySelectorAll(".disableBtn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
+      const isDisabling = btn.innerText.includes(t("employees.disable"));
 
       try {
-        const newStatus = btn.innerText.includes(t("employees.disable"));
-
-        await updateDoc(doc(db, "employees", id), { disabled: newStatus });
+        await updateDoc(doc(db, "employees", id), { disabled: isDisabling });
 
         try {
-          await updateDoc(doc(db, "users", id), { disabled: newStatus });
+          await updateDoc(doc(db, "users", id), { disabled: isDisabling });
         } catch (innerErr) {
           console.warn("⚠️ users-Dokument nicht vorhanden:", innerErr);
         }
 
         const adminEmail = auth.currentUser?.email || "system";
-
-        await addAuditLog(
-          adminEmail,
-          newStatus ? "disable_user" : "enable_user",
-          `User: ${id}`
-        );
+        await addAuditLog(adminEmail, isDisabling ? "disable_user" : "enable_user", `User: ${id}`);
 
         showFeedback(
-          newStatus ? t("employees.disabled") : t("employees.enabled"),
-          newStatus ? "warning" : "success"
+          isDisabling ? t("employees.disabled") : t("employees.enabled"),
+          isDisabling ? "warning" : "success"
         );
 
         await loadEmployees();
-
       } catch (err) {
         console.error("❌ Fehler beim Deaktivieren:", err);
         showFeedback(t("errors.fail"), "error");
@@ -219,45 +187,45 @@ function attachDisableHandler() {
     });
   });
 }
-
 // -------------------------------------------------------------
-// 🔹 Benutzer löschen
+// 🔹 Benutzer löschen mit Modal
 // -------------------------------------------------------------
 function attachDeleteHandler() {
+  const modal = document.getElementById("confirmModal");
+  const confirmYes = document.getElementById("confirmYes");
+  const confirmNo = document.getElementById("confirmNo");
+
   document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.id;
+      modal.classList.remove("hidden");
 
-      showFeedback(t("admin.confirm"), "warning");
-
-      btn.addEventListener(
-        "click",
-        async () => {
+      const onConfirm = async () => {
+        try {
+          await deleteDoc(doc(db, "employees", id));
           try {
-            await deleteDoc(doc(db, "employees", id));
-
-            try {
-              await deleteDoc(doc(db, "users", id));
-            } catch (innerErr) {
-              console.warn("⚠️ users-Dokument nicht vorhanden:", innerErr);
-            }
-
-            const adminEmail = auth.currentUser?.email || "system";
-
-            await addAuditLog(adminEmail, "delete_user", `User: ${id}`);
-
-            showFeedback(t("employees.delete"), "success");
-
-            await loadEmployees();
-            await loadAuditLog();
-
-          } catch (err) {
-            console.error("❌ Fehler beim Löschen:", err);
-            showFeedback(t("errors.fail"), "error");
+            await deleteDoc(doc(db, "users", id));
+          } catch (innerErr) {
+            console.warn("⚠️ users-Dokument nicht vorhanden:", innerErr);
           }
-        },
-        { once: true }
-      );
+
+          const adminEmail = auth.currentUser?.email || "system";
+          await addAuditLog(adminEmail, "delete_user", `User: ${id}`);
+          showFeedback(t("employees.delete"), "success");
+
+          await loadEmployees();
+          await loadAuditLog();
+        } catch (err) {
+          console.error("❌ Fehler beim Löschen:", err);
+          showFeedback(t("errors.fail"), "error");
+        } finally {
+          modal.classList.add("hidden");
+          confirmYes.removeEventListener("click", onConfirm);
+        }
+      };
+
+      confirmYes.addEventListener("click", onConfirm, { once: true });
+      confirmNo.addEventListener("click", () => modal.classList.add("hidden"), { once: true });
     });
   });
 }
@@ -280,20 +248,17 @@ async function loadAuditLog() {
   if (!table) return;
 
   table.innerHTML = "";
-
   const logs = await getRecentActivities(50);
 
   logs.forEach(log => {
     const row = document.createElement("tr");
     const time = log.timestamp?.toDate().toLocaleString("de-CH") || "-";
-
     row.innerHTML = `
       <td>${time}</td>
       <td>${log.userId}</td>
       <td>${log.action}</td>
       <td>${log.details}</td>
     `;
-
     table.appendChild(row);
   });
 }

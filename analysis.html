@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Gaming of Republic – Übersicht & Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Globale Styles -->
-  <link rel="stylesheet" href="src/styles/theme.css">
-  <link rel="stylesheet" href="src/styles/analysis.css">
-
-  <!-- Icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="src/styles/theme.css" />
+  <link rel="stylesheet" href="src/styles/analysis.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    .language-dropdown {
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      background-color: #1a1a1a;
+      color: #fff;
+      border: 1px solid #444;
+      margin-left: auto;
+    }
+  </style>
 </head>
 
 <body>
-
-  <!-- FEEDBACK BANNER -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- BRANDING HEADER -->
+  <!-- HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo" />
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-chart-line"></i>
@@ -33,40 +39,22 @@
     </div>
   </header>
 
-  <!-- TOP NAVIGATION -->
+  <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
-    <a href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span data-i18n="nav.dashboard">Home</span>
-    </a>
-    <a href="analysis.html" class="active">
-      <i class="fa-solid fa-chart-line"></i>
-      <span data-i18n="nav.analysis">Übersicht &amp; Dashboard</span>
-    </a>
-    <a href="products.html">
-      <i class="fa-solid fa-box"></i>
-      <span data-i18n="nav.products">Produkte</span>
-    </a>
-    <a href="tasks.html">
-      <i class="fa-solid fa-list-check"></i>
-      <span data-i18n="nav.tasks">Aufgaben</span>
-    </a>
-    <a href="time.html">
-      <i class="fa-solid fa-clock"></i>
-      <span data-i18n="nav.time">Zeiterfassung</span>
-    </a>
-    <a href="employees.html">
-      <i class="fa-solid fa-users"></i>
-      <span data-i18n="nav.employees">Mitarbeiter</span>
-    </a>
-    <a href="support.html">
-      <i class="fa-solid fa-headset"></i>
-      <span data-i18n="nav.support">Support</span>
-    </a>
-    <a href="adminPanel.html" class="role-admin">
-      <i class="fa-solid fa-user-shield"></i>
-      <span data-i18n="nav.admin">Admin Panel</span>
-    </a>
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
+    <a href="analysis.html" class="active"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht &amp; Dashboard</span></a>
+    <a href="products.html"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
+    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
+    <a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
+    <a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a>
+    <a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
+    <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
+
+    <select id="languageSelector" class="language-dropdown">
+      <option value="de">Deutsch</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
 
     <button class="btn btn-red logout-btn">
       <i class="fa-solid fa-right-from-bracket"></i>
@@ -74,100 +62,68 @@
     </button>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main>
     <div class="dashboard">
       <!-- KPI CARDS -->
       <section class="card stat-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-users"></i>
-          <span data-i18n="analysis.employees">Mitarbeiter</span>
-        </h2>
+        <h2><i class="fa-solid fa-users"></i> <span data-i18n="analysis.employees">Mitarbeiter</span></h2>
         <div class="stat" id="employeeCount">–</div>
         <p data-i18n="analysis.employeesDesc">Aktive Teammitglieder</p>
       </section>
 
       <section class="card stat-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-boxes-stacked"></i>
-          <span data-i18n="analysis.products">Produkte</span>
-        </h2>
+        <h2><i class="fa-solid fa-boxes-stacked"></i> <span data-i18n="analysis.products">Produkte</span></h2>
         <div class="stat" id="productCount">–</div>
         <p data-i18n="analysis.productsDesc">Verfügbare Artikel</p>
       </section>
 
       <section class="card stat-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-boxes-packing"></i>
-          <span data-i18n="analysis.stock">Bestand</span>
-        </h2>
+        <h2><i class="fa-solid fa-boxes-packing"></i> <span data-i18n="analysis.stock">Bestand</span></h2>
         <div class="stat" id="stockTotal">–</div>
         <p data-i18n="analysis.stockDesc">Gesamter Lagerbestand</p>
       </section>
 
       <section class="card stat-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-list-check"></i>
-          <span data-i18n="analysis.tasks">Aufgaben</span>
-        </h2>
+        <h2><i class="fa-solid fa-list-check"></i> <span data-i18n="analysis.tasks">Aufgaben</span></h2>
         <div class="stat" id="taskCount">–</div>
         <p data-i18n="analysis.tasksDesc">Offene To-Dos</p>
       </section>
 
       <section class="card stat-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-clock"></i>
-          <span data-i18n="analysis.time">Zeiterfassung</span>
-        </h2>
+        <h2><i class="fa-solid fa-clock"></i> <span data-i18n="analysis.time">Zeiterfassung</span></h2>
         <div class="stat" id="timeTotal">–</div>
         <p data-i18n="analysis.timeDesc">Gesamte Arbeitszeit</p>
       </section>
 
       <!-- CHARTS -->
       <section class="card chart-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-chart-pie"></i>
-          <span data-i18n="analysis.stats">Statistiken</span>
-        </h2>
+        <h2><i class="fa-solid fa-chart-pie"></i> <span data-i18n="analysis.stats">Statistiken</span></h2>
         <canvas id="overviewChart" aria-label="Übersichtsstatistik" role="img"></canvas>
       </section>
 
       <section class="card chart-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-chart-line"></i>
-          <span data-i18n="analysis.timeline">Zeitverlauf</span>
-        </h2>
+        <h2><i class="fa-solid fa-chart-line"></i> <span data-i18n="analysis.timeline">Zeitverlauf</span></h2>
         <canvas id="timeLineChart" aria-label="Zeitverlauf" role="img"></canvas>
       </section>
 
-      <!-- OPTIONAL MODULES -->
+      <!-- MODULE PLACEHOLDERS -->
       <section class="card placeholder-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-arrow-trend-up"></i>
-          <span data-i18n="analysis.revenue">Umsatzentwicklung</span>
-        </h2>
+        <h2><i class="fa-solid fa-arrow-trend-up"></i> <span data-i18n="analysis.revenue">Umsatzentwicklung</span></h2>
         <p data-i18n="analysis.moduleComingSoon">Modul folgt…</p>
       </section>
 
       <section class="card placeholder-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-store"></i>
-          <span data-i18n="analysis.sales">Verkaufsstatistik</span>
-        </h2>
+        <h2><i class="fa-solid fa-store"></i> <span data-i18n="analysis.sales">Verkaufsstatistik</span></h2>
         <p data-i18n="analysis.moduleComingSoon">Modul folgt…</p>
       </section>
 
       <section class="card placeholder-card glass-panel">
-        <h2>
-          <i class="fa-solid fa-warehouse"></i>
-          <span data-i18n="analysis.stockMovements">Lagerbewegungen</span>
-        </h2>
+        <h2><i class="fa-solid fa-warehouse"></i> <span data-i18n="analysis.stockMovements">Lagerbewegungen</span></h2>
         <p data-i18n="analysis.moduleComingSoon">Modul folgt…</p>
       </section>
-
     </div>
   </main>
-
   <!-- ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
@@ -177,5 +133,39 @@
   <!-- ANALYSIS LOGIK -->
   <script type="module" src="src/scripts/analysis.js"></script>
 
+  <!-- SPRACHLOGIK -->
+  <script type="module">
+    import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+
+    const userRole = sessionStorage.getItem("role");
+    if (userRole) {
+      switch (userRole) {
+        case "support": setLang("fr"); break;
+        case "admin": setLang("en"); break;
+        default: setLang("de");
+      }
+    }
+
+    updateTranslations();
+
+    const langSelector = document.getElementById("languageSelector");
+    if (langSelector) {
+      langSelector.value = getLang();
+      langSelector.addEventListener("change", (e) => {
+        const lang = e.target.value;
+        setLang(lang);
+        updateTranslations();
+        saveLanguageToServer(lang);
+      });
+    }
+
+    function saveLanguageToServer(langCode) {
+      fetch("/api/user/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: langCode })
+      }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
+    }
+  </script>
 </body>
 </html>

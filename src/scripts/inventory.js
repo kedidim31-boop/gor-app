@@ -1,10 +1,12 @@
-// src/scripts/inventory.js – Lagerverwaltung (mehrsprachig + optimiert)
+// ======================================================================
+// 🔥 INVENTORY – Sprachfähige Finalversion mit Modal & Live-Reload
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
-import { t } from "./lang.js";
-import { openInventoryModal } from "./inventoryModal.js"; // Modal-Logik ausgelagert
+import { t, updateTranslations } from "./lang.js";
+import { openInventoryModal } from "./inventoryModal.js";
 
 import {
   collection,
@@ -14,9 +16,11 @@ import {
 const { db } = initFirebase();
 
 // -------------------------------------------------------------
-// 🔹 Zugriff: Admin, Manager, Support
+// 🔐 Zugriff: Admin, Manager, Support
 // -------------------------------------------------------------
 enforceRole(["admin", "manager", "support"], "login.html");
+updateTranslations();
+document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
 // -------------------------------------------------------------
 // 🔹 DOM Elemente
@@ -24,7 +28,7 @@ enforceRole(["admin", "manager", "support"], "login.html");
 const tableBody = document.querySelector("#inventoryTable tbody");
 
 // -------------------------------------------------------------
-// 🔹 Schweizer Zahlenformat
+// 🧾 Schweizer Zahlenformat
 // -------------------------------------------------------------
 function formatCH(num) {
   return Number(num).toLocaleString("de-CH", {
@@ -34,17 +38,17 @@ function formatCH(num) {
 }
 
 // -------------------------------------------------------------
-// 🔹 Lagerbestand laden
+// 📦 Lagerbestand laden
 // -------------------------------------------------------------
 export async function loadInventory() {
   if (!tableBody) return;
 
   tableBody.innerHTML = "";
-
   const snapshot = await getDocs(collection(db, "products"));
 
   snapshot.forEach(docSnap => {
     const p = docSnap.data();
+    const id = docSnap.id;
 
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -56,22 +60,19 @@ export async function loadInventory() {
       <td>${p.collections || "-"}</td>
       <td class="stock-value">${p.stock ?? 0}</td>
       <td><i class="fa-solid fa-money-bill-wave"></i> ${formatCH(p.price || 0)} CHF</td>
-
       <td>
-        <button class="adjustBtn btn btn-blue" data-id="${docSnap.id}">
+        <button class="adjustBtn btn btn-blue" data-id="${id}">
           <i class="fa-solid fa-plus-minus"></i> ${t("inventory.adjust")}
         </button>
       </td>
     `;
-
     tableBody.appendChild(row);
   });
 
   attachAdjustHandler();
 }
-
 // -------------------------------------------------------------
-// 🔹 Bestand anpassen (Button → Modal öffnen)
+// 🛠️ Bestand anpassen (Button → Modal öffnen)
 // -------------------------------------------------------------
 function attachAdjustHandler() {
   document.querySelectorAll(".adjustBtn").forEach(btn => {
@@ -82,25 +83,20 @@ function attachAdjustHandler() {
 }
 
 // -------------------------------------------------------------
-// 🔹 Realtime Reload nach Modal-Speicherung
+// 🔄 Realtime Reload nach Modal-Speicherung
 // -------------------------------------------------------------
 document.addEventListener("inventoryUpdated", () => {
   loadInventory();
 });
 
 // -------------------------------------------------------------
-// 🔹 Wenn inventorySearch.js neu rendert → Buttons neu aktivieren
+// 🔄 Wenn inventorySearch.js neu rendert → Buttons neu aktivieren
 // -------------------------------------------------------------
 document.addEventListener("inventorySearchRendered", () => {
   attachAdjustHandler();
 });
 
 // -------------------------------------------------------------
-// 🔹 Initial laden
+// 🚀 Initialisierung
 // -------------------------------------------------------------
 loadInventory();
-
-// -------------------------------------------------------------
-// 🔹 Logout
-// -------------------------------------------------------------
-document.querySelector(".logout-btn")?.addEventListener("click", logout);

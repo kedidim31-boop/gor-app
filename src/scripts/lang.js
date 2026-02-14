@@ -113,7 +113,8 @@ export const LANG = {
       delete: "Löschen",
       actions: "Aktionen",
       deleteAll: "Alles löschen"
-    },
+    }
+  },
   en: {
     languageName: "English",
     system: {
@@ -228,117 +229,12 @@ export const LANG = {
       delete: "Delete",
       actions: "Actions",
       deleteAll: "Delete all"
-    },
-    },
-    products: {
-      title: "Gestion des produits",
-      add: "Ajouter un produit",
-      overview: "Aperçu des produits",
-      name: "Nom du produit",
-      description: "Description",
-      type: "Type",
-      vendor: "Fournisseur",
-      collections: "Collections",
-      sku: "SKU",
-      ean: "EAN",
-      stock: "Stock",
-      price: "Prix (CHF)",
-      category: "Catégorie",
-      updateStock: "Mettre à jour le stock",
-      save: "Enregistrer",
-      export: "Exporter pour Shopify",
-      delete: "Supprimer",
-      actions: "Actions",
-      deleteAll: "Tout supprimer"
-    },
-    tasks: {
-      title: "Titre",
-      description: "Description",
-      status: "Statut",
-      priority: "Priorité",
-      due: "Échéance",
-      updateStatus: "Modifier le statut",
-      open: "Ouvert",
-      inProgress: "En cours",
-      done: "Terminé",
-      delete: "Supprimer",
-      new: "Créer une nouvelle tâche",
-      overview: "Aperçu des tâches",
-      save: "Enregistrer la tâche",
-      actions: "Actions"
-    },
-    time: {
-      title: "Gestion du temps",
-      timer: "Minuteur en direct",
-      new: "Ajouter une saisie de temps",
-      overview: "Aperçu du temps",
-      employee: "Employé",
-      date: "Date",
-      start: "Heure de début",
-      end: "Heure de fin",
-      hours: "Heures",
-      comment: "Commentaire",
-      add: "Ajouter du temps",
-      running: "En cours",
-      paused: "En pause",
-      stopped: "Arrêté",
-      description: "Description",
-      save: "Enregistrer le temps",
-      startBtn: "Démarrer",
-      stopBtn: "Arrêter",
-      resetBtn: "Réinitialiser",
-      delete: "Supprimer",
-      actions: "Actions"
-    },
-    support: {
-      title: "Centre de support",
-      subtitle: "Tickets, priorités & communication",
-      newTicket: "Nouveau ticket",
-      titleLabel: "Titre",
-      titlePlaceholder: "Titre court",
-      message: "Message",
-      messagePlaceholder: "Décris le problème…",
-      priority: "Priorité",
-      low: "Faible",
-      medium: "Moyenne",
-      high: "Haute",
-      createTicket: "Créer un ticket",
-      ticketOverview: "Tickets",
-      searchPlaceholder: "Rechercher par titre / message…",
-      open: "Ouvert",
-      inProgress: "En cours",
-      closed: "Fermé",
-      comment: "Commentaire",
-      addComment: "Ajouter un commentaire",
-      commentPlaceholder: "Écrire un commentaire…",
-      commentAdded: "Commentaire enregistré.",
-      delete: "Supprimer",
-      dashboard: "Tableau Support",
-      kpiOpen: "Tickets ouverts",
-      kpiInProgress: "En cours",
-      kpiClosed24h: "Fermés (24h)",
-      kpiOverSla: "Hors SLA",
-      slaLow: "SLA Faible: 72h",
-      slaMedium: "SLA Moyen: 48h",
-      slaHigh: "SLA Élevé: 24h",
-      actions: "Actions"
-    },
-    errors: {
-      fail: "Ça n’a pas fonctionné.",
-      retry: "Réessaie.",
-      load: "Impossible de charger les données.",
-      permissionDenied: "Permission refusée."
-    },
-    feedback: {
-      ok: "Tout bon.",
-      warn: "Attention…",
-      err: "Erreur."
     }
   }
 };
 
 // ======================================================================
-// 🔥 Sprachsystem 2.0 – stabil, schnell, fehlertolerant
+// 🔧 Sprachsteuerung
 // ======================================================================
 
 export let currentLang = localStorage.getItem("lang") || "de";
@@ -362,10 +258,28 @@ export function t(path) {
   let value = LANG[currentLang];
   for (const p of parts) {
     if (!value || typeof value !== "object" || !(p in value)) {
-      console.warn(`⚠️ Missing translation key: '${path}' in '${currentLang}'`);
+      console.warn(`⚠️ Fehlender Übersetzungsschlüssel: '${path}' in '${currentLang}'`);
       return path;
     }
     value = value[p];
   }
   return typeof value === "string" ? value : path;
+}
+
+// ======================================================================
+// 🔄 UI dynamisch übersetzen
+// ======================================================================
+
+export function updateTranslations() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    const translation = t(key);
+    if (translation) el.textContent = translation;
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    const translation = t(key);
+    if (translation) el.setAttribute("placeholder", translation);
+  });
 }

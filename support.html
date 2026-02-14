@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Gaming of Republic – Support</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Global Theme -->
-  <link rel="stylesheet" href="src/styles/theme.css">
-  <link rel="stylesheet" href="src/styles/support.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="src/styles/theme.css" />
+  <link rel="stylesheet" href="src/styles/support.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .language-dropdown {
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      background-color: #1a1a1a;
+      color: #fff;
+      border: 1px solid #444;
+      margin-left: auto;
+    }
+  </style>
 </head>
 
 <body>
-
-  <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- BRANDING HEADER -->
+  <!-- HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo" />
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-headset"></i>
         <span data-i18n="support.title">Support Center</span>
       </div>
-      <div class="subline" data-i18n="support.subtitle">
-        Tickets, Prioritäten & Kommunikation
-      </div>
+      <div class="subline" data-i18n="support.subtitle">Tickets, Prioritäten & Kommunikation</div>
     </div>
   </header>
 
-  <!-- TOP NAVIGATION -->
+  <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
@@ -45,31 +48,28 @@
     <a href="support.html" class="active"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
     <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
 
+    <select id="languageSelector" class="language-dropdown">
+      <option value="de">Deutsch</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
+
     <button class="btn btn-red logout-btn">
       <i class="fa-solid fa-right-from-bracket"></i>
       <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main class="support-page">
-
     <!-- TICKET ERSTELLEN -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-plus"></i>
-        <span data-i18n="support.newTicket">Neues Ticket</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-plus"></i> <span data-i18n="support.newTicket">Neues Ticket</span></h2>
       <form id="ticketForm" class="form-grid">
-
         <label class="form-field icon-input">
           <i class="fa-solid fa-heading"></i>
-          <input type="text" id="ticketTitle" required
-                 placeholder="Titel"
-                 data-i18n-placeholder="support.titlePlaceholder">
+          <input type="text" id="ticketTitle" required placeholder="Titel" data-i18n-placeholder="support.titlePlaceholder" />
         </label>
-
         <label class="form-field icon-input">
           <i class="fa-solid fa-flag"></i>
           <select id="ticketPriority">
@@ -78,50 +78,37 @@
             <option value="high" data-i18n="support.high">Hoch</option>
           </select>
         </label>
-
         <label class="form-field icon-input full-width">
           <i class="fa-solid fa-message"></i>
-          <textarea id="ticketMessage" rows="3" required
-                    placeholder="Nachricht"
-                    data-i18n-placeholder="support.messagePlaceholder"></textarea>
+          <textarea id="ticketMessage" rows="3" required placeholder="Nachricht" data-i18n-placeholder="support.messagePlaceholder"></textarea>
         </label>
-
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-paper-plane"></i>
-          <span data-i18n="support.createTicket">Ticket erstellen</span>
+          <i class="fa-solid fa-paper-plane"></i> <span data-i18n="support.createTicket">Ticket erstellen</span>
         </button>
-
       </form>
     </section>
-    <!-- SUPPORT DASHBOARD -->
-    <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-gauge-high"></i>
-        <span data-i18n="support.dashboard">Support Dashboard</span>
-      </h2>
 
+    <!-- DASHBOARD -->
+    <section class="card glass-panel">
+      <h2><i class="fa-solid fa-gauge-high"></i> <span data-i18n="support.dashboard">Support Dashboard</span></h2>
       <div class="support-kpi-grid">
         <div class="kpi-card">
           <div class="kpi-label" data-i18n="support.kpiOpen">Offene Tickets</div>
           <div class="kpi-value" id="kpiOpen">0</div>
         </div>
-
         <div class="kpi-card">
           <div class="kpi-label" data-i18n="support.kpiInProgress">In Bearbeitung</div>
           <div class="kpi-value" id="kpiInProgress">0</div>
         </div>
-
         <div class="kpi-card">
           <div class="kpi-label" data-i18n="support.kpiClosed24h">Geschlossen (24h)</div>
           <div class="kpi-value" id="kpiClosed24h">0</div>
         </div>
-
         <div class="kpi-card kpi-warning">
           <div class="kpi-label" data-i18n="support.kpiOverSla">Über SLA</div>
           <div class="kpi-value" id="kpiOverSla">0</div>
         </div>
       </div>
-
       <div class="sla-legend">
         <span data-i18n="support.slaLow">SLA Low: 72h</span>
         <span data-i18n="support.slaMedium">SLA Medium: 48h</span>
@@ -129,19 +116,11 @@
       </div>
     </section>
 
-    <!-- TICKET ÜBERSICHT -->
+    <!-- TICKET-TABELLE -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-ticket"></i>
-        <span data-i18n="support.ticketOverview">Tickets</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-ticket"></i> <span data-i18n="support.ticketOverview">Tickets</span></h2>
       <div class="support-filters">
-        <input type="text"
-               id="ticketSearch"
-               placeholder="Suche…"
-               data-i18n-placeholder="support.searchPlaceholder">
-
+        <input type="text" id="ticketSearch" placeholder="Suche…" data-i18n-placeholder="support.searchPlaceholder" />
         <select id="ticketStatusFilter">
           <option value="all" data-i18n="support.all">Alle</option>
           <option value="open" data-i18n="support.open">Offen</option>
@@ -149,7 +128,6 @@
           <option value="closed" data-i18n="support.closed">Geschlossen</option>
         </select>
       </div>
-
       <table id="supportTable" class="neon-table">
         <thead>
           <tr>
@@ -166,42 +144,27 @@
         </tbody>
       </table>
     </section>
-
     <!-- KOMMENTAR MODAL -->
     <div id="commentModal" class="modal" aria-hidden="true">
       <div class="modal-content glass-panel" role="dialog" aria-modal="true">
-
-        <h3>
-          <i class="fa-solid fa-comment"></i>
-          <span data-i18n="support.addComment">Kommentar & Verlauf</span>
-        </h3>
-
+        <h3><i class="fa-solid fa-comment"></i> <span data-i18n="support.addComment">Kommentar & Verlauf</span></h3>
         <div id="ticketMessages"></div>
-
         <form id="commentForm">
-          <input type="hidden" id="commentTicketId">
-
-          <textarea id="commentText"
-                    rows="4"
-                    placeholder="Kommentar eingeben…"
-                    data-i18n-placeholder="support.commentPlaceholder"></textarea>
-
+          <input type="hidden" id="commentTicketId" />
+          <textarea id="commentText" rows="4" placeholder="Kommentar eingeben…" data-i18n-placeholder="support.commentPlaceholder"></textarea>
           <div class="modal-actions">
             <button type="button" id="closeCommentModal" class="btn btn-red">
               <i class="fa-solid fa-xmark"></i>
               <span data-i18n="support.cancel">Abbrechen</span>
             </button>
-
             <button type="submit" class="btn btn-green">
               <i class="fa-solid fa-check"></i>
               <span data-i18n="support.save">Speichern</span>
             </button>
           </div>
         </form>
-
       </div>
     </div>
-
   </main>
 
   <!-- ROLE GUARD -->
@@ -213,5 +176,39 @@
   <!-- SUPPORT LOGIK -->
   <script type="module" src="src/scripts/support.js"></script>
 
+  <!-- SPRACHLOGIK -->
+  <script type="module">
+    import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+
+    const userRole = sessionStorage.getItem("role");
+    if (userRole) {
+      switch (userRole) {
+        case "support": setLang("fr"); break;
+        case "admin": setLang("en"); break;
+        default: setLang("de");
+      }
+    }
+
+    updateTranslations();
+
+    const langSelector = document.getElementById("languageSelector");
+    if (langSelector) {
+      langSelector.value = getLang();
+      langSelector.addEventListener("change", (e) => {
+        const lang = e.target.value;
+        setLang(lang);
+        updateTranslations();
+        saveLanguageToServer(lang);
+      });
+    }
+
+    function saveLanguageToServer(langCode) {
+      fetch("/api/user/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: langCode })
+      }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
+    }
+  </script>
 </body>
 </html>

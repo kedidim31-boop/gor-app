@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Gaming of Republic – Mitarbeiter</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Globale Styles -->
-  <link rel="stylesheet" href="src/styles/theme.css">
-  <link rel="stylesheet" href="src/styles/employees.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="src/styles/theme.css" />
+  <link rel="stylesheet" href="src/styles/employees.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .language-dropdown {
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      background-color: #1a1a1a;
+      color: #fff;
+      border: 1px solid #444;
+      margin-left: auto;
+    }
+  </style>
 </head>
 
 <body>
-
-  <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- BRANDING HEADER -->
+  <!-- HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo" />
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-users"></i>
@@ -31,7 +36,7 @@
     </div>
   </header>
 
-  <!-- TOP NAVIGATION -->
+  <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
@@ -42,45 +47,37 @@
     <a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
     <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
 
+    <select id="languageSelector" class="language-dropdown">
+      <option value="de">Deutsch</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
+
     <button class="btn btn-red logout-btn">
       <i class="fa-solid fa-right-from-bracket"></i>
       <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main class="employee-page">
-
     <!-- MITARBEITER ANLEGEN -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-user-plus"></i>
-        <span data-i18n="employees.new">Neuen Mitarbeiter hinzufügen</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-user-plus"></i> <span data-i18n="employees.new">Neuen Mitarbeiter hinzufügen</span></h2>
       <form id="employeeForm">
-
         <!-- Reihe 1 -->
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-id-card"></i>
-            <input type="text" id="empNumber" readonly
-                   placeholder="Mitarbeiternummer"
-                   data-i18n-placeholder="employees.number">
+            <input type="text" id="empNumber" readonly placeholder="Mitarbeiternummer" data-i18n-placeholder="employees.number" />
           </label>
-
           <label class="form-field icon-input">
             <i class="fa-solid fa-user"></i>
-            <input type="text" id="empName" required
-                   placeholder="Name"
-                   data-i18n-placeholder="employees.name">
+            <input type="text" id="empName" required placeholder="Name" data-i18n-placeholder="employees.name" />
           </label>
-
           <label class="form-field icon-input">
             <i class="fa-solid fa-envelope"></i>
-            <input type="email" id="empEmail" required
-                   placeholder="E-Mail"
-                   data-i18n-placeholder="employees.email">
+            <input type="email" id="empEmail" required placeholder="E-Mail" data-i18n-placeholder="employees.email" />
           </label>
         </div>
 
@@ -88,23 +85,15 @@
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-location-dot"></i>
-            <input type="text" id="empAddress" required
-                   placeholder="Adresse"
-                   data-i18n-placeholder="employees.address">
+            <input type="text" id="empAddress" required placeholder="Adresse" data-i18n-placeholder="employees.address" />
           </label>
-
           <label class="form-field icon-input">
             <i class="fa-solid fa-map-pin"></i>
-            <input type="text" id="empPLZ" required
-                   placeholder="PLZ"
-                   data-i18n-placeholder="employees.zip">
+            <input type="text" id="empPLZ" required placeholder="PLZ" data-i18n-placeholder="employees.zip" />
           </label>
-
           <label class="form-field icon-input">
             <i class="fa-solid fa-city"></i>
-            <input type="text" id="empOrt" required
-                   placeholder="Ort"
-                   data-i18n-placeholder="employees.city">
+            <input type="text" id="empOrt" required placeholder="Ort" data-i18n-placeholder="employees.city" />
           </label>
         </div>
 
@@ -112,16 +101,12 @@
         <div class="form-row">
           <label class="form-field icon-input">
             <i class="fa-solid fa-cake-candles"></i>
-            <input type="date" id="empBirthday" required>
+            <input type="date" id="empBirthday" required />
           </label>
-
           <label class="form-field icon-input">
             <i class="fa-solid fa-phone"></i>
-            <input type="tel" id="empPhone" required
-                   placeholder="Telefonnummer"
-                   data-i18n-placeholder="employees.phone">
+            <input type="tel" id="empPhone" required placeholder="Telefonnummer" data-i18n-placeholder="employees.phone" />
           </label>
-
           <label class="form-field icon-input">
             <i class="fa-solid fa-user-tag"></i>
             <select id="empRole" required>
@@ -135,19 +120,14 @@
         </div>
 
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-save"></i>
-          <span data-i18n="employees.save">Mitarbeiter speichern</span>
+          <i class="fa-solid fa-save"></i> <span data-i18n="employees.save">Mitarbeiter speichern</span>
         </button>
-
       </form>
     </section>
+
     <!-- MITARBEITERÜBERSICHT -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-users"></i>
-        <span data-i18n="employees.overview">Mitarbeiterübersicht</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-users"></i> <span data-i18n="employees.overview">Mitarbeiterübersicht</span></h2>
       <table id="employeeTable" class="neon-table">
         <thead>
           <tr>
@@ -169,9 +149,7 @@
         </tbody>
       </table>
     </section>
-
   </main>
-
   <!-- ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
@@ -181,7 +159,7 @@
   <!-- EMPLOYEE LOGIK -->
   <script type="module" src="src/scripts/employees.js"></script>
 
-  <!-- AUTOMATISCHE MITARBEITERNUMMER -->
+  <!-- MITARBEITERNUMMER GENERIEREN -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const numberField = document.getElementById("empNumber");
@@ -192,5 +170,39 @@
     });
   </script>
 
+  <!-- SPRACHLOGIK -->
+  <script type="module">
+    import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+
+    const userRole = sessionStorage.getItem("role");
+    if (userRole) {
+      switch (userRole) {
+        case "support": setLang("fr"); break;
+        case "admin": setLang("en"); break;
+        default: setLang("de");
+      }
+    }
+
+    updateTranslations();
+
+    const langSelector = document.getElementById("languageSelector");
+    if (langSelector) {
+      langSelector.value = getLang();
+      langSelector.addEventListener("change", (e) => {
+        const lang = e.target.value;
+        setLang(lang);
+        updateTranslations();
+        saveLanguageToServer(lang);
+      });
+    }
+
+    function saveLanguageToServer(langCode) {
+      fetch("/api/user/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: langCode })
+      }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
+    }
+  </script>
 </body>
 </html>

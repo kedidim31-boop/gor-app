@@ -1,13 +1,12 @@
 // ======================================================================
-// 🔥 TIME.JS – FINAL VERSION
-// Zeiterfassung – Gaming of Republic
+// 🔥 TIME – Sprachfähige Finalversion mit Timer, AutoSave & Badges
 // ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { logout } from "./auth.js";
 import { showFeedback } from "./feedback.js";
-import { t } from "./lang.js";
+import { t, updateTranslations } from "./lang.js";
 
 import {
   collection,
@@ -20,10 +19,15 @@ import {
 
 const { db } = initFirebase();
 
-// Zugriff
+// -------------------------------------------------------------
+// 🔐 Zugriff
+// -------------------------------------------------------------
 enforceRole(["admin", "manager", "support", "employee"], "login.html");
+updateTranslations();
 
-// DOM Elemente
+// -------------------------------------------------------------
+// 🔹 DOM Elemente
+// -------------------------------------------------------------
 const timeForm       = document.getElementById("timeForm");
 const startInput     = document.getElementById("startTime");
 const endInput       = document.getElementById("endTime");
@@ -39,19 +43,17 @@ const startBtn       = document.getElementById("startTimerBtn");
 const stopBtn        = document.getElementById("stopTimerBtn");
 const resetBtn       = document.getElementById("resetTimerBtn");
 
-// Logout
 document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
-// Timer State + Auto-Save
+// -------------------------------------------------------------
+// ⏱️ Timer State & Auto-Save
+// -------------------------------------------------------------
 const TIMER_KEY = "gor_time_timer_state";
 const DRAFT_KEY = "gor_time_form_draft";
 
 let timerState = { isRunning: false, startTimestamp: null };
 let timerInterval = null;
 
-// -----------------------------
-// Timer State laden/speichern
-// -----------------------------
 function loadTimerState() {
   try {
     const raw = localStorage.getItem(TIMER_KEY);
@@ -65,19 +67,19 @@ function loadTimerState() {
     console.warn("⚠️ Timer-State konnte nicht geladen werden:", e);
   }
 }
+
 function saveTimerState() {
   localStorage.setItem(TIMER_KEY, JSON.stringify(timerState));
 }
 
-// -----------------------------
-// Form Draft laden/speichern
-// -----------------------------
+// -------------------------------------------------------------
+// 📝 Form Draft laden/speichern
+// -------------------------------------------------------------
 function loadFormDraft() {
   try {
     const raw = localStorage.getItem(DRAFT_KEY);
     if (!raw) return;
     const draft = JSON.parse(raw);
-    if (!draft) return;
     if (employeeInput) employeeInput.value = draft.employee || "";
     if (dateInput) dateInput.value = draft.date || "";
     if (descInput) descInput.value = draft.description || "";
@@ -85,6 +87,7 @@ function loadFormDraft() {
     console.warn("⚠️ Form-Draft konnte nicht geladen werden:", e);
   }
 }
+
 function saveFormDraft() {
   const draft = {
     employee: employeeInput?.value || "",
@@ -94,9 +97,9 @@ function saveFormDraft() {
   localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
 }
 
-// -----------------------------
-// Timer Logik
-// -----------------------------
+// -------------------------------------------------------------
+// ⏱️ Timer Logik
+// -------------------------------------------------------------
 function updateTimerDisplay() {
   if (!liveTimerEl || !timerState.startTimestamp) return;
   const diffMs = Date.now() - timerState.startTimestamp;
@@ -109,57 +112,53 @@ function updateTimerDisplay() {
 
 function setTimerStatus(status) {
   if (!timerStatusEl) return;
-  timerStatusEl.classList.remove("timer-running","timer-paused","timer-stopped");
-  if (status === "running") {
-    timerStatusEl.classList.add("timer-running");
-    timerStatusEl.textContent = t("time.running") || "Running";
-  } else if (status === "paused") {
-    timerStatusEl.classList.add("timer-paused");
-    timerStatusEl.textContent = t("time.paused") || "Paused";
-  } else {
-    timerStatusEl.classList.add("timer-stopped");
-    timerStatusEl.textContent = t("time.stopped") || "Stopped";
-  }
+  timerStatusEl.classList.remove("timer-running", "timer-paused", "timer-stopped");
+  timerStatusEl.classList.add(`timer-${status}`);
+  timerStatusEl.textContent = t(`time.${status}`) || status;
 }
 
 function startTimer() {
   if (timerState.isRunning) return;
   const now = new Date();
-  timerState.isRunning = true;
-  timerState.startTimestamp = now.getTime();
+  timerState = { isRunning: true, startTimestamp: now.getTime() };
   saveTimerState();
+
   if (startInput && !startInput.value) {
-    startInput.value = `${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`;
+    startInput.value = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
   }
   if (dateInput && !dateInput.value) {
-    dateInput.value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+    dateInput.value = now.toISOString().split("T")[0];
   }
+
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(updateTimerDisplay, 1000);
   updateTimerDisplay();
   setTimerStatus("running");
-  showFeedback(t("time.timerStarted") || "Timer gestartet", "success");
+  showFeedback(t("time.timerStarted"), "success");
 }
 
 function stopTimer() {
   if (!timerState.isRunning) return;
   timerState.isRunning = false;
   saveTimerState();
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
+
   const now = new Date();
   if (endInput) {
-    endInput.value = `${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`;
+    endInput.value = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
   }
+
   calculateHours();
   setTimerStatus("paused");
-  showFeedback(t("time.timerStopped") || "Timer gestoppt", "warning");
+  showFeedback(t("time.timerStopped"), "warning");
 }
 
 function resetTimer() {
-  timerState.isRunning = false;
-  timerState.startTimestamp = null;
+  timerState = { isRunning: false, startTimestamp: null };
   saveTimerState();
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
   if (liveTimerEl) liveTimerEl.textContent = "00:00:00";
   setTimerStatus("stopped");
 }
@@ -172,15 +171,14 @@ function resumeTimerFromState() {
   setTimerStatus("running");
 }
 
-// Stunden automatisch berechnen
+// -------------------------------------------------------------
+// 🧮 Stunden berechnen
+// -------------------------------------------------------------
 function calculateHours() {
   if (!startInput || !endInput || !hoursInput) return;
-  const start = startInput.value;
-  const end = endInput.value;
-  if (!start || !end) return;
-  const [sh, sm] = start.split(":").map(Number);
-  const [eh, em] = end.split(":").map(Number);
-  const diff = ((eh*60+em) - (sh*60+sm)) / 60;
+  const [sh, sm] = (startInput.value || "").split(":").map(Number);
+  const [eh, em] = (endInput.value || "").split(":").map(Number);
+  const diff = ((eh * 60 + em) - (sh * 60 + sm)) / 60;
   hoursInput.value = diff > 0 ? diff.toFixed(2) : "0.00";
 }
 
@@ -189,19 +187,18 @@ endInput?.addEventListener("change", () => { calculateHours(); saveFormDraft(); 
 employeeInput?.addEventListener("input", saveFormDraft);
 dateInput?.addEventListener("change", saveFormDraft);
 descInput?.addEventListener("input", saveFormDraft);
-// ======================================================================
-// 🔥 TIME.JS – FINAL VERSION (Teil 2)
-// Formatierung, Badges, Firestore Save/Load/Delete, Init
-// ======================================================================
-
-// Schweizer Datumsformat
+// -------------------------------------------------------------
+// 🧾 Schweizer Datumsformat
+// -------------------------------------------------------------
 function formatDate(dateStr) {
   if (!dateStr) return "-";
   const [yyyy, mm, dd] = dateStr.split("-");
   return `${dd}.${mm}.${yyyy}`;
 }
 
-// Stunden-Badge Klasse
+// -------------------------------------------------------------
+// 🟡 Stunden-Badge Klasse
+// -------------------------------------------------------------
 function getHoursBadgeClass(hours) {
   const h = Number(hours || 0);
   if (h <= 8) return "hours-ok";
@@ -209,7 +206,9 @@ function getHoursBadgeClass(hours) {
   return "hours-overtime";
 }
 
-// Zeiterfassung speichern
+// -------------------------------------------------------------
+// 💾 Zeiterfassung speichern
+// -------------------------------------------------------------
 timeForm?.addEventListener("submit", async e => {
   e.preventDefault();
 
@@ -248,13 +247,14 @@ timeForm?.addEventListener("submit", async e => {
   }
 });
 
-// Zeiterfassungen laden
+// -------------------------------------------------------------
+// 📊 Zeiterfassungen laden
+// -------------------------------------------------------------
 async function loadTimeEntries() {
   const tableBody = document.querySelector("#timeTable tbody");
   if (!tableBody) return;
 
   tableBody.innerHTML = "";
-
   const snapshot = await getDocs(collection(db, "timeEntries"));
 
   snapshot.forEach(docSnap => {
@@ -285,48 +285,60 @@ async function loadTimeEntries() {
 
   attachDeleteHandler();
 }
-
-// Löschen mit Bestätigungs-Banner
+// -------------------------------------------------------------
+// 🗑️ Löschen mit Modal-Bestätigung
+// -------------------------------------------------------------
 function attachDeleteHandler() {
+  const modal = document.getElementById("confirmModal");
+  const confirmYes = document.getElementById("confirmYes");
+  const confirmNo = document.getElementById("confirmNo");
+
   document.querySelectorAll(".deleteBtn").forEach(btn => {
-    btn.addEventListener("click", async e => {
-      const id = e.currentTarget.dataset.id;
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      modal.classList.remove("hidden");
 
-      showFeedback(t("admin.confirm"), "warning");
+      const onConfirm = async () => {
+        try {
+          await deleteDoc(doc(db, "timeEntries", id));
+          showFeedback(t("time.delete"), "success");
+          await loadTimeEntries();
+        } catch (err) {
+          console.error("❌ Fehler beim Löschen:", err);
+          showFeedback(t("errors.fail"), "error");
+        } finally {
+          modal.classList.add("hidden");
+          confirmYes.removeEventListener("click", onConfirm);
+        }
+      };
 
-      btn.addEventListener(
-        "click",
-        async () => {
-          try {
-            await deleteDoc(doc(db, "timeEntries", id));
-            showFeedback(t("time.delete"), "success");
-            loadTimeEntries();
-          } catch (err) {
-            console.error("❌ Fehler beim Löschen:", err);
-            showFeedback(t("errors.fail"), "error");
-          }
-        },
-        { once: true }
-      );
+      confirmYes.addEventListener("click", onConfirm, { once: true });
+      confirmNo.addEventListener("click", () => modal.classList.add("hidden"), { once: true });
     });
   });
 }
 
-// Timer Buttons
+// -------------------------------------------------------------
+// ⏱️ Timer Buttons
+// -------------------------------------------------------------
 startBtn?.addEventListener("click", e => {
   e.preventDefault();
   startTimer();
 });
+
 stopBtn?.addEventListener("click", e => {
   e.preventDefault();
   stopTimer();
 });
+
 resetBtn?.addEventListener("click", e => {
   e.preventDefault();
   resetTimer();
 });
 
-// Initialisierung
+// -------------------------------------------------------------
+// 🚀 Initialisierung
+// -------------------------------------------------------------
 loadFormDraft();
 loadTimerState();
 loadTimeEntries();

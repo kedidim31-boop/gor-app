@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Gaming of Republic – Zeiterfassung</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Global Theme -->
-  <link rel="stylesheet" href="src/styles/theme.css">
-  <link rel="stylesheet" href="src/styles/time.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="src/styles/theme.css" />
+  <link rel="stylesheet" href="src/styles/time.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .language-dropdown {
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      background-color: #1a1a1a;
+      color: #fff;
+      border: 1px solid #444;
+      margin-left: auto;
+    }
+  </style>
 </head>
 
 <body>
-
   <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- BRANDING HEADER -->
+  <!-- HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo" />
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-clock"></i>
@@ -31,7 +37,7 @@
     </div>
   </header>
 
-  <!-- TOP NAVIGATION -->
+  <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
@@ -42,110 +48,75 @@
     <a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
     <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
 
+    <select id="languageSelector" class="language-dropdown">
+      <option value="de">Deutsch</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
+
     <button class="btn btn-red logout-btn">
       <i class="fa-solid fa-right-from-bracket"></i>
       <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main>
-
-    <!-- LIVE TIMER -->
+    <!-- TIMER -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-stopwatch"></i>
-        <span data-i18n="time.timer">Live Timer</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-stopwatch"></i> <span data-i18n="time.timer">Live Timer</span></h2>
       <div id="liveTimer" class="timer-display">00:00:00</div>
-
-      <div class="timer-status" id="timerStatus" data-i18n="time.stopped">
-        Gestoppt
-      </div>
-
+      <div class="timer-status" id="timerStatus" data-i18n="time.stopped">Gestoppt</div>
       <div class="timer-controls">
         <button id="startTimerBtn" class="btn btn-green">
-          <i class="fa-solid fa-play"></i>
-          <span data-i18n="time.start">Start</span>
+          <i class="fa-solid fa-play"></i> <span data-i18n="time.start">Start</span>
         </button>
-
         <button id="stopTimerBtn" class="btn btn-yellow">
-          <i class="fa-solid fa-pause"></i>
-          <span data-i18n="time.stop">Stop</span>
+          <i class="fa-solid fa-pause"></i> <span data-i18n="time.stop">Stop</span>
         </button>
-
         <button id="resetTimerBtn" class="btn btn-red">
-          <i class="fa-solid fa-rotate-left"></i>
-          <span data-i18n="time.reset">Reset</span>
+          <i class="fa-solid fa-rotate-left"></i> <span data-i18n="time.reset">Reset</span>
         </button>
       </div>
     </section>
-    <!-- ZEITERFASSUNG ERSTELLEN -->
+
+    <!-- FORM -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-plus-circle"></i>
-        <span data-i18n="time.new">Neue Zeiterfassung hinzufügen</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-plus-circle"></i> <span data-i18n="time.new">Neue Zeiterfassung hinzufügen</span></h2>
       <form id="timeForm" class="form-grid">
-
         <label class="form-field icon-input">
           <i class="fa-solid fa-user"></i>
-          <input type="text"
-                 id="employeeName"
-                 required
-                 placeholder="Mitarbeitername"
-                 data-i18n-placeholder="time.employee">
+          <input type="text" id="employeeName" required placeholder="Mitarbeitername" data-i18n-placeholder="time.employee" />
         </label>
-
         <label class="form-field icon-input">
           <i class="fa-solid fa-calendar-day"></i>
-          <input type="date" id="workDate" required>
+          <input type="date" id="workDate" required />
         </label>
-
         <label class="form-field icon-input">
           <i class="fa-solid fa-clock"></i>
-          <input type="time" id="startTime" required>
+          <input type="time" id="startTime" required />
         </label>
-
         <label class="form-field icon-input">
           <i class="fa-solid fa-clock"></i>
-          <input type="time" id="endTime" required>
+          <input type="time" id="endTime" required />
         </label>
-
         <label class="form-field icon-input">
           <i class="fa-solid fa-hourglass-half"></i>
-          <input type="number"
-                 id="hoursWorked"
-                 step="0.1"
-                 readonly
-                 placeholder="Berechnete Stunden"
-                 data-i18n-placeholder="time.hours">
+          <input type="number" id="hoursWorked" step="0.1" readonly placeholder="Berechnete Stunden" data-i18n-placeholder="time.hours" />
         </label>
-
         <label class="form-field icon-input full-width">
           <i class="fa-solid fa-align-left"></i>
-          <textarea id="workDescription"
-                    placeholder="Beschreibung"
-                    data-i18n-placeholder="time.description"></textarea>
+          <textarea id="workDescription" placeholder="Beschreibung" data-i18n-placeholder="time.description"></textarea>
         </label>
-
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-save"></i>
-          <span data-i18n="time.save">Zeiterfassung speichern</span>
+          <i class="fa-solid fa-save"></i> <span data-i18n="time.save">Zeiterfassung speichern</span>
         </button>
-
       </form>
     </section>
 
-    <!-- ZEITERFASSUNGSÜBERSICHT -->
+    <!-- TABELLE -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-table"></i>
-        <span data-i18n="time.overview">Zeiterfassungsübersicht</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-table"></i> <span data-i18n="time.overview">Zeiterfassungsübersicht</span></h2>
       <table id="timeTable" class="neon-table">
         <thead>
           <tr>
@@ -158,23 +129,53 @@
             <th data-i18n="time.actions">Aktionen</th>
           </tr>
         </thead>
-
         <tbody>
           <!-- Dynamisch geladen -->
         </tbody>
       </table>
     </section>
-
   </main>
 
-  <!-- ROLE GUARD -->
+  <!-- SCRIPTS -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
     enforceRole(["employee", "support", "manager", "admin"], "index.html");
   </script>
 
-  <!-- TIME LOGIK -->
   <script type="module" src="src/scripts/time.js"></script>
 
+  <script type="module">
+    import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+
+    const userRole = sessionStorage.getItem("role");
+    if (userRole) {
+      switch (userRole) {
+        case "support": setLang("fr"); break;
+        case "admin": setLang("en"); break;
+        default: setLang("de");
+      }
+    }
+
+    updateTranslations();
+
+    const langSelector = document.getElementById("languageSelector");
+    if (langSelector) {
+      langSelector.value = getLang();
+      langSelector.addEventListener("change", (e) => {
+        const lang = e.target.value;
+        setLang(lang);
+        updateTranslations();
+        saveLanguageToServer(lang);
+      });
+    }
+
+    function saveLanguageToServer(langCode) {
+      fetch("/api/user/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: langCode })
+      }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
+    }
+  </script>
 </body>
 </html>

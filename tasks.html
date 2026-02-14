@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Gaming of Republic – Aufgabenverwaltung</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Global Styles -->
-  <link rel="stylesheet" href="src/styles/theme.css">
-  <link rel="stylesheet" href="src/styles/tasks.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="src/styles/theme.css" />
+  <link rel="stylesheet" href="src/styles/tasks.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .language-dropdown {
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      background-color: #1a1a1a;
+      color: #fff;
+      border: 1px solid #444;
+      margin-left: auto;
+    }
+  </style>
 </head>
 
 <body>
-
   <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- BRANDING HEADER -->
+  <!-- HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo" />
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-list-check"></i>
@@ -31,7 +37,7 @@
     </div>
   </header>
 
-  <!-- TOP NAVIGATION -->
+  <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht & Dashboard</span></a>
@@ -42,38 +48,32 @@
     <a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
     <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
 
+    <select id="languageSelector" class="language-dropdown">
+      <option value="de">Deutsch</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
+
     <button class="btn btn-red logout-btn">
       <i class="fa-solid fa-right-from-bracket"></i>
       <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main>
-
     <!-- AUFGABE ERSTELLEN -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-plus-circle"></i>
-        <span data-i18n="tasks.new">Neue Aufgabe erstellen</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-plus-circle"></i> <span data-i18n="tasks.new">Neue Aufgabe erstellen</span></h2>
       <form id="taskForm" class="form-grid">
-
         <label class="form-field icon-input">
           <i class="fa-solid fa-heading"></i>
-          <input type="text" id="taskTitle" required
-                 placeholder="Titel"
-                 data-i18n-placeholder="tasks.title">
+          <input type="text" id="taskTitle" required placeholder="Titel" data-i18n-placeholder="tasks.title" />
         </label>
-
         <label class="form-field icon-input full-width">
           <i class="fa-solid fa-align-left"></i>
-          <textarea id="taskDescription"
-                    placeholder="Beschreibung"
-                    data-i18n-placeholder="tasks.description"></textarea>
+          <textarea id="taskDescription" placeholder="Beschreibung" data-i18n-placeholder="tasks.description"></textarea>
         </label>
-
         <label class="form-field icon-input">
           <i class="fa-solid fa-bars-progress"></i>
           <select id="taskStatus" required>
@@ -82,21 +82,15 @@
             <option value="done" data-i18n="tasks.done">Abgeschlossen</option>
           </select>
         </label>
-
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-save"></i>
-          <span data-i18n="tasks.save">Aufgabe speichern</span>
+          <i class="fa-solid fa-save"></i> <span data-i18n="tasks.save">Aufgabe speichern</span>
         </button>
-
       </form>
     </section>
+
     <!-- AUFGABENÜBERSICHT -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-table"></i>
-        <span data-i18n="tasks.overview">Aufgabenübersicht</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-table"></i> <span data-i18n="tasks.overview">Aufgabenübersicht</span></h2>
       <table id="taskTable" class="neon-table">
         <thead>
           <tr>
@@ -106,23 +100,53 @@
             <th data-i18n="tasks.actions">Aktionen</th>
           </tr>
         </thead>
-
         <tbody>
           <!-- Dynamisch geladen -->
         </tbody>
       </table>
     </section>
-
   </main>
 
-  <!-- ROLE GUARD -->
+  <!-- SCRIPTS -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
     enforceRole(["employee", "support", "manager", "admin"], "index.html");
   </script>
 
-  <!-- TASK LOGIK -->
   <script type="module" src="src/scripts/tasks.js"></script>
 
+  <script type="module">
+    import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+
+    const userRole = sessionStorage.getItem("role");
+    if (userRole) {
+      switch (userRole) {
+        case "support": setLang("fr"); break;
+        case "admin": setLang("en"); break;
+        default: setLang("de");
+      }
+    }
+
+    updateTranslations();
+
+    const langSelector = document.getElementById("languageSelector");
+    if (langSelector) {
+      langSelector.value = getLang();
+      langSelector.addEventListener("change", (e) => {
+        const lang = e.target.value;
+        setLang(lang);
+        updateTranslations();
+        saveLanguageToServer(lang);
+      });
+    }
+
+    function saveLanguageToServer(langCode) {
+      fetch("/api/user/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: langCode })
+      }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
+    }
+  </script>
 </body>
 </html>

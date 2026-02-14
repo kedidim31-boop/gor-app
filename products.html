@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Gaming of Republic – Produkte</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Global Theme -->
-  <link rel="stylesheet" href="src/styles/theme.css">
-  <link rel="stylesheet" href="src/styles/products.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="src/styles/theme.css" />
+  <link rel="stylesheet" href="src/styles/products.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .language-dropdown {
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      background-color: #1a1a1a;
+      color: #fff;
+      border: 1px solid #444;
+      margin-left: auto;
+    }
+  </style>
 </head>
 
 <body>
-
-  <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- BRANDING HEADER -->
+  <!-- HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo" />
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-box"></i>
@@ -31,7 +36,7 @@
     </div>
   </header>
 
-  <!-- TOP NAVIGATION -->
+  <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
@@ -42,22 +47,23 @@
     <a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
     <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
 
+    <select id="languageSelector" class="language-dropdown">
+      <option value="de">Deutsch</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
+
     <button class="btn btn-red logout-btn">
       <i class="fa-solid fa-right-from-bracket"></i>
       <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main>
-
     <!-- PRODUKT ANLEGEN -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-plus"></i>
-        <span data-i18n="products.add">Neues Produkt hinzufügen</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-plus"></i> <span data-i18n="products.add">Neues Produkt hinzufügen</span></h2>
       <form id="createProductForm" class="form-grid">
         <!-- Formularfelder wie gehabt -->
         <!-- ... (unverändert) ... -->
@@ -66,24 +72,19 @@
 
     <!-- PRODUKTÜBERSICHT -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-boxes-stacked"></i>
-        <span data-i18n="products.overview">Produktübersicht</span>
-      </h2>
+      <h2><i class="fa-solid fa-boxes-stacked"></i> <span data-i18n="products.overview">Produktübersicht</span></h2>
 
-      <!-- BUTTON-GRUPPE -->
       <div class="button-group" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
         <button id="exportBtn" class="btn btn-yellow">
           <i class="fa-solid fa-file-csv"></i>
           <span data-i18n="products.export">Exportieren für Shopify</span>
         </button>
-
         <button id="deleteAllProductsBtn" class="btn btn-red">
           <i class="fa-solid fa-trash"></i>
           <span data-i18n="products.deleteAll">Alles löschen</span>
         </button>
       </div>
-      <!-- PRODUKT TABELLE -->
+
       <table id="productTable" class="neon-table">
         <thead>
           <tr>
@@ -99,13 +100,11 @@
             <th data-i18n="products.actions">Aktionen</th>
           </tr>
         </thead>
-
         <tbody>
           <!-- Produkte werden dynamisch geladen -->
         </tbody>
       </table>
     </section>
-
   </main>
 
   <!-- ROLE GUARD -->
@@ -118,7 +117,6 @@
   <script type="module">
     import "./src/scripts/products.js";
 
-    // Alles löschen Button
     const deleteAllBtn = document.getElementById("deleteAllProductsBtn");
     if (deleteAllBtn) {
       deleteAllBtn.addEventListener("click", () => {
@@ -134,5 +132,39 @@
     }
   </script>
 
+  <!-- SPRACHLOGIK -->
+  <script type="module">
+    import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+
+    const userRole = sessionStorage.getItem("role");
+    if (userRole) {
+      switch (userRole) {
+        case "support": setLang("fr"); break;
+        case "admin": setLang("en"); break;
+        default: setLang("de");
+      }
+    }
+
+    updateTranslations();
+
+    const langSelector = document.getElementById("languageSelector");
+    if (langSelector) {
+      langSelector.value = getLang();
+      langSelector.addEventListener("change", (e) => {
+        const lang = e.target.value;
+        setLang(lang);
+        updateTranslations();
+        saveLanguageToServer(lang);
+      });
+    }
+
+    function saveLanguageToServer(langCode) {
+      fetch("/api/user/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: langCode })
+      }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
+    }
+  </script>
 </body>
 </html>

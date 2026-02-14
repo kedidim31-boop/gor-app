@@ -1,9 +1,11 @@
-// src/scripts/notifications.js – globales Benachrichtigungssystem (mehrsprachig + optimiert)
+// ======================================================================
+// 🔔 NOTIFICATIONS – Sprachfähige Finalversion mit Rollenfilter & Live-Badge
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { showFeedback } from "./feedback.js";
-import { t } from "./lang.js";
+import { t, updateTranslations } from "./lang.js";
 
 import {
   collection,
@@ -20,118 +22,108 @@ import {
 const { db, auth } = initFirebase();
 
 // -------------------------------------------------------------
-// 🔹 Zugriff: Alle eingeloggten Rollen
+// 🔐 Zugriff & Sprache
 // -------------------------------------------------------------
 enforceRole(["admin", "manager", "support", "employee"], "login.html");
+updateTranslations();
 
 // -------------------------------------------------------------
 // 🔹 DOM Elemente
 // -------------------------------------------------------------
-const notifBell = document.getElementById("notifBell");
-const notifBadge = document.getElementById("notifBadge");
-const notifList = document.getElementById("notifList");
+const notifBell   = document.getElementById("notifBell");
+const notifBadge  = document.getElementById("notifBadge");
+const notifList   = document.getElementById("notifList");
 
 // -------------------------------------------------------------
-// 🔹 Notification erstellen (für System-Events)
+// 🔔 Notification erstellen (z. B. bei Systemereignissen)
 // -------------------------------------------------------------
 export async function createNotification(title, message, role = "all") {
   try {
     await addDoc(collection(db, "notifications"), {
       title,
       message,
-      role, // "admin", "manager", "support", "employee", "all"
+      role,
       readBy: [],
       createdAt: serverTimestamp()
     });
-
     console.log("🔔 Notification erstellt:", title);
-
   } catch (err) {
-    console.error("❌ Fehler beim Erstellen der Notification:", err);
+    console.error("❌ Fehler beim Erstellen:", err);
   }
 }
 
 // -------------------------------------------------------------
-// 🔹 Notifications laden
+// 📥 Notifications laden & anzeigen
 // -------------------------------------------------------------
 async function loadNotifications() {
   if (!notifList) return;
-
   const user = auth.currentUser;
   if (!user) return;
 
-  // Rolle abrufen
   const role = document.body.dataset.role || "guest";
-
   notifList.innerHTML = "";
 
-  const q = query(
-    collection(db, "notifications"),
-    orderBy("createdAt", "desc")
-  );
+  try {
+    const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
 
-  const snapshot = await getDocs(q);
+    let unreadCount = 0;
 
-  let unreadCount = 0;
+    snapshot.forEach(docSnap => {
+      const n = docSnap.data();
+      if (n.role !== "all" && n.role !== role) return;
 
-  snapshot.forEach(docSnap => {
-    const n = docSnap.data();
+      const isRead = n.readBy?.includes(user.uid);
+      if (!isRead) unreadCount++;
 
-    // Nur Notifications für diese Rolle anzeigen
-    if (n.role !== "all" && n.role !== role) return;
+      const item = document.createElement("div");
+      item.className = `notif-item ${isRead ? "read" : "unread"}`;
+      item.innerHTML = `
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-message">${n.message}</div>
+        <div class="notif-time">${formatTime(n.createdAt)}</div>
+        <button class="markReadBtn" data-id="${docSnap.id}">
+          <i class="fa-solid fa-check"></i> ${t("notifications.markRead")}
+        </button>
+        <button class="deleteNotifBtn btn btn-red" data-id="${docSnap.id}">
+          <i class="fa-solid fa-trash"></i> ${t("notifications.delete")}
+        </button>
+      `;
+      notifList.appendChild(item);
+    });
 
-    const isRead = n.readBy?.includes(user.uid);
-    if (!isRead) unreadCount++;
+    notifBadge.textContent = unreadCount > 0 ? unreadCount : "";
+    attachMarkReadHandler();
+    attachDeleteHandler();
 
-    const item = document.createElement("div");
-    item.className = `notif-item ${isRead ? "read" : "unread"}`;
-
-    item.innerHTML = `
-      <div class="notif-title">${n.title}</div>
-      <div class="notif-message">${n.message}</div>
-      <div class="notif-time">${formatTime(n.createdAt)}</div>
-
-      <button class="markReadBtn" data-id="${docSnap.id}">
-        <i class="fa-solid fa-check"></i> ${t("notifications.markRead")}
-      </button>
-
-      <button class="deleteNotifBtn btn btn-red" data-id="${docSnap.id}">
-        <i class="fa-solid fa-trash"></i> ${t("notifications.delete")}
-      </button>
-    `;
-
-    notifList.appendChild(item);
-  });
-
-  notifBadge.textContent = unreadCount > 0 ? unreadCount : "";
-  attachMarkReadHandler();
-  attachDeleteHandler();
+  } catch (err) {
+    console.error("❌ Fehler beim Laden der Notifications:", err);
+    showFeedback(t("errors.fail"), "error");
+  }
 }
 
 // -------------------------------------------------------------
-// 🔹 Zeitformat
+// 🕒 Zeitformat (CH)
 // -------------------------------------------------------------
 function formatTime(ts) {
-  if (!ts) return "-";
-  const date = ts.toDate();
-  return date.toLocaleString("de-CH");
+  if (!ts?.toDate) return "-";
+  return ts.toDate().toLocaleString("de-CH");
 }
-
 // -------------------------------------------------------------
-// 🔹 Notification als gelesen markieren
+// ✅ Notification als gelesen markieren
 // -------------------------------------------------------------
 function attachMarkReadHandler() {
   document.querySelectorAll(".markReadBtn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
       const user = auth.currentUser;
+      if (!user) return;
 
       try {
         const notifRef = doc(db, "notifications", id);
         const notifSnap = await getDocs(collection(db, "notifications"));
 
         let readBy = [];
-
         notifSnap.forEach(docSnap => {
           if (docSnap.id === id) {
             readBy = docSnap.data().readBy || [];
@@ -140,15 +132,14 @@ function attachMarkReadHandler() {
 
         if (!readBy.includes(user.uid)) {
           readBy.push(user.uid);
+          await updateDoc(notifRef, { readBy });
         }
-
-        await updateDoc(notifRef, { readBy });
 
         showFeedback(t("notifications.marked"), "success");
         loadNotifications();
 
       } catch (err) {
-        console.error("❌ Fehler beim Markieren:", err);
+        console.error("❌ Fehler beim Markieren als gelesen:", err);
         showFeedback(t("errors.fail"), "error");
       }
     });
@@ -156,43 +147,37 @@ function attachMarkReadHandler() {
 }
 
 // -------------------------------------------------------------
-// 🔹 Notification löschen (mit Bestätigung)
+// 🗑️ Notification löschen (mit Bestätigung)
 // -------------------------------------------------------------
 function attachDeleteHandler() {
   document.querySelectorAll(".deleteNotifBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
+      const confirmed = confirm(t("admin.confirm"));
 
-      showFeedback(t("admin.confirm"), "warning");
+      if (!confirmed) return;
 
-      btn.addEventListener(
-        "click",
-        async () => {
-          try {
-            await deleteDoc(doc(db, "notifications", id));
-            showFeedback(t("notifications.delete"), "success");
-            loadNotifications();
-
-          } catch (err) {
-            console.error("❌ Fehler beim Löschen:", err);
-            showFeedback(t("errors.fail"), "error");
-          }
-        },
-        { once: true }
-      );
+      try {
+        await deleteDoc(doc(db, "notifications", id));
+        showFeedback(t("notifications.delete"), "success");
+        loadNotifications();
+      } catch (err) {
+        console.error("❌ Fehler beim Löschen der Notification:", err);
+        showFeedback(t("errors.fail"), "error");
+      }
     });
   });
 }
 
 // -------------------------------------------------------------
-// 🔹 Glocke toggelt Dropdown
+// 🔔 Glocke toggelt Dropdown
 // -------------------------------------------------------------
 notifBell?.addEventListener("click", () => {
-  notifList.classList.toggle("open");
+  notifList?.classList.toggle("open");
 });
 
 // -------------------------------------------------------------
-// 🔹 Initial laden
+// 🚀 Initial laden & Auto-Refresh
 // -------------------------------------------------------------
 loadNotifications();
 setInterval(loadNotifications, 15000); // alle 15 Sekunden aktualisieren

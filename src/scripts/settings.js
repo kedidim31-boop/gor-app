@@ -1,10 +1,8 @@
-// src/scripts/settings.js – Benutzer- & System-Einstellungen (mehrsprachig + optimiert)
-
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
 import { showFeedback } from "./feedback.js";
 import { logout } from "./auth.js";
-import { t, setLanguage } from "./lang.js";
+import { t, setLanguage, updateTranslations } from "./lang.js";
 
 import {
   updatePassword,
@@ -22,9 +20,11 @@ import {
 const { auth, db } = initFirebase();
 
 // -------------------------------------------------------------
-// 🔹 Zugriff: Alle eingeloggten Rollen
+// 🔐 Zugriff & Sprache
 // -------------------------------------------------------------
 enforceRole(["admin", "manager", "support", "employee"], "login.html");
+updateTranslations();
+document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
 // -------------------------------------------------------------
 // 🔹 DOM Elemente
@@ -35,7 +35,7 @@ const languageSelect = document.getElementById("languageSelect");
 const themeSelect = document.getElementById("themeSelect");
 
 // -------------------------------------------------------------
-// 🔹 Benutzerprofil laden
+// 👤 Benutzerprofil laden
 // -------------------------------------------------------------
 async function loadProfile() {
   const user = auth.currentUser;
@@ -43,31 +43,25 @@ async function loadProfile() {
 
   try {
     const userDoc = await getDoc(doc(db, "employees", user.uid));
-
-    if (!userDoc.exists()) {
-      showFeedback(t("errors.load"), "error");
-      return;
-    }
+    if (!userDoc.exists()) throw new Error("Profil nicht gefunden");
 
     const data = userDoc.data();
-
     document.getElementById("profileName").value = data.name || "";
     document.getElementById("profileEmail").value = user.email || "";
     document.getElementById("profilePhone").value = data.phone || "";
     document.getElementById("profileRole").value = data.role || "guest";
 
   } catch (err) {
-    console.error("❌ Fehler beim Laden des Profils:", err);
+    console.error("❌ Profil konnte nicht geladen werden:", err);
     showFeedback(t("errors.load"), "error");
   }
 }
 
 // -------------------------------------------------------------
-// 🔹 Profil speichern
+// 💾 Profil speichern
 // -------------------------------------------------------------
 profileForm?.addEventListener("submit", async e => {
   e.preventDefault();
-
   const user = auth.currentUser;
   if (!user) return;
 
@@ -81,43 +75,29 @@ profileForm?.addEventListener("submit", async e => {
   }
 
   try {
-    // -------------------------------------------------------------
-    // 🔸 E-Mail ändern → Firebase verlangt Re-Auth
-    // -------------------------------------------------------------
     if (email !== user.email) {
       const currentPassword = prompt(t("settings.reauth"));
-      if (!currentPassword) {
-        showFeedback(t("errors.fail"), "error");
-        return;
-      }
+      if (!currentPassword) return;
 
       const credential = EmailAuthProvider.credential(user.email, currentPassword);
       await reauthenticateWithCredential(user, credential);
       await updateEmail(user, email);
     }
 
-    // -------------------------------------------------------------
-    // 🔸 Firestore Profil aktualisieren
-    // -------------------------------------------------------------
-    await updateDoc(doc(db, "employees", user.uid), {
-      name,
-      phone
-    });
-
+    await updateDoc(doc(db, "employees", user.uid), { name, phone });
     showFeedback(t("settings.saved"), "success");
 
   } catch (err) {
-    console.error("❌ Fehler beim Speichern des Profils:", err);
+    console.error("❌ Fehler beim Speichern:", err);
     showFeedback(t("errors.fail"), "error");
   }
 });
 
 // -------------------------------------------------------------
-// 🔹 Passwort ändern
+// 🔐 Passwort ändern
 // -------------------------------------------------------------
 passwordForm?.addEventListener("submit", async e => {
   e.preventDefault();
-
   const user = auth.currentUser;
   if (!user) return;
 
@@ -133,7 +113,6 @@ passwordForm?.addEventListener("submit", async e => {
     await updatePassword(user, newPass);
     showFeedback(t("settings.passUpdated"), "success");
     passwordForm.reset();
-
   } catch (err) {
     console.error("❌ Fehler beim Passwort ändern:", err);
     showFeedback(t("errors.fail"), "error");
@@ -141,31 +120,27 @@ passwordForm?.addEventListener("submit", async e => {
 });
 
 // -------------------------------------------------------------
-// 🔹 Sprache ändern (mit Persistenz)
+// 🌐 Sprache ändern
 // -------------------------------------------------------------
 languageSelect?.addEventListener("change", () => {
   const lang = languageSelect.value;
-
   setLanguage(lang);
   localStorage.setItem("gor-language", lang);
-
   showFeedback(t("settings.langChanged"), "success");
 });
 
 // -------------------------------------------------------------
-// 🔹 Theme ändern (Dark / Light / Neon) + Persistenz
+// 🎨 Theme ändern
 // -------------------------------------------------------------
 themeSelect?.addEventListener("change", () => {
   const theme = themeSelect.value;
-
   document.body.dataset.theme = theme;
   localStorage.setItem("gor-theme", theme);
-
   showFeedback(t("settings.themeChanged"), "success");
 });
 
 // -------------------------------------------------------------
-// 🔹 Theme & Sprache beim Laden setzen
+// 🚀 Gespeicherte Einstellungen anwenden
 // -------------------------------------------------------------
 (function applySavedSettings() {
   const savedLang = localStorage.getItem("gor-language");
@@ -183,11 +158,6 @@ themeSelect?.addEventListener("change", () => {
 })();
 
 // -------------------------------------------------------------
-// 🔹 Initial laden
+// 🚀 Initial laden
 // -------------------------------------------------------------
 loadProfile();
-
-// -------------------------------------------------------------
-// 🔹 Logout
-// -------------------------------------------------------------
-document.querySelector(".logout-btn")?.addEventListener("click", logout);

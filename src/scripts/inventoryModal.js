@@ -1,8 +1,10 @@
-// src/scripts/inventoryModal.js – Modal & Stock-Adjust Logik (mehrsprachig + optimiert)
+// ======================================================================
+// 🔥 INVENTORY MODAL – Sprachfähige Finalversion für Lageranpassung
+// ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
 import { showFeedback } from "./feedback.js";
-import { t } from "./lang.js";
+import { t, updateTranslations } from "./lang.js";
 
 import {
   doc,
@@ -18,22 +20,24 @@ const { auth, db } = initFirebase();
 // -------------------------------------------------------------
 // 🔹 DOM Elemente
 // -------------------------------------------------------------
-const modal = document.getElementById("adjustModal");
-const adjustForm = document.getElementById("adjustStockForm");
-const closeBtn = document.getElementById("closeAdjustModal");
+const modal        = document.getElementById("adjustModal");
+const adjustForm   = document.getElementById("adjustStockForm");
+const closeBtn     = document.getElementById("closeAdjustModal");
+const inputId      = document.getElementById("adjustProductId");
+const inputAmount  = document.getElementById("adjustAmount");
+const inputReason  = document.getElementById("adjustReason");
 
 // -------------------------------------------------------------
-// 🔹 Modal öffnen
+// 🔓 Modal öffnen
 // -------------------------------------------------------------
 export function openInventoryModal(productId) {
-  if (!modal) return;
-
-  document.getElementById("adjustProductId").value = productId;
+  if (!modal || !inputId) return;
+  inputId.value = productId;
   modal.classList.add("open");
 }
 
 // -------------------------------------------------------------
-// 🔹 Modal schließen
+// 🔒 Modal schließen
 // -------------------------------------------------------------
 function closeModal() {
   modal?.classList.remove("open");
@@ -41,18 +45,17 @@ function closeModal() {
 }
 
 closeBtn?.addEventListener("click", closeModal);
-
 // -------------------------------------------------------------
-// 🔹 Bestand speichern
+// 💾 Bestand speichern
 // -------------------------------------------------------------
 adjustForm?.addEventListener("submit", async e => {
   e.preventDefault();
 
-  const id = document.getElementById("adjustProductId").value;
-  const amount = parseInt(document.getElementById("adjustAmount").value);
-  const reason = document.getElementById("adjustReason").value.trim();
+  const id = inputId?.value;
+  const amount = parseInt(inputAmount?.value);
+  const reason = inputReason?.value.trim();
 
-  if (!amount) {
+  if (!id || isNaN(amount)) {
     showFeedback(t("errors.fail"), "error");
     return;
   }
@@ -82,12 +85,7 @@ adjustForm?.addEventListener("submit", async e => {
       createdAt: serverTimestamp()
     });
 
-    // Optional: Audit Log
-    // const adminId = auth.currentUser?.uid || "system";
-    // await addAuditLog(adminId, "adjust_stock", `ProductID: ${id}, Change: ${amount}`);
-
     showFeedback(t("inventory.updated"), "success");
-
     closeModal();
 
     // Event für inventory.js → Tabelle neu laden

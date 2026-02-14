@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Gaming of Republic – Admin Panel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Global Styles -->
-  <link rel="stylesheet" href="src/styles/theme.css">
-  <link rel="stylesheet" href="src/styles/adminPanel.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="src/styles/theme.css" />
+  <link rel="stylesheet" href="src/styles/adminPanel.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .language-dropdown {
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      background-color: #1a1a1a;
+      color: #fff;
+      border: 1px solid #444;
+      margin-left: auto;
+    }
+  </style>
 </head>
 
 <body>
-
-  <!-- FEEDBACK -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- BRANDING HEADER -->
+  <!-- HEADER -->
   <header class="branding-header glass-panel">
-    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo">
-
+    <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo" />
     <div class="branding-text">
       <div class="subtitle">
         <i class="fa-solid fa-user-shield"></i>
@@ -31,7 +36,7 @@
     </div>
   </header>
 
-  <!-- TOP NAVIGATION -->
+  <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
     <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
@@ -39,7 +44,14 @@
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
     <a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a>
+    <a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
     <a href="adminPanel.html" class="active"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
+
+    <select id="languageSelector" class="language-dropdown">
+      <option value="de">Deutsch</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
 
     <button class="btn btn-red logout-btn">
       <i class="fa-solid fa-right-from-bracket"></i>
@@ -47,29 +59,20 @@
     </button>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main>
-
     <!-- CREATE USER -->
     <section class="card glass-panel">
       <h2><i class="fa-solid fa-user-plus"></i> <span data-i18n="admin.newUser">Neuen Benutzer anlegen</span></h2>
-
       <form id="createUserForm" class="form-grid">
-
         <label class="icon-input">
           <i class="fa-solid fa-envelope"></i>
-          <input type="email" id="newEmail" required
-                 placeholder="name@example.com"
-                 data-i18n-placeholder="admin.email">
+          <input type="email" id="newEmail" required placeholder="name@example.com" data-i18n-placeholder="admin.email" />
         </label>
-
         <label class="icon-input">
           <i class="fa-solid fa-lock"></i>
-          <input type="password" id="newPassword" required
-                 placeholder="••••••••"
-                 data-i18n-placeholder="admin.password">
+          <input type="password" id="newPassword" required placeholder="••••••••" data-i18n-placeholder="admin.password" />
         </label>
-
         <label class="icon-input">
           <i class="fa-solid fa-user-tag"></i>
           <select id="newRole" required>
@@ -80,29 +83,18 @@
             <option value="guest" data-i18n="employees.roleGuest">Gast</option>
           </select>
         </label>
-
         <button type="submit" class="btn btn-yellow full-width">
-          <i class="fa-solid fa-save"></i>
-          <span data-i18n="admin.createUser">Benutzer erstellen</span>
+          <i class="fa-solid fa-save"></i> <span data-i18n="admin.createUser">Benutzer erstellen</span>
         </button>
-
       </form>
     </section>
+
     <!-- MITARBEITERVERWALTUNG -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-users-gear"></i>
-        <span data-i18n="admin.manageEmployees">Mitarbeiterverwaltung</span>
-      </h2>
-
-      <!-- Suchfeld -->
+      <h2><i class="fa-solid fa-users-gear"></i> <span data-i18n="admin.manageEmployees">Mitarbeiterverwaltung</span></h2>
       <div class="employee-search">
-        <input type="text"
-               id="employeeSearch"
-               placeholder="Suche nach Name / E-Mail / Rolle …"
-               data-i18n-placeholder="admin.searchEmployees">
+        <input type="text" id="employeeSearch" placeholder="Suche nach Name / E-Mail / Rolle …" data-i18n-placeholder="admin.searchEmployees" />
       </div>
-
       <table id="adminEmployeeTable" class="neon-table">
         <thead>
           <tr>
@@ -121,23 +113,13 @@
 
     <!-- AUDIT LOG -->
     <section class="card glass-panel">
-      <h2>
-        <i class="fa-solid fa-clipboard-list"></i>
-        <span data-i18n="admin.auditLog">Audit Log</span>
-      </h2>
-
+      <h2><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="admin.auditLog">Audit Log</span></h2>
       <div class="audit-controls flex-between">
-        <input type="text"
-               id="auditSearch"
-               placeholder="Suche nach Benutzer / Aktion …"
-               data-i18n-placeholder="admin.searchAudit">
-
+        <input type="text" id="auditSearch" placeholder="Suche nach Benutzer / Aktion …" data-i18n-placeholder="admin.searchAudit" />
         <button id="refreshAudit" class="btn btn-yellow">
-          <i class="fa-solid fa-rotate"></i>
-          <span data-i18n="admin.refresh">Aktualisieren</span>
+          <i class="fa-solid fa-rotate"></i> <span data-i18n="admin.refresh">Aktualisieren</span>
         </button>
       </div>
-
       <table id="auditTable" class="neon-table">
         <thead>
           <tr>
@@ -152,9 +134,7 @@
         </tbody>
       </table>
     </section>
-
   </main>
-
   <!-- ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
@@ -164,5 +144,39 @@
   <!-- ADMIN PANEL LOGIK -->
   <script type="module" src="src/scripts/adminPanel.js"></script>
 
+  <!-- SPRACHLOGIK -->
+  <script type="module">
+    import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+
+    const userRole = sessionStorage.getItem("role");
+    if (userRole) {
+      switch (userRole) {
+        case "support": setLang("fr"); break;
+        case "admin": setLang("en"); break;
+        default: setLang("de");
+      }
+    }
+
+    updateTranslations();
+
+    const langSelector = document.getElementById("languageSelector");
+    if (langSelector) {
+      langSelector.value = getLang();
+      langSelector.addEventListener("change", (e) => {
+        const lang = e.target.value;
+        setLang(lang);
+        updateTranslations();
+        saveLanguageToServer(lang);
+      });
+    }
+
+    function saveLanguageToServer(langCode) {
+      fetch("/api/user/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: langCode })
+      }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
+    }
+  </script>
 </body>
 </html>

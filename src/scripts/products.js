@@ -1,5 +1,5 @@
 // ======================================================================
-// 🔥 PRODUCTS – Sprachfähige Finalversion mit Modal & CSV-Export
+// 🔥 PRODUCTS – Sprachfähige Finalversion mit Formular, Tabelle & CSV
 // ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
@@ -21,10 +21,11 @@ import {
 const { auth, db } = initFirebase();
 
 // -------------------------------------------------------------
-// 🔐 Zugriff für Admin, Manager, Support
+// 🔐 Zugriff & Sprache
 // -------------------------------------------------------------
 enforceRole(["admin", "manager", "support"], "login.html");
 updateTranslations();
+document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
 // -------------------------------------------------------------
 // 🔹 DOM Elemente
@@ -34,7 +35,7 @@ const tableBody = document.querySelector("#productTable tbody");
 const exportBtn = document.getElementById("exportBtn");
 
 // -------------------------------------------------------------
-// 💰 Schweizer Preisformat
+// 💰 Preisformat (CH)
 // -------------------------------------------------------------
 function formatPriceCH(value) {
   return Number(value).toLocaleString("de-CH", {
@@ -44,7 +45,7 @@ function formatPriceCH(value) {
 }
 
 // -------------------------------------------------------------
-// 🆔 Auto-SKU generieren
+// 🆔 SKU generieren
 // -------------------------------------------------------------
 function generateSKU() {
   return "SKU-" + Math.floor(100000 + Math.random() * 900000);
@@ -56,12 +57,12 @@ function generateSKU() {
 form?.addEventListener("submit", async e => {
   e.preventDefault();
 
-  let sku = document.getElementById("productSKU").value.trim();
-  if (!sku) sku = generateSKU();
+  const skuInput = document.getElementById("productSKU");
+  const sku = skuInput.value.trim() || generateSKU();
 
   const product = {
     name: document.getElementById("productName").value.trim(),
-    description: document.getElementById("productDescription").value.trim() || "",
+    description: document.getElementById("productDescription").value.trim(),
     type: document.getElementById("productType").value.trim(),
     vendor: document.getElementById("productVendor").value.trim(),
     collections: document.getElementById("productCollections").value.trim(),
@@ -79,7 +80,7 @@ form?.addEventListener("submit", async e => {
 
   try {
     const ref = await addDoc(collection(db, "products"), product);
-    await addAuditLog(auth.currentUser.email, "product_create", `Produkt: ${ref.id}`);
+    await addAuditLog(auth.currentUser?.email, "product_create", `Produkt: ${ref.id}`);
     form.reset();
     await loadProducts();
     showFeedback(t("products.saved"), "success");
@@ -88,30 +89,30 @@ form?.addEventListener("submit", async e => {
     showFeedback(t("errors.fail"), "error");
   }
 });
+
 // -------------------------------------------------------------
 // 📦 Produkte laden
 // -------------------------------------------------------------
 async function loadProducts() {
   if (!tableBody) return;
-
   tableBody.innerHTML = "";
-  const snapshot = await getDocs(collection(db, "products"));
 
+  const snapshot = await getDocs(collection(db, "products"));
   snapshot.forEach(docSnap => {
-    const data = docSnap.data();
+    const p = docSnap.data();
     const id = docSnap.id;
 
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${data.name || "-"}</td>
-      <td>${data.description || "-"}</td>
-      <td>${data.type || "-"}</td>
-      <td>${data.vendor || "-"}</td>
-      <td>${data.collections || "-"}</td>
-      <td>${data.sku || "-"}</td>
-      <td>${data.ean || "-"}</td>
-      <td>${data.stock ?? 0}</td>
-      <td><i class="fa-solid fa-money-bill-wave"></i> ${formatPriceCH(data.price || 0)} CHF</td>
+      <td>${p.name || "-"}</td>
+      <td>${p.description || "-"}</td>
+      <td>${p.type || "-"}</td>
+      <td>${p.vendor || "-"}</td>
+      <td>${p.collections || "-"}</td>
+      <td>${p.sku || "-"}</td>
+      <td>${p.ean || "-"}</td>
+      <td>${p.stock ?? 0}</td>
+      <td><i class="fa-solid fa-money-bill-wave"></i> ${formatPriceCH(p.price || 0)} CHF</td>
       <td>
         <button class="deleteBtn btn btn-red" data-id="${id}">
           <i class="fa-solid fa-trash"></i> ${t("products.delete")}
@@ -125,55 +126,40 @@ async function loadProducts() {
 }
 
 // -------------------------------------------------------------
-// 🗑️ Löschen mit Modal-Bestätigung
+// 🗑️ Produkt löschen
 // -------------------------------------------------------------
 function attachDeleteHandler() {
-  const modal = document.getElementById("confirmModal");
-  const confirmYes = document.getElementById("confirmYes");
-  const confirmNo = document.getElementById("confirmNo");
-
   document.querySelectorAll(".deleteBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
-      modal.classList.remove("hidden");
+      const confirmed = confirm(t("admin.confirm"));
+      if (!confirmed) return;
 
-      const onConfirm = async () => {
-        try {
-          await deleteDoc(doc(db, "products", id));
-          await addAuditLog(auth.currentUser.email, "product_delete", `Produkt: ${id}`);
-          showFeedback(t("products.delete"), "success");
-          await loadProducts();
-        } catch (err) {
-          console.error("❌ Fehler beim Löschen:", err);
-          showFeedback(t("errors.fail"), "error");
-        } finally {
-          modal.classList.add("hidden");
-          confirmYes.removeEventListener("click", onConfirm);
-        }
-      };
-
-      confirmYes.addEventListener("click", onConfirm, { once: true });
-      confirmNo.addEventListener("click", () => modal.classList.add("hidden"), { once: true });
+      try {
+        await deleteDoc(doc(db, "products", id));
+        await addAuditLog(auth.currentUser?.email, "product_delete", `Produkt: ${id}`);
+        showFeedback(t("products.delete"), "success");
+        await loadProducts();
+      } catch (err) {
+        console.error("❌ Fehler beim Löschen:", err);
+        showFeedback(t("errors.fail"), "error");
+      }
     });
   });
 }
+
 // -------------------------------------------------------------
-// 📤 Shopify-kompatibler CSV-Export
+// 📤 CSV-Export für Shopify
 // -------------------------------------------------------------
 exportBtn?.addEventListener("click", async () => {
   try {
     const snapshot = await getDocs(collection(db, "products"));
-
     let csv =
       "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
 
     snapshot.forEach(docSnap => {
       const p = docSnap.data();
-
-      const handle = (p.name || "")
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9-]/g, "");
+      const handle = (p.name || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 
       const row = [
         handle,
@@ -200,15 +186,10 @@ exportBtn?.addEventListener("click", async () => {
 
     showFeedback(t("feedback.ok"), "success");
   } catch (err) {
-    console.error("❌ Fehler beim CSV-Export:", err);
+    console.error("❌ Fehler beim Export:", err);
     showFeedback(t("errors.fail"), "error");
   }
 });
-
-// -------------------------------------------------------------
-// 🚪 Logout
-// -------------------------------------------------------------
-document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
 // -------------------------------------------------------------
 // 🚀 Initial laden

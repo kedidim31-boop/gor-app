@@ -66,6 +66,7 @@ form?.addEventListener("submit", async e => {
     type: document.getElementById("productType").value.trim(),
     vendor: document.getElementById("productVendor").value.trim(),
     collections: document.getElementById("productCollections").value.trim(),
+    tags: document.getElementById("productTags").value.trim(), // ✅ NEU: Tags-Feld
     sku,
     ean: document.getElementById("productEAN").value.trim(),
     stock: parseInt(document.getElementById("productStock").value) || 0,
@@ -167,7 +168,7 @@ exportBtn?.addEventListener("click", async () => {
         `"${p.description || ""}"`,
         `"${p.vendor || ""}"`,
         `"${p.type || ""}"`,
-        `"${p.collections || ""}"`,
+        `"${p.tags || ""}"`, // ✅ Tags korrekt exportieren
         "TRUE",
         p.sku || "",
         p.ean || "",

@@ -225,3 +225,50 @@ function attachDeleteHandler() {
     });
   });
 }
+// -------------------------------------------------------------
+// 📤 CSV-Export für Shopify
+// -------------------------------------------------------------
+exportBtn?.addEventListener("click", async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "products"));
+    let csv =
+      "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
+
+    snapshot.forEach(docSnap => {
+      const p = docSnap.data();
+      const handle = (p.name || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+
+      const row = [
+        handle,
+        `"${p.name || ""}"`,
+        `"${p.description || ""}"`,
+        `"${p.vendor || ""}"`,
+        `"${p.type || ""}"`,
+        `"${p.tags || ""}"`,
+        "TRUE",
+        p.sku || "",
+        p.ean || "",
+        p.stock ?? 0,
+        p.price || 0
+      ].join(",");
+
+      csv += row + "\n";
+    });
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "shopify_products.csv";
+    link.click();
+
+    showFeedback(t("feedback.ok"), "success");
+  } catch (err) {
+    console.error("❌ Fehler beim Export:", err);
+    showFeedback(t("errors.fail"), "error");
+  }
+});
+
+// -------------------------------------------------------------
+// 🚀 Initial laden
+// -------------------------------------------------------------
+loadProducts();

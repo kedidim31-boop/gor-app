@@ -112,7 +112,13 @@ export const LANG = {
       export: "Exportieren für Shopify",
       delete: "Löschen",
       actions: "Aktionen",
-      deleteAll: "Alles löschen"
+      deleteAll: "Alles löschen",
+      confirmDelete: "Möchtest du dieses Produkt wirklich löschen?",
+      confirmYes: "Ja, löschen",
+      confirmNo: "Abbrechen",
+      cancel: "Abbrechen",
+      saved: "Produkt gespeichert.",
+      edit: "Bearbeiten"
     }
   },
   en: {
@@ -228,11 +234,138 @@ export const LANG = {
       export: "Export for Shopify",
       delete: "Delete",
       actions: "Actions",
-      deleteAll: "Delete all"
+      deleteAll: "Delete all",
+      confirmDelete: "Do you really want to delete this product?",
+      confirmYes: "Yes, delete",
+      confirmNo: "Cancel",
+      cancel: "Cancel",
+      saved: "Product saved.",
+      edit: "Edit"
+    }
+  },
+  fr: {
+    languageName: "Français",
+    system: {
+      ready: "C’est parti.",
+      saved: "Enregistré.",
+      error: "Oups… une erreur est survenue.",
+      loading: "Chargement…",
+      noData: "Aucune donnée trouvée."
+    },
+    auth: {
+      login: "Connexion",
+      email: "E‑mail",
+      password: "Mot de passe",
+      in: "Connexion réussie.",
+      out: "Déconnexion réussie.",
+      disabled: "Votre compte est désactivé.",
+      skip: "Passer l’intro"
+    },
+    nav: {
+      dashboard: "Tableau de bord",
+      analysis: "Vue d’ensemble",
+      employees: "Employés",
+      products: "Produits",
+      tasks: "Tâches",
+      time: "Temps",
+      support: "Support",
+      admin: "Panneau d’administration",
+      logout: "Déconnexion"
+    },
+    roles: {
+      admin: "Administrateur",
+      manager: "Manager",
+      support: "Support",
+      employee: "Employé",
+      guest: "Invité"
+    },
+    admin: {
+      createUser: "Créer un nouvel utilisateur",
+      deleteUser: "Supprimer l’utilisateur",
+      changeRole: "Changer le rôle",
+      saved: "Enregistré.",
+      confirm: "Êtes-vous sûr ?",
+      emailInUse: "Cet e‑mail est déjà utilisé.",
+      invalidEmail: "Adresse e‑mail invalide.",
+      weakPassword: "Mot de passe trop faible.",
+      auditLog: "Journal d’audit",
+      refresh: "Rafraîchir",
+      searchAudit: "Rechercher dans le journal…"
+    },
+    dashboard: {
+      overview: "Vue d’ensemble",
+      analysis: "Vue d’ensemble",
+      totalProducts: "Total produits",
+      totalEmployees: "Total employés",
+      totalTasks: "Total tâches",
+      totalHours: "Total heures",
+      totalTickets: "Total tickets",
+      quickLinks: "Accès rapide",
+      quickProducts: "Gérez vos produits et stocks.",
+      quickTasks: "Organisez vos tâches et votre équipe.",
+      quickTime: "Suivez vos heures de travail.",
+      quickEmployees: "Gérez les données de votre équipe.",
+      quickSupport: "Gérez les tickets de support.",
+      quickAdmin: "Gérez les utilisateurs et les rôles.",
+      openProducts: "Ouvrir la gestion des produits",
+      openTasks: "Ouvrir la gestion des tâches",
+      openTime: "Ouvrir le suivi du temps",
+      openEmployees: "Ouvrir la gestion des employés",
+      openSupport: "Ouvrir le support",
+      openAdmin: "Ouvrir le panneau d’administration"
+    },
+    employees: {
+      title: "Gestion des employés",
+      new: "Ajouter un nouvel employé",
+      overview: "Aperçu des employés",
+      number: "Numéro",
+      name: "Nom",
+      email: "E‑mail",
+      phone: "Téléphone",
+      address: "Adresse",
+      birthday: "Date de naissance",
+      id: "ID employé",
+      role: "Rôle",
+      status: "Statut",
+      save: "Enregistrer l’employé",
+      actions: "Actions",
+      delete: "Supprimer",
+      edit: "Modifier",
+      disable: "Désactiver",
+      enable: "Activer",
+      disabled: "Désactivé",
+      enabled: "Actif",
+      active: "Actif"
+    },
+    products: {
+      title: "Gestion des produits",
+      add: "Ajouter un nouveau produit",
+      overview: "Aperçu des produits",
+      name: "Nom du produit",
+      description: "Description",
+      type: "Type",
+      vendor: "Fournisseur",
+      collections: "Collections",
+      sku: "SKU",
+      ean: "EAN",
+      stock: "Stock",
+      price: "Prix (CHF)",
+      category: "Catégorie",
+      updateStock: "Mettre à jour le stock",
+      save: "Enregistrer",
+      export: "Exporter pour Shopify",
+      delete: "Supprimer",
+      actions: "Actions",
+      deleteAll: "Tout supprimer",
+      confirmDelete: "Voulez-vous vraiment supprimer ce produit ?",
+      confirmYes: "Oui, supprimer",
+      confirmNo: "Annuler",
+      cancel: "Annuler",
+      saved: "Produit enregistré.",
+      edit: "Modifier"
     }
   }
 };
-
 // ======================================================================
 // 🔧 Sprachsteuerung
 // ======================================================================

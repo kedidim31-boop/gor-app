@@ -1,5 +1,5 @@
 // ======================================================================
-// 🔥 PRODUCTS – Sprachfähige Finalversion mit Formular, Tabelle & CSV
+// 🔥 PRODUCTS – Finalversion mit Bearbeiten, Modal & Shopify-Export
 // ======================================================================
 
 import { initFirebase } from "./firebaseSetup.js";
@@ -13,6 +13,7 @@ import {
   collection,
   addDoc,
   getDocs,
+  setDoc,
   deleteDoc,
   doc,
   serverTimestamp
@@ -33,6 +34,22 @@ document.querySelector(".logout-btn")?.addEventListener("click", logout);
 const form = document.getElementById("createProductForm");
 const tableBody = document.querySelector("#productTable tbody");
 const exportBtn = document.getElementById("exportBtn");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+const formTitle = document.getElementById("formTitle");
+
+const productName = document.getElementById("productName");
+const productDescription = document.getElementById("productDescription");
+const productType = document.getElementById("productType");
+const productVendor = document.getElementById("productVendor");
+const productCollections = document.getElementById("productCollections");
+const productTags = document.getElementById("productTags");
+const productSKU = document.getElementById("productSKU");
+const productEAN = document.getElementById("productEAN");
+const productStock = document.getElementById("productStock");
+const productPrice = document.getElementById("productPrice");
+
+let editMode = false;
+let editProductId = null;
 
 // -------------------------------------------------------------
 // 💰 Preisformat (CH)
@@ -52,26 +69,25 @@ function generateSKU() {
 }
 
 // -------------------------------------------------------------
-// ➕ Produkt hinzufügen
+// ➕ Produkt hinzufügen oder bearbeiten
 // -------------------------------------------------------------
 form?.addEventListener("submit", async e => {
   e.preventDefault();
 
-  const skuInput = document.getElementById("productSKU");
-  const sku = skuInput.value.trim() || generateSKU();
+  const sku = productSKU.value.trim() || generateSKU();
 
   const product = {
-    name: document.getElementById("productName").value.trim(),
-    description: document.getElementById("productDescription").value.trim(),
-    type: document.getElementById("productType").value.trim(),
-    vendor: document.getElementById("productVendor").value.trim(),
-    collections: document.getElementById("productCollections").value.trim(),
-    tags: document.getElementById("productTags").value.trim(), // ✅ NEU: Tags-Feld
+    name: productName.value.trim(),
+    description: productDescription.value.trim(),
+    type: productType.value.trim(),
+    vendor: productVendor.value.trim(),
+    collections: productCollections.value.trim(),
+    tags: productTags.value.trim(),
     sku,
-    ean: document.getElementById("productEAN").value.trim(),
-    stock: parseInt(document.getElementById("productStock").value) || 0,
-    price: parseFloat(document.getElementById("productPrice").value) || 0,
-    createdAt: serverTimestamp()
+    ean: productEAN.value.trim(),
+    stock: parseInt(productStock.value) || 0,
+    price: parseFloat(productPrice.value) || 0,
+    updatedAt: serverTimestamp()
   };
 
   if (!product.name || !product.type || !product.vendor) {
@@ -80,15 +96,37 @@ form?.addEventListener("submit", async e => {
   }
 
   try {
-    const ref = await addDoc(collection(db, "products"), product);
-    await addAuditLog(auth.currentUser?.email, "product_create", `Produkt: ${ref.id}`);
+    if (editMode && editProductId) {
+      await setDoc(doc(db, "products", editProductId), product, { merge: true });
+      await addAuditLog(auth.currentUser?.email, "product_update", `Produkt: ${editProductId}`);
+      showFeedback(t("products.updated"), "success");
+    } else {
+      product.createdAt = serverTimestamp();
+      const ref = await addDoc(collection(db, "products"), product);
+      await addAuditLog(auth.currentUser?.email, "product_create", `Produkt: ${ref.id}`);
+      showFeedback(t("products.saved"), "success");
+    }
+
     form.reset();
+    editMode = false;
+    editProductId = null;
+    formTitle.textContent = t("products.add");
+    cancelEditBtn.classList.add("hidden");
     await loadProducts();
-    showFeedback(t("products.saved"), "success");
   } catch (err) {
     console.error("❌ Fehler beim Speichern:", err);
     showFeedback(t("errors.fail"), "error");
   }
+});
+// -------------------------------------------------------------
+// ❌ Bearbeiten abbrechen
+// -------------------------------------------------------------
+cancelEditBtn?.addEventListener("click", () => {
+  form.reset();
+  editMode = false;
+  editProductId = null;
+  formTitle.textContent = t("products.add");
+  cancelEditBtn.classList.add("hidden");
 });
 
 // -------------------------------------------------------------
@@ -115,6 +153,9 @@ async function loadProducts() {
       <td>${p.stock ?? 0}</td>
       <td><i class="fa-solid fa-money-bill-wave"></i> ${formatPriceCH(p.price || 0)} CHF</td>
       <td>
+        <button class="editBtn btn btn-blue" data-id="${id}" data-json='${JSON.stringify(p)}'>
+          <i class="fa-solid fa-pen"></i> ${t("products.edit")}
+        </button>
         <button class="deleteBtn btn btn-red" data-id="${id}">
           <i class="fa-solid fa-trash"></i> ${t("products.delete")}
         </button>
@@ -123,76 +164,64 @@ async function loadProducts() {
     tableBody.appendChild(row);
   });
 
+  attachEditHandler();
   attachDeleteHandler();
 }
-
 // -------------------------------------------------------------
-// 🗑️ Produkt löschen
+// ✏️ Produkt bearbeiten
 // -------------------------------------------------------------
-function attachDeleteHandler() {
-  document.querySelectorAll(".deleteBtn").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.dataset.id;
-      const confirmed = confirm(t("admin.confirm"));
-      if (!confirmed) return;
+function attachEditHandler() {
+  document.querySelectorAll(".editBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const data = JSON.parse(btn.dataset.json);
+      editProductId = btn.dataset.id;
+      editMode = true;
 
-      try {
-        await deleteDoc(doc(db, "products", id));
-        await addAuditLog(auth.currentUser?.email, "product_delete", `Produkt: ${id}`);
-        showFeedback(t("products.delete"), "success");
-        await loadProducts();
-      } catch (err) {
-        console.error("❌ Fehler beim Löschen:", err);
-        showFeedback(t("errors.fail"), "error");
-      }
+      productName.value = data.name || "";
+      productDescription.value = data.description || "";
+      productType.value = data.type || "";
+      productVendor.value = data.vendor || "";
+      productCollections.value = data.collections || "";
+      productTags.value = data.tags || "";
+      productSKU.value = data.sku || "";
+      productEAN.value = data.ean || "";
+      productStock.value = data.stock ?? 0;
+      productPrice.value = data.price ?? 0;
+
+      formTitle.textContent = t("products.edit");
+      cancelEditBtn.classList.remove("hidden");
     });
   });
 }
 
 // -------------------------------------------------------------
-// 📤 CSV-Export für Shopify
+// 🗑️ Produkt löschen mit Modal
 // -------------------------------------------------------------
-exportBtn?.addEventListener("click", async () => {
-  try {
-    const snapshot = await getDocs(collection(db, "products"));
-    let csv =
-      "Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Barcode,Variant Inventory Qty,Variant Price\n";
+function attachDeleteHandler() {
+  const modal = document.getElementById("confirmModal");
+  const confirmYes = document.getElementById("confirmYes");
+  const confirmNo = document.getElementById("confirmNo");
 
-    snapshot.forEach(docSnap => {
-      const p = docSnap.data();
-      const handle = (p.name || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+  document.querySelectorAll(".deleteBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      modal.showModal();
 
-      const row = [
-        handle,
-        `"${p.name || ""}"`,
-        `"${p.description || ""}"`,
-        `"${p.vendor || ""}"`,
-        `"${p.type || ""}"`,
-        `"${p.tags || ""}"`, // ✅ Tags korrekt exportieren
-        "TRUE",
-        p.sku || "",
-        p.ean || "",
-        p.stock ?? 0,
-        p.price || 0
-      ].join(",");
+      confirmYes.onclick = async () => {
+        try {
+          await deleteDoc(doc(db, "products", id));
+          await addAuditLog(auth.currentUser?.email, "product_delete", `Produkt: ${id}`);
+          showFeedback(t("products.delete"), "success");
+          await loadProducts();
+        } catch (err) {
+          console.error("❌ Fehler beim Löschen:", err);
+          showFeedback(t("errors.fail"), "error");
+        } finally {
+          modal.close();
+        }
+      };
 
-      csv += row + "\n";
+      confirmNo.onclick = () => modal.close();
     });
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "shopify_products.csv";
-    link.click();
-
-    showFeedback(t("feedback.ok"), "success");
-  } catch (err) {
-    console.error("❌ Fehler beim Export:", err);
-    showFeedback(t("errors.fail"), "error");
-  }
-});
-
-// -------------------------------------------------------------
-// 🚀 Initial laden
-// -------------------------------------------------------------
-loadProducts();
+  });
+}

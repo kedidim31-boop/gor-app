@@ -30,6 +30,34 @@
       justify-content: space-between;
       margin-top: 1rem;
     }
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 1rem;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+    }
+    .nav-links a.active {
+      background-color: #444;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
   </style>
 </head>
 
@@ -49,10 +77,27 @@
 
   <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
-    <!-- Navigation wie gehabt -->
-    <!-- ... -->
+    <ul class="nav-links">
+      <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.dashboard">Dashboard</span></a></li>
+      <li><a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a></li>
+      <li><a href="products.html" class="active"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a></li>
+      <li><a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a></li>
+      <li><a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a></li>
+      <li><a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a></li>
+      <li><a href="admin.html"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a></li>
+    </ul>
+    <div class="nav-actions">
+      <select id="languageSelector" class="language-dropdown">
+        <option value="de">Deutsch</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+      <button class="btn btn-grey logout-btn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span data-i18n="nav.logout">Logout</span>
+      </button>
+    </div>
   </nav>
-
   <!-- MAIN -->
   <main>
     <!-- PRODUKT ANLEGEN / BEARBEITEN -->
@@ -139,6 +184,7 @@
   <!-- SPRACHLOGIK -->
   <script type="module">
     import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+    import { logout } from "./src/scripts/auth.js";
 
     const userRole = sessionStorage.getItem("role");
     if (userRole) {
@@ -169,6 +215,8 @@
         body: JSON.stringify({ language: langCode })
       }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
     }
+
+    document.querySelector(".logout-btn")?.addEventListener("click", logout);
   </script>
 </body>
 </html>

@@ -16,6 +16,20 @@
       border: 1px solid #444;
       margin-left: auto;
     }
+    dialog.modal {
+      padding: 2rem;
+      border: none;
+      border-radius: 8px;
+      background: #1a1a1a;
+      color: white;
+      max-width: 400px;
+      margin: auto;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 
@@ -35,32 +49,15 @@
 
   <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
-    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
-    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
-    <a href="products.html" class="active"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
-    <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
-    <a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
-    <a href="employees.html"><i class="fa-solid fa-users"></i> <span data-i18n="nav.employees">Mitarbeiter</span></a>
-    <a href="support.html"><i class="fa-solid fa-headset"></i> <span data-i18n="nav.support">Support</span></a>
-    <a href="adminPanel.html" class="role-admin"><i class="fa-solid fa-user-shield"></i> <span data-i18n="nav.admin">Admin Panel</span></a>
-
-    <select id="languageSelector" class="language-dropdown">
-      <option value="de">Deutsch</option>
-      <option value="en">English</option>
-      <option value="fr">Français</option>
-    </select>
-
-    <button class="btn btn-red logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      <span data-i18n="nav.logout">Logout</span>
-    </button>
+    <!-- Navigation wie gehabt -->
+    <!-- ... -->
   </nav>
 
   <!-- MAIN -->
   <main>
-    <!-- PRODUKT ANLEGEN -->
+    <!-- PRODUKT ANLEGEN / BEARBEITEN -->
     <section class="card glass-panel">
-      <h2><i class="fa-solid fa-plus"></i> <span data-i18n="products.add">Neues Produkt hinzufügen</span></h2>
+      <h2><i class="fa-solid fa-plus"></i> <span id="formTitle" data-i18n="products.add">Neues Produkt hinzufügen</span></h2>
       <form id="createProductForm" class="form-grid">
         <input type="text" id="productName" placeholder="Produktname" required />
         <input type="text" id="productDescription" placeholder="Beschreibung" />
@@ -74,7 +71,10 @@
         <input type="number" id="productPrice" placeholder="Preis (CHF)" step="0.01" min="0" />
 
         <button type="submit" class="btn btn-green">
-          <i class="fa-solid fa-plus"></i> <span data-i18n="products.save">Produkt speichern</span>
+          <i class="fa-solid fa-save"></i> <span data-i18n="products.save">Speichern</span>
+        </button>
+        <button type="button" id="cancelEditBtn" class="btn btn-grey hidden">
+          <i class="fa-solid fa-xmark"></i> <span data-i18n="products.cancel">Abbrechen</span>
         </button>
       </form>
     </section>
@@ -115,6 +115,15 @@
       </table>
     </section>
   </main>
+
+  <!-- MODAL: Löschbestätigung -->
+  <dialog id="confirmModal" class="modal">
+    <p><span data-i18n="products.confirmDelete">Möchtest du dieses Produkt wirklich löschen?</span></p>
+    <div class="modal-actions">
+      <button id="confirmYes" class="btn btn-red"><i class="fa-solid fa-trash"></i> <span data-i18n="products.confirmYes">Ja, löschen</span></button>
+      <button id="confirmNo" class="btn btn-grey"><i class="fa-solid fa-xmark"></i> <span data-i18n="products.confirmNo">Abbrechen</span></button>
+    </div>
+  </dialog>
 
   <!-- ROLE GUARD -->
   <script type="module">

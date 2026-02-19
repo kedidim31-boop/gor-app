@@ -68,6 +68,76 @@ function formatPriceCH(value) {
 function generateSKU() {
   return "SKU-" + Math.floor(100000 + Math.random() * 900000);
 }
+// ======================================================================
+// 🔥 PRODUCTS – Finalversion mit Bearbeiten, Modal & Shopify-Export
+// ======================================================================
+
+import { initFirebase } from "./firebaseSetup.js";
+import { enforceRole } from "./roleGuard.js";
+import { logout } from "./auth.js";
+import { showFeedback } from "./feedback.js";
+import { addAuditLog } from "./auditHandler.js";
+import { t, updateTranslations } from "./lang.js";
+
+import {
+  collection,
+  addDoc,
+  getDocs,
+  setDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+const { auth, db } = initFirebase();
+
+// -------------------------------------------------------------
+// 🔐 Zugriff & Sprache
+// -------------------------------------------------------------
+enforceRole(["admin", "manager", "support"], "login.html");
+updateTranslations();
+document.querySelector(".logout-btn")?.addEventListener("click", logout);
+
+// -------------------------------------------------------------
+// 🔹 DOM Elemente
+// -------------------------------------------------------------
+const form = document.getElementById("createProductForm");
+const tableBody = document.querySelector("#productTable tbody");
+const exportBtn = document.getElementById("exportBtn");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+const deleteAllBtn = document.getElementById("deleteAllProductsBtn");
+const formTitle = document.getElementById("formTitle");
+
+const productName = document.getElementById("productName");
+const productDescription = document.getElementById("productDescription");
+const productType = document.getElementById("productType");
+const productVendor = document.getElementById("productVendor");
+const productCollections = document.getElementById("productCollections");
+const productTags = document.getElementById("productTags");
+const productSKU = document.getElementById("productSKU");
+const productEAN = document.getElementById("productEAN");
+const productStock = document.getElementById("productStock");
+const productPrice = document.getElementById("productPrice");
+
+let editMode = false;
+let editProductId = null;
+
+// -------------------------------------------------------------
+// 💰 Preisformat (CH)
+// -------------------------------------------------------------
+function formatPriceCH(value) {
+  return Number(value).toLocaleString("de-CH", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+// -------------------------------------------------------------
+// 🆔 SKU generieren
+// -------------------------------------------------------------
+function generateSKU() {
+  return "SKU-" + Math.floor(100000 + Math.random() * 900000);
+}
 
 // -------------------------------------------------------------
 // ➕ Produkt hinzufügen oder bearbeiten

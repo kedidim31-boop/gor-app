@@ -35,6 +35,7 @@ const form = document.getElementById("createProductForm");
 const tableBody = document.querySelector("#productTable tbody");
 const exportBtn = document.getElementById("exportBtn");
 const cancelEditBtn = document.getElementById("cancelEditBtn");
+const deleteAllBtn = document.getElementById("deleteAllProductsBtn");
 const formTitle = document.getElementById("formTitle");
 
 const productName = document.getElementById("productName");
@@ -119,17 +120,6 @@ form?.addEventListener("submit", async e => {
   }
 });
 // -------------------------------------------------------------
-// ❌ Bearbeiten abbrechen
-// -------------------------------------------------------------
-cancelEditBtn?.addEventListener("click", () => {
-  form.reset();
-  editMode = false;
-  editProductId = null;
-  formTitle.textContent = t("products.add");
-  cancelEditBtn.classList.add("hidden");
-});
-
-// -------------------------------------------------------------
 // 📦 Produkte laden
 // -------------------------------------------------------------
 async function loadProducts() {
@@ -167,6 +157,7 @@ async function loadProducts() {
   attachEditHandler();
   attachDeleteHandler();
 }
+
 // -------------------------------------------------------------
 // ✏️ Produkt bearbeiten
 // -------------------------------------------------------------
@@ -225,6 +216,31 @@ function attachDeleteHandler() {
     });
   });
 }
+
+// -------------------------------------------------------------
+// 🧹 Alle Produkte löschen
+// -------------------------------------------------------------
+deleteAllBtn?.addEventListener("click", async () => {
+  const confirmDelete = confirm(t("products.confirmDelete"));
+  if (!confirmDelete) return;
+
+  try {
+    const snapshot = await getDocs(collection(db, "products"));
+    const deletions = [];
+
+    snapshot.forEach(docSnap => {
+      deletions.push(deleteDoc(doc(db, "products", docSnap.id)));
+    });
+
+    await Promise.all(deletions);
+    await addAuditLog(auth.currentUser?.email, "product_delete_all", "Alle Produkte gelöscht");
+    showFeedback(t("products.delete"), "success");
+    await loadProducts();
+  } catch (err) {
+    console.error("❌ Fehler beim Löschen aller Produkte:", err);
+    showFeedback(t("errors.fail"), "error");
+  }
+});
 // -------------------------------------------------------------
 // 📤 CSV-Export für Shopify
 // -------------------------------------------------------------

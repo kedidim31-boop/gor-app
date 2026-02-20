@@ -171,7 +171,8 @@ export const LANG = {
       actions: "Aktionen",
       open: "Offen",
       closed: "Geschlossen"
-    },
+    }
+  },
   en: {
     languageName: "English",
     system: {
@@ -511,9 +512,8 @@ export const LANG = {
       open: "Ouvert",
       closed: "Fermé"
     }
-  },
-}; // Ende von LANG
-
+  }
+};
 // ======================================================================
 // 🔧 Sprachsteuerung
 // ======================================================================

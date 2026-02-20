@@ -1,6 +1,4 @@
-// ======================================================================
-// 🔥 TASKS – Sprachfähige Finalversion mit Modal & Statuswechsel
-// ======================================================================
+// TASKS.JS – Teil 1: Setup & Aufgabe erstellen
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
@@ -19,17 +17,14 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
+// Firebase initialisieren
 const { auth, db } = initFirebase();
 
-// -------------------------------------------------------------
-// 🔐 Zugriff: Admin, Manager, Support, Employee
-// -------------------------------------------------------------
+// Rollenprüfung & Übersetzungen
 enforceRole(["admin", "manager", "support", "employee"], "login.html");
 updateTranslations();
 
-// -------------------------------------------------------------
-// ➕ Aufgabe hinzufügen
-// -------------------------------------------------------------
+// Aufgabe erstellen
 const taskForm = document.getElementById("taskForm");
 
 taskForm?.addEventListener("submit", async e => {
@@ -61,9 +56,8 @@ taskForm?.addEventListener("submit", async e => {
     showFeedback(t("errors.fail"), "error");
   }
 });
-// -------------------------------------------------------------
-// 📋 Aufgaben laden
-// -------------------------------------------------------------
+// TASKS.JS – Teil 2: Aufgaben laden & Tabelle rendern
+
 async function loadTasks() {
   const tableBody = document.querySelector("#taskTable tbody");
   if (!tableBody) return;
@@ -110,10 +104,8 @@ async function loadTasks() {
   attachStatusHandler();
   attachDeleteHandler();
 }
+// TASKS.JS – Teil 3: Statuswechsel & visuelles Update
 
-// -------------------------------------------------------------
-// 🔄 Status ändern
-// -------------------------------------------------------------
 function attachStatusHandler() {
   document.querySelectorAll(".statusSelect").forEach(select => {
     select.addEventListener("change", async e => {
@@ -146,9 +138,8 @@ function attachStatusHandler() {
     });
   });
 }
-// -------------------------------------------------------------
-// 🗑️ Löschen mit Modal-Bestätigung
-// -------------------------------------------------------------
+// TASKS.JS – Teil 4: Löschen mit Modal & Initialisierung
+
 function attachDeleteHandler() {
   const modal = document.getElementById("confirmModal");
   const confirmYes = document.getElementById("confirmYes");
@@ -180,8 +171,6 @@ function attachDeleteHandler() {
   });
 }
 
-// -------------------------------------------------------------
-// 🚀 Initialisierung & Logout
-// -------------------------------------------------------------
+// Initialisierung & Logout
 loadTasks();
 document.querySelector(".logout-btn")?.addEventListener("click", logout);

@@ -171,7 +171,7 @@ export const LANG = {
       actions: "Aktionen",
       open: "Offen",
       closed: "Geschlossen"
-    }
+    },
   en: {
     languageName: "English",
     system: {

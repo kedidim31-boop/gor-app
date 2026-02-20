@@ -23,10 +23,10 @@
 </head>
 
 <body>
-  <!-- FEEDBACK -->
+  <!-- Feedback -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- HEADER -->
+  <!-- Header -->
   <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo" />
     <div class="branding-text">
@@ -37,10 +37,10 @@
     </div>
   </header>
 
-  <!-- NAVIGATION -->
+  <!-- Navigation -->
   <nav class="top-nav glass-panel">
-    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
-    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht & Dashboard</span></a>
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Dashboard</span></a>
+    <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
     <a href="products.html"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
     <a href="tasks.html" class="active"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
     <a href="time.html"><i class="fa-solid fa-clock"></i> <span data-i18n="nav.time">Zeiterfassung</span></a>
@@ -60,9 +60,9 @@
     </button>
   </nav>
 
-  <!-- MAIN -->
+  <!-- Main Content -->
   <main>
-    <!-- AUFGABE ERSTELLEN -->
+    <!-- Task Form -->
     <section class="card glass-panel">
       <h2><i class="fa-solid fa-plus-circle"></i> <span data-i18n="tasks.new">Neue Aufgabe erstellen</span></h2>
       <form id="taskForm" class="form-grid">
@@ -88,7 +88,7 @@
       </form>
     </section>
 
-    <!-- AUFGABENÜBERSICHT -->
+    <!-- Task Table -->
     <section class="card glass-panel">
       <h2><i class="fa-solid fa-table"></i> <span data-i18n="tasks.overview">Aufgabenübersicht</span></h2>
       <table id="taskTable" class="neon-table">
@@ -107,16 +107,12 @@
     </section>
   </main>
 
-  <!-- SCRIPTS -->
+  <!-- Scripts -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
-    enforceRole(["employee", "support", "manager", "admin"], "index.html");
-  </script>
-
-  <script type="module" src="src/scripts/tasks.js"></script>
-
-  <script type="module">
     import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+
+    enforceRole(["employee", "support", "manager", "admin"], "index.html");
 
     const userRole = sessionStorage.getItem("role");
     if (userRole) {
@@ -148,5 +144,7 @@
       }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
     }
   </script>
+
+  <script type="module" src="src/scripts/tasks.js"></script>
 </body>
 </html>

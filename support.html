@@ -39,7 +39,7 @@
 
   <!-- NAVIGATION -->
   <nav class="top-nav glass-panel">
-    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Dashboard</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
     <a href="products.html"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
@@ -59,7 +59,6 @@
       <span data-i18n="nav.logout">Logout</span>
     </button>
   </nav>
-
   <!-- MAIN -->
   <main class="support-page">
     <!-- TICKET ERSTELLEN -->
@@ -115,7 +114,6 @@
         <span data-i18n="support.slaHigh">SLA High: 24h</span>
       </div>
     </section>
-
     <!-- TICKET-TABELLE -->
     <section class="card glass-panel">
       <h2><i class="fa-solid fa-ticket"></i> <span data-i18n="support.ticketOverview">Tickets</span></h2>
@@ -144,6 +142,7 @@
         </tbody>
       </table>
     </section>
+
     <!-- KOMMENTAR MODAL -->
     <div id="commentModal" class="modal" aria-hidden="true">
       <div class="modal-content glass-panel" role="dialog" aria-modal="true">
@@ -166,7 +165,6 @@
       </div>
     </div>
   </main>
-
   <!-- ROLE GUARD -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";

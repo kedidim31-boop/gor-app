@@ -1,3 +1,7 @@
+// ======================================================================
+// 🌐 Sprachdaten & Steuerung
+// ======================================================================
+
 export const LANG = {
   de: {
     languageName: "Deutsch (Schweiz)",
@@ -119,8 +123,55 @@ export const LANG = {
       cancel: "Abbrechen",
       saved: "Produkt gespeichert.",
       edit: "Bearbeiten"
+    },
+    tasks: {
+      title: "Aufgabenverwaltung",
+      new: "Neue Aufgabe erstellen",
+      overview: "Aufgabenübersicht",
+      name: "Aufgabe",
+      description: "Beschreibung",
+      status: "Status",
+      assignedTo: "Zugewiesen an",
+      dueDate: "Fälligkeitsdatum",
+      priority: "Priorität",
+      save: "Aufgabe speichern",
+      delete: "Löschen",
+      edit: "Bearbeiten",
+      actions: "Aktionen",
+      completed: "Erledigt",
+      open: "Offen"
+    },
+    time: {
+      title: "Zeiterfassung",
+      overview: "Zeiterfassungsübersicht",
+      start: "Start",
+      stop: "Stopp",
+      duration: "Dauer",
+      date: "Datum",
+      project: "Projekt",
+      note: "Notiz",
+      save: "Zeit speichern",
+      delete: "Löschen",
+      edit: "Bearbeiten",
+      actions: "Aktionen"
+    },
+    support: {
+      title: "Support",
+      new: "Neues Ticket erstellen",
+      overview: "Supportübersicht",
+      ticketId: "Ticket‑Nr.",
+      subject: "Betreff",
+      message: "Nachricht",
+      status: "Status",
+      assignedTo: "Bearbeiter",
+      createdAt: "Erstellt am",
+      save: "Ticket speichern",
+      delete: "Löschen",
+      edit: "Bearbeiten",
+      actions: "Aktionen",
+      open: "Offen",
+      closed: "Geschlossen"
     }
-  },
   en: {
     languageName: "English",
     system: {
@@ -241,6 +292,54 @@ export const LANG = {
       cancel: "Cancel",
       saved: "Product saved.",
       edit: "Edit"
+    },
+    tasks: {
+      title: "Task management",
+      new: "Create new task",
+      overview: "Task overview",
+      name: "Task",
+      description: "Description",
+      status: "Status",
+      assignedTo: "Assigned to",
+      dueDate: "Due date",
+      priority: "Priority",
+      save: "Save task",
+      delete: "Delete",
+      edit: "Edit",
+      actions: "Actions",
+      completed: "Completed",
+      open: "Open"
+    },
+    time: {
+      title: "Time tracking",
+      overview: "Time overview",
+      start: "Start",
+      stop: "Stop",
+      duration: "Duration",
+      date: "Date",
+      project: "Project",
+      note: "Note",
+      save: "Save time",
+      delete: "Delete",
+      edit: "Edit",
+      actions: "Actions"
+    },
+    support: {
+      title: "Support",
+      new: "Create new ticket",
+      overview: "Support overview",
+      ticketId: "Ticket ID",
+      subject: "Subject",
+      message: "Message",
+      status: "Status",
+      assignedTo: "Assigned to",
+      createdAt: "Created at",
+      save: "Save ticket",
+      delete: "Delete",
+      edit: "Edit",
+      actions: "Actions",
+      open: "Open",
+      closed: "Closed"
     }
   },
   fr: {
@@ -363,9 +462,58 @@ export const LANG = {
       cancel: "Annuler",
       saved: "Produit enregistré.",
       edit: "Modifier"
+    },
+    tasks: {
+      title: "Gestion des tâches",
+      new: "Créer une nouvelle tâche",
+      overview: "Aperçu des tâches",
+      name: "Tâche",
+      description: "Description",
+      status: "Statut",
+      assignedTo: "Attribuée à",
+      dueDate: "Date d’échéance",
+      priority: "Priorité",
+      save: "Enregistrer la tâche",
+      delete: "Supprimer",
+      edit: "Modifier",
+      actions: "Actions",
+      completed: "Terminée",
+      open: "Ouverte"
+    },
+    time: {
+      title: "Suivi du temps",
+      overview: "Aperçu du temps",
+      start: "Démarrer",
+      stop: "Arrêter",
+      duration: "Durée",
+      date: "Date",
+      project: "Projet",
+      note: "Note",
+      save: "Enregistrer le temps",
+      delete: "Supprimer",
+      edit: "Modifier",
+      actions: "Actions"
+    },
+    support: {
+      title: "Support",
+      new: "Créer un nouveau ticket",
+      overview: "Aperçu du support",
+      ticketId: "ID du ticket",
+      subject: "Sujet",
+      message: "Message",
+      status: "Statut",
+      assignedTo: "Attribué à",
+      createdAt: "Créé le",
+      save: "Enregistrer le ticket",
+      delete: "Supprimer",
+      edit: "Modifier",
+      actions: "Actions",
+      open: "Ouvert",
+      closed: "Fermé"
     }
-  }
-};
+  },
+}; // Ende von LANG
+
 // ======================================================================
 // 🔧 Sprachsteuerung
 // ======================================================================
@@ -414,5 +562,17 @@ export function updateTranslations() {
     const key = el.getAttribute("data-i18n-placeholder");
     const translation = t(key);
     if (translation) el.setAttribute("placeholder", translation);
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.getAttribute("data-i18n-title");
+    const translation = t(key);
+    if (translation) el.setAttribute("title", translation);
+  });
+
+  document.querySelectorAll("[data-i18n-value]").forEach(el => {
+    const key = el.getAttribute("data-i18n-value");
+    const translation = t(key);
+    if (translation) el.setAttribute("value", translation);
   });
 }

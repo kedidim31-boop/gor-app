@@ -23,10 +23,10 @@
 </head>
 
 <body>
-  <!-- FEEDBACK -->
+  <!-- Feedback -->
   <div id="feedbackContainer" aria-live="polite"></div>
 
-  <!-- HEADER -->
+  <!-- Header -->
   <header class="branding-header glass-panel">
     <img src="public/logo.png" alt="Gaming of Republic Logo" class="logo" />
     <div class="branding-text">
@@ -37,9 +37,9 @@
     </div>
   </header>
 
-  <!-- NAVIGATION -->
+  <!-- Navigation -->
   <nav class="top-nav glass-panel">
-    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Home</span></a>
+    <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav.dashboard">Dashboard</span></a>
     <a href="analysis.html"><i class="fa-solid fa-chart-line"></i> <span data-i18n="nav.analysis">Übersicht</span></a>
     <a href="products.html"><i class="fa-solid fa-box"></i> <span data-i18n="nav.products">Produkte</span></a>
     <a href="tasks.html"><i class="fa-solid fa-list-check"></i> <span data-i18n="nav.tasks">Aufgaben</span></a>
@@ -60,13 +60,13 @@
     </button>
   </nav>
 
-  <!-- MAIN -->
+  <!-- Main Content -->
   <main>
-    <!-- TIMER -->
+    <!-- Timer Section -->
     <section class="card glass-panel">
       <h2><i class="fa-solid fa-stopwatch"></i> <span data-i18n="time.timer">Live Timer</span></h2>
       <div id="liveTimer" class="timer-display">00:00:00</div>
-      <div class="timer-status" id="timerStatus" data-i18n="time.stopped">Gestoppt</div>
+      <div id="timerStatus" class="timer-status" data-i18n="time.stopped">Gestoppt</div>
       <div class="timer-controls">
         <button id="startTimerBtn" class="btn btn-green">
           <i class="fa-solid fa-play"></i> <span data-i18n="time.start">Start</span>
@@ -80,13 +80,13 @@
       </div>
     </section>
 
-    <!-- FORM -->
+    <!-- Time Entry Form -->
     <section class="card glass-panel">
       <h2><i class="fa-solid fa-plus-circle"></i> <span data-i18n="time.new">Neue Zeiterfassung hinzufügen</span></h2>
       <form id="timeForm" class="form-grid">
         <label class="form-field icon-input">
           <i class="fa-solid fa-user"></i>
-          <input type="text" id="employeeName" required placeholder="Mitarbeitername" data-i18n-placeholder="time.employee" />
+          <input type="text" id="employeeName" required data-i18n-placeholder="time.employee" placeholder="Mitarbeitername" />
         </label>
         <label class="form-field icon-input">
           <i class="fa-solid fa-calendar-day"></i>
@@ -102,11 +102,11 @@
         </label>
         <label class="form-field icon-input">
           <i class="fa-solid fa-hourglass-half"></i>
-          <input type="number" id="hoursWorked" step="0.1" readonly placeholder="Berechnete Stunden" data-i18n-placeholder="time.hours" />
+          <input type="number" id="hoursWorked" step="0.1" readonly data-i18n-placeholder="time.hours" placeholder="Berechnete Stunden" />
         </label>
         <label class="form-field icon-input full-width">
           <i class="fa-solid fa-align-left"></i>
-          <textarea id="workDescription" placeholder="Beschreibung" data-i18n-placeholder="time.description"></textarea>
+          <textarea id="workDescription" data-i18n-placeholder="time.description" placeholder="Beschreibung"></textarea>
         </label>
         <button type="submit" class="btn btn-yellow full-width">
           <i class="fa-solid fa-save"></i> <span data-i18n="time.save">Zeiterfassung speichern</span>
@@ -114,7 +114,7 @@
       </form>
     </section>
 
-    <!-- TABELLE -->
+    <!-- Time Table -->
     <section class="card glass-panel">
       <h2><i class="fa-solid fa-table"></i> <span data-i18n="time.overview">Zeiterfassungsübersicht</span></h2>
       <table id="timeTable" class="neon-table">
@@ -136,16 +136,12 @@
     </section>
   </main>
 
-  <!-- SCRIPTS -->
+  <!-- Scripts -->
   <script type="module">
     import { enforceRole } from "./src/scripts/roleGuard.js";
-    enforceRole(["employee", "support", "manager", "admin"], "index.html");
-  </script>
-
-  <script type="module" src="src/scripts/time.js"></script>
-
-  <script type="module">
     import { setLang, getLang, updateTranslations } from "./src/scripts/lang.js";
+
+    enforceRole(["employee", "support", "manager", "admin"], "index.html");
 
     const userRole = sessionStorage.getItem("role");
     if (userRole) {
@@ -177,5 +173,7 @@
       }).catch(err => console.warn("Sprache konnte nicht gespeichert werden:", err));
     }
   </script>
+
+  <script type="module" src="src/scripts/time.js"></script>
 </body>
 </html>

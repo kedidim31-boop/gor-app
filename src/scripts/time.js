@@ -1,6 +1,4 @@
-// ======================================================================
-// 🔥 TIME – Sprachfähige Finalversion mit Timer, AutoSave & Badges
-// ======================================================================
+// TIME.JS – Teil 1: Setup, Timer-State & AutoSave
 
 import { initFirebase } from "./firebaseSetup.js";
 import { enforceRole } from "./roleGuard.js";
@@ -17,17 +15,12 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
+// Firebase & Zugriff
 const { db } = initFirebase();
-
-// -------------------------------------------------------------
-// 🔐 Zugriff
-// -------------------------------------------------------------
 enforceRole(["admin", "manager", "support", "employee"], "login.html");
 updateTranslations();
 
-// -------------------------------------------------------------
-// 🔹 DOM Elemente
-// -------------------------------------------------------------
+// DOM-Elemente
 const timeForm       = document.getElementById("timeForm");
 const startInput     = document.getElementById("startTime");
 const endInput       = document.getElementById("endTime");
@@ -45,15 +38,14 @@ const resetBtn       = document.getElementById("resetTimerBtn");
 
 document.querySelector(".logout-btn")?.addEventListener("click", logout);
 
-// -------------------------------------------------------------
-// ⏱️ Timer State & Auto-Save
-// -------------------------------------------------------------
+// Timer-State & Draft
 const TIMER_KEY = "gor_time_timer_state";
 const DRAFT_KEY = "gor_time_form_draft";
 
 let timerState = { isRunning: false, startTimestamp: null };
 let timerInterval = null;
 
+// Timer-Status laden
 function loadTimerState() {
   try {
     const raw = localStorage.getItem(TIMER_KEY);
@@ -72,9 +64,7 @@ function saveTimerState() {
   localStorage.setItem(TIMER_KEY, JSON.stringify(timerState));
 }
 
-// -------------------------------------------------------------
-// 📝 Form Draft laden/speichern
-// -------------------------------------------------------------
+// Form-Draft laden/speichern
 function loadFormDraft() {
   try {
     const raw = localStorage.getItem(DRAFT_KEY);
@@ -96,10 +86,8 @@ function saveFormDraft() {
   };
   localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
 }
+// TIME.JS – Teil 2: Timer-Logik & Anzeige
 
-// -------------------------------------------------------------
-// ⏱️ Timer Logik
-// -------------------------------------------------------------
 function updateTimerDisplay() {
   if (!liveTimerEl || !timerState.startTimestamp) return;
   const diffMs = Date.now() - timerState.startTimestamp;
@@ -170,10 +158,9 @@ function resumeTimerFromState() {
   updateTimerDisplay();
   setTimerStatus("running");
 }
+// TIME.JS – Teil 3: Stunden berechnen, speichern & laden
 
-// -------------------------------------------------------------
-// 🧮 Stunden berechnen
-// -------------------------------------------------------------
+// Stunden berechnen
 function calculateHours() {
   if (!startInput || !endInput || !hoursInput) return;
   const [sh, sm] = (startInput.value || "").split(":").map(Number);
@@ -182,23 +169,21 @@ function calculateHours() {
   hoursInput.value = diff > 0 ? diff.toFixed(2) : "0.00";
 }
 
+// AutoSave bei Eingaben
 startInput?.addEventListener("change", () => { calculateHours(); saveFormDraft(); });
 endInput?.addEventListener("change", () => { calculateHours(); saveFormDraft(); });
 employeeInput?.addEventListener("input", saveFormDraft);
 dateInput?.addEventListener("change", saveFormDraft);
 descInput?.addEventListener("input", saveFormDraft);
-// -------------------------------------------------------------
-// 🧾 Schweizer Datumsformat
-// -------------------------------------------------------------
+
+// Datumsformat CH
 function formatDate(dateStr) {
   if (!dateStr) return "-";
   const [yyyy, mm, dd] = dateStr.split("-");
   return `${dd}.${mm}.${yyyy}`;
 }
 
-// -------------------------------------------------------------
-// 🟡 Stunden-Badge Klasse
-// -------------------------------------------------------------
+// Stunden-Badge
 function getHoursBadgeClass(hours) {
   const h = Number(hours || 0);
   if (h <= 8) return "hours-ok";
@@ -206,9 +191,7 @@ function getHoursBadgeClass(hours) {
   return "hours-overtime";
 }
 
-// -------------------------------------------------------------
-// 💾 Zeiterfassung speichern
-// -------------------------------------------------------------
+// Zeiterfassung speichern
 timeForm?.addEventListener("submit", async e => {
   e.preventDefault();
 
@@ -246,10 +229,9 @@ timeForm?.addEventListener("submit", async e => {
     showFeedback(t("errors.fail"), "error");
   }
 });
+// TIME.JS – Teil 4: Einträge löschen, Timer-Buttons & Initialisierung
 
-// -------------------------------------------------------------
-// 📊 Zeiterfassungen laden
-// -------------------------------------------------------------
+// Zeiteinträge laden
 async function loadTimeEntries() {
   const tableBody = document.querySelector("#timeTable tbody");
   if (!tableBody) return;
@@ -285,9 +267,8 @@ async function loadTimeEntries() {
 
   attachDeleteHandler();
 }
-// -------------------------------------------------------------
-// 🗑️ Löschen mit Modal-Bestätigung
-// -------------------------------------------------------------
+
+// Löschen mit Modal
 function attachDeleteHandler() {
   const modal = document.getElementById("confirmModal");
   const confirmYes = document.getElementById("confirmYes");
@@ -318,9 +299,7 @@ function attachDeleteHandler() {
   });
 }
 
-// -------------------------------------------------------------
-// ⏱️ Timer Buttons
-// -------------------------------------------------------------
+// Timer-Buttons
 startBtn?.addEventListener("click", e => {
   e.preventDefault();
   startTimer();
@@ -336,9 +315,7 @@ resetBtn?.addEventListener("click", e => {
   resetTimer();
 });
 
-// -------------------------------------------------------------
-// 🚀 Initialisierung
-// -------------------------------------------------------------
+// Initialisierung
 loadFormDraft();
 loadTimerState();
 loadTimeEntries();
